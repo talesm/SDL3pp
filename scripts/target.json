@@ -21005,7 +21005,7 @@
         "TextInputEvent": {
           "doc": [
             "Keyboard text input event structure (event.text.*)",
-            "This event will never be delivered unless text input is enabled by calling Window.StartTextInput(). Text input is disabled by default!",
+            "This event will never be delivered unless text input is enabled by calling WindowBase.StartTextInput(). Text input is disabled by default!",
             {
               "tag": "@since",
               "content": "This struct is available since SDL 3.2.0."
@@ -21013,11 +21013,11 @@
             [
               {
                 "tag": "@sa",
-                "content": "Window.StartTextInput"
+                "content": "WindowBase.StartTextInput"
               },
               {
                 "tag": "@sa",
-                "content": "Window.StopTextInput"
+                "content": "WindowBase.StopTextInput"
               }
             ]
           ],
@@ -57001,7 +57001,7 @@
                 "content": "\"1\": Show the on-screen keyboard, if available."
               }
             ],
-            "This hint must be set before Window.StartTextInput() is called",
+            "This hint must be set before WindowBase.StartTextInput() is called",
             {
               "tag": "@since",
               "content": "This hint is available since SDL 3.2.0."
@@ -57257,7 +57257,7 @@
           "doc": [
             "This variable sets the default text of the TextInput window on GDK platforms.",
             "This hint is available only if SDL_GDK_TEXTINPUT defined.",
-            "This hint should be set before calling Window.StartTextInput()",
+            "This hint should be set before calling WindowBase.StartTextInput()",
             {
               "tag": "@since",
               "content": "This hint is available since SDL 3.2.0."
@@ -57272,7 +57272,7 @@
           "doc": [
             "This variable sets the description of the TextInput window on GDK platforms.",
             "This hint is available only if SDL_GDK_TEXTINPUT defined.",
-            "This hint should be set before calling Window.StartTextInput()",
+            "This hint should be set before calling WindowBase.StartTextInput()",
             {
               "tag": "@since",
               "content": "This hint is available since SDL 3.2.0."
@@ -57288,7 +57288,7 @@
             "This variable sets the maximum input length of the TextInput window on GDK platforms.",
             "The value must be a stringified integer, for example \"10\" to allow for up to 10 characters of text input.",
             "This hint is available only if SDL_GDK_TEXTINPUT defined.",
-            "This hint should be set before calling Window.StartTextInput()",
+            "This hint should be set before calling WindowBase.StartTextInput()",
             {
               "tag": "@since",
               "content": "This hint is available since SDL 3.2.0."
@@ -57304,7 +57304,7 @@
             "This variable sets the input scope of the TextInput window on GDK platforms.",
             "Set this hint to change the XGameUiTextEntryInputScope value that will be passed to the window creation function. The value must be a stringified integer, for example \"0\" for XGameUiTextEntryInputScope::Default.",
             "This hint is available only if SDL_GDK_TEXTINPUT defined.",
-            "This hint should be set before calling Window.StartTextInput()",
+            "This hint should be set before calling WindowBase.StartTextInput()",
             {
               "tag": "@since",
               "content": "This hint is available since SDL 3.2.0."
@@ -57319,7 +57319,7 @@
           "doc": [
             "This variable sets the title of the TextInput window on GDK platforms.",
             "This hint is available only if SDL_GDK_TEXTINPUT defined.",
-            "This hint should be set before calling Window.StartTextInput()",
+            "This hint should be set before calling WindowBase.StartTextInput()",
             {
               "tag": "@since",
               "content": "This hint is available since SDL 3.2.0."
@@ -77475,19 +77475,18 @@
             "private": true
           }
         },
-        "Window::StartTextInput": {
-          "name": "Window::StartTextInput",
+        "WindowBase::StartTextInput": {
+          "name": "WindowBase::StartTextInput",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_StartTextInput",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true
           },
           "overload": {
-            "name": "Window::StartTextInput",
+            "name": "WindowBase::StartTextInput",
             "kind": "function",
             "type": "void",
             "parameters": [
@@ -77499,7 +77498,6 @@
             "sourceName": "SDL_StartTextInputWithProperties",
             "hints": {
               "self": "get()",
-              "super": "Window",
               "mayFail": true
             }
           }
@@ -77514,7 +77512,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Window.StartTextInput"
+              "content": "WindowBase.StartTextInput"
             }
           ],
           "name": "TextInputType",
@@ -77622,7 +77620,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Window.StartTextInput"
+              "content": "WindowBase.StartTextInput"
             }
           ],
           "name": "Capitalization",
@@ -77731,44 +77729,41 @@
             }
           }
         },
-        "Window::IsTextInputActive": {
-          "name": "Window::IsTextInputActive",
+        "WindowBase::IsTextInputActive": {
+          "name": "WindowBase::IsTextInputActive",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "SDL_TextInputActive",
           "immutable": true,
           "hints": {
-            "self": "get()",
-            "super": "Window"
+            "self": "get()"
           }
         },
-        "Window::StopTextInput": {
-          "name": "Window::StopTextInput",
+        "WindowBase::StopTextInput": {
+          "name": "WindowBase::StopTextInput",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_StopTextInput",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true
           }
         },
-        "Window::ClearComposition": {
-          "name": "Window::ClearComposition",
+        "WindowBase::ClearComposition": {
+          "name": "WindowBase::ClearComposition",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_ClearComposition",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true
           }
         },
-        "Window::SetTextInputArea": {
-          "name": "Window::SetTextInputArea",
+        "WindowBase::SetTextInputArea": {
+          "name": "WindowBase::SetTextInputArea",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -77784,12 +77779,11 @@
           "sourceName": "SDL_SetTextInputArea",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true
           }
         },
-        "Window::GetTextInputArea": {
-          "name": "Window::GetTextInputArea",
+        "WindowBase::GetTextInputArea": {
+          "name": "WindowBase::GetTextInputArea",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -77805,7 +77799,6 @@
           "sourceName": "SDL_GetTextInputArea",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true
           }
         },
@@ -77827,11 +77820,11 @@
             [
               {
                 "tag": "@sa",
-                "content": "Window.StartTextInput"
+                "content": "WindowBase.StartTextInput"
               },
               {
                 "tag": "@sa",
-                "content": "Window.IsScreenKeyboardShown"
+                "content": "WindowBase.IsScreenKeyboardShown"
               }
             ]
           ],
@@ -77841,16 +77834,15 @@
           "parameters": [],
           "sourceName": "SDL_HasScreenKeyboardSupport"
         },
-        "Window::IsScreenKeyboardShown": {
-          "name": "Window::IsScreenKeyboardShown",
+        "WindowBase::IsScreenKeyboardShown": {
+          "name": "WindowBase::IsScreenKeyboardShown",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "SDL_ScreenKeyboardShown",
           "immutable": true,
           "hints": {
-            "self": "get()",
-            "super": "Window"
+            "self": "get()"
           }
         }
       },
@@ -86584,7 +86576,7 @@
         },
         "Any GUI application has to deal with the mouse, and SDL provides functions to manage mouse input and the displayed cursor.",
         "Most interactions with the mouse will come through the event subsystem. Moving a mouse generates an EVENT_MOUSE_MOTION event, pushing a button generates EVENT_MOUSE_BUTTON_DOWN, etc, but one can also query the current state of the mouse at any time with GetMouseState().",
-        "For certain games, it's useful to disassociate the mouse cursor from mouse input. An FPS, for example, would not want the player's motion to stop as the mouse hits the edge of the window. For these scenarios, use Window.SetRelativeMouseMode(), which hides the cursor, grabs mouse input to the window, and reads mouse input no matter how far it moves.",
+        "For certain games, it's useful to disassociate the mouse cursor from mouse input. An FPS, for example, would not want the player's motion to stop as the mouse hits the edge of the window. For these scenarios, use WindowBase.SetRelativeMouseMode(), which hides the cursor, grabs mouse input to the window, and reads mouse input no matter how far it moves.",
         "Games that want the system to track the mouse but want to draw their own cursor can use HideCursor() and ShowCursor(). It might be more efficient to let the system manage the cursor, if possible, using SetCursor() with a custom image made through CreateColorCursor(), or perhaps just a specific system cursor from CreateSystemCursor().",
         "SDL can, on many platforms, differentiate between multiple connected mice, allowing for interesting input scenarios and multiplayer games. They can be enumerated with GetMice(), and SDL will send EVENT_MOUSE_ADDED and EVENT_MOUSE_REMOVED events as they are connected and unplugged.",
         "Since many apps only care about basic mouse input, SDL offers a virtual mouse device for touch and pen input, which often can make a desktop application work on a touchscreen phone without any code changes. Apps that care about touch/pen separately from mouse input should filter out events with a `which` field of TOUCH_MOUSEID/PEN_MOUSEID."
@@ -87971,8 +87963,8 @@
           ],
           "sourceName": "SDL_GetRelativeMouseState"
         },
-        "Window::WarpMouse": {
-          "name": "Window::WarpMouse",
+        "WindowBase::WarpMouse": {
+          "name": "WindowBase::WarpMouse",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -87983,8 +87975,7 @@
           ],
           "sourceName": "SDL_WarpMouseInWindow",
           "hints": {
-            "self": "get()",
-            "super": "Window"
+            "self": "get()"
           }
         },
         "WarpMouse": {
@@ -88017,7 +88008,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Window.WarpMouse"
+              "content": "WindowBase.WarpMouse"
             }
           ],
           "name": "WarpMouse",
@@ -88128,8 +88119,8 @@
             "patch": 0
           }
         },
-        "Window::SetRelativeMouseMode": {
-          "name": "Window::SetRelativeMouseMode",
+        "WindowBase::SetRelativeMouseMode": {
+          "name": "WindowBase::SetRelativeMouseMode",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -88141,27 +88132,25 @@
           "sourceName": "SDL_SetWindowRelativeMouseMode",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true
           }
         },
-        "Window::GetRelativeMouseMode": {
-          "name": "Window::GetRelativeMouseMode",
+        "WindowBase::GetRelativeMouseMode": {
+          "name": "WindowBase::GetRelativeMouseMode",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "SDL_GetWindowRelativeMouseMode",
           "immutable": true,
           "hints": {
-            "self": "get()",
-            "super": "Window"
+            "self": "get()"
           }
         },
         "CaptureMouse": {
           "doc": [
             "Capture the mouse and to track input outside an SDL window.",
             "Capturing enables your app to obtain mouse events globally, instead of just within your window. Not all video targets support this function. When capturing is enabled, the current window will get all mouse events, but unlike relative mode, no change is made to the cursor and it is not restrained to your window.",
-            "This function may also deny mouse input to other windows--both those in your application and others on the system--so you should use this function sparingly, and in small bursts. For example, you might want to track the mouse while the user is dragging something, until the user releases a mouse button. It is not recommended that you capture the mouse for long periods of time, such as the entire time your app is running. For that, you should probably use Window.SetRelativeMouseMode() or SetWindowMouseGrab(), depending on your goals.",
+            "This function may also deny mouse input to other windows--both those in your application and others on the system--so you should use this function sparingly, and in small bursts. For example, you might want to track the mouse while the user is dragging something, until the user releases a mouse button. It is not recommended that you capture the mouse for long periods of time, such as the entire time your app is running. For that, you should probably use WindowBase.SetRelativeMouseMode() or SetWindowMouseGrab(), depending on your goals.",
             "While captured, mouse events still report coordinates relative to the current (foreground) window, but those coordinates may be outside the bounds of the window (including negative values). Capturing is only allowed for the foreground window. If the window loses focus while capturing, the capture will be disabled automatically.",
             "While capturing is enabled, the current window will have the `WINDOW_MOUSE_CAPTURE` flag set.",
             "Please note that SDL will attempt to \"auto capture\" the mouse while the user is pressing a button; this is to try and make mouse behavior more consistent between platforms, and deal with the common case of a user dragging the mouse outside of the window. This means that if you are calling CaptureMouse() only to deal with this situation, you do not have to (although it is safe to do so). If this causes problems for your app, you can disable auto capture by setting the `SDL_HINT_MOUSE_AUTO_CAPTURE` hint to zero.",
@@ -118853,15 +118842,14 @@
             "delegate": "Renderer"
           }
         },
-        "Window::GetRenderer": {
-          "name": "Window::GetRenderer",
+        "WindowBase::GetRenderer": {
+          "name": "WindowBase::GetRenderer",
           "kind": "function",
           "type": "RendererRef",
           "parameters": [],
           "sourceName": "SDL_GetRenderer",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true
           },
           "immutable": true
@@ -168937,6 +168925,10 @@
           "name": "Display",
           "kind": "forward"
         },
+        "WindowBase-forward": {
+          "name": "WindowBase",
+          "kind": "forward"
+        },
         "Window-forward": {
           "name": "Window",
           "kind": "forward"
@@ -168956,7 +168948,7 @@
             "Reference for Window.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Window>"
+          "type": "ResourceRefT<WindowBase>"
         },
         "GLContext-forward": {
           "name": "GLContext",
@@ -170570,804 +170562,21 @@
           ],
           "sourceName": "SDL_PROGRESS_STATE_ERROR"
         },
-        "Window": {
-          "doc": [
-            "The struct used as an opaque handle to a window.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            {
-              "tag": "@sa",
-              "content": "CreateWindow"
-            },
-            "@cat resource"
-          ],
-          "name": "Window",
+        "WindowBase": {
+          "name": "WindowBase",
           "kind": "struct",
-          "type": "ResourceBase<WindowRaw>",
-          "sourceName": "SDL_Window",
+          "type": "ResourceBaseT<WindowRaw>",
+          "doc": [
+            "Base class to Window.",
+            {
+              "tag": "@see",
+              "content": "Window"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Window": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "WindowRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Window.",
-                {
-                  "tag": "@param resource",
-                  "content": "a WindowRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Window",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Window &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Window",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Window &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Window(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Window",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const WindowRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Window",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "WindowRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Window",
-                      "overload": {
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "type": "StringParam",
-                            "name": "title"
-                          },
-                          {
-                            "type": "const PointRaw &",
-                            "name": "size"
-                          },
-                          {
-                            "type": "WindowFlags",
-                            "name": "window_flags"
-                          },
-                          {
-                            "type": "RendererBase *",
-                            "name": "renderer"
-                          }
-                        ],
-                        "hints": {
-                          "mayFail": true,
-                          "init": [
-                            "Window(CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))"
-                          ]
-                        },
-                        "name": "Window",
-                        "doc": [
-                          "Create a window and default renderer.",
-                          [
-                            {
-                              "tag": "@param title",
-                              "content": "the title of the window, in UTF-8 encoding."
-                            },
-                            {
-                              "tag": "@param width",
-                              "content": "the width of the window."
-                            },
-                            {
-                              "tag": "@param height",
-                              "content": "the height of the window."
-                            },
-                            {
-                              "tag": "@param window_flags",
-                              "content": "the flags used to create the window (see CreateWindow())."
-                            },
-                            {
-                              "tag": "@param window",
-                              "content": "a pointer filled with the window, or nullptr on error."
-                            },
-                            {
-                              "tag": "@param renderer",
-                              "content": "a pointer filled with the renderer, or nullptr on error."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "true on success or false on failure; call GetError() for more information."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "This function should only be called on the main thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateRenderer"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "CreateWindow"
-                            }
-                          ]
-                        ],
-                        "proto": true,
-                        "overload": {
-                          "doc": [
-                            "Create a window with the specified dimensions and flags.",
-                            "The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.",
-                            "`flags` may be any of the following OR'd together:",
-                            [
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_FULLSCREEN`: fullscreen window at desktop resolution"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_OPENGL`: window usable with an OpenGL context"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_HIDDEN`: window is not visible"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_BORDERLESS`: no window decoration"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_RESIZABLE`: window can be resized"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_MINIMIZED`: window is minimized"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_MAXIMIZED`: window is maximized"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_INPUT_FOCUS`: window has input focus"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_MOUSE_FOCUS`: window has mouse focus"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_EXTERNAL`: window not created by SDL"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_MODAL`: window is modal"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back buffer if possible"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to MOUSE_GRABBED)"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_ALWAYS_ON_TOP`: window should always be above others"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_UTILITY`: window should be treated as a utility window, not showing in the task bar and window list"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_TOOLTIP`: window should be treated as a tooltip and does not get mouse or keyboard focus, requires a parent window"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_POPUP_MENU`: window should be treated as a popup menu, requires a parent window"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_VULKAN`: window usable with a Vulkan instance"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_METAL`: window usable with a Metal instance"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_TRANSPARENT`: window with transparent buffer"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`WINDOW_NOT_FOCUSABLE`: window should not be focusable"
-                              }
-                            ],
-                            "The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation time, ShowWindow() can be used to show it later.",
-                            "On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist property to YES, otherwise you will not receive a High-DPI OpenGL canvas.",
-                            "The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use GetWindowSize() to query the client area's size in window coordinates, and GetWindowSizeInPixels() or GetRenderOutputSize() to query the drawable size in pixels. Note that the drawable size can vary after the window is created and should be queried again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.",
-                            "If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN flags, then the corresponding LoadLibrary function (GL_LoadLibrary or Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function is called by DestroyWindow().",
-                            "If WINDOW_VULKAN is specified and there isn't a working Vulkan driver, CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.",
-                            "If WINDOW_METAL is specified on an OS that does not support Metal, CreateWindow() will fail.",
-                            "If you intend to use this window with an Renderer, you should use CreateWindowAndRenderer() instead of this function, to avoid window flicker.",
-                            "On non-Apple devices, SDL requires you to either not link to the Vulkan loader or link to a dynamic library version. This limitation may be removed in a future version of SDL.",
-                            [
-                              {
-                                "tag": "@param title",
-                                "content": "the title of the window, in UTF-8 encoding."
-                              },
-                              {
-                                "tag": "@param w",
-                                "content": "the width of the window."
-                              },
-                              {
-                                "tag": "@param h",
-                                "content": "the height of the window."
-                              },
-                              {
-                                "tag": "@param flags",
-                                "content": "0, or one or more WindowFlags OR'd together."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "the window that was created or nullptr on failure; call GetError() for more information."
-                              }
-                            ],
-                            {
-                              "tag": "@threadsafety",
-                              "content": "This function should only be called on the main thread."
-                            },
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL 3.2.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "CreateWindowAndRenderer"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "CreatePopupWindow"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "CreateWindowWithProperties"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "DestroyWindow"
-                              }
-                            ]
-                          ],
-                          "name": "Window",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "title",
-                              "type": "StringParam"
-                            },
-                            {
-                              "type": "const PointRaw &",
-                              "name": "size"
-                            },
-                            {
-                              "name": "flags",
-                              "type": "WindowFlags",
-                              "default": "0"
-                            }
-                          ],
-                          "sourceName": "SDL_CreateWindow",
-                          "overload": {
-                            "doc": [
-                              "Create a child popup window of the specified parent window.",
-                              "The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.",
-                              "The flags parameter **must** contain at least one of the following:",
-                              [
-                                {
-                                  "tag": "-",
-                                  "content": "`WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any input events."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost popup menu will implicitly gain the keyboard focus."
-                                }
-                              ],
-                              "The following flags are not relevant to popup window creation and will be ignored:",
-                              [
-                                {
-                                  "tag": "-",
-                                  "content": "`WINDOW_MINIMIZED`"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`WINDOW_MAXIMIZED`"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`WINDOW_FULLSCREEN`"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`WINDOW_BORDERLESS`"
-                                }
-                              ],
-                              "The following flags are incompatible with popup window creation and will cause it to fail:",
-                              [
-                                {
-                                  "tag": "-",
-                                  "content": "`WINDOW_UTILITY`"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`WINDOW_MODAL`"
-                                }
-                              ],
-                              "The parent parameter **must** be non-null and a valid window. The parent of a popup window can be either a regular, toplevel window, or another popup window.",
-                              "Popup windows cannot be minimized, maximized, made fullscreen, raised, flash, be made a modal window, be the parent of a toplevel window, or grab the mouse and/or keyboard. Attempts to do so will fail.",
-                              "Popup windows implicitly do not have a border/decorations and do not appear on the taskbar/dock or in lists of windows such as alt-tab menus.",
-                              "By default, popup window positions will automatically be constrained to keep the entire window within display bounds. This can be overridden with the `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN` property.",
-                              "By default, popup menus will automatically grab keyboard focus from the parent when shown. This behavior can be overridden by setting the `WINDOW_NOT_FOCUSABLE` flag, setting the `prop.Window.Create.FOCUSABLE_BOOLEAN` property to false, or toggling it after creation via the `SetWindowFocusable()` function.",
-                              "If a parent window is hidden or destroyed, any child popup windows will be recursively hidden or destroyed as well. Child popup windows not explicitly hidden will be restored when the parent is shown.",
-                              [
-                                {
-                                  "tag": "@param parent",
-                                  "content": "the parent of the window, must not be nullptr."
-                                },
-                                {
-                                  "tag": "@param offset_x",
-                                  "content": "the x position of the popup window relative to the origin of the parent."
-                                },
-                                {
-                                  "tag": "@param offset_y",
-                                  "content": "the y position of the popup window relative to the origin of the parent window."
-                                },
-                                {
-                                  "tag": "@param w",
-                                  "content": "the width of the window."
-                                },
-                                {
-                                  "tag": "@param h",
-                                  "content": "the height of the window."
-                                },
-                                {
-                                  "tag": "@param flags",
-                                  "content": "WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more additional WindowFlags OR'd together."
-                                },
-                                {
-                                  "tag": "@post",
-                                  "content": "the window that was created or nullptr on failure; call GetError() for more information."
-                                }
-                              ],
-                              {
-                                "tag": "@threadsafety",
-                                "content": "This function should only be called on the main thread."
-                              },
-                              {
-                                "tag": "@since",
-                                "content": "This function is available since SDL 3.2.0."
-                              },
-                              [
-                                {
-                                  "tag": "@sa",
-                                  "content": "CreateWindow"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "CreateWindowWithProperties"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "DestroyWindow"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "GetWindowParent"
-                                }
-                              ]
-                            ],
-                            "name": "Window",
-                            "kind": "function",
-                            "type": "",
-                            "parameters": [
-                              {
-                                "name": "parent",
-                                "type": "WindowRef"
-                              },
-                              {
-                                "type": "const PointRaw &",
-                                "name": "offset"
-                              },
-                              {
-                                "type": "const PointRaw &",
-                                "name": "size"
-                              },
-                              {
-                                "name": "flags",
-                                "type": "WindowFlags",
-                                "default": "0"
-                              }
-                            ],
-                            "sourceName": "SDL_CreatePopupWindow",
-                            "overload": {
-                              "doc": [
-                                "Create a window with the specified properties.",
-                                "The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.",
-                                "These are the supported properties:",
-                                [
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.ALWAYS_ON_TOP_BOOLEAN`: true if the window should be always on top"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.BORDERLESS_BOOLEAN`: true if the window has no window decoration"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN`: true if the \"tooltip\" and \"menu\" window types should be automatically constrained to be entirely within display bounds (default), false if no constraints on the position are desired."
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the window will be used with an externally managed graphics context."
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.FOCUSABLE_BOOLEAN`: true if the window should accept keyboard input (defaults true)"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.FULLSCREEN_BOOLEAN`: true if the window should start in fullscreen mode at desktop resolution"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.HEIGHT_NUMBER`: the height of the window"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.HIDDEN_BOOLEAN`: true if the window should start hidden"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses a high pixel density buffer if possible"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.MAXIMIZED_BOOLEAN`: true if the window should start maximized"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.MENU_BOOLEAN`: true if the window is a popup menu"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.METAL_BOOLEAN`: true if the window will be used with Metal rendering"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.MINIMIZED_BOOLEAN`: true if the window should start minimized"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.MODAL_BOOLEAN`: true if the window is modal to its parent"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.MOUSE_GRABBED_BOOLEAN`: true if the window starts with grabbed mouse focus"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.OPENGL_BOOLEAN`: true if the window will be used with OpenGL rendering"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.PARENT_POINTER`: an Window that will be the parent of this window, required for windows with the \"tooltip\", \"menu\", and \"modal\" properties"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.RESIZABLE_BOOLEAN`: true if the window should be resizable"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.TITLE_STRING`: the title of the window, in UTF-8 encoding"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.TRANSPARENT_BOOLEAN`: true if the window show transparent in the areas with alpha of 0"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.TOOLTIP_BOOLEAN`: true if the window is a tooltip"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.UTILITY_BOOLEAN`: true if the window is a utility window, not showing in the task bar and window list"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.VULKAN_BOOLEAN`: true if the window will be used with Vulkan rendering"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.WIDTH_NUMBER`: the width of the window"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.X_NUMBER`: the x position of the window, or `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative to the parent for windows with the \"tooltip\" or \"menu\" property set."
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.Y_NUMBER`: the y position of the window, or `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative to the parent for windows with the \"tooltip\" or \"menu\" property set."
-                                  }
-                                ],
-                                "These are additional supported properties on macOS:",
-                                [
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow associated with the window, if you want to wrap an existing window."
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.COCOA_VIEW_POINTER`: the `(__unsafe_unretained)` NSView associated with the window, defaults to `[window contentView]`"
-                                  }
-                                ],
-                                "These are additional supported properties on iOS, tvOS, and visionOS:",
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Window.Create.WINDOWSCENE_POINTER`: the `(__unsafe_unretained)` UIWindowScene associated with the window, defaults to the active window scene."
-                                },
-                                "These are additional supported properties on Wayland:",
-                                [
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the application wants to use the Wayland surface for a custom role and does not want it attached to an XDG toplevel window. See [README-wayland](README-wayland) for more information on using custom surfaces."
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the application wants an associated `wl_egl_window` object to be created and attached to the window, even if the window does not have the OpenGL property or `WINDOW_OPENGL` flag set."
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.WAYLAND_WL_SURFACE_POINTER` - the wl_surface associated with the window, if you want to wrap an existing window. See [README-wayland](README-wayland) for more information."
-                                  }
-                                ],
-                                "These are additional supported properties on Windows:",
-                                [
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.WIN32_HWND_POINTER`: the HWND associated with the window, if you want to wrap an existing window."
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another window to share pixel format with, useful for OpenGL windows"
-                                  }
-                                ],
-                                "These are additional supported properties with X11:",
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Window.Create.X11_WINDOW_NUMBER`: the X11 Window associated with the window, if you want to wrap an existing window."
-                                },
-                                "The window is implicitly shown if the \"hidden\" property is not set.",
-                                "These are additional supported properties with Emscripten:",
-                                [
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the canvas element. This should start with a '#' sign"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "`prop.Window.Create.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the binding element for keyboard inputs for this canvas. The variable can be one of:"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "\"#window\": the javascript window object (default)"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "\"#document\": the javascript document object"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "\"#screen\": the javascript window.screen object"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "\"#canvas\": the WebGL canvas element"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "\"#none\": Don't bind anything at all"
-                                  },
-                                  {
-                                    "tag": "-",
-                                    "content": "any other string without a leading # sign applies to the element on the page with that ID. Windows with the \"tooltip\" and \"menu\" properties are popup windows and have the behaviors and guidelines outlined in CreatePopupWindow()."
-                                  }
-                                ],
-                                "If this window is being created to be used with an Renderer, you should not add a graphics API specific property (`prop.Window.Create.OPENGL_BOOLEAN`, etc), as SDL will handle that internally when it chooses a renderer. However, SDL might need to recreate your window at that point, which may cause the window to appear briefly, and then flicker as it is recreated. The correct approach to this is to create the window with the `prop.Window.Create.HIDDEN_BOOLEAN` property set to true, then create the renderer, then show the window with ShowWindow().",
-                                [
-                                  {
-                                    "tag": "@param props",
-                                    "content": "the properties to use."
-                                  },
-                                  {
-                                    "tag": "@post",
-                                    "content": "the window that was created or nullptr on failure; call GetError() for more information."
-                                  }
-                                ],
-                                {
-                                  "tag": "@threadsafety",
-                                  "content": "This function should only be called on the main thread."
-                                },
-                                {
-                                  "tag": "@since",
-                                  "content": "This function is available since SDL 3.2.0."
-                                },
-                                [
-                                  {
-                                    "tag": "@sa",
-                                    "content": "CreateProperties"
-                                  },
-                                  {
-                                    "tag": "@sa",
-                                    "content": "CreateWindow"
-                                  },
-                                  {
-                                    "tag": "@sa",
-                                    "content": "DestroyWindow"
-                                  }
-                                ]
-                              ],
-                              "name": "Window",
-                              "kind": "function",
-                              "type": "",
-                              "parameters": [
-                                {
-                                  "name": "props",
-                                  "type": "PropertiesRef"
-                                }
-                              ],
-                              "sourceName": "SDL_CreateWindowWithProperties",
-                              "proto": true
-                            },
-                            "proto": true
-                          },
-                          "proto": true
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Window": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyWindow(get());"
-              },
-              "name": "~Window"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Window &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Window &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Window &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Window &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -175007,7 +174216,7 @@
             "StartTextInput": {
               "doc": [
                 "Start accepting Unicode text input events in a window.",
-                "This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with Window.StopTextInput().",
+                "This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with WindowBase.StopTextInput().",
                 "Text input events are not received by default.",
                 "On some platforms using this function shows the screen keyboard and/or activates an IME, which can prevent some key press events from being passed through.",
                 [
@@ -175027,19 +174236,19 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "Window.SetTextInputArea"
+                    "content": "WindowBase.SetTextInputArea"
                   },
                   {
                     "tag": "@sa",
-                    "content": "Window.StartTextInput"
+                    "content": "WindowBase.StartTextInput"
                   },
                   {
                     "tag": "@sa",
-                    "content": "Window.StopTextInput"
+                    "content": "WindowBase.StopTextInput"
                   },
                   {
                     "tag": "@sa",
-                    "content": "Window.IsTextInputActive"
+                    "content": "WindowBase.IsTextInputActive"
                   }
                 ]
               ],
@@ -175054,7 +174263,7 @@
               "overload": {
                 "doc": [
                   "Start accepting Unicode text input events in a window, with properties describing the input.",
-                  "This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with Window.StopTextInput().",
+                  "This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with WindowBase.StopTextInput().",
                   "Text input events are not received by default.",
                   "On some platforms using this function shows the screen keyboard and/or activates an IME, which can prevent some key press events from being passed through.",
                   "These are the supported properties:",
@@ -175102,19 +174311,19 @@
                   [
                     {
                       "tag": "@sa",
-                      "content": "Window.SetTextInputArea"
+                      "content": "WindowBase.SetTextInputArea"
                     },
                     {
                       "tag": "@sa",
-                      "content": "Window.StartTextInput"
+                      "content": "WindowBase.StartTextInput"
                     },
                     {
                       "tag": "@sa",
-                      "content": "Window.StopTextInput"
+                      "content": "WindowBase.StopTextInput"
                     },
                     {
                       "tag": "@sa",
-                      "content": "Window.IsTextInputActive"
+                      "content": "WindowBase.IsTextInputActive"
                     }
                   ]
                 ],
@@ -175154,7 +174363,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Window.StartTextInput"
+                  "content": "WindowBase.StartTextInput"
                 }
               ],
               "name": "IsTextInputActive",
@@ -175168,7 +174377,7 @@
             "StopTextInput": {
               "doc": [
                 "Stop receiving any text input events in a window.",
-                "If Window.StartTextInput() showed the screen keyboard, this function will hide it.",
+                "If WindowBase.StartTextInput() showed the screen keyboard, this function will hide it.",
                 [
                   {
                     "tag": "@throws",
@@ -175185,7 +174394,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Window.StartTextInput"
+                  "content": "WindowBase.StartTextInput"
                 }
               ],
               "name": "StopTextInput",
@@ -175218,11 +174427,11 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "Window.StartTextInput"
+                    "content": "WindowBase.StartTextInput"
                   },
                   {
                     "tag": "@sa",
-                    "content": "Window.StopTextInput"
+                    "content": "WindowBase.StopTextInput"
                   }
                 ]
               ],
@@ -175265,11 +174474,11 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "Window.GetTextInputArea"
+                    "content": "WindowBase.GetTextInputArea"
                   },
                   {
                     "tag": "@sa",
-                    "content": "Window.StartTextInput"
+                    "content": "WindowBase.StartTextInput"
                   }
                 ]
               ],
@@ -175295,7 +174504,7 @@
             "GetTextInputArea": {
               "doc": [
                 "Get the area used to type Unicode text input.",
-                "This returns the values previously set by Window.SetTextInputArea().",
+                "This returns the values previously set by WindowBase.SetTextInputArea().",
                 [
                   {
                     "tag": "@param rect",
@@ -175320,7 +174529,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Window.SetTextInputArea"
+                  "content": "WindowBase.SetTextInputArea"
                 }
               ],
               "name": "GetTextInputArea",
@@ -175416,7 +174625,7 @@
               "doc": [
                 "Set relative mouse mode for a window.",
                 "While the window has focus and relative mouse mode is enabled, the cursor is hidden, the mouse position is constrained to the window, and SDL will report continuous relative mouse motion even if the mouse is at the edge of the window.",
-                "If you'd like to keep the mouse position fixed while in relative mode you can use SetWindowMouseRect(). If you'd like the cursor to be at a specific location when relative mode ends, you should use Window.WarpMouse() before disabling relative mode.",
+                "If you'd like to keep the mouse position fixed while in relative mode you can use SetWindowMouseRect(). If you'd like the cursor to be at a specific location when relative mode ends, you should use WindowBase.WarpMouse() before disabling relative mode.",
                 "This function will flush any pending mouse motion for this window.",
                 [
                   {
@@ -175438,7 +174647,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Window.GetRelativeMouseMode"
+                  "content": "WindowBase.GetRelativeMouseMode"
                 }
               ],
               "name": "SetRelativeMouseMode",
@@ -175475,7 +174684,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Window.SetRelativeMouseMode"
+                  "content": "WindowBase.SetRelativeMouseMode"
                 }
               ],
               "name": "GetRelativeMouseMode",
@@ -175518,6 +174727,778 @@
               },
               "immutable": true,
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Window": {
+          "doc": [
+            "The struct used as an opaque handle to a window.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "CreateWindow"
+            },
+            "@cat resource"
+          ],
+          "name": "Window",
+          "kind": "struct",
+          "type": "WindowBase",
+          "sourceName": "SDL_Window",
+          "entries": {
+            "WindowBase::WindowBase": {
+              "kind": "alias",
+              "name": "WindowBase::WindowBase"
+            },
+            "Window": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "WindowRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "WindowBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Window.",
+                {
+                  "tag": "@param resource",
+                  "content": "a WindowRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Window",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Window &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Window",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Window &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Window(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Window",
+                  "overload": {
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "type": "StringParam",
+                        "name": "title"
+                      },
+                      {
+                        "type": "const PointRaw &",
+                        "name": "size"
+                      },
+                      {
+                        "type": "WindowFlags",
+                        "name": "window_flags"
+                      },
+                      {
+                        "type": "RendererBase *",
+                        "name": "renderer"
+                      }
+                    ],
+                    "hints": {
+                      "mayFail": true,
+                      "init": [
+                        "Window(CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))"
+                      ]
+                    },
+                    "name": "Window",
+                    "doc": [
+                      "Create a window and default renderer.",
+                      [
+                        {
+                          "tag": "@param title",
+                          "content": "the title of the window, in UTF-8 encoding."
+                        },
+                        {
+                          "tag": "@param width",
+                          "content": "the width of the window."
+                        },
+                        {
+                          "tag": "@param height",
+                          "content": "the height of the window."
+                        },
+                        {
+                          "tag": "@param window_flags",
+                          "content": "the flags used to create the window (see CreateWindow())."
+                        },
+                        {
+                          "tag": "@param window",
+                          "content": "a pointer filled with the window, or nullptr on error."
+                        },
+                        {
+                          "tag": "@param renderer",
+                          "content": "a pointer filled with the renderer, or nullptr on error."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "true on success or false on failure; call GetError() for more information."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "This function should only be called on the main thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateRenderer"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "CreateWindow"
+                        }
+                      ]
+                    ],
+                    "proto": true,
+                    "overload": {
+                      "doc": [
+                        "Create a window with the specified dimensions and flags.",
+                        "The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.",
+                        "`flags` may be any of the following OR'd together:",
+                        [
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_FULLSCREEN`: fullscreen window at desktop resolution"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_OPENGL`: window usable with an OpenGL context"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_HIDDEN`: window is not visible"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_BORDERLESS`: no window decoration"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_RESIZABLE`: window can be resized"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_MINIMIZED`: window is minimized"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_MAXIMIZED`: window is maximized"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_INPUT_FOCUS`: window has input focus"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_MOUSE_FOCUS`: window has mouse focus"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_EXTERNAL`: window not created by SDL"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_MODAL`: window is modal"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back buffer if possible"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to MOUSE_GRABBED)"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_ALWAYS_ON_TOP`: window should always be above others"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_UTILITY`: window should be treated as a utility window, not showing in the task bar and window list"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_TOOLTIP`: window should be treated as a tooltip and does not get mouse or keyboard focus, requires a parent window"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_POPUP_MENU`: window should be treated as a popup menu, requires a parent window"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_VULKAN`: window usable with a Vulkan instance"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_METAL`: window usable with a Metal instance"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_TRANSPARENT`: window with transparent buffer"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`WINDOW_NOT_FOCUSABLE`: window should not be focusable"
+                          }
+                        ],
+                        "The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation time, ShowWindow() can be used to show it later.",
+                        "On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist property to YES, otherwise you will not receive a High-DPI OpenGL canvas.",
+                        "The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use GetWindowSize() to query the client area's size in window coordinates, and GetWindowSizeInPixels() or GetRenderOutputSize() to query the drawable size in pixels. Note that the drawable size can vary after the window is created and should be queried again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.",
+                        "If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN flags, then the corresponding LoadLibrary function (GL_LoadLibrary or Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function is called by DestroyWindow().",
+                        "If WINDOW_VULKAN is specified and there isn't a working Vulkan driver, CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.",
+                        "If WINDOW_METAL is specified on an OS that does not support Metal, CreateWindow() will fail.",
+                        "If you intend to use this window with an Renderer, you should use CreateWindowAndRenderer() instead of this function, to avoid window flicker.",
+                        "On non-Apple devices, SDL requires you to either not link to the Vulkan loader or link to a dynamic library version. This limitation may be removed in a future version of SDL.",
+                        [
+                          {
+                            "tag": "@param title",
+                            "content": "the title of the window, in UTF-8 encoding."
+                          },
+                          {
+                            "tag": "@param w",
+                            "content": "the width of the window."
+                          },
+                          {
+                            "tag": "@param h",
+                            "content": "the height of the window."
+                          },
+                          {
+                            "tag": "@param flags",
+                            "content": "0, or one or more WindowFlags OR'd together."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "the window that was created or nullptr on failure; call GetError() for more information."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "This function should only be called on the main thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL 3.2.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "CreateWindowAndRenderer"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CreatePopupWindow"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CreateWindowWithProperties"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "DestroyWindow"
+                          }
+                        ]
+                      ],
+                      "name": "Window",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "title",
+                          "type": "StringParam"
+                        },
+                        {
+                          "type": "const PointRaw &",
+                          "name": "size"
+                        },
+                        {
+                          "name": "flags",
+                          "type": "WindowFlags",
+                          "default": "0"
+                        }
+                      ],
+                      "sourceName": "SDL_CreateWindow",
+                      "overload": {
+                        "doc": [
+                          "Create a child popup window of the specified parent window.",
+                          "The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.",
+                          "The flags parameter **must** contain at least one of the following:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any input events."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost popup menu will implicitly gain the keyboard focus."
+                            }
+                          ],
+                          "The following flags are not relevant to popup window creation and will be ignored:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`WINDOW_MINIMIZED`"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`WINDOW_MAXIMIZED`"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`WINDOW_FULLSCREEN`"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`WINDOW_BORDERLESS`"
+                            }
+                          ],
+                          "The following flags are incompatible with popup window creation and will cause it to fail:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`WINDOW_UTILITY`"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`WINDOW_MODAL`"
+                            }
+                          ],
+                          "The parent parameter **must** be non-null and a valid window. The parent of a popup window can be either a regular, toplevel window, or another popup window.",
+                          "Popup windows cannot be minimized, maximized, made fullscreen, raised, flash, be made a modal window, be the parent of a toplevel window, or grab the mouse and/or keyboard. Attempts to do so will fail.",
+                          "Popup windows implicitly do not have a border/decorations and do not appear on the taskbar/dock or in lists of windows such as alt-tab menus.",
+                          "By default, popup window positions will automatically be constrained to keep the entire window within display bounds. This can be overridden with the `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN` property.",
+                          "By default, popup menus will automatically grab keyboard focus from the parent when shown. This behavior can be overridden by setting the `WINDOW_NOT_FOCUSABLE` flag, setting the `prop.Window.Create.FOCUSABLE_BOOLEAN` property to false, or toggling it after creation via the `SetWindowFocusable()` function.",
+                          "If a parent window is hidden or destroyed, any child popup windows will be recursively hidden or destroyed as well. Child popup windows not explicitly hidden will be restored when the parent is shown.",
+                          [
+                            {
+                              "tag": "@param parent",
+                              "content": "the parent of the window, must not be nullptr."
+                            },
+                            {
+                              "tag": "@param offset_x",
+                              "content": "the x position of the popup window relative to the origin of the parent."
+                            },
+                            {
+                              "tag": "@param offset_y",
+                              "content": "the y position of the popup window relative to the origin of the parent window."
+                            },
+                            {
+                              "tag": "@param w",
+                              "content": "the width of the window."
+                            },
+                            {
+                              "tag": "@param h",
+                              "content": "the height of the window."
+                            },
+                            {
+                              "tag": "@param flags",
+                              "content": "WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more additional WindowFlags OR'd together."
+                            },
+                            {
+                              "tag": "@post",
+                              "content": "the window that was created or nullptr on failure; call GetError() for more information."
+                            }
+                          ],
+                          {
+                            "tag": "@threadsafety",
+                            "content": "This function should only be called on the main thread."
+                          },
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL 3.2.0."
+                          },
+                          [
+                            {
+                              "tag": "@sa",
+                              "content": "CreateWindow"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "CreateWindowWithProperties"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "DestroyWindow"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "GetWindowParent"
+                            }
+                          ]
+                        ],
+                        "name": "Window",
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [
+                          {
+                            "name": "parent",
+                            "type": "WindowRef"
+                          },
+                          {
+                            "type": "const PointRaw &",
+                            "name": "offset"
+                          },
+                          {
+                            "type": "const PointRaw &",
+                            "name": "size"
+                          },
+                          {
+                            "name": "flags",
+                            "type": "WindowFlags",
+                            "default": "0"
+                          }
+                        ],
+                        "sourceName": "SDL_CreatePopupWindow",
+                        "overload": {
+                          "doc": [
+                            "Create a window with the specified properties.",
+                            "The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.",
+                            "These are the supported properties:",
+                            [
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.ALWAYS_ON_TOP_BOOLEAN`: true if the window should be always on top"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.BORDERLESS_BOOLEAN`: true if the window has no window decoration"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN`: true if the \"tooltip\" and \"menu\" window types should be automatically constrained to be entirely within display bounds (default), false if no constraints on the position are desired."
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the window will be used with an externally managed graphics context."
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.FOCUSABLE_BOOLEAN`: true if the window should accept keyboard input (defaults true)"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.FULLSCREEN_BOOLEAN`: true if the window should start in fullscreen mode at desktop resolution"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.HEIGHT_NUMBER`: the height of the window"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.HIDDEN_BOOLEAN`: true if the window should start hidden"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses a high pixel density buffer if possible"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.MAXIMIZED_BOOLEAN`: true if the window should start maximized"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.MENU_BOOLEAN`: true if the window is a popup menu"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.METAL_BOOLEAN`: true if the window will be used with Metal rendering"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.MINIMIZED_BOOLEAN`: true if the window should start minimized"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.MODAL_BOOLEAN`: true if the window is modal to its parent"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.MOUSE_GRABBED_BOOLEAN`: true if the window starts with grabbed mouse focus"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.OPENGL_BOOLEAN`: true if the window will be used with OpenGL rendering"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.PARENT_POINTER`: an Window that will be the parent of this window, required for windows with the \"tooltip\", \"menu\", and \"modal\" properties"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.RESIZABLE_BOOLEAN`: true if the window should be resizable"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.TITLE_STRING`: the title of the window, in UTF-8 encoding"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.TRANSPARENT_BOOLEAN`: true if the window show transparent in the areas with alpha of 0"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.TOOLTIP_BOOLEAN`: true if the window is a tooltip"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.UTILITY_BOOLEAN`: true if the window is a utility window, not showing in the task bar and window list"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.VULKAN_BOOLEAN`: true if the window will be used with Vulkan rendering"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.WIDTH_NUMBER`: the width of the window"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.X_NUMBER`: the x position of the window, or `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative to the parent for windows with the \"tooltip\" or \"menu\" property set."
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.Y_NUMBER`: the y position of the window, or `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative to the parent for windows with the \"tooltip\" or \"menu\" property set."
+                              }
+                            ],
+                            "These are additional supported properties on macOS:",
+                            [
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow associated with the window, if you want to wrap an existing window."
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.COCOA_VIEW_POINTER`: the `(__unsafe_unretained)` NSView associated with the window, defaults to `[window contentView]`"
+                              }
+                            ],
+                            "These are additional supported properties on iOS, tvOS, and visionOS:",
+                            {
+                              "tag": "-",
+                              "content": "`prop.Window.Create.WINDOWSCENE_POINTER`: the `(__unsafe_unretained)` UIWindowScene associated with the window, defaults to the active window scene."
+                            },
+                            "These are additional supported properties on Wayland:",
+                            [
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the application wants to use the Wayland surface for a custom role and does not want it attached to an XDG toplevel window. See [README-wayland](README-wayland) for more information on using custom surfaces."
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the application wants an associated `wl_egl_window` object to be created and attached to the window, even if the window does not have the OpenGL property or `WINDOW_OPENGL` flag set."
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.WAYLAND_WL_SURFACE_POINTER` - the wl_surface associated with the window, if you want to wrap an existing window. See [README-wayland](README-wayland) for more information."
+                              }
+                            ],
+                            "These are additional supported properties on Windows:",
+                            [
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.WIN32_HWND_POINTER`: the HWND associated with the window, if you want to wrap an existing window."
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another window to share pixel format with, useful for OpenGL windows"
+                              }
+                            ],
+                            "These are additional supported properties with X11:",
+                            {
+                              "tag": "-",
+                              "content": "`prop.Window.Create.X11_WINDOW_NUMBER`: the X11 Window associated with the window, if you want to wrap an existing window."
+                            },
+                            "The window is implicitly shown if the \"hidden\" property is not set.",
+                            "These are additional supported properties with Emscripten:",
+                            [
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the canvas element. This should start with a '#' sign"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "`prop.Window.Create.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the binding element for keyboard inputs for this canvas. The variable can be one of:"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "\"#window\": the javascript window object (default)"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "\"#document\": the javascript document object"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "\"#screen\": the javascript window.screen object"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "\"#canvas\": the WebGL canvas element"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "\"#none\": Don't bind anything at all"
+                              },
+                              {
+                                "tag": "-",
+                                "content": "any other string without a leading # sign applies to the element on the page with that ID. Windows with the \"tooltip\" and \"menu\" properties are popup windows and have the behaviors and guidelines outlined in CreatePopupWindow()."
+                              }
+                            ],
+                            "If this window is being created to be used with an Renderer, you should not add a graphics API specific property (`prop.Window.Create.OPENGL_BOOLEAN`, etc), as SDL will handle that internally when it chooses a renderer. However, SDL might need to recreate your window at that point, which may cause the window to appear briefly, and then flicker as it is recreated. The correct approach to this is to create the window with the `prop.Window.Create.HIDDEN_BOOLEAN` property set to true, then create the renderer, then show the window with ShowWindow().",
+                            [
+                              {
+                                "tag": "@param props",
+                                "content": "the properties to use."
+                              },
+                              {
+                                "tag": "@post",
+                                "content": "the window that was created or nullptr on failure; call GetError() for more information."
+                              }
+                            ],
+                            {
+                              "tag": "@threadsafety",
+                              "content": "This function should only be called on the main thread."
+                            },
+                            {
+                              "tag": "@since",
+                              "content": "This function is available since SDL 3.2.0."
+                            },
+                            [
+                              {
+                                "tag": "@sa",
+                                "content": "CreateProperties"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "CreateWindow"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "DestroyWindow"
+                              }
+                            ]
+                          ],
+                          "name": "Window",
+                          "kind": "function",
+                          "type": "",
+                          "parameters": [
+                            {
+                              "name": "props",
+                              "type": "PropertiesRef"
+                            }
+                          ],
+                          "sourceName": "SDL_CreateWindowWithProperties",
+                          "proto": true
+                        },
+                        "proto": true
+                      },
+                      "proto": true
+                    }
+                  }
+                }
+              }
+            },
+            "~Window": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyWindow(get());"
+              },
+              "name": "~Window"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Window &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Window &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Window &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Window &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -175899,7 +175880,7 @@
               "sourceName": "SDL_GL_MakeCurrent",
               "hints": {
                 "mayFail": true,
-                "delegate": "SDL::Window::MakeCurrent"
+                "delegate": "SDL::WindowBase::MakeCurrent"
               },
               "static": false,
               "proto": true
@@ -177736,15 +177717,14 @@
             "methodName": "GetDisplay"
           }
         },
-        "Window::GetDisplay": {
-          "name": "Window::GetDisplay",
+        "WindowBase::GetDisplay": {
+          "name": "WindowBase::GetDisplay",
           "kind": "function",
           "type": "Display",
           "parameters": [],
           "sourceName": "SDL_GetDisplayForWindow",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "methodName": "GetDisplay",
             "delegate": "SDL::GetDisplayForWindow"
@@ -177789,8 +177769,8 @@
           ],
           "sourceName": "SDL_GetWindowPixelDensity"
         },
-        "Window::GetPixelDensity": {
-          "name": "Window::GetPixelDensity",
+        "WindowBase::GetPixelDensity": {
+          "name": "WindowBase::GetPixelDensity",
           "kind": "function",
           "type": "float",
           "parameters": [],
@@ -177798,7 +177778,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowPixelDensity"
           }
         },
@@ -177837,8 +177816,8 @@
           ],
           "sourceName": "SDL_GetWindowDisplayScale"
         },
-        "Window::GetDisplayScale": {
-          "name": "Window::GetDisplayScale",
+        "WindowBase::GetDisplayScale": {
+          "name": "WindowBase::GetDisplayScale",
           "kind": "function",
           "type": "float",
           "parameters": [],
@@ -177846,7 +177825,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowDisplayScale"
           }
         },
@@ -177911,8 +177889,8 @@
             "mayFail": true
           }
         },
-        "Window::SetFullscreenMode": {
-          "name": "Window::SetFullscreenMode",
+        "WindowBase::SetFullscreenMode": {
+          "name": "WindowBase::SetFullscreenMode",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -177924,7 +177902,6 @@
           "sourceName": "SDL_SetWindowFullscreenMode",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowFullscreenMode"
           }
@@ -177972,8 +177949,8 @@
           ],
           "sourceName": "SDL_GetWindowFullscreenMode"
         },
-        "Window::GetFullscreenMode": {
-          "name": "Window::GetFullscreenMode",
+        "WindowBase::GetFullscreenMode": {
+          "name": "WindowBase::GetFullscreenMode",
           "kind": "function",
           "type": "const DisplayMode &",
           "parameters": [],
@@ -177981,7 +177958,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowFullscreenMode"
           }
         },
@@ -178029,15 +178005,14 @@
             "mayFail": true
           }
         },
-        "Window::GetICCProfile": {
-          "name": "Window::GetICCProfile",
+        "WindowBase::GetICCProfile": {
+          "name": "WindowBase::GetICCProfile",
           "kind": "function",
           "type": "OwnPtr<void>",
           "parameters": [],
           "sourceName": "SDL_GetWindowICCProfile",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowICCProfile"
           },
@@ -178083,15 +178058,14 @@
             "mayFail": true
           }
         },
-        "Window::GetPixelFormat": {
-          "name": "Window::GetPixelFormat",
+        "WindowBase::GetPixelFormat": {
+          "name": "WindowBase::GetPixelFormat",
           "kind": "function",
           "type": "PixelFormat",
           "parameters": [],
           "sourceName": "SDL_GetWindowPixelFormat",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowPixelFormat"
           },
@@ -179243,15 +179217,14 @@
             "mayFail": true
           }
         },
-        "Window::GetID": {
-          "name": "Window::GetID",
+        "WindowBase::GetID": {
+          "name": "WindowBase::GetID",
           "kind": "function",
           "type": "WindowID",
           "parameters": [],
           "sourceName": "SDL_GetWindowID",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowID"
           },
@@ -179295,8 +179268,8 @@
           ],
           "sourceName": "SDL_GetWindowFromID"
         },
-        "Window::FromID": {
-          "name": "Window::FromID",
+        "WindowBase::FromID": {
+          "name": "WindowBase::FromID",
           "kind": "function",
           "type": "WindowRef",
           "parameters": [
@@ -179308,7 +179281,6 @@
           "sourceName": "SDL_GetWindowFromID",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowFromID",
             "static": true
           }
@@ -179350,8 +179322,8 @@
           ],
           "sourceName": "SDL_GetWindowParent"
         },
-        "Window::GetParent": {
-          "name": "Window::GetParent",
+        "WindowBase::GetParent": {
+          "name": "WindowBase::GetParent",
           "kind": "function",
           "type": "WindowRef",
           "parameters": [],
@@ -179359,7 +179331,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowParent"
           }
         },
@@ -179583,15 +179554,14 @@
             "mayFail": true
           }
         },
-        "Window::GetProperties": {
-          "name": "Window::GetProperties",
+        "WindowBase::GetProperties": {
+          "name": "WindowBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetWindowProperties",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowProperties"
           },
@@ -180095,8 +180065,8 @@
           ],
           "sourceName": "SDL_GetWindowFlags"
         },
-        "Window::GetFlags": {
-          "name": "Window::GetFlags",
+        "WindowBase::GetFlags": {
+          "name": "WindowBase::GetFlags",
           "kind": "function",
           "type": "WindowFlags",
           "parameters": [],
@@ -180104,7 +180074,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowFlags"
           }
         },
@@ -180157,8 +180126,8 @@
             "mayFail": true
           }
         },
-        "Window::SetTitle": {
-          "name": "Window::SetTitle",
+        "WindowBase::SetTitle": {
+          "name": "WindowBase::SetTitle",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -180170,7 +180139,6 @@
           "sourceName": "SDL_SetWindowTitle",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowTitle"
           }
@@ -180212,8 +180180,8 @@
           ],
           "sourceName": "SDL_GetWindowTitle"
         },
-        "Window::GetTitle": {
-          "name": "Window::GetTitle",
+        "WindowBase::GetTitle": {
+          "name": "WindowBase::GetTitle",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
@@ -180221,7 +180189,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowTitle"
           }
         },
@@ -180274,8 +180241,8 @@
             "mayFail": true
           }
         },
-        "Window::SetIcon": {
-          "name": "Window::SetIcon",
+        "WindowBase::SetIcon": {
+          "name": "WindowBase::SetIcon",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -180287,7 +180254,6 @@
           "sourceName": "SDL_SetWindowIcon",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowIcon"
           }
@@ -180354,8 +180320,8 @@
             "mayFail": true
           }
         },
-        "Window::SetPosition": {
-          "name": "Window::SetPosition",
+        "WindowBase::SetPosition": {
+          "name": "WindowBase::SetPosition",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -180367,7 +180333,6 @@
           "sourceName": "SDL_SetWindowPosition",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowPosition"
           }
@@ -180476,8 +180441,8 @@
             ]
           }
         },
-        "Window::GetPosition": {
-          "name": "Window::GetPosition",
+        "WindowBase::GetPosition": {
+          "name": "WindowBase::GetPosition",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -180493,7 +180458,6 @@
           "sourceName": "SDL_GetWindowPosition",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowPosition"
           },
@@ -180503,10 +180467,9 @@
             "type": "Point",
             "immutable": true,
             "parameters": [],
-            "name": "Window::GetPosition",
+            "name": "WindowBase::GetPosition",
             "hints": {
               "self": "get()",
-              "super": "Window",
               "delegate": "SDL::GetWindowPosition"
             }
           }
@@ -180577,8 +180540,8 @@
             "mayFail": true
           }
         },
-        "Window::SetSize": {
-          "name": "Window::SetSize",
+        "WindowBase::SetSize": {
+          "name": "WindowBase::SetSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -180590,7 +180553,6 @@
           "sourceName": "SDL_SetWindowSize",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowSize"
           }
@@ -180725,8 +180687,8 @@
             ]
           }
         },
-        "Window::GetSize": {
-          "name": "Window::GetSize",
+        "WindowBase::GetSize": {
+          "name": "WindowBase::GetSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -180742,7 +180704,6 @@
           "sourceName": "SDL_GetWindowSize",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowSize"
           },
@@ -180752,10 +180713,9 @@
             "type": "Point",
             "immutable": true,
             "parameters": [],
-            "name": "Window::GetSize",
+            "name": "WindowBase::GetSize",
             "hints": {
               "self": "get()",
-              "super": "Window",
               "delegate": "SDL::GetWindowSize"
             }
           }
@@ -180775,7 +180735,7 @@
           ],
           "name": "SetWindowRect"
         },
-        "Window::SetRect": {
+        "WindowBase::SetRect": {
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -180784,10 +180744,9 @@
               "name": "rect"
             }
           ],
-          "name": "Window::SetRect",
+          "name": "WindowBase::SetRect",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::SetWindowRect"
           }
         },
@@ -180802,15 +180761,14 @@
           ],
           "name": "GetWindowRect"
         },
-        "Window::GetRect": {
+        "WindowBase::GetRect": {
           "kind": "function",
           "type": "Rect",
           "immutable": true,
           "parameters": [],
-          "name": "Window::GetRect",
+          "name": "WindowBase::GetRect",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowRect"
           }
         },
@@ -180855,15 +180813,14 @@
             "mayFail": true
           }
         },
-        "Window::GetSafeArea": {
-          "name": "Window::GetSafeArea",
+        "WindowBase::GetSafeArea": {
+          "name": "WindowBase::GetSafeArea",
           "kind": "function",
           "type": "Rect",
           "parameters": [],
           "sourceName": "SDL_GetWindowSafeArea",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowSafeArea"
           },
@@ -180935,8 +180892,8 @@
             "mayFail": true
           }
         },
-        "Window::SetAspectRatio": {
-          "name": "Window::SetAspectRatio",
+        "WindowBase::SetAspectRatio": {
+          "name": "WindowBase::SetAspectRatio",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -180952,7 +180909,6 @@
           "sourceName": "SDL_SetWindowAspectRatio",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowAspectRatio"
           }
@@ -181013,8 +180969,8 @@
             "mayFail": true
           }
         },
-        "Window::GetAspectRatio": {
-          "name": "Window::GetAspectRatio",
+        "WindowBase::GetAspectRatio": {
+          "name": "WindowBase::GetAspectRatio",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -181030,7 +180986,6 @@
           "sourceName": "SDL_GetWindowAspectRatio",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowAspectRatio"
           },
@@ -181111,8 +181066,8 @@
             "mayFail": true
           }
         },
-        "Window::GetBordersSize": {
-          "name": "Window::GetBordersSize",
+        "WindowBase::GetBordersSize": {
+          "name": "WindowBase::GetBordersSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -181136,7 +181091,6 @@
           "sourceName": "SDL_GetWindowBordersSize",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowBordersSize"
           },
@@ -181254,8 +181208,8 @@
             ]
           }
         },
-        "Window::GetSizeInPixels": {
-          "name": "Window::GetSizeInPixels",
+        "WindowBase::GetSizeInPixels": {
+          "name": "WindowBase::GetSizeInPixels",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -181271,7 +181225,6 @@
           "sourceName": "SDL_GetWindowSizeInPixels",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowSizeInPixels"
           },
@@ -181281,10 +181234,9 @@
             "type": "Point",
             "immutable": true,
             "parameters": [],
-            "name": "Window::GetSizeInPixels",
+            "name": "WindowBase::GetSizeInPixels",
             "hints": {
               "self": "get()",
-              "super": "Window",
               "delegate": "SDL::GetWindowSizeInPixels"
             }
           }
@@ -181347,8 +181299,8 @@
             "mayFail": true
           }
         },
-        "Window::SetMinimumSize": {
-          "name": "Window::SetMinimumSize",
+        "WindowBase::SetMinimumSize": {
+          "name": "WindowBase::SetMinimumSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -181360,7 +181312,6 @@
           "sourceName": "SDL_SetWindowMinimumSize",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowMinimumSize"
           }
@@ -181427,8 +181378,8 @@
             "mayFail": true
           }
         },
-        "Window::GetMinimumSize": {
-          "name": "Window::GetMinimumSize",
+        "WindowBase::GetMinimumSize": {
+          "name": "WindowBase::GetMinimumSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -181444,7 +181395,6 @@
           "sourceName": "SDL_GetWindowMinimumSize",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowMinimumSize"
           },
@@ -181508,8 +181458,8 @@
             "mayFail": true
           }
         },
-        "Window::SetMaximumSize": {
-          "name": "Window::SetMaximumSize",
+        "WindowBase::SetMaximumSize": {
+          "name": "WindowBase::SetMaximumSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -181521,7 +181471,6 @@
           "sourceName": "SDL_SetWindowMaximumSize",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowMaximumSize"
           }
@@ -181588,8 +181537,8 @@
             "mayFail": true
           }
         },
-        "Window::GetMaximumSize": {
-          "name": "Window::GetMaximumSize",
+        "WindowBase::GetMaximumSize": {
+          "name": "WindowBase::GetMaximumSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -181605,7 +181554,6 @@
           "sourceName": "SDL_GetWindowMaximumSize",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowMaximumSize"
           },
@@ -181661,8 +181609,8 @@
             "mayFail": true
           }
         },
-        "Window::SetBordered": {
-          "name": "Window::SetBordered",
+        "WindowBase::SetBordered": {
+          "name": "WindowBase::SetBordered",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -181674,7 +181622,6 @@
           "sourceName": "SDL_SetWindowBordered",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowBordered"
           }
@@ -181729,8 +181676,8 @@
             "mayFail": true
           }
         },
-        "Window::SetResizable": {
-          "name": "Window::SetResizable",
+        "WindowBase::SetResizable": {
+          "name": "WindowBase::SetResizable",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -181742,7 +181689,6 @@
           "sourceName": "SDL_SetWindowResizable",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowResizable"
           }
@@ -181796,8 +181742,8 @@
             "mayFail": true
           }
         },
-        "Window::SetAlwaysOnTop": {
-          "name": "Window::SetAlwaysOnTop",
+        "WindowBase::SetAlwaysOnTop": {
+          "name": "WindowBase::SetAlwaysOnTop",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -181809,7 +181755,6 @@
           "sourceName": "SDL_SetWindowAlwaysOnTop",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowAlwaysOnTop"
           }
@@ -181872,8 +181817,8 @@
             "patch": 0
           }
         },
-        "Window::SetFillDocument": {
-          "name": "Window::SetFillDocument",
+        "WindowBase::SetFillDocument": {
+          "name": "WindowBase::SetFillDocument",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -181885,7 +181830,6 @@
           "sourceName": "SDL_SetWindowFillDocument",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowFillDocument"
           },
@@ -181942,15 +181886,14 @@
             "mayFail": true
           }
         },
-        "Window::Show": {
-          "name": "Window::Show",
+        "WindowBase::Show": {
+          "name": "WindowBase::Show",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_ShowWindow",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::ShowWindow"
           }
@@ -182001,15 +181944,14 @@
             "mayFail": true
           }
         },
-        "Window::Hide": {
-          "name": "Window::Hide",
+        "WindowBase::Hide": {
+          "name": "WindowBase::Hide",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_HideWindow",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::HideWindow"
           }
@@ -182051,15 +181993,14 @@
             "mayFail": true
           }
         },
-        "Window::Raise": {
-          "name": "Window::Raise",
+        "WindowBase::Raise": {
+          "name": "WindowBase::Raise",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_RaiseWindow",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::RaiseWindow"
           }
@@ -182118,15 +182059,14 @@
             "mayFail": true
           }
         },
-        "Window::Maximize": {
-          "name": "Window::Maximize",
+        "WindowBase::Maximize": {
+          "name": "WindowBase::Maximize",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_MaximizeWindow",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::MaximizeWindow"
           }
@@ -182184,15 +182124,14 @@
             "mayFail": true
           }
         },
-        "Window::Minimize": {
-          "name": "Window::Minimize",
+        "WindowBase::Minimize": {
+          "name": "WindowBase::Minimize",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_MinimizeWindow",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::MinimizeWindow"
           }
@@ -182250,15 +182189,14 @@
             "mayFail": true
           }
         },
-        "Window::Restore": {
-          "name": "Window::Restore",
+        "WindowBase::Restore": {
+          "name": "WindowBase::Restore",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_RestoreWindow",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::RestoreWindow"
           }
@@ -182328,8 +182266,8 @@
             "mayFail": true
           }
         },
-        "Window::SetFullscreen": {
-          "name": "Window::SetFullscreen",
+        "WindowBase::SetFullscreen": {
+          "name": "WindowBase::SetFullscreen",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -182341,7 +182279,6 @@
           "sourceName": "SDL_SetWindowFullscreen",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowFullscreen"
           }
@@ -182411,15 +182348,14 @@
           ],
           "sourceName": "SDL_SyncWindow"
         },
-        "Window::Sync": {
-          "name": "Window::Sync",
+        "WindowBase::Sync": {
+          "name": "WindowBase::Sync",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "SDL_SyncWindow",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::SyncWindow"
           }
         },
@@ -182460,8 +182396,8 @@
           ],
           "sourceName": "SDL_WindowHasSurface"
         },
-        "Window::HasSurface": {
-          "name": "Window::HasSurface",
+        "WindowBase::HasSurface": {
+          "name": "WindowBase::HasSurface",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -182469,7 +182405,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::WindowHasSurface"
           }
         },
@@ -182535,15 +182470,14 @@
             "mayFail": true
           }
         },
-        "Window::GetSurface": {
-          "name": "Window::GetSurface",
+        "WindowBase::GetSurface": {
+          "name": "WindowBase::GetSurface",
           "kind": "function",
           "type": "Surface",
           "parameters": [],
           "sourceName": "SDL_GetWindowSurface",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowSurface"
           }
@@ -182598,8 +182532,8 @@
             "mayFail": true
           }
         },
-        "Window::SetSurfaceVSync": {
-          "name": "Window::SetSurfaceVSync",
+        "WindowBase::SetSurfaceVSync": {
+          "name": "WindowBase::SetSurfaceVSync",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -182611,7 +182545,6 @@
           "sourceName": "SDL_SetWindowSurfaceVSync",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowSurfaceVSync"
           }
@@ -182676,15 +182609,14 @@
             "mayFail": true
           }
         },
-        "Window::GetSurfaceVSync": {
-          "name": "Window::GetSurfaceVSync",
+        "WindowBase::GetSurfaceVSync": {
+          "name": "WindowBase::GetSurfaceVSync",
           "kind": "function",
           "type": "int",
           "parameters": [],
           "sourceName": "SDL_GetWindowSurfaceVSync",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GetWindowSurfaceVSync"
           },
@@ -182738,15 +182670,14 @@
             "mayFail": true
           }
         },
-        "Window::UpdateSurface": {
-          "name": "Window::UpdateSurface",
+        "WindowBase::UpdateSurface": {
+          "name": "WindowBase::UpdateSurface",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_UpdateWindowSurface",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::UpdateWindowSurface"
           }
@@ -182812,8 +182743,8 @@
             "mayFail": true
           }
         },
-        "Window::UpdateSurfaceRects": {
-          "name": "Window::UpdateSurfaceRects",
+        "WindowBase::UpdateSurfaceRects": {
+          "name": "WindowBase::UpdateSurfaceRects",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -182825,7 +182756,6 @@
           "sourceName": "SDL_UpdateWindowSurfaceRects",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::UpdateWindowSurfaceRects"
           }
@@ -182876,15 +182806,14 @@
             "mayFail": true
           }
         },
-        "Window::DestroySurface": {
-          "name": "Window::DestroySurface",
+        "WindowBase::DestroySurface": {
+          "name": "WindowBase::DestroySurface",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyWindowSurface",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::DestroyWindowSurface"
           }
@@ -182947,8 +182876,8 @@
             "mayFail": true
           }
         },
-        "Window::SetKeyboardGrab": {
-          "name": "Window::SetKeyboardGrab",
+        "WindowBase::SetKeyboardGrab": {
+          "name": "WindowBase::SetKeyboardGrab",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -182960,7 +182889,6 @@
           "sourceName": "SDL_SetWindowKeyboardGrab",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowKeyboardGrab"
           }
@@ -183024,8 +182952,8 @@
             "mayFail": true
           }
         },
-        "Window::SetMouseGrab": {
-          "name": "Window::SetMouseGrab",
+        "WindowBase::SetMouseGrab": {
+          "name": "WindowBase::SetMouseGrab",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -183037,7 +182965,6 @@
           "sourceName": "SDL_SetWindowMouseGrab",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowMouseGrab"
           }
@@ -183079,8 +183006,8 @@
           ],
           "sourceName": "SDL_GetWindowKeyboardGrab"
         },
-        "Window::GetKeyboardGrab": {
-          "name": "Window::GetKeyboardGrab",
+        "WindowBase::GetKeyboardGrab": {
+          "name": "WindowBase::GetKeyboardGrab",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -183088,7 +183015,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowKeyboardGrab"
           }
         },
@@ -183143,8 +183069,8 @@
           ],
           "sourceName": "SDL_GetWindowMouseGrab"
         },
-        "Window::GetMouseGrab": {
-          "name": "Window::GetMouseGrab",
+        "WindowBase::GetMouseGrab": {
+          "name": "WindowBase::GetMouseGrab",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -183152,7 +183078,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowMouseGrab"
           }
         },
@@ -183188,15 +183113,14 @@
           "parameters": [],
           "sourceName": "SDL_GetGrabbedWindow"
         },
-        "Window::GetGrabbed": {
-          "name": "Window::GetGrabbed",
+        "WindowBase::GetGrabbed": {
+          "name": "WindowBase::GetGrabbed",
           "kind": "function",
           "type": "WindowRef",
           "parameters": [],
           "sourceName": "SDL_GetGrabbedWindow",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetGrabbedWindow",
             "static": true
           }
@@ -183260,8 +183184,8 @@
             "mayFail": true
           }
         },
-        "Window::SetMouseRect": {
-          "name": "Window::SetMouseRect",
+        "WindowBase::SetMouseRect": {
+          "name": "WindowBase::SetMouseRect",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -183273,7 +183197,6 @@
           "sourceName": "SDL_SetWindowMouseRect",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowMouseRect"
           }
@@ -183325,8 +183248,8 @@
           ],
           "sourceName": "SDL_GetWindowMouseRect"
         },
-        "Window::GetMouseRect": {
-          "name": "Window::GetMouseRect",
+        "WindowBase::GetMouseRect": {
+          "name": "WindowBase::GetMouseRect",
           "kind": "function",
           "type": "const RectRaw *",
           "parameters": [],
@@ -183334,7 +183257,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowMouseRect"
           }
         },
@@ -183388,8 +183310,8 @@
             "mayFail": true
           }
         },
-        "Window::SetOpacity": {
-          "name": "Window::SetOpacity",
+        "WindowBase::SetOpacity": {
+          "name": "WindowBase::SetOpacity",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -183401,7 +183323,6 @@
           "sourceName": "SDL_SetWindowOpacity",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowOpacity"
           }
@@ -183444,8 +183365,8 @@
           ],
           "sourceName": "SDL_GetWindowOpacity"
         },
-        "Window::GetOpacity": {
-          "name": "Window::GetOpacity",
+        "WindowBase::GetOpacity": {
+          "name": "WindowBase::GetOpacity",
           "kind": "function",
           "type": "float",
           "parameters": [],
@@ -183453,7 +183374,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowOpacity"
           }
         },
@@ -183510,8 +183430,8 @@
             "mayFail": true
           }
         },
-        "Window::SetParent": {
-          "name": "Window::SetParent",
+        "WindowBase::SetParent": {
+          "name": "WindowBase::SetParent",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -183523,7 +183443,6 @@
           "sourceName": "SDL_SetWindowParent",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowParent"
           }
@@ -183583,8 +183502,8 @@
             "mayFail": true
           }
         },
-        "Window::SetModal": {
-          "name": "Window::SetModal",
+        "WindowBase::SetModal": {
+          "name": "WindowBase::SetModal",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -183596,7 +183515,6 @@
           "sourceName": "SDL_SetWindowModal",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowModal"
           }
@@ -183645,8 +183563,8 @@
             "mayFail": true
           }
         },
-        "Window::SetFocusable": {
-          "name": "Window::SetFocusable",
+        "WindowBase::SetFocusable": {
+          "name": "WindowBase::SetFocusable",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -183658,7 +183576,6 @@
           "sourceName": "SDL_SetWindowFocusable",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowFocusable"
           }
@@ -183713,8 +183630,8 @@
             "mayFail": true
           }
         },
-        "Window::ShowSystemMenu": {
-          "name": "Window::ShowSystemMenu",
+        "WindowBase::ShowSystemMenu": {
+          "name": "WindowBase::ShowSystemMenu",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -183726,7 +183643,6 @@
           "sourceName": "SDL_ShowWindowSystemMenu",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::ShowWindowSystemMenu"
           }
@@ -183839,8 +183755,8 @@
             ]
           }
         },
-        "Window::SetHitTest": {
-          "name": "Window::SetHitTest",
+        "WindowBase::SetHitTest": {
+          "name": "WindowBase::SetHitTest",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -183856,7 +183772,6 @@
           "sourceName": "SDL_SetWindowHitTest",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowHitTest"
           },
@@ -183869,10 +183784,9 @@
                 "type": "HitTestCB"
               }
             ],
-            "name": "Window::SetHitTest",
+            "name": "WindowBase::SetHitTest",
             "hints": {
               "self": "get()",
-              "super": "Window",
               "delegate": "SDL::SetWindowHitTest"
             }
           }
@@ -183924,8 +183838,8 @@
             "mayFail": true
           }
         },
-        "Window::SetShape": {
-          "name": "Window::SetShape",
+        "WindowBase::SetShape": {
+          "name": "WindowBase::SetShape",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -183937,7 +183851,6 @@
           "sourceName": "SDL_SetWindowShape",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowShape"
           }
@@ -183986,8 +183899,8 @@
             "mayFail": true
           }
         },
-        "Window::Flash": {
-          "name": "Window::Flash",
+        "WindowBase::Flash": {
+          "name": "WindowBase::Flash",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -183999,7 +183912,6 @@
           "sourceName": "SDL_FlashWindow",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::FlashWindow"
           }
@@ -184054,8 +183966,8 @@
             "patch": 0
           }
         },
-        "Window::SetProgressState": {
-          "name": "Window::SetProgressState",
+        "WindowBase::SetProgressState": {
+          "name": "WindowBase::SetProgressState",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -184067,7 +183979,6 @@
           "sourceName": "SDL_SetWindowProgressState",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowProgressState"
           },
@@ -184117,15 +184028,14 @@
             "patch": 0
           }
         },
-        "Window::GetProgressState": {
-          "name": "Window::GetProgressState",
+        "WindowBase::GetProgressState": {
+          "name": "WindowBase::GetProgressState",
           "kind": "function",
           "type": "ProgressState",
           "parameters": [],
           "sourceName": "SDL_GetWindowProgressState",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowProgressState"
           },
           "since": {
@@ -184185,8 +184095,8 @@
             "patch": 0
           }
         },
-        "Window::SetProgressValue": {
-          "name": "Window::SetProgressValue",
+        "WindowBase::SetProgressValue": {
+          "name": "WindowBase::SetProgressValue",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -184198,7 +184108,6 @@
           "sourceName": "SDL_SetWindowProgressValue",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::SetWindowProgressValue"
           },
@@ -184248,15 +184157,14 @@
             "patch": 0
           }
         },
-        "Window::GetProgressValue": {
-          "name": "Window::GetProgressValue",
+        "WindowBase::GetProgressValue": {
+          "name": "WindowBase::GetProgressValue",
           "kind": "function",
           "type": "float",
           "parameters": [],
           "sourceName": "SDL_GetWindowProgressValue",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "delegate": "SDL::GetWindowProgressValue"
           },
           "since": {
@@ -184309,15 +184217,14 @@
           ],
           "sourceName": "SDL_DestroyWindow"
         },
-        "Window::Destroy": {
-          "name": "Window::Destroy",
+        "WindowBase::Destroy": {
+          "name": "WindowBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyWindow",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "body": "DestroyWindow(release());",
             "delegate": "SDL::DestroyWindow"
           }
@@ -184835,15 +184742,14 @@
             "delegate": "GLContext"
           }
         },
-        "Window::CreateGLContext": {
-          "name": "Window::CreateGLContext",
+        "WindowBase::CreateGLContext": {
+          "name": "WindowBase::CreateGLContext",
           "kind": "function",
           "type": "GLContext",
           "parameters": [],
           "sourceName": "SDL_GL_CreateContext",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "methodName": "CreateGLContext",
             "delegate": "GLContext"
           }
@@ -184914,8 +184820,8 @@
             "methodName": "MakeCurrent"
           }
         },
-        "Window::MakeCurrent": {
-          "name": "Window::MakeCurrent",
+        "WindowBase::MakeCurrent": {
+          "name": "WindowBase::MakeCurrent",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -184927,7 +184833,6 @@
           "sourceName": "SDL_GL_MakeCurrent",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "methodName": "MakeCurrent",
             "delegate": "SDL::GL_MakeCurrent"
@@ -184948,7 +184853,7 @@
             "self": "get()",
             "super": "GLContext",
             "mayFail": true,
-            "delegate": "SDL::Window::MakeCurrent"
+            "delegate": "SDL::WindowBase::MakeCurrent"
           }
         },
         "GL_GetCurrentWindow": {
@@ -185086,15 +184991,14 @@
             "methodName": "GetEGLSurface"
           }
         },
-        "Window::GetEGLSurface": {
-          "name": "Window::GetEGLSurface",
+        "WindowBase::GetEGLSurface": {
+          "name": "WindowBase::GetEGLSurface",
           "kind": "function",
           "type": "EGLSurface",
           "parameters": [],
           "sourceName": "SDL_EGL_GetWindowSurface",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "methodName": "GetEGLSurface",
             "delegate": "SDL::EGL_GetWindowSurface"
           }
@@ -185276,15 +185180,14 @@
             "mayFail": true
           }
         },
-        "Window::GL_Swap": {
-          "name": "Window::GL_Swap",
+        "WindowBase::GL_Swap": {
+          "name": "WindowBase::GL_Swap",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_GL_SwapWindow",
           "hints": {
             "self": "get()",
-            "super": "Window",
             "mayFail": true,
             "delegate": "SDL::GL_SwapWindow"
           }

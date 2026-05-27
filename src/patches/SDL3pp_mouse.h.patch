@@ -109,7 +109,7 @@
   * Query SDL's cache for the synchronous mouse button state and the
 @@ -669,7 +672,7 @@
  
- inline void Window::WarpMouse(const FPointRaw& p)
+ inline void WindowBase::WarpMouse(const FPointRaw& p)
  {
 -  SDL_WarpMouseInWindow(get(), p);
 +  SDL_WarpMouseInWindow(get(), p.x, p.y);

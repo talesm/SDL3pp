@@ -21,8 +21,8 @@ namespace SDL {
  * For certain games, it's useful to disassociate the mouse cursor from mouse
  * input. An FPS, for example, would not want the player's motion to stop as the
  * mouse hits the edge of the window. For these scenarios, use
- * Window.SetRelativeMouseMode(), which hides the cursor, grabs mouse input to
- * the window, and reads mouse input no matter how far it moves.
+ * WindowBase.SetRelativeMouseMode(), which hides the cursor, grabs mouse input
+ * to the window, and reads mouse input no matter how far it moves.
  *
  * Games that want the system to track the mouse but want to draw their own
  * cursor can use HideCursor() and ShowCursor(). It might be more efficient to
@@ -670,7 +670,7 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
   return SDL_GetRelativeMouseState(x, y);
 }
 
-inline void Window::WarpMouse(const FPointRaw& p)
+inline void WindowBase::WarpMouse(const FPointRaw& p)
 {
   SDL_WarpMouseInWindow(get(), p.x, p.y);
 }
@@ -693,7 +693,7 @@ inline void Window::WarpMouse(const FPointRaw& p)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.WarpMouse
+ * @sa WindowBase.WarpMouse
  */
 inline void WarpMouse(const FPointRaw& p)
 {
@@ -744,12 +744,12 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-inline void Window::SetRelativeMouseMode(bool enabled)
+inline void WindowBase::SetRelativeMouseMode(bool enabled)
 {
   CheckError(SDL_SetWindowRelativeMouseMode(get(), enabled));
 }
 
-inline bool Window::GetRelativeMouseMode() const
+inline bool WindowBase::GetRelativeMouseMode() const
 {
   return SDL_GetWindowRelativeMouseMode(get());
 }
@@ -769,8 +769,8 @@ inline bool Window::GetRelativeMouseMode() const
  * mouse while the user is dragging something, until the user releases a mouse
  * button. It is not recommended that you capture the mouse for long periods of
  * time, such as the entire time your app is running. For that, you should
- * probably use Window.SetRelativeMouseMode() or SetWindowMouseGrab(), depending
- * on your goals.
+ * probably use WindowBase.SetRelativeMouseMode() or SetWindowMouseGrab(),
+ * depending on your goals.
  *
  * While captured, mouse events still report coordinates relative to the current
  * (foreground) window, but those coordinates may be outside the bounds of the

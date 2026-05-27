@@ -41,6 +41,9 @@ using DisplayID = SDL_DisplayID;
 struct Display;
 
 // Forward decl
+struct WindowBase;
+
+// Forward decl
 struct Window;
 
 /// Alias to raw representation for Window.
@@ -51,7 +54,7 @@ using WindowRaw = SDL_Window*;
  *
  * This does not take ownership!
  */
-using WindowRef = ResourceRef<Window>;
+using WindowRef = ResourceRefT<WindowBase>;
 
 // Forward decl
 struct GLContext;
@@ -737,386 +740,13 @@ constexpr ProgressState PROGRESS_STATE_ERROR = SDL_PROGRESS_STATE_ERROR;
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * The struct used as an opaque handle to a window.
+ * Base class to Window.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
- *
- * @sa CreateWindow
+ * @see Window
  */
-struct Window : ResourceBase<WindowRaw>
+struct WindowBase : ResourceBaseT<WindowRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Window.
-   *
-   * @param resource a WindowRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Window(WindowRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Window(const Window& other) = delete;
-
-  /// Move constructor
-  constexpr Window(Window&& other) noexcept
-    : Window(other.release())
-  {
-  }
-
-  constexpr Window(const WindowRef& other) = delete;
-
-  constexpr Window(WindowRef&& other) = delete;
-
-  /**
-   * Create a window and default renderer.
-   *
-   * @param title the title of the window, in UTF-8 encoding.
-   * @param size the width and height of the window.
-   * @param window_flags the flags used to create the window (see
-   *                     CreateWindow()).
-   * @param renderer a pointer filled with the renderer.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateRenderer
-   * @sa CreateWindow
-   */
-  Window(StringParam title,
-         const PointRaw& size,
-         WindowFlags window_flags,
-         RendererBase* renderer);
-
-  /**
-   * Create a window with the specified dimensions and flags.
-   *
-   * The window size is a request and may be different than expected based on
-   * the desktop layout and window manager policies. Your application should be
-   * prepared to handle a window of any size.
-   *
-   * `flags` may be any of the following OR'd together:
-   *
-   * - `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution
-   * - `WINDOW_OPENGL`: window usable with an OpenGL context
-   * - `WINDOW_HIDDEN`: window is not visible
-   * - `WINDOW_BORDERLESS`: no window decoration
-   * - `WINDOW_RESIZABLE`: window can be resized
-   * - `WINDOW_MINIMIZED`: window is minimized
-   * - `WINDOW_MAXIMIZED`: window is maximized
-   * - `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus
-   * - `WINDOW_INPUT_FOCUS`: window has input focus
-   * - `WINDOW_MOUSE_FOCUS`: window has mouse focus
-   * - `WINDOW_EXTERNAL`: window not created by SDL
-   * - `WINDOW_MODAL`: window is modal
-   * - `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back buffer
-   *   if possible
-   * - `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to
-   *   MOUSE_GRABBED)
-   * - `WINDOW_ALWAYS_ON_TOP`: window should always be above others
-   * - `WINDOW_UTILITY`: window should be treated as a utility window, not
-   *   showing in the task bar and window list
-   * - `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not get
-   *   mouse or keyboard focus, requires a parent window
-   * - `WINDOW_POPUP_MENU`: window should be treated as a popup menu, requires a
-   *   parent window
-   * - `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input
-   * - `WINDOW_VULKAN`: window usable with a Vulkan instance
-   * - `WINDOW_METAL`: window usable with a Metal instance
-   * - `WINDOW_TRANSPARENT`: window with transparent buffer
-   * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
-   *
-   * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation
-   * time, ShowWindow() can be used to show it later.
-   *
-   * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
-   * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
-   *
-   * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use GetWindowSize() to query the
-   * client area's size in window coordinates, and GetWindowSizeInPixels() or
-   * GetRenderOutputSize() to query the drawable size in pixels. Note that the
-   * drawable size can vary after the window is created and should be queried
-   * again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
-   *
-   * If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN
-   * flags, then the corresponding LoadLibrary function (GL_LoadLibrary or
-   * Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function
-   * is called by DestroyWindow().
-   *
-   * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
-   * CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.
-   *
-   * If WINDOW_METAL is specified on an OS that does not support Metal,
-   * CreateWindow() will fail.
-   *
-   * If you intend to use this window with an Renderer, you should use
-   * CreateWindowAndRenderer() instead of this function, to avoid window
-   * flicker.
-   *
-   * On non-Apple devices, SDL requires you to either not link to the Vulkan
-   * loader or link to a dynamic library version. This limitation may be removed
-   * in a future version of SDL.
-   *
-   * @param title the title of the window, in UTF-8 encoding.
-   * @param size the width and height of the window.
-   * @param flags 0, or one or more WindowFlags OR'd together.
-   * @post the window that was created or nullptr on failure; call GetError()
-   *       for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateWindowAndRenderer
-   * @sa CreatePopupWindow
-   * @sa CreateWindowWithProperties
-   * @sa DestroyWindow
-   */
-  Window(StringParam title, const PointRaw& size, WindowFlags flags = 0);
-
-  /**
-   * Create a child popup window of the specified parent window.
-   *
-   * The window size is a request and may be different than expected based on
-   * the desktop layout and window manager policies. Your application should be
-   * prepared to handle a window of any size.
-   *
-   * The flags parameter **must** contain at least one of the following:
-   *
-   * - `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any
-   *   input events.
-   * - `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost popup
-   *   menu will implicitly gain the keyboard focus.
-   *
-   * The following flags are not relevant to popup window creation and will be
-   * ignored:
-   *
-   * - `WINDOW_MINIMIZED`
-   * - `WINDOW_MAXIMIZED`
-   * - `WINDOW_FULLSCREEN`
-   * - `WINDOW_BORDERLESS`
-   *
-   * The following flags are incompatible with popup window creation and will
-   * cause it to fail:
-   *
-   * - `WINDOW_UTILITY`
-   * - `WINDOW_MODAL`
-   *
-   * The parent parameter **must** be non-null and a valid window. The parent of
-   * a popup window can be either a regular, toplevel window, or another popup
-   * window.
-   *
-   * Popup windows cannot be minimized, maximized, made fullscreen, raised,
-   * flash, be made a modal window, be the parent of a toplevel window, or grab
-   * the mouse and/or keyboard. Attempts to do so will fail.
-   *
-   * Popup windows implicitly do not have a border/decorations and do not appear
-   * on the taskbar/dock or in lists of windows such as alt-tab menus.
-   *
-   * By default, popup window positions will automatically be constrained to
-   * keep the entire window within display bounds. This can be overridden with
-   * the `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN` property.
-   *
-   * By default, popup menus will automatically grab keyboard focus from the
-   * parent when shown. This behavior can be overridden by setting the
-   * `WINDOW_NOT_FOCUSABLE` flag, setting the
-   * `prop.Window.Create.FOCUSABLE_BOOLEAN` property to false, or toggling it
-   * after creation via the `SetWindowFocusable()` function.
-   *
-   * If a parent window is hidden or destroyed, any child popup windows will be
-   * recursively hidden or destroyed as well. Child popup windows not explicitly
-   * hidden will be restored when the parent is shown.
-   *
-   * @param parent the parent of the window, must not be nullptr.
-   * @param offset the x, y position of the popup window relative to the origin
-   *               of the parent.
-   * @param size the width and height of the window.
-   * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
-   *              additional WindowFlags OR'd together.
-   * @post the window that was created or nullptr on failure; call GetError()
-   *       for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateWindow
-   * @sa CreateWindowWithProperties
-   * @sa DestroyWindow
-   * @sa GetWindowParent
-   */
-  Window(WindowRef parent,
-         const PointRaw& offset,
-         const PointRaw& size,
-         WindowFlags flags = 0);
-
-  /**
-   * Create a window with the specified properties.
-   *
-   * The window size is a request and may be different than expected based on
-   * the desktop layout and window manager policies. Your application should be
-   * prepared to handle a window of any size.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.Window.Create.ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
-   *   always on top
-   * - `prop.Window.Create.BORDERLESS_BOOLEAN`: true if the window has no window
-   *   decoration
-   * - `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
-   *   "menu" window types should be automatically constrained to be entirely
-   *   within display bounds (default), false if no constraints on the position
-   *   are desired.
-   * - `prop.Window.Create.EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
-   *   window will be used with an externally managed graphics context.
-   * - `prop.Window.Create.FOCUSABLE_BOOLEAN`: true if the window should accept
-   *   keyboard input (defaults true)
-   * - `prop.Window.Create.FULLSCREEN_BOOLEAN`: true if the window should start
-   *   in fullscreen mode at desktop resolution
-   * - `prop.Window.Create.HEIGHT_NUMBER`: the height of the window
-   * - `prop.Window.Create.HIDDEN_BOOLEAN`: true if the window should start
-   *   hidden
-   * - `prop.Window.Create.HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses
-   *   a high pixel density buffer if possible
-   * - `prop.Window.Create.MAXIMIZED_BOOLEAN`: true if the window should start
-   *   maximized
-   * - `prop.Window.Create.MENU_BOOLEAN`: true if the window is a popup menu
-   * - `prop.Window.Create.METAL_BOOLEAN`: true if the window will be used with
-   *   Metal rendering
-   * - `prop.Window.Create.MINIMIZED_BOOLEAN`: true if the window should start
-   *   minimized
-   * - `prop.Window.Create.MODAL_BOOLEAN`: true if the window is modal to its
-   *   parent
-   * - `prop.Window.Create.MOUSE_GRABBED_BOOLEAN`: true if the window starts
-   *   with grabbed mouse focus
-   * - `prop.Window.Create.OPENGL_BOOLEAN`: true if the window will be used with
-   *   OpenGL rendering
-   * - `prop.Window.Create.PARENT_POINTER`: an Window that will be the parent of
-   *   this window, required for windows with the "tooltip", "menu", and "modal"
-   *   properties
-   * - `prop.Window.Create.RESIZABLE_BOOLEAN`: true if the window should be
-   *   resizable
-   * - `prop.Window.Create.TITLE_STRING`: the title of the window, in UTF-8
-   *   encoding
-   * - `prop.Window.Create.TRANSPARENT_BOOLEAN`: true if the window show
-   *   transparent in the areas with alpha of 0
-   * - `prop.Window.Create.TOOLTIP_BOOLEAN`: true if the window is a tooltip
-   * - `prop.Window.Create.UTILITY_BOOLEAN`: true if the window is a utility
-   *   window, not showing in the task bar and window list
-   * - `prop.Window.Create.VULKAN_BOOLEAN`: true if the window will be used with
-   *   Vulkan rendering
-   * - `prop.Window.Create.WIDTH_NUMBER`: the width of the window
-   * - `prop.Window.Create.X_NUMBER`: the x position of the window, or
-   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
-   *   to the parent for windows with the "tooltip" or "menu" property set.
-   * - `prop.Window.Create.Y_NUMBER`: the y position of the window, or
-   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
-   *   to the parent for windows with the "tooltip" or "menu" property set.
-   *
-   * These are additional supported properties on macOS:
-   *
-   * - `prop.Window.Create.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
-   *   NSWindow associated with the window, if you want to wrap an existing
-   *   window.
-   * - `prop.Window.Create.COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
-   *   NSView associated with the window, defaults to `[window contentView]`
-   *
-   * These are additional supported properties on iOS, tvOS, and visionOS:
-   *
-   * - `prop.Window.Create.WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
-   *   UIWindowScene associated with the window, defaults to the active window
-   *   scene.
-   *
-   * These are additional supported properties on Wayland:
-   *
-   * - `prop.Window.Create.WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
-   *   application wants to use the Wayland surface for a custom role and does
-   *   not want it attached to an XDG toplevel window. See
-   *   [README-wayland](README-wayland) for more information on using custom
-   *   surfaces.
-   * - `prop.Window.Create.WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
-   *   application wants an associated `wl_egl_window` object to be created and
-   *   attached to the window, even if the window does not have the OpenGL
-   *   property or `WINDOW_OPENGL` flag set.
-   * - `prop.Window.Create.WAYLAND_WL_SURFACE_POINTER` - the wl_surface
-   *   associated with the window, if you want to wrap an existing window. See
-   *   [README-wayland](README-wayland) for more information.
-   *
-   * These are additional supported properties on Windows:
-   *
-   * - `prop.Window.Create.WIN32_HWND_POINTER`: the HWND associated with the
-   *   window, if you want to wrap an existing window.
-   * - `prop.Window.Create.WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
-   *   window to share pixel format with, useful for OpenGL windows
-   *
-   * These are additional supported properties with X11:
-   *
-   * - `prop.Window.Create.X11_WINDOW_NUMBER`: the X11 Window associated with
-   *   the window, if you want to wrap an existing window.
-   *
-   * The window is implicitly shown if the "hidden" property is not set.
-   *
-   * These are additional supported properties with Emscripten:
-   *
-   * - `prop.Window.Create.EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
-   *   canvas element. This should start with a '#' sign
-   * - `prop.Window.Create.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
-   *   binding element for keyboard inputs for this canvas. The variable can be
-   *   one of:
-   * - "#window": the javascript window object (default)
-   * - "#document": the javascript document object
-   * - "#screen": the javascript window.screen object
-   * - "#canvas": the WebGL canvas element
-   * - "#none": Don't bind anything at all
-   * - any other string without a leading # sign applies to the element on the
-   *   page with that ID. Windows with the "tooltip" and "menu" properties are
-   *   popup windows and have the behaviors and guidelines outlined in
-   *   CreatePopupWindow().
-   *
-   * If this window is being created to be used with an Renderer, you should not
-   * add a graphics API specific property (`prop.Window.Create.OPENGL_BOOLEAN`,
-   * etc), as SDL will handle that internally when it chooses a renderer.
-   * However, SDL might need to recreate your window at that point, which may
-   * cause the window to appear briefly, and then flicker as it is recreated.
-   * The correct approach to this is to create the window with the
-   * `prop.Window.Create.HIDDEN_BOOLEAN` property set to true, then create the
-   * renderer, then show the window with ShowWindow().
-   *
-   * @param props the properties to use.
-   * @post the window that was created or nullptr on failure; call GetError()
-   *       for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateProperties
-   * @sa CreateWindow
-   * @sa DestroyWindow
-   */
-  Window(PropertiesRef props);
-
-  /// Destructor
-  ~Window() { SDL_DestroyWindow(get()); }
-
-  /// Assignment operator.
-  constexpr Window& operator=(Window&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Window& operator=(const Window& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a window.
@@ -2836,7 +2466,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * This function will enable text input (EVENT_TEXT_INPUT and
    * EVENT_TEXT_EDITING events) in the specified window. Please use this
-   * function paired with Window.StopTextInput().
+   * function paired with WindowBase.StopTextInput().
    *
    * Text input events are not received by default.
    *
@@ -2850,10 +2480,10 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetTextInputArea
-   * @sa Window.StartTextInput
-   * @sa Window.StopTextInput
-   * @sa Window.IsTextInputActive
+   * @sa WindowBase.SetTextInputArea
+   * @sa WindowBase.StartTextInput
+   * @sa WindowBase.StopTextInput
+   * @sa WindowBase.IsTextInputActive
    */
   void StartTextInput();
 
@@ -2863,7 +2493,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * This function will enable text input (EVENT_TEXT_INPUT and
    * EVENT_TEXT_EDITING events) in the specified window. Please use this
-   * function paired with Window.StopTextInput().
+   * function paired with WindowBase.StopTextInput().
    *
    * Text input events are not received by default.
    *
@@ -2900,10 +2530,10 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetTextInputArea
-   * @sa Window.StartTextInput
-   * @sa Window.StopTextInput
-   * @sa Window.IsTextInputActive
+   * @sa WindowBase.SetTextInputArea
+   * @sa WindowBase.StartTextInput
+   * @sa WindowBase.StopTextInput
+   * @sa WindowBase.IsTextInputActive
    */
   void StartTextInput(PropertiesRef props);
 
@@ -2916,15 +2546,15 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.StartTextInput
+   * @sa WindowBase.StartTextInput
    */
   bool IsTextInputActive() const;
 
   /**
    * Stop receiving any text input events in a window.
    *
-   * If Window.StartTextInput() showed the screen keyboard, this function will
-   * hide it.
+   * If WindowBase.StartTextInput() showed the screen keyboard, this function
+   * will hide it.
    *
    * @throws Error on failure.
    *
@@ -2932,7 +2562,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.StartTextInput
+   * @sa WindowBase.StartTextInput
    */
   void StopTextInput();
 
@@ -2945,8 +2575,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.StartTextInput
-   * @sa Window.StopTextInput
+   * @sa WindowBase.StartTextInput
+   * @sa WindowBase.StopTextInput
    */
   void ClearComposition();
 
@@ -2966,15 +2596,15 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetTextInputArea
-   * @sa Window.StartTextInput
+   * @sa WindowBase.GetTextInputArea
+   * @sa WindowBase.StartTextInput
    */
   void SetTextInputArea(const RectRaw& rect, int cursor);
 
   /**
    * Get the area used to type Unicode text input.
    *
-   * This returns the values previously set by Window.SetTextInputArea().
+   * This returns the values previously set by WindowBase.SetTextInputArea().
    *
    * @param rect a pointer to an Rect filled in with the text input area, may be
    *             nullptr.
@@ -2986,7 +2616,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetTextInputArea
+   * @sa WindowBase.SetTextInputArea
    */
   void GetTextInputArea(RectRaw* rect, int* cursor);
 
@@ -3033,8 +2663,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * If you'd like to keep the mouse position fixed while in relative mode you
    * can use SetWindowMouseRect(). If you'd like the cursor to be at a specific
-   * location when relative mode ends, you should use Window.WarpMouse() before
-   * disabling relative mode.
+   * location when relative mode ends, you should use WindowBase.WarpMouse()
+   * before disabling relative mode.
    *
    * This function will flush any pending mouse motion for this window.
    *
@@ -3045,7 +2675,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetRelativeMouseMode
+   * @sa WindowBase.GetRelativeMouseMode
    */
   void SetRelativeMouseMode(bool enabled);
 
@@ -3058,7 +2688,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetRelativeMouseMode
+   * @sa WindowBase.SetRelativeMouseMode
    */
   bool GetRelativeMouseMode() const;
 
@@ -3073,6 +2703,385 @@ struct Window : ResourceBase<WindowRaw>
    * @since This function is available since SDL 3.2.0.
    */
   RendererRef GetRenderer() const;
+};
+
+/**
+ * The struct used as an opaque handle to a window.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ *
+ * @sa CreateWindow
+ */
+struct Window : WindowBase
+{
+  using WindowBase::WindowBase;
+
+  /**
+   * Constructs from raw Window.
+   *
+   * @param resource a WindowRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Window(WindowRaw resource) noexcept
+    : WindowBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Window(const Window& other) = delete;
+
+  /// Move constructor
+  constexpr Window(Window&& other) noexcept
+    : Window(other.release())
+  {
+  }
+
+  /**
+   * Create a window and default renderer.
+   *
+   * @param title the title of the window, in UTF-8 encoding.
+   * @param size the width and height of the window.
+   * @param window_flags the flags used to create the window (see
+   *                     CreateWindow()).
+   * @param renderer a pointer filled with the renderer.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateRenderer
+   * @sa CreateWindow
+   */
+  Window(StringParam title,
+         const PointRaw& size,
+         WindowFlags window_flags,
+         RendererBase* renderer);
+
+  /**
+   * Create a window with the specified dimensions and flags.
+   *
+   * The window size is a request and may be different than expected based on
+   * the desktop layout and window manager policies. Your application should be
+   * prepared to handle a window of any size.
+   *
+   * `flags` may be any of the following OR'd together:
+   *
+   * - `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution
+   * - `WINDOW_OPENGL`: window usable with an OpenGL context
+   * - `WINDOW_HIDDEN`: window is not visible
+   * - `WINDOW_BORDERLESS`: no window decoration
+   * - `WINDOW_RESIZABLE`: window can be resized
+   * - `WINDOW_MINIMIZED`: window is minimized
+   * - `WINDOW_MAXIMIZED`: window is maximized
+   * - `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus
+   * - `WINDOW_INPUT_FOCUS`: window has input focus
+   * - `WINDOW_MOUSE_FOCUS`: window has mouse focus
+   * - `WINDOW_EXTERNAL`: window not created by SDL
+   * - `WINDOW_MODAL`: window is modal
+   * - `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back buffer
+   *   if possible
+   * - `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to
+   *   MOUSE_GRABBED)
+   * - `WINDOW_ALWAYS_ON_TOP`: window should always be above others
+   * - `WINDOW_UTILITY`: window should be treated as a utility window, not
+   *   showing in the task bar and window list
+   * - `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not get
+   *   mouse or keyboard focus, requires a parent window
+   * - `WINDOW_POPUP_MENU`: window should be treated as a popup menu, requires a
+   *   parent window
+   * - `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input
+   * - `WINDOW_VULKAN`: window usable with a Vulkan instance
+   * - `WINDOW_METAL`: window usable with a Metal instance
+   * - `WINDOW_TRANSPARENT`: window with transparent buffer
+   * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
+   *
+   * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation
+   * time, ShowWindow() can be used to show it later.
+   *
+   * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
+   * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
+   *
+   * The window pixel size may differ from its window coordinate size if the
+   * window is on a high pixel density display. Use GetWindowSize() to query the
+   * client area's size in window coordinates, and GetWindowSizeInPixels() or
+   * GetRenderOutputSize() to query the drawable size in pixels. Note that the
+   * drawable size can vary after the window is created and should be queried
+   * again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
+   *
+   * If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN
+   * flags, then the corresponding LoadLibrary function (GL_LoadLibrary or
+   * Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function
+   * is called by DestroyWindow().
+   *
+   * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
+   * CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.
+   *
+   * If WINDOW_METAL is specified on an OS that does not support Metal,
+   * CreateWindow() will fail.
+   *
+   * If you intend to use this window with an Renderer, you should use
+   * CreateWindowAndRenderer() instead of this function, to avoid window
+   * flicker.
+   *
+   * On non-Apple devices, SDL requires you to either not link to the Vulkan
+   * loader or link to a dynamic library version. This limitation may be removed
+   * in a future version of SDL.
+   *
+   * @param title the title of the window, in UTF-8 encoding.
+   * @param size the width and height of the window.
+   * @param flags 0, or one or more WindowFlags OR'd together.
+   * @post the window that was created or nullptr on failure; call GetError()
+   *       for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateWindowAndRenderer
+   * @sa CreatePopupWindow
+   * @sa CreateWindowWithProperties
+   * @sa DestroyWindow
+   */
+  Window(StringParam title, const PointRaw& size, WindowFlags flags = 0);
+
+  /**
+   * Create a child popup window of the specified parent window.
+   *
+   * The window size is a request and may be different than expected based on
+   * the desktop layout and window manager policies. Your application should be
+   * prepared to handle a window of any size.
+   *
+   * The flags parameter **must** contain at least one of the following:
+   *
+   * - `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any
+   *   input events.
+   * - `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost popup
+   *   menu will implicitly gain the keyboard focus.
+   *
+   * The following flags are not relevant to popup window creation and will be
+   * ignored:
+   *
+   * - `WINDOW_MINIMIZED`
+   * - `WINDOW_MAXIMIZED`
+   * - `WINDOW_FULLSCREEN`
+   * - `WINDOW_BORDERLESS`
+   *
+   * The following flags are incompatible with popup window creation and will
+   * cause it to fail:
+   *
+   * - `WINDOW_UTILITY`
+   * - `WINDOW_MODAL`
+   *
+   * The parent parameter **must** be non-null and a valid window. The parent of
+   * a popup window can be either a regular, toplevel window, or another popup
+   * window.
+   *
+   * Popup windows cannot be minimized, maximized, made fullscreen, raised,
+   * flash, be made a modal window, be the parent of a toplevel window, or grab
+   * the mouse and/or keyboard. Attempts to do so will fail.
+   *
+   * Popup windows implicitly do not have a border/decorations and do not appear
+   * on the taskbar/dock or in lists of windows such as alt-tab menus.
+   *
+   * By default, popup window positions will automatically be constrained to
+   * keep the entire window within display bounds. This can be overridden with
+   * the `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN` property.
+   *
+   * By default, popup menus will automatically grab keyboard focus from the
+   * parent when shown. This behavior can be overridden by setting the
+   * `WINDOW_NOT_FOCUSABLE` flag, setting the
+   * `prop.Window.Create.FOCUSABLE_BOOLEAN` property to false, or toggling it
+   * after creation via the `SetWindowFocusable()` function.
+   *
+   * If a parent window is hidden or destroyed, any child popup windows will be
+   * recursively hidden or destroyed as well. Child popup windows not explicitly
+   * hidden will be restored when the parent is shown.
+   *
+   * @param parent the parent of the window, must not be nullptr.
+   * @param offset the x, y position of the popup window relative to the origin
+   *               of the parent.
+   * @param size the width and height of the window.
+   * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
+   *              additional WindowFlags OR'd together.
+   * @post the window that was created or nullptr on failure; call GetError()
+   *       for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateWindow
+   * @sa CreateWindowWithProperties
+   * @sa DestroyWindow
+   * @sa GetWindowParent
+   */
+  Window(WindowRef parent,
+         const PointRaw& offset,
+         const PointRaw& size,
+         WindowFlags flags = 0);
+
+  /**
+   * Create a window with the specified properties.
+   *
+   * The window size is a request and may be different than expected based on
+   * the desktop layout and window manager policies. Your application should be
+   * prepared to handle a window of any size.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.Window.Create.ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
+   *   always on top
+   * - `prop.Window.Create.BORDERLESS_BOOLEAN`: true if the window has no window
+   *   decoration
+   * - `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
+   *   "menu" window types should be automatically constrained to be entirely
+   *   within display bounds (default), false if no constraints on the position
+   *   are desired.
+   * - `prop.Window.Create.EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
+   *   window will be used with an externally managed graphics context.
+   * - `prop.Window.Create.FOCUSABLE_BOOLEAN`: true if the window should accept
+   *   keyboard input (defaults true)
+   * - `prop.Window.Create.FULLSCREEN_BOOLEAN`: true if the window should start
+   *   in fullscreen mode at desktop resolution
+   * - `prop.Window.Create.HEIGHT_NUMBER`: the height of the window
+   * - `prop.Window.Create.HIDDEN_BOOLEAN`: true if the window should start
+   *   hidden
+   * - `prop.Window.Create.HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses
+   *   a high pixel density buffer if possible
+   * - `prop.Window.Create.MAXIMIZED_BOOLEAN`: true if the window should start
+   *   maximized
+   * - `prop.Window.Create.MENU_BOOLEAN`: true if the window is a popup menu
+   * - `prop.Window.Create.METAL_BOOLEAN`: true if the window will be used with
+   *   Metal rendering
+   * - `prop.Window.Create.MINIMIZED_BOOLEAN`: true if the window should start
+   *   minimized
+   * - `prop.Window.Create.MODAL_BOOLEAN`: true if the window is modal to its
+   *   parent
+   * - `prop.Window.Create.MOUSE_GRABBED_BOOLEAN`: true if the window starts
+   *   with grabbed mouse focus
+   * - `prop.Window.Create.OPENGL_BOOLEAN`: true if the window will be used with
+   *   OpenGL rendering
+   * - `prop.Window.Create.PARENT_POINTER`: an Window that will be the parent of
+   *   this window, required for windows with the "tooltip", "menu", and "modal"
+   *   properties
+   * - `prop.Window.Create.RESIZABLE_BOOLEAN`: true if the window should be
+   *   resizable
+   * - `prop.Window.Create.TITLE_STRING`: the title of the window, in UTF-8
+   *   encoding
+   * - `prop.Window.Create.TRANSPARENT_BOOLEAN`: true if the window show
+   *   transparent in the areas with alpha of 0
+   * - `prop.Window.Create.TOOLTIP_BOOLEAN`: true if the window is a tooltip
+   * - `prop.Window.Create.UTILITY_BOOLEAN`: true if the window is a utility
+   *   window, not showing in the task bar and window list
+   * - `prop.Window.Create.VULKAN_BOOLEAN`: true if the window will be used with
+   *   Vulkan rendering
+   * - `prop.Window.Create.WIDTH_NUMBER`: the width of the window
+   * - `prop.Window.Create.X_NUMBER`: the x position of the window, or
+   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
+   *   to the parent for windows with the "tooltip" or "menu" property set.
+   * - `prop.Window.Create.Y_NUMBER`: the y position of the window, or
+   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
+   *   to the parent for windows with the "tooltip" or "menu" property set.
+   *
+   * These are additional supported properties on macOS:
+   *
+   * - `prop.Window.Create.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
+   *   NSWindow associated with the window, if you want to wrap an existing
+   *   window.
+   * - `prop.Window.Create.COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
+   *   NSView associated with the window, defaults to `[window contentView]`
+   *
+   * These are additional supported properties on iOS, tvOS, and visionOS:
+   *
+   * - `prop.Window.Create.WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+   *   UIWindowScene associated with the window, defaults to the active window
+   *   scene.
+   *
+   * These are additional supported properties on Wayland:
+   *
+   * - `prop.Window.Create.WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
+   *   application wants to use the Wayland surface for a custom role and does
+   *   not want it attached to an XDG toplevel window. See
+   *   [README-wayland](README-wayland) for more information on using custom
+   *   surfaces.
+   * - `prop.Window.Create.WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
+   *   application wants an associated `wl_egl_window` object to be created and
+   *   attached to the window, even if the window does not have the OpenGL
+   *   property or `WINDOW_OPENGL` flag set.
+   * - `prop.Window.Create.WAYLAND_WL_SURFACE_POINTER` - the wl_surface
+   *   associated with the window, if you want to wrap an existing window. See
+   *   [README-wayland](README-wayland) for more information.
+   *
+   * These are additional supported properties on Windows:
+   *
+   * - `prop.Window.Create.WIN32_HWND_POINTER`: the HWND associated with the
+   *   window, if you want to wrap an existing window.
+   * - `prop.Window.Create.WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
+   *   window to share pixel format with, useful for OpenGL windows
+   *
+   * These are additional supported properties with X11:
+   *
+   * - `prop.Window.Create.X11_WINDOW_NUMBER`: the X11 Window associated with
+   *   the window, if you want to wrap an existing window.
+   *
+   * The window is implicitly shown if the "hidden" property is not set.
+   *
+   * These are additional supported properties with Emscripten:
+   *
+   * - `prop.Window.Create.EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
+   *   canvas element. This should start with a '#' sign
+   * - `prop.Window.Create.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
+   *   binding element for keyboard inputs for this canvas. The variable can be
+   *   one of:
+   * - "#window": the javascript window object (default)
+   * - "#document": the javascript document object
+   * - "#screen": the javascript window.screen object
+   * - "#canvas": the WebGL canvas element
+   * - "#none": Don't bind anything at all
+   * - any other string without a leading # sign applies to the element on the
+   *   page with that ID. Windows with the "tooltip" and "menu" properties are
+   *   popup windows and have the behaviors and guidelines outlined in
+   *   CreatePopupWindow().
+   *
+   * If this window is being created to be used with an Renderer, you should not
+   * add a graphics API specific property (`prop.Window.Create.OPENGL_BOOLEAN`,
+   * etc), as SDL will handle that internally when it chooses a renderer.
+   * However, SDL might need to recreate your window at that point, which may
+   * cause the window to appear briefly, and then flicker as it is recreated.
+   * The correct approach to this is to create the window with the
+   * `prop.Window.Create.HIDDEN_BOOLEAN` property set to true, then create the
+   * renderer, then show the window with ShowWindow().
+   *
+   * @param props the properties to use.
+   * @post the window that was created or nullptr on failure; call GetError()
+   *       for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateProperties
+   * @sa CreateWindow
+   * @sa DestroyWindow
+   */
+  Window(PropertiesRef props);
+
+  /// Destructor
+  ~Window() { SDL_DestroyWindow(get()); }
+
+  /// Assignment operator.
+  constexpr Window& operator=(Window&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Window& operator=(const Window& other) = delete;
 };
 
 /**
@@ -3727,7 +3736,7 @@ inline Display Display::GetPrimary() { return SDL::GetPrimaryDisplay(); }
  */
 inline PropertiesRef GetDisplayProperties(DisplayID displayID)
 {
-  return {CheckError(SDL_GetDisplayProperties(displayID))};
+  return CheckError(SDL_GetDisplayProperties(displayID));
 }
 
 inline PropertiesRef Display::GetProperties() const
@@ -4140,7 +4149,7 @@ inline Display GetDisplayForWindow(WindowRef window)
   return CheckError(SDL_GetDisplayForWindow(window));
 }
 
-inline Display Window::GetDisplay() const
+inline Display WindowBase::GetDisplay() const
 {
   return SDL::GetDisplayForWindow(get());
 }
@@ -4167,7 +4176,7 @@ inline float GetWindowPixelDensity(WindowRef window)
   return SDL_GetWindowPixelDensity(window);
 }
 
-inline float Window::GetPixelDensity() const
+inline float WindowBase::GetPixelDensity() const
 {
   return SDL::GetWindowPixelDensity(get());
 }
@@ -4198,7 +4207,7 @@ inline float GetWindowDisplayScale(WindowRef window)
   return SDL_GetWindowDisplayScale(window);
 }
 
-inline float Window::GetDisplayScale() const
+inline float WindowBase::GetDisplayScale() const
 {
   return SDL::GetWindowDisplayScale(get());
 }
@@ -4240,7 +4249,7 @@ inline void SetWindowFullscreenMode(WindowRef window,
   CheckError(SDL_SetWindowFullscreenMode(window, mode));
 }
 
-inline void Window::SetFullscreenMode(OptionalRef<const DisplayMode> mode)
+inline void WindowBase::SetFullscreenMode(OptionalRef<const DisplayMode> mode)
 {
   SDL::SetWindowFullscreenMode(get(), mode);
 }
@@ -4264,7 +4273,7 @@ inline const DisplayMode& GetWindowFullscreenMode(WindowRef window)
   return *SDL_GetWindowFullscreenMode(window);
 }
 
-inline const DisplayMode& Window::GetFullscreenMode() const
+inline const DisplayMode& WindowBase::GetFullscreenMode() const
 {
   return SDL::GetWindowFullscreenMode(get());
 }
@@ -4286,7 +4295,7 @@ inline OwnPtr<void> GetWindowICCProfile(WindowRef window)
   return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(window, &size))};
 }
 
-inline OwnPtr<void> Window::GetICCProfile() const
+inline OwnPtr<void> WindowBase::GetICCProfile() const
 {
   return SDL::GetWindowICCProfile(get());
 }
@@ -4307,7 +4316,7 @@ inline PixelFormat GetWindowPixelFormat(WindowRef window)
   return CheckError(SDL_GetWindowPixelFormat(window));
 }
 
-inline PixelFormat Window::GetPixelFormat() const
+inline PixelFormat WindowBase::GetPixelFormat() const
 {
   return SDL::GetWindowPixelFormat(get());
 }
@@ -4837,7 +4846,7 @@ inline WindowID GetWindowID(WindowRef window)
   return CheckError(SDL_GetWindowID(window));
 }
 
-inline WindowID Window::GetID() const { return SDL::GetWindowID(get()); }
+inline WindowID WindowBase::GetID() const { return SDL::GetWindowID(get()); }
 
 /**
  * Get a window from a stored ID.
@@ -4860,7 +4869,7 @@ inline WindowRef GetWindowFromID(WindowID id)
   return SDL_GetWindowFromID(id);
 }
 
-inline WindowRef Window::FromID(WindowID id)
+inline WindowRef WindowBase::FromID(WindowID id)
 {
   return SDL::GetWindowFromID(id);
 }
@@ -4883,7 +4892,7 @@ inline WindowRef GetWindowParent(WindowRef window)
   return SDL_GetWindowParent(window);
 }
 
-inline WindowRef Window::GetParent() const
+inline WindowRef WindowBase::GetParent() const
 {
   return SDL::GetWindowParent(get());
 }
@@ -5017,7 +5026,7 @@ inline PropertiesRef GetWindowProperties(WindowRef window)
   return CheckError(SDL_GetWindowProperties(window));
 }
 
-inline PropertiesRef Window::GetProperties() const
+inline PropertiesRef WindowBase::GetProperties() const
 {
   return SDL::GetWindowProperties(get());
 }
@@ -5200,7 +5209,7 @@ inline WindowFlags GetWindowFlags(WindowRef window)
   return SDL_GetWindowFlags(window);
 }
 
-inline WindowFlags Window::GetFlags() const
+inline WindowFlags WindowBase::GetFlags() const
 {
   return SDL::GetWindowFlags(get());
 }
@@ -5225,7 +5234,7 @@ inline void SetWindowTitle(WindowRef window, StringParam title)
   CheckError(SDL_SetWindowTitle(window, title));
 }
 
-inline void Window::SetTitle(StringParam title)
+inline void WindowBase::SetTitle(StringParam title)
 {
   SDL::SetWindowTitle(get(), std::move(title));
 }
@@ -5247,7 +5256,7 @@ inline const char* GetWindowTitle(WindowRef window)
   return SDL_GetWindowTitle(window);
 }
 
-inline const char* Window::GetTitle() const
+inline const char* WindowBase::GetTitle() const
 {
   return SDL::GetWindowTitle(get());
 }
@@ -5280,7 +5289,7 @@ inline void SetWindowIcon(WindowRef window, SurfaceRef icon)
   CheckError(SDL_SetWindowIcon(window, icon));
 }
 
-inline void Window::SetIcon(SurfaceRef icon)
+inline void WindowBase::SetIcon(SurfaceRef icon)
 {
   SDL::SetWindowIcon(get(), icon);
 }
@@ -5325,7 +5334,7 @@ inline void SetWindowPosition(WindowRef window, const PointRaw& p)
   CheckError(SDL_SetWindowPosition(window, p.x, p.y));
 }
 
-inline void Window::SetPosition(const PointRaw& p)
+inline void WindowBase::SetPosition(const PointRaw& p)
 {
   SDL::SetWindowPosition(get(), p);
 }
@@ -5383,12 +5392,12 @@ inline Point GetWindowPosition(WindowRef window)
   return p;
 }
 
-inline void Window::GetPosition(int* x, int* y) const
+inline void WindowBase::GetPosition(int* x, int* y) const
 {
   SDL::GetWindowPosition(get(), x, y);
 }
 
-inline Point Window::GetPosition() const
+inline Point WindowBase::GetPosition() const
 {
   return SDL::GetWindowPosition(get());
 }
@@ -5431,7 +5440,7 @@ inline void SetWindowSize(WindowRef window, const PointRaw& size)
   CheckError(SDL_SetWindowSize(window, size.x, size.y));
 }
 
-inline void Window::SetSize(const PointRaw& size)
+inline void WindowBase::SetSize(const PointRaw& size)
 {
   SDL::SetWindowSize(get(), size);
 }
@@ -5489,12 +5498,12 @@ inline Point GetWindowSize(WindowRef window)
   return p;
 }
 
-inline void Window::GetSize(int* w, int* h) const
+inline void WindowBase::GetSize(int* w, int* h) const
 {
   SDL::GetWindowSize(get(), w, h);
 }
 
-inline Point Window::GetSize() const { return SDL::GetWindowSize(get()); }
+inline Point WindowBase::GetSize() const { return SDL::GetWindowSize(get()); }
 
 /**
  * @brief Request the window's position and size to be set.
@@ -5514,7 +5523,7 @@ inline void SetWindowRect(WindowRef window, Rect rect)
   SetWindowSize(window, rect.GetSize());
 }
 
-inline void Window::SetRect(Rect rect) { SDL::SetWindowRect(get(), rect); }
+inline void WindowBase::SetRect(Rect rect) { SDL::SetWindowRect(get(), rect); }
 
 /**
  * Get the position and client size of a window.
@@ -5535,7 +5544,7 @@ inline Rect GetWindowRect(WindowRef window)
   return Rect{GetWindowPosition(window), GetWindowSize(window)};
 }
 
-inline Rect Window::GetRect() const { return SDL::GetWindowRect(get()); }
+inline Rect WindowBase::GetRect() const { return SDL::GetWindowRect(get()); }
 
 /**
  * Get the safe area for this window.
@@ -5561,7 +5570,7 @@ inline Rect GetWindowSafeArea(WindowRef window)
   return rect;
 }
 
-inline Rect Window::GetSafeArea() const
+inline Rect WindowBase::GetSafeArea() const
 {
   return SDL::GetWindowSafeArea(get());
 }
@@ -5610,7 +5619,7 @@ inline void SetWindowAspectRatio(WindowRef window,
   CheckError(SDL_SetWindowAspectRatio(window, min_aspect, max_aspect));
 }
 
-inline void Window::SetAspectRatio(float min_aspect, float max_aspect)
+inline void WindowBase::SetAspectRatio(float min_aspect, float max_aspect)
 {
   SDL::SetWindowAspectRatio(get(), min_aspect, max_aspect);
 }
@@ -5638,7 +5647,8 @@ inline void GetWindowAspectRatio(WindowRef window,
   CheckError(SDL_GetWindowAspectRatio(window, min_aspect, max_aspect));
 }
 
-inline void Window::GetAspectRatio(float* min_aspect, float* max_aspect) const
+inline void WindowBase::GetAspectRatio(float* min_aspect,
+                                       float* max_aspect) const
 {
   SDL::GetWindowAspectRatio(get(), min_aspect, max_aspect);
 }
@@ -5685,10 +5695,10 @@ inline void GetWindowBordersSize(WindowRef window,
   CheckError(SDL_GetWindowBordersSize(window, top, left, bottom, right));
 }
 
-inline void Window::GetBordersSize(int* top,
-                                   int* left,
-                                   int* bottom,
-                                   int* right) const
+inline void WindowBase::GetBordersSize(int* top,
+                                       int* left,
+                                       int* bottom,
+                                       int* right) const
 {
   SDL::GetWindowBordersSize(get(), top, left, bottom, right);
 }
@@ -5737,12 +5747,12 @@ inline Point GetWindowSizeInPixels(WindowRef window)
   return p;
 }
 
-inline void Window::GetSizeInPixels(int* w, int* h) const
+inline void WindowBase::GetSizeInPixels(int* w, int* h) const
 {
   SDL::GetWindowSizeInPixels(get(), w, h);
 }
 
-inline Point Window::GetSizeInPixels() const
+inline Point WindowBase::GetSizeInPixels() const
 {
   return SDL::GetWindowSizeInPixels(get());
 }
@@ -5766,7 +5776,7 @@ inline void SetWindowMinimumSize(WindowRef window, const PointRaw& p)
   CheckError(SDL_SetWindowMinimumSize(window, p.x, p.y));
 }
 
-inline void Window::SetMinimumSize(const PointRaw& p)
+inline void WindowBase::SetMinimumSize(const PointRaw& p)
 {
   SDL::SetWindowMinimumSize(get(), p);
 }
@@ -5793,7 +5803,7 @@ inline void GetWindowMinimumSize(WindowRef window, int* w, int* h)
   CheckError(SDL_GetWindowMinimumSize(window, w, h));
 }
 
-inline void Window::GetMinimumSize(int* w, int* h) const
+inline void WindowBase::GetMinimumSize(int* w, int* h) const
 {
   SDL::GetWindowMinimumSize(get(), w, h);
 }
@@ -5817,7 +5827,7 @@ inline void SetWindowMaximumSize(WindowRef window, const PointRaw& p)
   CheckError(SDL_SetWindowMaximumSize(window, p.x, p.y));
 }
 
-inline void Window::SetMaximumSize(const PointRaw& p)
+inline void WindowBase::SetMaximumSize(const PointRaw& p)
 {
   SDL::SetWindowMaximumSize(get(), p);
 }
@@ -5844,7 +5854,7 @@ inline void GetWindowMaximumSize(WindowRef window, int* w, int* h)
   CheckError(SDL_GetWindowMaximumSize(window, w, h));
 }
 
-inline void Window::GetMaximumSize(int* w, int* h) const
+inline void WindowBase::GetMaximumSize(int* w, int* h) const
 {
   SDL::GetWindowMaximumSize(get(), w, h);
 }
@@ -5873,7 +5883,7 @@ inline void SetWindowBordered(WindowRef window, bool bordered)
   CheckError(SDL_SetWindowBordered(window, bordered));
 }
 
-inline void Window::SetBordered(bool bordered)
+inline void WindowBase::SetBordered(bool bordered)
 {
   SDL::SetWindowBordered(get(), bordered);
 }
@@ -5902,7 +5912,7 @@ inline void SetWindowResizable(WindowRef window, bool resizable)
   CheckError(SDL_SetWindowResizable(window, resizable));
 }
 
-inline void Window::SetResizable(bool resizable)
+inline void WindowBase::SetResizable(bool resizable)
 {
   SDL::SetWindowResizable(get(), resizable);
 }
@@ -5928,7 +5938,7 @@ inline void SetWindowAlwaysOnTop(WindowRef window, bool on_top)
   CheckError(SDL_SetWindowAlwaysOnTop(window, on_top));
 }
 
-inline void Window::SetAlwaysOnTop(bool on_top)
+inline void WindowBase::SetAlwaysOnTop(bool on_top)
 {
   SDL::SetWindowAlwaysOnTop(get(), on_top);
 }
@@ -5968,7 +5978,7 @@ inline void SetWindowFillDocument(WindowRef window, bool fill)
   CheckError(SDL_SetWindowFillDocument(window, fill));
 }
 
-inline void Window::SetFillDocument(bool fill)
+inline void WindowBase::SetFillDocument(bool fill)
 {
   SDL::SetWindowFillDocument(get(), fill);
 }
@@ -5990,7 +6000,7 @@ inline void Window::SetFillDocument(bool fill)
  */
 inline void ShowWindow(WindowRef window) { CheckError(SDL_ShowWindow(window)); }
 
-inline void Window::Show() { SDL::ShowWindow(get()); }
+inline void WindowBase::Show() { SDL::ShowWindow(get()); }
 
 /**
  * Hide a window.
@@ -6007,7 +6017,7 @@ inline void Window::Show() { SDL::ShowWindow(get()); }
  */
 inline void HideWindow(WindowRef window) { CheckError(SDL_HideWindow(window)); }
 
-inline void Window::Hide() { SDL::HideWindow(get()); }
+inline void WindowBase::Hide() { SDL::HideWindow(get()); }
 
 /**
  * Request that a window be raised above other windows and gain the input focus.
@@ -6030,7 +6040,7 @@ inline void RaiseWindow(WindowRef window)
   CheckError(SDL_RaiseWindow(window));
 }
 
-inline void Window::Raise() { SDL::RaiseWindow(get()); }
+inline void WindowBase::Raise() { SDL::RaiseWindow(get()); }
 
 /**
  * Request that the window be made as large as possible.
@@ -6068,7 +6078,7 @@ inline void MaximizeWindow(WindowRef window)
   CheckError(SDL_MaximizeWindow(window));
 }
 
-inline void Window::Maximize() { SDL::MaximizeWindow(get()); }
+inline void WindowBase::Maximize() { SDL::MaximizeWindow(get()); }
 
 /**
  * Request that the window be minimized to an iconic representation.
@@ -6101,7 +6111,7 @@ inline void MinimizeWindow(WindowRef window)
   CheckError(SDL_MinimizeWindow(window));
 }
 
-inline void Window::Minimize() { SDL::MinimizeWindow(get()); }
+inline void WindowBase::Minimize() { SDL::MinimizeWindow(get()); }
 
 /**
  * Request that the size and position of a minimized or maximized window be
@@ -6135,7 +6145,7 @@ inline void RestoreWindow(WindowRef window)
   CheckError(SDL_RestoreWindow(window));
 }
 
-inline void Window::Restore() { SDL::RestoreWindow(get()); }
+inline void WindowBase::Restore() { SDL::RestoreWindow(get()); }
 
 /**
  * Request that the window's fullscreen state be changed.
@@ -6171,7 +6181,7 @@ inline void SetWindowFullscreen(WindowRef window, bool fullscreen)
   CheckError(SDL_SetWindowFullscreen(window, fullscreen));
 }
 
-inline void Window::SetFullscreen(bool fullscreen)
+inline void WindowBase::SetFullscreen(bool fullscreen)
 {
   SDL::SetWindowFullscreen(get(), fullscreen);
 }
@@ -6207,7 +6217,7 @@ inline void Window::SetFullscreen(bool fullscreen)
  */
 inline bool SyncWindow(WindowRef window) { return SDL_SyncWindow(window); }
 
-inline bool Window::Sync() { return SDL::SyncWindow(get()); }
+inline bool WindowBase::Sync() { return SDL::SyncWindow(get()); }
 
 /**
  * Return whether the window has a surface associated with it.
@@ -6227,7 +6237,10 @@ inline bool WindowHasSurface(WindowRef window)
   return SDL_WindowHasSurface(window);
 }
 
-inline bool Window::HasSurface() const { return SDL::WindowHasSurface(get()); }
+inline bool WindowBase::HasSurface() const
+{
+  return SDL::WindowHasSurface(get());
+}
 
 /**
  * Get the SDL surface associated with the window.
@@ -6261,7 +6274,7 @@ inline Surface GetWindowSurface(WindowRef window)
   return Surface::Borrow(CheckError(SDL_GetWindowSurface(window)));
 }
 
-inline Surface Window::GetSurface() { return SDL::GetWindowSurface(get()); }
+inline Surface WindowBase::GetSurface() { return SDL::GetWindowSurface(get()); }
 
 /**
  * Toggle VSync for the window surface.
@@ -6291,7 +6304,7 @@ inline void SetWindowSurfaceVSync(WindowRef window, int vsync)
   CheckError(SDL_SetWindowSurfaceVSync(window, vsync));
 }
 
-inline void Window::SetSurfaceVSync(int vsync)
+inline void WindowBase::SetSurfaceVSync(int vsync)
 {
   SDL::SetWindowSurfaceVSync(get(), vsync);
 }
@@ -6323,7 +6336,7 @@ inline int GetWindowSurfaceVSync(WindowRef window)
   return vsync;
 }
 
-inline int Window::GetSurfaceVSync() const
+inline int WindowBase::GetSurfaceVSync() const
 {
   return SDL::GetWindowSurfaceVSync(get());
 }
@@ -6351,7 +6364,7 @@ inline void UpdateWindowSurface(WindowRef window)
   CheckError(SDL_UpdateWindowSurface(window));
 }
 
-inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(get()); }
+inline void WindowBase::UpdateSurface() { SDL::UpdateWindowSurface(get()); }
 
 /**
  * Copy areas of the window surface to the screen.
@@ -6385,7 +6398,7 @@ inline void UpdateWindowSurfaceRects(WindowRef window,
     window, rects.data(), narrowS32(rects.size())));
 }
 
-inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
+inline void WindowBase::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
 {
   SDL::UpdateWindowSurfaceRects(get(), rects);
 }
@@ -6408,7 +6421,7 @@ inline void DestroyWindowSurface(WindowRef window)
   CheckError(SDL_DestroyWindowSurface(window));
 }
 
-inline void Window::DestroySurface() { SDL::DestroyWindowSurface(get()); }
+inline void WindowBase::DestroySurface() { SDL::DestroyWindowSurface(get()); }
 
 /**
  * Set a window's keyboard grab mode.
@@ -6444,7 +6457,7 @@ inline void SetWindowKeyboardGrab(WindowRef window, bool grabbed)
   CheckError(SDL_SetWindowKeyboardGrab(window, grabbed));
 }
 
-inline void Window::SetKeyboardGrab(bool grabbed)
+inline void WindowBase::SetKeyboardGrab(bool grabbed)
 {
   SDL::SetWindowKeyboardGrab(get(), grabbed);
 }
@@ -6471,7 +6484,7 @@ inline void SetWindowMouseGrab(WindowRef window, bool grabbed)
   CheckError(SDL_SetWindowMouseGrab(window, grabbed));
 }
 
-inline void Window::SetMouseGrab(bool grabbed)
+inline void WindowBase::SetMouseGrab(bool grabbed)
 {
   SDL::SetWindowMouseGrab(get(), grabbed);
 }
@@ -6493,7 +6506,7 @@ inline bool GetWindowKeyboardGrab(WindowRef window)
   return SDL_GetWindowKeyboardGrab(window);
 }
 
-inline bool Window::GetKeyboardGrab() const
+inline bool WindowBase::GetKeyboardGrab() const
 {
   return SDL::GetWindowKeyboardGrab(get());
 }
@@ -6518,7 +6531,7 @@ inline bool GetWindowMouseGrab(WindowRef window)
   return SDL_GetWindowMouseGrab(window);
 }
 
-inline bool Window::GetMouseGrab() const
+inline bool WindowBase::GetMouseGrab() const
 {
   return SDL::GetWindowMouseGrab(get());
 }
@@ -6537,7 +6550,7 @@ inline bool Window::GetMouseGrab() const
  */
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 
-inline WindowRef Window::GetGrabbed() { return SDL::GetGrabbedWindow(); }
+inline WindowRef WindowBase::GetGrabbed() { return SDL::GetGrabbedWindow(); }
 
 /**
  * Confines the cursor to the specified area of a window.
@@ -6563,7 +6576,7 @@ inline void SetWindowMouseRect(WindowRef window, const RectRaw& rect)
   CheckError(SDL_SetWindowMouseRect(window, &rect));
 }
 
-inline void Window::SetMouseRect(const RectRaw& rect)
+inline void WindowBase::SetMouseRect(const RectRaw& rect)
 {
   SDL::SetWindowMouseRect(get(), rect);
 }
@@ -6588,7 +6601,7 @@ inline const RectRaw* GetWindowMouseRect(WindowRef window)
   return SDL_GetWindowMouseRect(window);
 }
 
-inline const RectRaw* Window::GetMouseRect() const
+inline const RectRaw* WindowBase::GetMouseRect() const
 {
   return SDL::GetWindowMouseRect(get());
 }
@@ -6616,7 +6629,7 @@ inline void SetWindowOpacity(WindowRef window, float opacity)
   CheckError(SDL_SetWindowOpacity(window, opacity));
 }
 
-inline void Window::SetOpacity(float opacity)
+inline void WindowBase::SetOpacity(float opacity)
 {
   SDL::SetWindowOpacity(get(), opacity);
 }
@@ -6642,7 +6655,10 @@ inline float GetWindowOpacity(WindowRef window)
   return SDL_GetWindowOpacity(window);
 }
 
-inline float Window::GetOpacity() const { return SDL::GetWindowOpacity(get()); }
+inline float WindowBase::GetOpacity() const
+{
+  return SDL::GetWindowOpacity(get());
+}
 
 /**
  * Set the window as a child of a parent window.
@@ -6680,7 +6696,7 @@ inline void SetWindowParent(WindowRef window, WindowRef parent)
   CheckError(SDL_SetWindowParent(window, parent));
 }
 
-inline void Window::SetParent(WindowRef parent)
+inline void WindowBase::SetParent(WindowRef parent)
 {
   SDL::SetWindowParent(get(), parent);
 }
@@ -6707,7 +6723,10 @@ inline void SetWindowModal(WindowRef window, bool modal)
   CheckError(SDL_SetWindowModal(window, modal));
 }
 
-inline void Window::SetModal(bool modal) { SDL::SetWindowModal(get(), modal); }
+inline void WindowBase::SetModal(bool modal)
+{
+  SDL::SetWindowModal(get(), modal);
+}
 
 /**
  * Set whether the window may have input focus.
@@ -6725,7 +6744,7 @@ inline void SetWindowFocusable(WindowRef window, bool focusable)
   CheckError(SDL_SetWindowFocusable(window, focusable));
 }
 
-inline void Window::SetFocusable(bool focusable)
+inline void WindowBase::SetFocusable(bool focusable)
 {
   SDL::SetWindowFocusable(get(), focusable);
 }
@@ -6755,7 +6774,7 @@ inline void ShowWindowSystemMenu(WindowRef window, const PointRaw& p)
   CheckError(SDL_ShowWindowSystemMenu(window, p.x, p.y));
 }
 
-inline void Window::ShowSystemMenu(const PointRaw& p)
+inline void WindowBase::ShowSystemMenu(const PointRaw& p)
 {
   SDL::ShowWindowSystemMenu(get(), p);
 }
@@ -6853,12 +6872,12 @@ inline void SetWindowHitTest(WindowRef window, HitTestCB callback)
   SetWindowHitTest(window, callback.wrapper, callback.data);
 }
 
-inline void Window::SetHitTest(HitTest callback, void* callback_data)
+inline void WindowBase::SetHitTest(HitTest callback, void* callback_data)
 {
   SDL::SetWindowHitTest(get(), callback, callback_data);
 }
 
-inline void Window::SetHitTest(HitTestCB callback)
+inline void WindowBase::SetHitTest(HitTestCB callback)
 {
   SDL::SetWindowHitTest(get(), callback);
 }
@@ -6892,7 +6911,7 @@ inline void SetWindowShape(WindowRef window, SurfaceRef shape)
   CheckError(SDL_SetWindowShape(window, shape));
 }
 
-inline void Window::SetShape(SurfaceRef shape)
+inline void WindowBase::SetShape(SurfaceRef shape)
 {
   SDL::SetWindowShape(get(), shape);
 }
@@ -6913,7 +6932,7 @@ inline void FlashWindow(WindowRef window, FlashOperation operation)
   CheckError(SDL_FlashWindow(window, operation));
 }
 
-inline void Window::Flash(FlashOperation operation)
+inline void WindowBase::Flash(FlashOperation operation)
 {
   SDL::FlashWindow(get(), operation);
 }
@@ -6924,8 +6943,8 @@ inline void Window::Flash(FlashOperation operation)
  * Sets the state of the progress bar for the given window’s taskbar icon.
  *
  * @param window the window whose progress state is to be modified.
- * @param state the progress state. `PROGRESS_STATE_NONE` stops displaying
- *              the progress bar.
+ * @param state the progress state. `PROGRESS_STATE_NONE` stops displaying the
+ *              progress bar.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -6937,7 +6956,7 @@ inline void SetWindowProgressState(WindowRef window, ProgressState state)
   CheckError(SDL_SetWindowProgressState(window, state));
 }
 
-inline void Window::SetProgressState(ProgressState state)
+inline void WindowBase::SetProgressState(ProgressState state)
 {
   SDL::SetWindowProgressState(get(), state);
 }
@@ -6958,7 +6977,7 @@ inline ProgressState GetWindowProgressState(WindowRef window)
   return SDL_GetWindowProgressState(window);
 }
 
-inline ProgressState Window::GetProgressState()
+inline ProgressState WindowBase::GetProgressState()
 {
   return SDL::GetWindowProgressState(get());
 }
@@ -6980,7 +6999,7 @@ inline void SetWindowProgressValue(WindowRef window, float value)
   CheckError(SDL_SetWindowProgressValue(window, value));
 }
 
-inline void Window::SetProgressValue(float value)
+inline void WindowBase::SetProgressValue(float value)
 {
   SDL::SetWindowProgressValue(get(), value);
 }
@@ -7001,7 +7020,7 @@ inline float GetWindowProgressValue(WindowRef window)
   return SDL_GetWindowProgressValue(window);
 }
 
-inline float Window::GetProgressValue()
+inline float WindowBase::GetProgressValue()
 {
   return SDL::GetWindowProgressValue(get());
 }
@@ -7029,7 +7048,7 @@ inline float Window::GetProgressValue()
  */
 inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
 
-inline void Window::Destroy() { DestroyWindow(release()); }
+inline void WindowBase::Destroy() { DestroyWindow(release()); }
 
 /**
  * Check whether the screensaver is currently enabled.
@@ -7314,7 +7333,7 @@ inline GLContext GL_CreateContext(WindowRef window)
   return GLContext(window);
 }
 
-inline GLContext Window::CreateGLContext() { return GLContext(get()); }
+inline GLContext WindowBase::CreateGLContext() { return GLContext(get()); }
 
 inline GLContext::GLContext(WindowRef window)
   : GLContext(SDL_GL_CreateContext(window))
@@ -7338,17 +7357,17 @@ inline GLContext::GLContext(WindowRef window)
  */
 inline void GL_MakeCurrent(WindowRef window, GLContext context)
 {
-  CheckError(SDL_GL_MakeCurrent(window, context.get()));
+  CheckError(SDL_GL_MakeCurrent(window, context));
 }
 
-inline void Window::MakeCurrent(GLContext context)
+inline void WindowBase::MakeCurrent(GLContext context)
 {
   SDL::GL_MakeCurrent(get(), context);
 }
 
 inline void GLContext::MakeCurrent(WindowRef window)
 {
-  SDL::GL_MakeCurrent(window, get());
+  GL_MakeCurrent(window, get());
 }
 
 /**
@@ -7364,7 +7383,7 @@ inline void GLContext::MakeCurrent(WindowRef window)
  */
 inline WindowRef GL_GetCurrentWindow()
 {
-  return {CheckError(SDL_GL_GetCurrentWindow())};
+  return CheckError(SDL_GL_GetCurrentWindow());
 }
 
 /**
@@ -7424,7 +7443,7 @@ inline EGLSurface EGL_GetWindowSurface(WindowRef window)
   return SDL_EGL_GetWindowSurface(window);
 }
 
-inline EGLSurface Window::GetEGLSurface()
+inline EGLSurface WindowBase::GetEGLSurface()
 {
   return SDL::EGL_GetWindowSurface(get());
 }
@@ -7539,7 +7558,7 @@ inline void GL_SwapWindow(WindowRef window)
   CheckError(SDL_GL_SwapWindow(window));
 }
 
-inline void Window::GL_Swap() { SDL::GL_SwapWindow(get()); }
+inline void WindowBase::GL_Swap() { SDL::GL_SwapWindow(get()); }
 
 /**
  * Delete an OpenGL context.

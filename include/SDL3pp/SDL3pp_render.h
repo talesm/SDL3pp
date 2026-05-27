@@ -4014,7 +4014,7 @@ inline Renderer CreateSoftwareRenderer(SurfaceRef surface)
   return Renderer(surface);
 }
 
-inline RendererRef Window::GetRenderer() const
+inline RendererRef WindowBase::GetRenderer() const
 {
   return CheckError(SDL_GetRenderer(get()));
 }

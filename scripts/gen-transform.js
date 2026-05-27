@@ -2619,29 +2619,29 @@ const transform = {
           "name": "Keycode::Keycode"
         },
         "SDL_StartTextInput": {
-          name: "Window::StartTextInput",
+          name: "WindowBase::StartTextInput",
         },
         "SDL_StartTextInputWithProperties": {
-          name: "Window::StartTextInput",
+          name: "WindowBase::StartTextInput",
         },
         "SDL_TextInputActive": {
-          name: "Window::IsTextInputActive",
+          name: "WindowBase::IsTextInputActive",
           immutable: true,
         },
         "SDL_StopTextInput": {
-          name: "Window::StopTextInput",
+          name: "WindowBase::StopTextInput",
         },
         "SDL_ClearComposition": {
-          name: "Window::ClearComposition",
+          name: "WindowBase::ClearComposition",
         },
         "SDL_SetTextInputArea": {
-          name: "Window::SetTextInputArea",
+          name: "WindowBase::SetTextInputArea",
         },
         "SDL_GetTextInputArea": {
-          name: "Window::GetTextInputArea",
+          name: "WindowBase::GetTextInputArea",
         },
         "SDL_ScreenKeyboardShown": {
-          name: "Window::IsScreenKeyboardShown",
+          name: "WindowBase::IsScreenKeyboardShown",
           immutable: true,
         }
       }
@@ -3268,7 +3268,7 @@ const transform = {
           parameters: []
         },
         "SDL_WarpMouseInWindow": {
-          name: "Window::WarpMouse"
+          name: "WindowBase::WarpMouse"
         },
         "SDL_WarpMouseGlobal": {
           name: "WarpMouse"
@@ -3281,10 +3281,10 @@ const transform = {
           parameters: [{ type: "MouseMotionTransformCB", name: "callback" }],
         },
         "SDL_SetWindowRelativeMouseMode": {
-          name: "Window::SetRelativeMouseMode"
+          name: "WindowBase::SetRelativeMouseMode"
         },
         "SDL_GetWindowRelativeMouseMode": {
-          name: "Window::GetRelativeMouseMode",
+          name: "WindowBase::GetRelativeMouseMode",
           immutable: true,
         }
       }
@@ -4865,7 +4865,7 @@ const transform = {
           },
         },
         "SDL_GetRenderer": {
-          name: "Window::GetRenderer",
+          name: "WindowBase::GetRenderer",
           immutable: true,
         },
         "SDL_GetRenderWindow": {

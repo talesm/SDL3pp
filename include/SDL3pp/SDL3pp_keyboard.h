@@ -223,9 +223,12 @@ inline const char* Keycode::GetName() const
   return SDL_GetKeyName(m_keycode);
 }
 
-inline void Window::StartTextInput() { CheckError(SDL_StartTextInput(get())); }
+inline void WindowBase::StartTextInput()
+{
+  CheckError(SDL_StartTextInput(get()));
+}
 
-inline void Window::StartTextInput(PropertiesRef props)
+inline void WindowBase::StartTextInput(PropertiesRef props)
 {
   CheckError(SDL_StartTextInputWithProperties(get(), props));
 }
@@ -239,7 +242,7 @@ inline void Window::StartTextInput(PropertiesRef props)
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa Window.StartTextInput
+ * @sa WindowBase.StartTextInput
  */
 using TextInputType = SDL_TextInputType;
 
@@ -283,7 +286,7 @@ constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa Window.StartTextInput
+ * @sa WindowBase.StartTextInput
  */
 using Capitalization = SDL_Capitalization;
 
@@ -333,24 +336,27 @@ constexpr auto ANDROID_INPUTTYPE_NUMBER =
 
 } // namespace prop::TextInput
 
-inline bool Window::IsTextInputActive() const
+inline bool WindowBase::IsTextInputActive() const
 {
   return SDL_TextInputActive(get());
 }
 
-inline void Window::StopTextInput() { CheckError(SDL_StopTextInput(get())); }
+inline void WindowBase::StopTextInput()
+{
+  CheckError(SDL_StopTextInput(get()));
+}
 
-inline void Window::ClearComposition()
+inline void WindowBase::ClearComposition()
 {
   CheckError(SDL_ClearComposition(get()));
 }
 
-inline void Window::SetTextInputArea(const RectRaw& rect, int cursor)
+inline void WindowBase::SetTextInputArea(const RectRaw& rect, int cursor)
 {
   CheckError(SDL_SetTextInputArea(get(), &rect, cursor));
 }
 
-inline void Window::GetTextInputArea(RectRaw* rect, int* cursor)
+inline void WindowBase::GetTextInputArea(RectRaw* rect, int* cursor)
 {
   CheckError(SDL_GetTextInputArea(get(), rect, cursor));
 }
@@ -365,15 +371,15 @@ inline void Window::GetTextInputArea(RectRaw* rect, int* cursor)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.StartTextInput
- * @sa Window.IsScreenKeyboardShown
+ * @sa WindowBase.StartTextInput
+ * @sa WindowBase.IsScreenKeyboardShown
  */
 inline bool HasScreenKeyboardSupport()
 {
   return SDL_HasScreenKeyboardSupport();
 }
 
-inline bool Window::IsScreenKeyboardShown() const
+inline bool WindowBase::IsScreenKeyboardShown() const
 {
   return SDL_ScreenKeyboardShown(get());
 }
