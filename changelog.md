@@ -1,5 +1,52 @@
 # Changelog
 
+## Version 0.11.0
+
+Simplify and refactor resource system.
+
+Breaking changes:
+
+- Remove old entry point (break compat);
+- Properties::Create is now a constructor;
+- Refactor resource to become less hack-y (probably breaking compat):
+  - Create new ResourceBase and make ResourceOwned derive from it;
+    - It has the constructors to nullptr (default) and constructor from Raw;
+    - Everything is trivial;
+    - Dtor is trivial, but protected
+  - Move all methods to ResourceBase, except constructors;
+  - Create ResourceBaseT absorbs common functionality from new ResourceBase
+  - New ResourceRef is derived explicitly from ResourceBase:
+    - Can be also constructed from Any const ResourceBase &;
+    - Can be converted to raw resource;
+  - New ResourceRefT becomes template to new ResourceRef
+- Rename StartTextInput overload with properties to
+  StartTextInputWithProperties;
+- Rename Borrow() to borrow();
+- Make TextEngine behave as ResourceBase:
+  - Remove TextEngineBase::Destroy();
+  - Remove restrictions on copy;
+  - Make TextEngineRef based on ResourceRefT;
+
+Non-breaking changes
+
+- Document refers to free functions instead of method versions;
+- Fix ObjectRef(nullptr).
+- Add standalone functions for window related methods defined in different
+  files:
+  - StartTextInput();
+  - StartTextInputWithProperties();
+  - TextInputActive();
+  - StopTextInput();
+  - ClearComposition();
+  - SetTextInputArea();
+  - GetTextInputArea();
+  - ScreenKeyboardShown
+  - WarpMouseInWindow();
+  - SetWindowRelativeMouseMode();
+  - GetWindowRelativeMouseMode();
+  - GetRenderer();
+- TextEngineRef now has access to its methods;
+
 ## Version 0.10.2
 
 Improve ergonomics on SDL::Rect and related structs. Also add experimental
