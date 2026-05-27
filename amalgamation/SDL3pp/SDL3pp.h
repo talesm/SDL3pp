@@ -106466,6 +106466,9 @@ using TextEngineRaw = TTF_TextEngine*;
 using TextEngineRef = ResourceLegacyRef<TextEngineRaw>;
 
 // Forward decl
+struct TextBase;
+
+// Forward decl
 struct Text;
 
 /// Alias to raw representation for Text.
@@ -106479,7 +106482,7 @@ using TextRawConst = const TTF_Text*;
  *
  * This does not take ownership!
  */
-using TextRef = ResourceRef<Text>;
+using TextRef = ResourceRefT<TextBase>;
 
 /// Safely wrap Text for non owning const parameters
 using TextConstRef = ResourceConstRef<TextRaw, TextRawConst>;
@@ -110267,9 +110270,9 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
  *
  * @cat resource
  */
-struct TextEngine : ResourceBase<TextEngineRaw>
+struct TextEngine : ResourceBaseT<TextEngineRaw>
 {
-  using ResourceBase::ResourceBase;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Constructs from raw TextEngine.
@@ -110279,7 +110282,7 @@ struct TextEngine : ResourceBase<TextEngineRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit TextEngine(TextEngineRaw resource) noexcept
-    : ResourceBase(resource)
+    : ResourceBaseT(resource)
   {
   }
 
@@ -110304,9 +110307,6 @@ struct TextEngine : ResourceBase<TextEngineRaw>
 
   /// Assignment operator.
   TextEngine& operator=(const TextEngine& other) = delete;
-
-  /// frees up textEngine. Pure virtual
-  virtual void Destroy() = 0;
 
   /**
    * Create a text object from UTF-8 text and a text engine.
@@ -110363,7 +110363,7 @@ struct SurfaceTextEngine : TextEngine
    *
    * @sa CreateSurfaceTextEngine
    */
-  void Destroy() final;
+  void Destroy();
 };
 
 /// A renderer based text engine
@@ -110432,7 +110432,7 @@ struct RendererTextEngine : TextEngine
    *
    * @sa CreateRendererTextEngine
    */
-  void Destroy() final;
+  void Destroy();
 };
 
 /// A GPU based text engine
@@ -110532,7 +110532,7 @@ struct GPUTextEngine : TextEngine
    *
    * @sa CreateGPUTextEngine
    */
-  void Destroy() final;
+  void Destroy();
 };
 
 /**
@@ -110569,79 +110569,16 @@ struct SubStringIterator;
 using TextData = TTF_TextData;
 
 /**
- * Text created with CreateText()
+ * Base class to Text.
  *
- * @since This struct is available since SDL_ttf 3.0.0.
- *
- * @sa CreateText
- * @sa GetTextProperties
- * @sa DestroyText
- *
- * @cat resource
+ * @see Text
  */
-struct Text : ResourceBase<TextRaw, TextRawConst>
+struct TextBase : ResourceBaseT<TextRaw, TextRawConst>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Text.
-   *
-   * @param resource a TextRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Text(TextRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Text(const Text& other) = delete;
-
-  /// Move constructor
-  constexpr Text(Text&& other) noexcept
-    : Text(other.release())
-  {
-  }
-
-  constexpr Text(const TextRef& other) = delete;
-
-  constexpr Text(TextRef&& other) = delete;
-
-  /**
-   * Create a text object from UTF-8 text and a text engine.
-   *
-   * @param engine the text engine to use when creating the text object, may be
-   *               nullptr.
-   * @param font the font to render with.
-   * @param text the text to use, in UTF-8 encoding.
-   * @post a Text object or nullptr on failure; call GetError() for more
-   *       information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               font and text engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa DestroyText
-   */
-  Text(TextEngineRef engine, FontRef font, std::string_view text);
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to TextConstRef
   constexpr operator TextConstRef() const noexcept { return get(); }
-
-  /// Destructor
-  ~Text() { TTF_DestroyText(get()); }
-
-  /// Assignment operator.
-  constexpr Text& operator=(Text&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Text& operator=(const Text& other) = delete;
 
   /**
    * Destroy a text object created by a text engine.
@@ -111435,6 +111372,72 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
 };
 
 /**
+ * Text created with CreateText()
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ *
+ * @sa CreateText
+ * @sa GetTextProperties
+ * @sa DestroyText
+ *
+ * @cat resource
+ */
+struct Text : TextBase
+{
+  using TextBase::TextBase;
+
+  /**
+   * Constructs from raw Text.
+   *
+   * @param resource a TextRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Text(TextRaw resource) noexcept
+    : TextBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Text(const Text& other) = delete;
+
+  /// Move constructor
+  constexpr Text(Text&& other) noexcept
+    : Text(other.release())
+  {
+  }
+
+  /**
+   * Create a text object from UTF-8 text and a text engine.
+   *
+   * @param engine the text engine to use when creating the text object, may be
+   *               nullptr.
+   * @param font the font to render with.
+   * @param text the text to use, in UTF-8 encoding.
+   * @post a Text object or nullptr on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               font and text engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa DestroyText
+   */
+  Text(TextEngineRef engine, FontRef font, std::string_view text);
+
+  /// Destructor
+  ~Text() { TTF_DestroyText(get()); }
+
+  /// Assignment operator.
+  constexpr Text& operator=(Text&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Iterator for substrings
  *
  */
@@ -111553,7 +111556,7 @@ inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceRef surface)
   CheckError(TTF_DrawSurfaceText(text, p.x, p.y, surface));
 }
 
-inline void Text::DrawSurface(Point p, SurfaceRef surface) const
+inline void TextBase::DrawSurface(Point p, SurfaceRef surface) const
 {
   SDL::DrawSurfaceText(get(), p, surface);
 }
@@ -111688,7 +111691,7 @@ inline void DrawRendererText(TextConstRef text, FPoint p)
   CheckError(TTF_DrawRendererText(text, p.x, p.y));
 }
 
-inline void Text::DrawRenderer(FPoint p) const
+inline void TextBase::DrawRenderer(FPoint p) const
 {
   SDL::DrawRendererText(get(), p);
 }
@@ -111827,7 +111830,7 @@ inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstRef text)
   return TTF_GetGPUTextDrawData(text);
 }
 
-inline GPUAtlasDrawSequence* Text::GetGPUDrawData() const
+inline GPUAtlasDrawSequence* TextBase::GetGPUDrawData() const
 {
   return SDL::GetGPUTextDrawData(get());
 }
@@ -111957,7 +111960,7 @@ inline PropertiesRef GetTextProperties(TextConstRef text)
   return {CheckError(TTF_GetTextProperties(text))};
 }
 
-inline PropertiesRef Text::GetProperties() const
+inline PropertiesRef TextBase::GetProperties() const
 {
   return SDL::GetTextProperties(get());
 }
@@ -111983,7 +111986,7 @@ inline void SetTextEngine(TextRef text, TextEngineRef engine)
   CheckError(TTF_SetTextEngine(text, engine));
 }
 
-inline void Text::SetEngine(TextEngineRef engine)
+inline void TextBase::SetEngine(TextEngineRef engine)
 {
   SDL::SetTextEngine(get(), engine);
 }
@@ -112007,7 +112010,7 @@ inline TextEngineRef GetTextEngine(TextConstRef text)
   return CheckError(TTF_GetTextEngine(text));
 }
 
-inline TextEngineRef Text::GetEngine() const
+inline TextEngineRef TextBase::GetEngine() const
 {
   return SDL::GetTextEngine(get());
 }
@@ -112038,7 +112041,7 @@ inline bool SetTextFont(TextRef text, FontRef font)
   return TTF_SetTextFont(text, font);
 }
 
-inline bool Text::SetFont(FontRef font)
+inline bool TextBase::SetFont(FontRef font)
 {
   return SDL::SetTextFont(get(), font);
 }
@@ -112059,10 +112062,10 @@ inline bool Text::SetFont(FontRef font)
  */
 inline FontRef GetTextFont(TextConstRef text)
 {
-  return {CheckError(TTF_GetTextFont(text))};
+  return CheckError(TTF_GetTextFont(text));
 }
 
-inline FontRef Text::GetFont() const { return SDL::GetTextFont(get()); }
+inline FontRef TextBase::GetFont() const { return SDL::GetTextFont(get()); }
 
 /**
  * Set the direction to be used for text shaping a text object.
@@ -112084,7 +112087,7 @@ inline void SetTextDirection(TextRef text, Direction direction)
   CheckError(TTF_SetTextDirection(text, direction));
 }
 
-inline void Text::SetDirection(Direction direction)
+inline void TextBase::SetDirection(Direction direction)
 {
   SDL::SetTextDirection(get(), direction);
 }
@@ -112107,7 +112110,7 @@ inline Direction GetTextDirection(TextConstRef text)
   return TTF_GetTextDirection(text);
 }
 
-inline Direction Text::GetDirection() const
+inline Direction TextBase::GetDirection() const
 {
   return SDL::GetTextDirection(get());
 }
@@ -112134,7 +112137,7 @@ inline void SetTextScript(TextRef text, Uint32 script)
   CheckError(TTF_SetTextScript(text, script));
 }
 
-inline void Text::SetScript(Uint32 script)
+inline void TextBase::SetScript(Uint32 script)
 {
   SDL::SetTextScript(get(), script);
 }
@@ -112161,7 +112164,7 @@ inline Uint32 GetTextScript(TextConstRef text)
   return TTF_GetTextScript(text);
 }
 
-inline Uint32 Text::GetScript() const { return SDL::GetTextScript(get()); }
+inline Uint32 TextBase::GetScript() const { return SDL::GetTextScript(get()); }
 
 /**
  * Set the color of a text object.
@@ -112185,7 +112188,7 @@ inline void SetTextColor(TextRef text, Color c)
   CheckError(TTF_SetTextColor(text, c.r, c.g, c.b, c.a));
 }
 
-inline void Text::SetColor(Color c) { SDL::SetTextColor(get(), c); }
+inline void TextBase::SetColor(Color c) { SDL::SetTextColor(get(), c); }
 
 /**
  * Set the color of a text object.
@@ -112209,7 +112212,7 @@ inline void SetTextColorFloat(TextRef text, FColor c)
   CheckError(TTF_SetTextColorFloat(text, c.r, c.g, c.b, c.a));
 }
 
-inline void Text::SetColorFloat(FColor c) { SDL::SetTextColorFloat(get(), c); }
+inline void TextBase::SetColorFloat(FColor c) { SetTextColorFloat(get(), c); }
 
 /**
  * Get the color of a text object.
@@ -112264,12 +112267,12 @@ inline Color GetTextColor(TextRef text)
   return c;
 }
 
-inline void Text::GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
+inline void TextBase::GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
 {
   SDL::GetTextColor(get(), r, g, b, a);
 }
 
-inline Color Text::GetColor() const { return SDL::GetTextColor(get()); }
+inline Color TextBase::GetColor() const { return SDL::GetTextColor(get()); }
 
 /**
  * Get the color of a text object.
@@ -112324,12 +112327,15 @@ inline FColor GetTextColorFloat(TextRef text)
   return c;
 }
 
-inline void Text::GetColorFloat(float* r, float* g, float* b, float* a) const
+inline void TextBase::GetColorFloat(float* r,
+                                    float* g,
+                                    float* b,
+                                    float* a) const
 {
   SDL::GetTextColorFloat(get(), r, g, b, a);
 }
 
-inline FColor Text::GetColorFloat() const
+inline FColor TextBase::GetColorFloat() const
 {
   return SDL::GetTextColorFloat(get());
 }
@@ -112358,7 +112364,7 @@ inline void SetTextPosition(TextRef text, const PointRaw& p)
   CheckError(TTF_SetTextPosition(text, p.x, p.y));
 }
 
-inline void Text::SetPosition(const PointRaw& p)
+inline void TextBase::SetPosition(const PointRaw& p)
 {
   SDL::SetTextPosition(get(), p);
 }
@@ -112407,12 +112413,12 @@ inline Point GetTextPosition(TextRef text)
   return p;
 }
 
-inline void Text::GetPosition(int* x, int* y) const
+inline void TextBase::GetPosition(int* x, int* y) const
 {
   SDL::GetTextPosition(get(), x, y);
 }
 
-inline Point Text::GetPosition() const { return SDL::GetTextPosition(get()); }
+inline Point TextBase::GetPosition() const { return GetTextPosition(get()); }
 
 /**
  * Set whether wrapping is enabled on a text object.
@@ -112436,7 +112442,7 @@ inline void SetTextWrapWidth(TextRef text, int wrap_width)
   CheckError(TTF_SetTextWrapWidth(text, wrap_width));
 }
 
-inline void Text::SetWrapWidth(int wrap_width)
+inline void TextBase::SetWrapWidth(int wrap_width)
 {
   SDL::SetTextWrapWidth(get(), wrap_width);
 }
@@ -112463,7 +112469,7 @@ inline int GetTextWrapWidth(TextConstRef text)
   return w;
 }
 
-inline int Text::GetWrapWidth() const { return SDL::GetTextWrapWidth(get()); }
+inline int TextBase::GetWrapWidth() const { return GetTextWrapWidth(get()); }
 
 /**
  * Set whether whitespace should be visible when wrapping a text object.
@@ -112490,7 +112496,7 @@ inline void SetTextWrapWhitespaceVisible(TextRef text, bool visible)
   CheckError(TTF_SetTextWrapWhitespaceVisible(text, visible));
 }
 
-inline void Text::SetWrapWhitespaceVisible(bool visible)
+inline void TextBase::SetWrapWhitespaceVisible(bool visible)
 {
   SDL::SetTextWrapWhitespaceVisible(get(), visible);
 }
@@ -112513,7 +112519,7 @@ inline bool TextWrapWhitespaceVisible(TextConstRef text)
   return TTF_TextWrapWhitespaceVisible(text);
 }
 
-inline bool Text::IsWrapWhitespaceVisible() const
+inline bool TextBase::IsWrapWhitespaceVisible() const
 {
   return SDL::TextWrapWhitespaceVisible(get());
 }
@@ -112541,7 +112547,7 @@ inline void SetTextString(TextRef text, std::string_view string)
   CheckError(TTF_SetTextString(text, string.data(), string.size()));
 }
 
-inline void Text::SetString(std::string_view string)
+inline void TextBase::SetString(std::string_view string)
 {
   SDL::SetTextString(get(), string);
 }
@@ -112573,7 +112579,7 @@ inline void InsertTextString(TextRef text, int offset, std::string_view string)
   CheckError(TTF_InsertTextString(text, offset, string.data(), string.size()));
 }
 
-inline void Text::InsertString(int offset, std::string_view string)
+inline void TextBase::InsertString(int offset, std::string_view string)
 {
   SDL::InsertTextString(get(), offset, string);
 }
@@ -112601,7 +112607,7 @@ inline void AppendTextString(TextRef text, std::string_view string)
   CheckError(TTF_AppendTextString(text, string.data(), string.size()));
 }
 
-inline void Text::AppendString(std::string_view string)
+inline void TextBase::AppendString(std::string_view string)
 {
   SDL::AppendTextString(get(), string);
 }
@@ -112634,7 +112640,7 @@ inline void DeleteTextString(TextRef text, int offset, int length)
   CheckError(TTF_DeleteTextString(text, offset, length));
 }
 
-inline void Text::DeleteString(int offset, int length)
+inline void TextBase::DeleteString(int offset, int length)
 {
   SDL::DeleteTextString(get(), offset, length);
 }
@@ -112683,12 +112689,12 @@ inline Point GetTextSize(TextRef text)
   return p;
 }
 
-inline void Text::GetSize(int* w, int* h) const
+inline void TextBase::GetSize(int* w, int* h) const
 {
   SDL::GetTextSize(get(), w, h);
 }
 
-inline Point Text::GetSize() const { return SDL::GetTextSize(get()); }
+inline Point TextBase::GetSize() const { return GetTextSize(get()); }
 
 /**
  * Get the substring of a text object that surrounds a text offset.
@@ -112717,7 +112723,7 @@ inline void GetTextSubString(TextConstRef text,
   CheckError(TTF_GetTextSubString(text, offset, substring));
 }
 
-inline void Text::GetSubString(int offset, SubString* substring) const
+inline void TextBase::GetSubString(int offset, SubString* substring) const
 {
   SDL::GetTextSubString(get(), offset, substring);
 }
@@ -112748,7 +112754,7 @@ inline void GetTextSubStringForLine(TextConstRef text,
   CheckError(TTF_GetTextSubStringForLine(text, line, substring));
 }
 
-inline void Text::GetSubStringForLine(int line, SubString* substring) const
+inline void TextBase::GetSubStringForLine(int line, SubString* substring) const
 {
   SDL::GetTextSubStringForLine(get(), line, substring);
 }
@@ -112777,8 +112783,8 @@ inline OwnArray<SubString*> GetTextSubStringsForRange(TextConstRef text,
   return OwnArray<SubString*>{data, size_t(count)};
 }
 
-inline OwnArray<SubString*> Text::GetSubStringsForRange(int offset,
-                                                        int length) const
+inline OwnArray<SubString*> TextBase::GetSubStringsForRange(int offset,
+                                                            int length) const
 {
   return SDL::GetTextSubStringsForRange(get(), offset, length);
 }
@@ -112807,7 +112813,7 @@ inline void GetTextSubStringForPoint(TextConstRef text,
   CheckError(TTF_GetTextSubStringForPoint(text, p.x, p.y, substring));
 }
 
-inline void Text::GetSubStringForPoint(Point p, SubString* substring) const
+inline void TextBase::GetSubStringForPoint(Point p, SubString* substring) const
 {
   SDL::GetTextSubStringForPoint(get(), p, substring);
 }
@@ -112836,8 +112842,8 @@ inline void GetPreviousTextSubString(TextConstRef text,
   CheckError(TTF_GetPreviousTextSubString(text, &substring, previous));
 }
 
-inline void Text::GetPreviousSubString(const SubString& substring,
-                                       SubString* previous) const
+inline void TextBase::GetPreviousSubString(const SubString& substring,
+                                           SubString* previous) const
 {
   SDL::GetPreviousTextSubString(get(), substring, previous);
 }
@@ -112865,8 +112871,8 @@ inline void GetNextTextSubString(TextConstRef text,
   CheckError(TTF_GetNextTextSubString(text, &substring, next));
 }
 
-inline void Text::GetNextSubString(const SubString& substring,
-                                   SubString* next) const
+inline void TextBase::GetNextSubString(const SubString& substring,
+                                       SubString* next) const
 {
   SDL::GetNextTextSubString(get(), substring, next);
 }
@@ -112888,7 +112894,7 @@ inline void Text::GetNextSubString(const SubString& substring,
  */
 inline void UpdateText(TextRef text) { CheckError(TTF_UpdateText(text)); }
 
-inline void Text::Update() { SDL::UpdateText(get()); }
+inline void TextBase::Update() { SDL::UpdateText(get()); }
 
 /**
  * Destroy a text object created by a text engine.
@@ -112904,7 +112910,7 @@ inline void Text::Update() { SDL::UpdateText(get()); }
  */
 inline void DestroyText(TextRaw text) { TTF_DestroyText(text); }
 
-inline void Text::Destroy() { DestroyText(release()); }
+inline void TextBase::Destroy() { DestroyText(release()); }
 
 /**
  * Dispose of a previously-created font.

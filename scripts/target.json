@@ -217422,6 +217422,10 @@
           ],
           "type": "ResourceLegacyRef<TextEngineRaw>"
         },
+        "TextBase-forward": {
+          "name": "TextBase",
+          "kind": "forward"
+        },
         "Text-forward": {
           "name": "Text",
           "kind": "forward"
@@ -217449,7 +217453,7 @@
             "Reference for Text.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Text>"
+          "type": "ResourceRefT<TextBase>"
         },
         "TextConstRef": {
           "name": "TextConstRef",
@@ -226558,12 +226562,12 @@
           ],
           "name": "TextEngine",
           "kind": "struct",
-          "type": "ResourceBase<TextEngineRaw>",
+          "type": "ResourceBaseT<TextEngineRaw>",
           "sourceName": "TTF_TextEngine",
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "TextEngine": {
               "kind": "function",
@@ -226578,7 +226582,7 @@
               ],
               "hints": {
                 "init": [
-                  "ResourceBase(resource)"
+                  "TextEngineBase(resource)"
                 ],
                 "noexcept": true
               },
@@ -226678,15 +226682,6 @@
                 ],
                 "name": "operator="
               }
-            },
-            "Destroy": {
-              "kind": "function",
-              "name": "Destroy",
-              "doc": [
-                "frees up textEngine."
-              ],
-              "type": "void",
-              "parameters": []
             },
             "CreateText": {
               "doc": [
@@ -227301,192 +227296,21 @@
           "type": "TTF_TextData",
           "sourceName": "TTF_TextData"
         },
-        "Text": {
-          "doc": [
-            "Text created with CreateText()",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL_ttf 3.0.0."
-            },
-            [
-              {
-                "tag": "@sa",
-                "content": "CreateText"
-              },
-              {
-                "tag": "@sa",
-                "content": "GetTextProperties"
-              },
-              {
-                "tag": "@sa",
-                "content": "DestroyText"
-              }
-            ],
-            "@cat resource"
-          ],
-          "name": "Text",
+        "TextBase": {
+          "name": "TextBase",
           "kind": "struct",
-          "sourceName": "TTF_Text",
+          "type": "ResourceBaseT<TextRaw, TextRawConst>",
+          "doc": [
+            "Base class to Text.",
+            {
+              "tag": "@see",
+              "content": "Text"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Text": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "TextRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Text.",
-                {
-                  "tag": "@param resource",
-                  "content": "a TextRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Text",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Text &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Text",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Text &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Text(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Text",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const TextRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Text",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "TextRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Text",
-                      "overload": {
-                        "doc": [
-                          "Create a text object from UTF-8 text and a text engine.",
-                          [
-                            {
-                              "tag": "@param engine",
-                              "content": "the text engine to use when creating the text object, may be nullptr."
-                            },
-                            {
-                              "tag": "@param font",
-                              "content": "the font to render with."
-                            },
-                            {
-                              "tag": "@param text",
-                              "content": "the text to use, in UTF-8 encoding."
-                            },
-                            {
-                              "tag": "@param length",
-                              "content": "the length of the text, in bytes, or 0 for null terminated text."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a Text object or nullptr on failure; call GetError() for more information."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "This function should be called on the thread that created the font and text engine."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_ttf 3.0.0."
-                          },
-                          {
-                            "tag": "@sa",
-                            "content": "DestroyText"
-                          }
-                        ],
-                        "name": "Text",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "engine",
-                            "type": "TextEngineRef"
-                          },
-                          {
-                            "name": "font",
-                            "type": "FontRef"
-                          },
-                          {
-                            "name": "text",
-                            "type": "std::string_view"
-                          }
-                        ],
-                        "sourceName": "TTF_CreateText",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "operator TextConstRef": {
               "kind": "function",
@@ -227502,54 +227326,6 @@
                 "Converts to TextConstRef"
               ],
               "name": "operator TextConstRef"
-            },
-            "~Text": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "TTF_DestroyText(get());"
-              },
-              "name": "~Text"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Text &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Text &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Text &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Text &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
             },
             "Destroy": {
               "doc": [
@@ -229494,7 +229270,215 @@
               "name": "GetNumLines"
             }
           },
-          "type": "ResourceBase<TextRaw, TextRawConst>",
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Text": {
+          "doc": [
+            "Text created with CreateText()",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL_ttf 3.0.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "CreateText"
+              },
+              {
+                "tag": "@sa",
+                "content": "GetTextProperties"
+              },
+              {
+                "tag": "@sa",
+                "content": "DestroyText"
+              }
+            ],
+            "@cat resource"
+          ],
+          "name": "Text",
+          "kind": "struct",
+          "sourceName": "TTF_Text",
+          "entries": {
+            "TextBase::TextBase": {
+              "kind": "alias",
+              "name": "TextBase::TextBase"
+            },
+            "Text": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "TextRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "TextBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Text.",
+                {
+                  "tag": "@param resource",
+                  "content": "a TextRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Text",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Text &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Text",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Text &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Text(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Text",
+                  "overload": {
+                    "doc": [
+                      "Create a text object from UTF-8 text and a text engine.",
+                      [
+                        {
+                          "tag": "@param engine",
+                          "content": "the text engine to use when creating the text object, may be nullptr."
+                        },
+                        {
+                          "tag": "@param font",
+                          "content": "the font to render with."
+                        },
+                        {
+                          "tag": "@param text",
+                          "content": "the text to use, in UTF-8 encoding."
+                        },
+                        {
+                          "tag": "@param length",
+                          "content": "the length of the text, in bytes, or 0 for null terminated text."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a Text object or nullptr on failure; call GetError() for more information."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "This function should be called on the thread that created the font and text engine."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_ttf 3.0.0."
+                      },
+                      {
+                        "tag": "@sa",
+                        "content": "DestroyText"
+                      }
+                    ],
+                    "name": "Text",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "engine",
+                        "type": "TextEngineRef"
+                      },
+                      {
+                        "name": "font",
+                        "type": "FontRef"
+                      },
+                      {
+                        "name": "text",
+                        "type": "std::string_view"
+                      }
+                    ],
+                    "sourceName": "TTF_CreateText",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Text": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "TTF_DestroyText(get());"
+              },
+              "name": "~Text"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Text &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Text &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Text &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Text &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "type": "TextBase",
           "hints": {
             "self": "get()",
             "super": "Text"
@@ -229723,8 +229707,8 @@
             "mayFail": true
           }
         },
-        "Text::DrawSurface": {
-          "name": "Text::DrawSurface",
+        "TextBase::DrawSurface": {
+          "name": "TextBase::DrawSurface",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -229740,7 +229724,6 @@
           "sourceName": "TTF_DrawSurfaceText",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::DrawSurfaceText"
           },
@@ -230010,8 +229993,8 @@
             "mayFail": true
           }
         },
-        "Text::DrawRenderer": {
-          "name": "Text::DrawRenderer",
+        "TextBase::DrawRenderer": {
+          "name": "TextBase::DrawRenderer",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -230023,7 +230006,6 @@
           "sourceName": "TTF_DrawRendererText",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::DrawRendererText"
           },
@@ -230280,8 +230262,8 @@
           ],
           "sourceName": "TTF_GetGPUTextDrawData"
         },
-        "Text::GetGPUDrawData": {
-          "name": "Text::GetGPUDrawData",
+        "TextBase::GetGPUDrawData": {
+          "name": "TextBase::GetGPUDrawData",
           "kind": "function",
           "type": "GPUAtlasDrawSequence *",
           "parameters": [],
@@ -230289,7 +230271,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Text",
             "delegate": "SDL::GetGPUTextDrawData"
           }
         },
@@ -230516,15 +230497,14 @@
             "mayFail": true
           }
         },
-        "Text::GetProperties": {
-          "name": "Text::GetProperties",
+        "TextBase::GetProperties": {
+          "name": "TextBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "TTF_GetTextProperties",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetTextProperties"
           },
@@ -230579,8 +230559,8 @@
             "mayFail": true
           }
         },
-        "Text::SetEngine": {
-          "name": "Text::SetEngine",
+        "TextBase::SetEngine": {
+          "name": "TextBase::SetEngine",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -230592,7 +230572,6 @@
           "sourceName": "TTF_SetTextEngine",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::SetTextEngine"
           }
@@ -230641,15 +230620,14 @@
             "mayFail": true
           }
         },
-        "Text::GetEngine": {
-          "name": "Text::GetEngine",
+        "TextBase::GetEngine": {
+          "name": "TextBase::GetEngine",
           "kind": "function",
           "type": "TextEngineRef",
           "parameters": [],
           "sourceName": "TTF_GetTextEngine",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetTextEngine"
           },
@@ -230702,8 +230680,8 @@
           ],
           "sourceName": "TTF_SetTextFont"
         },
-        "Text::SetFont": {
-          "name": "Text::SetFont",
+        "TextBase::SetFont": {
+          "name": "TextBase::SetFont",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -230715,7 +230693,6 @@
           "sourceName": "TTF_SetTextFont",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "delegate": "SDL::SetTextFont"
           }
         },
@@ -230763,15 +230740,14 @@
             "mayFail": true
           }
         },
-        "Text::GetFont": {
-          "name": "Text::GetFont",
+        "TextBase::GetFont": {
+          "name": "TextBase::GetFont",
           "kind": "function",
           "type": "FontRef",
           "parameters": [],
           "sourceName": "TTF_GetTextFont",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetTextFont"
           },
@@ -230822,8 +230798,8 @@
             "mayFail": true
           }
         },
-        "Text::SetDirection": {
-          "name": "Text::SetDirection",
+        "TextBase::SetDirection": {
+          "name": "TextBase::SetDirection",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -230835,7 +230811,6 @@
           "sourceName": "TTF_SetTextDirection",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::SetTextDirection"
           }
@@ -230874,8 +230849,8 @@
           ],
           "sourceName": "TTF_GetTextDirection"
         },
-        "Text::GetDirection": {
-          "name": "Text::GetDirection",
+        "TextBase::GetDirection": {
+          "name": "TextBase::GetDirection",
           "kind": "function",
           "type": "Direction",
           "parameters": [],
@@ -230883,7 +230858,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Text",
             "delegate": "SDL::GetTextDirection"
           }
         },
@@ -230936,8 +230910,8 @@
             "mayFail": true
           }
         },
-        "Text::SetScript": {
-          "name": "Text::SetScript",
+        "TextBase::SetScript": {
+          "name": "TextBase::SetScript",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -230949,7 +230923,6 @@
           "sourceName": "TTF_SetTextScript",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::SetTextScript"
           }
@@ -230992,8 +230965,8 @@
           ],
           "sourceName": "TTF_GetTextScript"
         },
-        "Text::GetScript": {
-          "name": "Text::GetScript",
+        "TextBase::GetScript": {
+          "name": "TextBase::GetScript",
           "kind": "function",
           "type": "Uint32",
           "parameters": [],
@@ -231001,7 +230974,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Text",
             "delegate": "SDL::GetTextScript"
           }
         },
@@ -231072,8 +231044,8 @@
             "mayFail": true
           }
         },
-        "Text::SetColor": {
-          "name": "Text::SetColor",
+        "TextBase::SetColor": {
+          "name": "TextBase::SetColor",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -231085,7 +231057,6 @@
           "sourceName": "TTF_SetTextColor",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::SetTextColor"
           }
@@ -231157,8 +231128,8 @@
             "mayFail": true
           }
         },
-        "Text::SetColorFloat": {
-          "name": "Text::SetColorFloat",
+        "TextBase::SetColorFloat": {
+          "name": "TextBase::SetColorFloat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -231170,7 +231141,6 @@
           "sourceName": "TTF_SetTextColorFloat",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::SetTextColorFloat"
           }
@@ -231311,8 +231281,8 @@
             ]
           }
         },
-        "Text::GetColor": {
-          "name": "Text::GetColor",
+        "TextBase::GetColor": {
+          "name": "TextBase::GetColor",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -231336,7 +231306,6 @@
           "sourceName": "TTF_GetTextColor",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetTextColor"
           },
@@ -231345,10 +231314,9 @@
             "kind": "function",
             "type": "Color",
             "parameters": [],
-            "name": "Text::GetColor",
+            "name": "TextBase::GetColor",
             "hints": {
               "self": "get()",
-              "super": "Text",
               "delegate": "SDL::GetTextColor"
             }
           }
@@ -231489,8 +231457,8 @@
             ]
           }
         },
-        "Text::GetColorFloat": {
-          "name": "Text::GetColorFloat",
+        "TextBase::GetColorFloat": {
+          "name": "TextBase::GetColorFloat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -231514,7 +231482,6 @@
           "sourceName": "TTF_GetTextColorFloat",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetTextColorFloat"
           },
@@ -231523,10 +231490,9 @@
             "kind": "function",
             "type": "FColor",
             "parameters": [],
-            "name": "Text::GetColorFloat",
+            "name": "TextBase::GetColorFloat",
             "hints": {
               "self": "get()",
-              "super": "Text",
               "delegate": "SDL::GetTextColorFloat"
             }
           }
@@ -231581,8 +231547,8 @@
             "mayFail": true
           }
         },
-        "Text::SetPosition": {
-          "name": "Text::SetPosition",
+        "TextBase::SetPosition": {
+          "name": "TextBase::SetPosition",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -231594,7 +231560,6 @@
           "sourceName": "TTF_SetTextPosition",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::SetTextPosition"
           }
@@ -231691,8 +231656,8 @@
             ]
           }
         },
-        "Text::GetPosition": {
-          "name": "Text::GetPosition",
+        "TextBase::GetPosition": {
+          "name": "TextBase::GetPosition",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -231709,7 +231674,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetTextPosition"
           },
@@ -231717,10 +231681,9 @@
             "kind": "function",
             "type": "Point",
             "parameters": [],
-            "name": "Text::GetPosition",
+            "name": "TextBase::GetPosition",
             "hints": {
               "self": "get()",
-              "super": "Text",
               "delegate": "SDL::GetTextPosition"
             }
           }
@@ -231774,8 +231737,8 @@
             "mayFail": true
           }
         },
-        "Text::SetWrapWidth": {
-          "name": "Text::SetWrapWidth",
+        "TextBase::SetWrapWidth": {
+          "name": "TextBase::SetWrapWidth",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -231787,7 +231750,6 @@
           "sourceName": "TTF_SetTextWrapWidth",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::SetTextWrapWidth"
           }
@@ -231836,15 +231798,14 @@
             "mayFail": true
           }
         },
-        "Text::GetWrapWidth": {
-          "name": "Text::GetWrapWidth",
+        "TextBase::GetWrapWidth": {
+          "name": "TextBase::GetWrapWidth",
           "kind": "function",
           "type": "int",
           "parameters": [],
           "sourceName": "TTF_GetTextWrapWidth",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetTextWrapWidth"
           },
@@ -231900,8 +231861,8 @@
             "mayFail": true
           }
         },
-        "Text::SetWrapWhitespaceVisible": {
-          "name": "Text::SetWrapWhitespaceVisible",
+        "TextBase::SetWrapWhitespaceVisible": {
+          "name": "TextBase::SetWrapWhitespaceVisible",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -231913,7 +231874,6 @@
           "sourceName": "TTF_SetTextWrapWhitespaceVisible",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::SetTextWrapWhitespaceVisible"
           }
@@ -231955,8 +231915,8 @@
           ],
           "sourceName": "TTF_TextWrapWhitespaceVisible"
         },
-        "Text::IsWrapWhitespaceVisible": {
-          "name": "Text::IsWrapWhitespaceVisible",
+        "TextBase::IsWrapWhitespaceVisible": {
+          "name": "TextBase::IsWrapWhitespaceVisible",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -231964,7 +231924,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Text",
             "delegate": "SDL::TextWrapWhitespaceVisible"
           }
         },
@@ -232031,8 +231990,8 @@
             "mayFail": true
           }
         },
-        "Text::SetString": {
-          "name": "Text::SetString",
+        "TextBase::SetString": {
+          "name": "TextBase::SetString",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -232044,7 +232003,6 @@
           "sourceName": "TTF_SetTextString",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::SetTextString"
           }
@@ -232120,8 +232078,8 @@
             "mayFail": true
           }
         },
-        "Text::InsertString": {
-          "name": "Text::InsertString",
+        "TextBase::InsertString": {
+          "name": "TextBase::InsertString",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -232137,7 +232095,6 @@
           "sourceName": "TTF_InsertTextString",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::InsertTextString"
           }
@@ -232205,8 +232162,8 @@
             "mayFail": true
           }
         },
-        "Text::AppendString": {
-          "name": "Text::AppendString",
+        "TextBase::AppendString": {
+          "name": "TextBase::AppendString",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -232218,7 +232175,6 @@
           "sourceName": "TTF_AppendTextString",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::AppendTextString"
           }
@@ -232290,8 +232246,8 @@
             "mayFail": true
           }
         },
-        "Text::DeleteString": {
-          "name": "Text::DeleteString",
+        "TextBase::DeleteString": {
+          "name": "TextBase::DeleteString",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -232307,7 +232263,6 @@
           "sourceName": "TTF_DeleteTextString",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::DeleteTextString"
           }
@@ -232406,8 +232361,8 @@
             ]
           }
         },
-        "Text::GetSize": {
-          "name": "Text::GetSize",
+        "TextBase::GetSize": {
+          "name": "TextBase::GetSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -232423,7 +232378,6 @@
           "sourceName": "TTF_GetTextSize",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetTextSize"
           },
@@ -232432,10 +232386,9 @@
             "kind": "function",
             "type": "Point",
             "parameters": [],
-            "name": "Text::GetSize",
+            "name": "TextBase::GetSize",
             "hints": {
               "self": "get()",
-              "super": "Text",
               "delegate": "SDL::GetTextSize"
             }
           }
@@ -232493,8 +232446,8 @@
             "mayFail": true
           }
         },
-        "Text::GetSubString": {
-          "name": "Text::GetSubString",
+        "TextBase::GetSubString": {
+          "name": "TextBase::GetSubString",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -232510,7 +232463,6 @@
           "sourceName": "TTF_GetTextSubString",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetTextSubString"
           },
@@ -232569,8 +232521,8 @@
             "mayFail": true
           }
         },
-        "Text::GetSubStringForLine": {
-          "name": "Text::GetSubStringForLine",
+        "TextBase::GetSubStringForLine": {
+          "name": "TextBase::GetSubStringForLine",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -232586,7 +232538,6 @@
           "sourceName": "TTF_GetTextSubStringForLine",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetTextSubStringForLine"
           },
@@ -232645,8 +232596,8 @@
           ],
           "sourceName": "TTF_GetTextSubStringsForRange"
         },
-        "Text::GetSubStringsForRange": {
-          "name": "Text::GetSubStringsForRange",
+        "TextBase::GetSubStringsForRange": {
+          "name": "TextBase::GetSubStringsForRange",
           "kind": "function",
           "type": "OwnArray<SubString *>",
           "parameters": [
@@ -232663,7 +232614,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Text",
             "delegate": "SDL::GetTextSubStringsForRange"
           }
         },
@@ -232724,8 +232674,8 @@
             "mayFail": true
           }
         },
-        "Text::GetSubStringForPoint": {
-          "name": "Text::GetSubStringForPoint",
+        "TextBase::GetSubStringForPoint": {
+          "name": "TextBase::GetSubStringForPoint",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -232741,7 +232691,6 @@
           "sourceName": "TTF_GetTextSubStringForPoint",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetTextSubStringForPoint"
           },
@@ -232796,8 +232745,8 @@
             "mayFail": true
           }
         },
-        "Text::GetPreviousSubString": {
-          "name": "Text::GetPreviousSubString",
+        "TextBase::GetPreviousSubString": {
+          "name": "TextBase::GetPreviousSubString",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -232813,7 +232762,6 @@
           "sourceName": "TTF_GetPreviousTextSubString",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetPreviousTextSubString"
           },
@@ -232872,8 +232820,8 @@
             "mayFail": true
           }
         },
-        "Text::GetNextSubString": {
-          "name": "Text::GetNextSubString",
+        "TextBase::GetNextSubString": {
+          "name": "TextBase::GetNextSubString",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -232889,7 +232837,6 @@
           "sourceName": "TTF_GetNextTextSubString",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::GetNextTextSubString"
           },
@@ -232932,15 +232879,14 @@
             "mayFail": true
           }
         },
-        "Text::Update": {
-          "name": "Text::Update",
+        "TextBase::Update": {
+          "name": "TextBase::Update",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "TTF_UpdateText",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "mayFail": true,
             "delegate": "SDL::UpdateText"
           }
@@ -232976,15 +232922,14 @@
           ],
           "sourceName": "TTF_DestroyText"
         },
-        "Text::Destroy": {
-          "name": "Text::Destroy",
+        "TextBase::Destroy": {
+          "name": "TextBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "TTF_DestroyText",
           "hints": {
             "self": "get()",
-            "super": "Text",
             "body": "DestroyText(release());",
             "delegate": "SDL::DestroyText"
           }
