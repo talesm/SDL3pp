@@ -5,12 +5,12 @@ Breaking changes:
 
 - [ ] Remove old entry point (break compat);
 - [x] Properties::Create is now a constructor;
-- [ ] Refactor resource to become less hack-y (probably breaking compat):
+- [x] Refactor resource to become less hack-y (probably breaking compat):
   - [x] Create new ResourceBase and make ResourceOwned derive from it;
     - It has the constructors to nullptr (default) and constructor from Raw;
     - Everything is trivial;
     - Dtor is trivial, but protected
-  - [ ] Move all methods to ResourceBase, except constructors;
+  - [x] Move all methods to ResourceBase, except constructors;
   - [x] Create ResourceBaseT absorbs common functionality from new ResourceBase
   - [x] New ResourceRef is derived explicitly from ResourceBase:
     - Can be also constructed from Any const ResourceBase &;
@@ -19,6 +19,10 @@ Breaking changes:
 - [x] Rename StartTextInput overload with properties to
   StartTextInputWithProperties;
 - [x] Rename Borrow() to borrow();
+- [x] Make TextEngine behave as ResourceBase:
+  - [x] Remove TextEngineBase::Destroy();
+  - [x] Remove restrictions on copy;
+  - [x] Make TextEngineRef based on ResourceRefT;
 
 Non-breaking changes
 
@@ -38,10 +42,16 @@ Non-breaking changes
   - [x] SetWindowRelativeMouseMode();
   - [x] GetWindowRelativeMouseMode();
   - [x] GetRenderer();
+- [x] TextEngineRef now has access to its methods;
 
 Backlog
 -------
 
+- [ ] Create ResourceConstBase
+  - [ ] When resource has ResourceConstRef, derive from ResourceConstBase
+    - It has only the immutable methods from ResourceBase;
+  - [ ] ResourceBase derives from ResourceConstBase
+  - [ ] Make ResourceConstRef derive from ResourceConstBase
 - [ ] Add a constructor to Properties similar to std::map initializer list;
 - [ ] Revamp README, with examples and clearer instructions to integrate to
   project and everything else moved to other files;

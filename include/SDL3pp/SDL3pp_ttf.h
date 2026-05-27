@@ -51,7 +51,7 @@ using TextEngineRaw = TTF_TextEngine*;
  *
  * This does not take ownership!
  */
-using TextEngineRef = ResourceRef<TextEngine>;
+using TextEngineRef = ResourceRefT<TextEngine>;
 
 // Forward decl
 struct TextBase;
@@ -3863,40 +3863,6 @@ struct TextEngine : ResourceBaseT<TextEngineRaw>
   using ResourceBaseT::ResourceBaseT;
 
   /**
-   * Constructs from raw TextEngine.
-   *
-   * @param resource a TextEngineRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit TextEngine(TextEngineRaw resource) noexcept
-    : ResourceBaseT(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) = delete;
-
-  /// Move constructor
-  constexpr TextEngine(TextEngine&& other) noexcept
-    : TextEngine(other.release())
-  {
-  }
-
-  /// Destructor
-  virtual ~TextEngine() { SDL_assert_paranoid(!get()); }
-
-  /// Assignment operator.
-  constexpr TextEngine& operator=(TextEngine&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  TextEngine& operator=(const TextEngine& other) = delete;
-
-  /**
    * Create a text object from UTF-8 text and a text engine.
    *
    * @param font the font to render with.
@@ -3917,6 +3883,33 @@ struct TextEngine : ResourceBaseT<TextEngineRaw>
 /// A surface based text engine
 struct SurfaceTextEngine : TextEngine
 {
+  using TextEngine::TextEngine;
+
+  /**
+   * Constructs from raw TextEngine.
+   *
+   * @param resource a TextEngineRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit SurfaceTextEngine(TextEngineRaw resource) noexcept
+    : TextEngine(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr SurfaceTextEngine(SurfaceTextEngine&& other) noexcept
+    : TextEngine(other.release())
+  {
+  }
+
+  /// Move assignment operator
+  constexpr SurfaceTextEngine& operator=(SurfaceTextEngine&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
   /**
    * Create a text engine for drawing text on SDL surfaces.
    *
@@ -3932,11 +3925,8 @@ struct SurfaceTextEngine : TextEngine
    */
   SurfaceTextEngine();
 
-  SurfaceTextEngine(const SurfaceTextEngine&) = delete;
-
-  SurfaceTextEngine& operator=(const SurfaceTextEngine&) = delete;
-
-  ~SurfaceTextEngine() final { Destroy(); }
+  /// Destructor
+  ~SurfaceTextEngine() { Destroy(); }
 
   /**
    * Destroy a text engine created for drawing text on SDL surfaces.
@@ -3957,6 +3947,33 @@ struct SurfaceTextEngine : TextEngine
 /// A renderer based text engine
 struct RendererTextEngine : TextEngine
 {
+  using TextEngine::TextEngine;
+
+  /**
+   * Constructs from raw TextEngine.
+   *
+   * @param resource a TextEngineRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit RendererTextEngine(TextEngineRaw resource) noexcept
+    : TextEngine(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr RendererTextEngine(RendererTextEngine&& other) noexcept
+    : TextEngine(other.release())
+  {
+  }
+
+  /// Move assignment operator
+  constexpr RendererTextEngine& operator=(RendererTextEngine&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
   /**
    * Create a text engine for drawing text on an SDL renderer.
    *
@@ -4001,11 +4018,8 @@ struct RendererTextEngine : TextEngine
    */
   RendererTextEngine(PropertiesRef props);
 
-  RendererTextEngine(const RendererTextEngine&) = delete;
-
-  RendererTextEngine& operator=(const RendererTextEngine&) = delete;
-
-  ~RendererTextEngine() final { Destroy(); }
+  /// Destructor
+  ~RendererTextEngine() { Destroy(); }
 
   /**
    * Destroy a text engine created for drawing text on an SDL renderer.
@@ -4026,6 +4040,33 @@ struct RendererTextEngine : TextEngine
 /// A GPU based text engine
 struct GPUTextEngine : TextEngine
 {
+  using TextEngine::TextEngine;
+
+  /**
+   * Constructs from raw TextEngine.
+   *
+   * @param resource a TextEngineRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit GPUTextEngine(TextEngineRaw resource) noexcept
+    : TextEngine(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr GPUTextEngine(GPUTextEngine&& other) noexcept
+    : TextEngine(other.release())
+  {
+  }
+
+  /// Move assignment operator
+  constexpr GPUTextEngine& operator=(GPUTextEngine&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
   /**
    * Create a text engine for drawing text with the SDL GPU API.
    *
@@ -4070,11 +4111,8 @@ struct GPUTextEngine : TextEngine
    */
   GPUTextEngine(PropertiesRef props);
 
-  GPUTextEngine(const GPUTextEngine&) = delete;
-
-  GPUTextEngine& operator=(const GPUTextEngine&) = delete;
-
-  ~GPUTextEngine() final { Destroy(); }
+  /// Destructor
+  ~GPUTextEngine() { Destroy(); }
 
   /**
    * Sets the winding order of the vertices returned by GetGPUTextDrawData for a
