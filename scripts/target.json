@@ -109816,6 +109816,10 @@
           ],
           "type": "ResourceRefT<RendererBase>"
         },
+        "TextureBase-forward": {
+          "name": "TextureBase",
+          "kind": "forward"
+        },
         "Texture-forward": {
           "name": "Texture",
           "kind": "forward"
@@ -109843,7 +109847,7 @@
             "Reference for Texture.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Texture>"
+          "type": "ResourceRefT<TextureBase>"
         },
         "TextureConstRef": {
           "name": "TextureConstRef",
@@ -114909,599 +114913,21 @@
             "super": "Renderer"
           }
         },
-        "Texture": {
-          "doc": [
-            "An efficient driver-specific representation of pixel data",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            [
-              {
-                "tag": "@sa",
-                "content": "CreateTexture"
-              },
-              {
-                "tag": "@sa",
-                "content": "CreateTextureFromSurface"
-              },
-              {
-                "tag": "@sa",
-                "content": "CreateTextureWithProperties"
-              },
-              {
-                "tag": "@sa",
-                "content": "DestroyTexture"
-              }
-            ],
-            "@cat resource"
-          ],
-          "name": "Texture",
+        "TextureBase": {
+          "name": "TextureBase",
           "kind": "struct",
-          "sourceName": "SDL_Texture",
+          "type": "ResourceBaseT<TextureRaw, TextureRawConst>",
+          "doc": [
+            "Base class to Texture.",
+            {
+              "tag": "@see",
+              "content": "Texture"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Texture": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "TextureRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Texture.",
-                {
-                  "tag": "@param resource",
-                  "content": "a TextureRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Texture",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Texture &"
-                  }
-                ],
-                "hints": {
-                  "init": [
-                    "Texture(other.get())"
-                  ],
-                  "body": "if (auto res = get()) ++res->refcount;"
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Texture",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Texture &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Texture(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Texture",
-                  "overload": {
-                    "doc": [
-                      "Create a texture for a rendering context.",
-                      "The contents of a texture when first created are not defined.",
-                      [
-                        {
-                          "tag": "@param renderer",
-                          "content": "the rendering context."
-                        },
-                        {
-                          "tag": "@param format",
-                          "content": "one of the enumerated values in PixelFormat."
-                        },
-                        {
-                          "tag": "@param access",
-                          "content": "one of the enumerated values in TextureAccess."
-                        },
-                        {
-                          "tag": "@param w",
-                          "content": "the width of the texture in pixels."
-                        },
-                        {
-                          "tag": "@param h",
-                          "content": "the height of the texture in pixels."
-                        },
-                        {
-                          "tag": "@post",
-                          "content": "the created texture or nullptr on failure; call GetError() for more information."
-                        }
-                      ],
-                      {
-                        "tag": "@threadsafety",
-                        "content": "This function should only be called on the main thread."
-                      },
-                      {
-                        "tag": "@since",
-                        "content": "This function is available since SDL 3.2.0."
-                      },
-                      [
-                        {
-                          "tag": "@sa",
-                          "content": "CreateTextureFromSurface"
-                        },
-                        {
-                          "tag": "@sa",
-                          "content": "CreateTextureWithProperties"
-                        },
-                        {
-                          "tag": "@sa",
-                          "content": "DestroyTexture"
-                        },
-                        {
-                          "tag": "@sa",
-                          "content": "GetTextureSize"
-                        },
-                        {
-                          "tag": "@sa",
-                          "content": "UpdateTexture"
-                        }
-                      ]
-                    ],
-                    "name": "Texture",
-                    "kind": "function",
-                    "type": "",
-                    "parameters": [
-                      {
-                        "name": "renderer",
-                        "type": "RendererRef"
-                      },
-                      {
-                        "name": "format",
-                        "type": "PixelFormat"
-                      },
-                      {
-                        "name": "access",
-                        "type": "TextureAccess"
-                      },
-                      {
-                        "type": "const PointRaw &",
-                        "name": "size"
-                      }
-                    ],
-                    "sourceName": "SDL_CreateTexture",
-                    "overload": {
-                      "doc": [
-                        "Create a texture from an existing surface.",
-                        "The surface is not modified or freed by this function.",
-                        "The TextureAccess hint for the created texture is `TEXTUREACCESS_STATIC`.",
-                        "The pixel format of the created texture may be different from the pixel format of the surface, and can be queried using the prop.Texture.FORMAT_NUMBER property.",
-                        [
-                          {
-                            "tag": "@param renderer",
-                            "content": "the rendering context."
-                          },
-                          {
-                            "tag": "@param surface",
-                            "content": "the Surface structure containing pixel data used to fill the texture."
-                          },
-                          {
-                            "tag": "@post",
-                            "content": "the created texture or nullptr on failure; call GetError() for more information."
-                          }
-                        ],
-                        {
-                          "tag": "@threadsafety",
-                          "content": "This function should only be called on the main thread."
-                        },
-                        {
-                          "tag": "@since",
-                          "content": "This function is available since SDL 3.2.0."
-                        },
-                        [
-                          {
-                            "tag": "@sa",
-                            "content": "CreateTexture"
-                          },
-                          {
-                            "tag": "@sa",
-                            "content": "CreateTextureWithProperties"
-                          },
-                          {
-                            "tag": "@sa",
-                            "content": "DestroyTexture"
-                          }
-                        ]
-                      ],
-                      "name": "Texture",
-                      "kind": "function",
-                      "type": "",
-                      "parameters": [
-                        {
-                          "name": "renderer",
-                          "type": "RendererRef"
-                        },
-                        {
-                          "name": "surface",
-                          "type": "SurfaceRef"
-                        }
-                      ],
-                      "sourceName": "SDL_CreateTextureFromSurface",
-                      "overload": {
-                        "doc": [
-                          "Create a texture for a rendering context with the specified properties.",
-                          "These are the supported properties:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.COLORSPACE_NUMBER`: an Colorspace value describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for YUV textures."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.FORMAT_NUMBER`: one of the enumerated values in PixelFormat, defaults to the best RGBA format for the renderer"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.ACCESS_NUMBER`: one of the enumerated values in TextureAccess, defaults to TEXTUREACCESS_STATIC"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.WIDTH_NUMBER`: the width of the texture in pixels, required"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.HEIGHT_NUMBER`: the height of the texture in pixels, required"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.PALETTE_POINTER`: an Palette to use with palettized texture formats. This can be set later with SetTexturePalette()"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point textures, this defines the value of 100% diffuse white, with higher values being displayed in the High Dynamic Range headroom. This defaults to 100 for HDR10 textures and 1.0 for floating point textures."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.HDR_HEADROOM_FLOAT`: for HDR10 and floating point textures, this defines the maximum dynamic range used by the content, in terms of the SDR white point. This would be equivalent to maxCLL / prop.Texture.Create.SDR_WHITE_POINT_FLOAT for HDR10 content. If this is defined, any values outside the range supported by the display will be scaled into the available HDR headroom, otherwise they are clipped."
-                            }
-                          ],
-                          "With the direct3d11 renderer:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated with the texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D associated with the U plane of a YUV texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D associated with the V plane of a YUV texture, if you want to wrap an existing texture."
-                            }
-                          ],
-                          "With the direct3d12 renderer:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated with the texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated with the U plane of a YUV texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated with the V plane of a YUV texture, if you want to wrap an existing texture."
-                            }
-                          ],
-                          "With the metal renderer:",
-                          {
-                            "tag": "-",
-                            "content": "`prop.Texture.Create.METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef associated with the texture, if you want to create a texture from an existing pixel buffer."
-                          },
-                          "With the opengl renderer:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated with the texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture associated with the UV plane of an NV12 texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated with the U plane of a YUV texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated with the V plane of a YUV texture, if you want to wrap an existing texture."
-                            }
-                          ],
-                          "With the opengles2 renderer:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture associated with the texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture associated with the UV plane of an NV12 texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture associated with the U plane of a YUV texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture associated with the V plane of a YUV texture, if you want to wrap an existing texture."
-                            }
-                          ],
-                          "With the vulkan renderer:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.VULKAN_TEXTURE_NUMBER`: the VkImage associated with the texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL."
-                            }
-                          ],
-                          "With the GPU renderer:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Texture.Create.GPU_TEXTURE_POINTER`: the GPUTexture associated with the texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture associated with the UV plane of an NV12 texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated with the U plane of a YUV texture, if you want to wrap an existing texture."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated with the V plane of a YUV texture, if you want to wrap an existing texture."
-                            }
-                          ],
-                          [
-                            {
-                              "tag": "@param renderer",
-                              "content": "the rendering context."
-                            },
-                            {
-                              "tag": "@param props",
-                              "content": "the properties to use."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "the created texture or nullptr on failure; call GetError() for more information."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "This function should only be called on the main thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateProperties"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "CreateTexture"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "CreateTextureFromSurface"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyTexture"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetTextureSize"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "UpdateTexture"
-                            }
-                          ]
-                        ],
-                        "name": "Texture",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "renderer",
-                            "type": "RendererRef"
-                          },
-                          {
-                            "name": "props",
-                            "type": "PropertiesRef"
-                          }
-                        ],
-                        "sourceName": "SDL_CreateTextureWithProperties",
-                        "proto": true,
-                        "overload": {
-                          "doc": [
-                            "Load an image from a filesystem path into a texture.",
-                            "An Texture represents an image in GPU memory, usable by SDL's 2D Render API. This can be significantly more efficient than using a CPU-bound Surface if you don't need to manipulate the image directly after loading it.",
-                            "If the loaded image has transparency or a colorkey, a texture with an alpha channel will be created. Otherwise, SDL_image will attempt to create an Texture in the most format that most reasonably represents the image data (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).",
-                            "There is a separate function to read files from an IOStream, if you need an i/o abstraction to provide data from anywhere instead of a simple filesystem read; that function is LoadTexture_IO().",
-                            "If you would rather decode an image to an Surface (a buffer of pixels in CPU memory), call LoadSurface() instead.",
-                            "When done with the returned texture, the app should dispose of it with a call to DestroyTexture().",
-                            [
-                              {
-                                "tag": "@param renderer",
-                                "content": "the Renderer to use to create the texture."
-                              },
-                              {
-                                "tag": "@param file",
-                                "content": "a path on the filesystem to load an image from."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "a new texture, or nullptr on error."
-                              }
-                            ],
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL_image 3.0.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "LoadTextureTyped_IO"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "LoadTexture_IO"
-                              }
-                            ]
-                          ],
-                          "name": "Texture",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "renderer",
-                              "type": "RendererRef"
-                            },
-                            {
-                              "name": "file",
-                              "type": "StringParam"
-                            }
-                          ],
-                          "sourceName": "IMG_LoadTexture",
-                          "overload": {
-                            "doc": [
-                              "Load an image from an SDL data source into a texture.",
-                              "An Texture represents an image in GPU memory, usable by SDL's 2D Render API. This can be significantly more efficient than using a CPU-bound Surface if you don't need to manipulate the image directly after loading it.",
-                              "If the loaded image has transparency or a colorkey, a texture with an alpha channel will be created. Otherwise, SDL_image will attempt to create an Texture in the most format that most reasonably represents the image data (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).",
-                              "If `closeio` is true, `src` will be closed before returning, whether this function succeeds or not. SDL_image reads everything it needs from `src` during this call in any case.",
-                              "There is a separate function to read files from disk without having to deal with IOStream: `LoadTexture(renderer, \"filename.jpg\")` will call this function and manage those details for you, determining the file type from the filename's extension.",
-                              "There is also LoadTextureTyped_IO(), which is equivalent to this function except a file extension (like \"BMP\", \"JPG\", etc) can be specified, in case SDL_image cannot autodetect the file format.",
-                              "If you would rather decode an image to an Surface (a buffer of pixels in CPU memory), call LoadSurface() instead.",
-                              "When done with the returned texture, the app should dispose of it with a call to DestroyTexture().",
-                              [
-                                {
-                                  "tag": "@param renderer",
-                                  "content": "the Renderer to use to create the texture."
-                                },
-                                {
-                                  "tag": "@param src",
-                                  "content": "an IOStream that data will be read from."
-                                },
-                                {
-                                  "tag": "@param closeio",
-                                  "content": "true to close/free the IOStream before returning, false to leave it open."
-                                },
-                                {
-                                  "tag": "@post",
-                                  "content": "a new texture, or nullptr on error."
-                                }
-                              ],
-                              {
-                                "tag": "@since",
-                                "content": "This function is available since SDL_image 3.0.0."
-                              },
-                              [
-                                {
-                                  "tag": "@sa",
-                                  "content": "LoadTexture"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "LoadTextureTyped_IO"
-                                }
-                              ]
-                            ],
-                            "name": "Texture",
-                            "kind": "function",
-                            "type": "",
-                            "parameters": [
-                              {
-                                "name": "renderer",
-                                "type": "RendererRef"
-                              },
-                              {
-                                "name": "src",
-                                "type": "IOStreamRef"
-                              },
-                              {
-                                "name": "closeio",
-                                "type": "bool",
-                                "default": "false"
-                              }
-                            ],
-                            "sourceName": "IMG_LoadTexture_IO",
-                            "proto": true
-                          },
-                          "proto": true
-                        }
-                      },
-                      "proto": true
-                    },
-                    "proto": true
-                  }
-                }
-              }
-            },
-            "Borrow": {
-              "kind": "function",
-              "static": true,
-              "type": "Texture",
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "TextureRaw"
-                }
-              ],
-              "hints": {
-                "body": "if (resource) {\n  ++resource->refcount;\n  return Texture(resource);}\nreturn {};"
-              },
-              "doc": [
-                "Safely borrows the from TextureRaw.",
-                {
-                  "tag": "@param resource",
-                  "content": "a TextureRaw."
-                },
-                "This does not takes ownership!"
-              ],
-              "name": "Borrow"
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "operator TextureConstRef": {
               "kind": "function",
@@ -115517,55 +114943,6 @@
                 "Converts to TextureConstRef"
               ],
               "name": "operator TextureConstRef"
-            },
-            "~Texture": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyTexture(get());"
-              },
-              "name": "~Texture"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Texture &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Texture &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Texture &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Texture &"
-                  }
-                ],
-                "hints": {
-                  "delete": false,
-                  "body": "if (get() != other.get()) {\n  Texture tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;"
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
             },
             "Destroy": {
               "doc": [
@@ -117260,7 +116637,655 @@
               "proto": true
             }
           },
-          "type": "ResourceBase<TextureRaw, TextureRawConst>",
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Texture": {
+          "doc": [
+            "An efficient driver-specific representation of pixel data",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "CreateTexture"
+              },
+              {
+                "tag": "@sa",
+                "content": "CreateTextureFromSurface"
+              },
+              {
+                "tag": "@sa",
+                "content": "CreateTextureWithProperties"
+              },
+              {
+                "tag": "@sa",
+                "content": "DestroyTexture"
+              }
+            ],
+            "@cat resource"
+          ],
+          "name": "Texture",
+          "kind": "struct",
+          "sourceName": "SDL_Texture",
+          "entries": {
+            "TextureBase::TextureBase": {
+              "kind": "alias",
+              "name": "TextureBase::TextureBase"
+            },
+            "Texture": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "TextureRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "TextureBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Texture.",
+                {
+                  "tag": "@param resource",
+                  "content": "a TextureRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Texture",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Texture &"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Texture(other.get())"
+                  ],
+                  "body": "if (auto res = get()) ++res->refcount;"
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Texture",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Texture &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Texture(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Texture",
+                  "overload": {
+                    "doc": [
+                      "Create a texture for a rendering context.",
+                      "The contents of a texture when first created are not defined.",
+                      [
+                        {
+                          "tag": "@param renderer",
+                          "content": "the rendering context."
+                        },
+                        {
+                          "tag": "@param format",
+                          "content": "one of the enumerated values in PixelFormat."
+                        },
+                        {
+                          "tag": "@param access",
+                          "content": "one of the enumerated values in TextureAccess."
+                        },
+                        {
+                          "tag": "@param w",
+                          "content": "the width of the texture in pixels."
+                        },
+                        {
+                          "tag": "@param h",
+                          "content": "the height of the texture in pixels."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "the created texture or nullptr on failure; call GetError() for more information."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "This function should only be called on the main thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateTextureFromSurface"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "CreateTextureWithProperties"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyTexture"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetTextureSize"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "UpdateTexture"
+                        }
+                      ]
+                    ],
+                    "name": "Texture",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "renderer",
+                        "type": "RendererRef"
+                      },
+                      {
+                        "name": "format",
+                        "type": "PixelFormat"
+                      },
+                      {
+                        "name": "access",
+                        "type": "TextureAccess"
+                      },
+                      {
+                        "type": "const PointRaw &",
+                        "name": "size"
+                      }
+                    ],
+                    "sourceName": "SDL_CreateTexture",
+                    "overload": {
+                      "doc": [
+                        "Create a texture from an existing surface.",
+                        "The surface is not modified or freed by this function.",
+                        "The TextureAccess hint for the created texture is `TEXTUREACCESS_STATIC`.",
+                        "The pixel format of the created texture may be different from the pixel format of the surface, and can be queried using the prop.Texture.FORMAT_NUMBER property.",
+                        [
+                          {
+                            "tag": "@param renderer",
+                            "content": "the rendering context."
+                          },
+                          {
+                            "tag": "@param surface",
+                            "content": "the Surface structure containing pixel data used to fill the texture."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "the created texture or nullptr on failure; call GetError() for more information."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "This function should only be called on the main thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL 3.2.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "CreateTexture"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CreateTextureWithProperties"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "DestroyTexture"
+                          }
+                        ]
+                      ],
+                      "name": "Texture",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "renderer",
+                          "type": "RendererRef"
+                        },
+                        {
+                          "name": "surface",
+                          "type": "SurfaceRef"
+                        }
+                      ],
+                      "sourceName": "SDL_CreateTextureFromSurface",
+                      "overload": {
+                        "doc": [
+                          "Create a texture for a rendering context with the specified properties.",
+                          "These are the supported properties:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.COLORSPACE_NUMBER`: an Colorspace value describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for YUV textures."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.FORMAT_NUMBER`: one of the enumerated values in PixelFormat, defaults to the best RGBA format for the renderer"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.ACCESS_NUMBER`: one of the enumerated values in TextureAccess, defaults to TEXTUREACCESS_STATIC"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.WIDTH_NUMBER`: the width of the texture in pixels, required"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.HEIGHT_NUMBER`: the height of the texture in pixels, required"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.PALETTE_POINTER`: an Palette to use with palettized texture formats. This can be set later with SetTexturePalette()"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point textures, this defines the value of 100% diffuse white, with higher values being displayed in the High Dynamic Range headroom. This defaults to 100 for HDR10 textures and 1.0 for floating point textures."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.HDR_HEADROOM_FLOAT`: for HDR10 and floating point textures, this defines the maximum dynamic range used by the content, in terms of the SDR white point. This would be equivalent to maxCLL / prop.Texture.Create.SDR_WHITE_POINT_FLOAT for HDR10 content. If this is defined, any values outside the range supported by the display will be scaled into the available HDR headroom, otherwise they are clipped."
+                            }
+                          ],
+                          "With the direct3d11 renderer:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated with the texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D associated with the U plane of a YUV texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D associated with the V plane of a YUV texture, if you want to wrap an existing texture."
+                            }
+                          ],
+                          "With the direct3d12 renderer:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated with the texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated with the U plane of a YUV texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated with the V plane of a YUV texture, if you want to wrap an existing texture."
+                            }
+                          ],
+                          "With the metal renderer:",
+                          {
+                            "tag": "-",
+                            "content": "`prop.Texture.Create.METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef associated with the texture, if you want to create a texture from an existing pixel buffer."
+                          },
+                          "With the opengl renderer:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated with the texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture associated with the UV plane of an NV12 texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated with the U plane of a YUV texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated with the V plane of a YUV texture, if you want to wrap an existing texture."
+                            }
+                          ],
+                          "With the opengles2 renderer:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture associated with the texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture associated with the UV plane of an NV12 texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture associated with the U plane of a YUV texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture associated with the V plane of a YUV texture, if you want to wrap an existing texture."
+                            }
+                          ],
+                          "With the vulkan renderer:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.VULKAN_TEXTURE_NUMBER`: the VkImage associated with the texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL."
+                            }
+                          ],
+                          "With the GPU renderer:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`prop.Texture.Create.GPU_TEXTURE_POINTER`: the GPUTexture associated with the texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture associated with the UV plane of an NV12 texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated with the U plane of a YUV texture, if you want to wrap an existing texture."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated with the V plane of a YUV texture, if you want to wrap an existing texture."
+                            }
+                          ],
+                          [
+                            {
+                              "tag": "@param renderer",
+                              "content": "the rendering context."
+                            },
+                            {
+                              "tag": "@param props",
+                              "content": "the properties to use."
+                            },
+                            {
+                              "tag": "@post",
+                              "content": "the created texture or nullptr on failure; call GetError() for more information."
+                            }
+                          ],
+                          {
+                            "tag": "@threadsafety",
+                            "content": "This function should only be called on the main thread."
+                          },
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL 3.2.0."
+                          },
+                          [
+                            {
+                              "tag": "@sa",
+                              "content": "CreateProperties"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "CreateTexture"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "CreateTextureFromSurface"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "DestroyTexture"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "GetTextureSize"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "UpdateTexture"
+                            }
+                          ]
+                        ],
+                        "name": "Texture",
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [
+                          {
+                            "name": "renderer",
+                            "type": "RendererRef"
+                          },
+                          {
+                            "name": "props",
+                            "type": "PropertiesRef"
+                          }
+                        ],
+                        "sourceName": "SDL_CreateTextureWithProperties",
+                        "proto": true,
+                        "overload": {
+                          "doc": [
+                            "Load an image from a filesystem path into a texture.",
+                            "An Texture represents an image in GPU memory, usable by SDL's 2D Render API. This can be significantly more efficient than using a CPU-bound Surface if you don't need to manipulate the image directly after loading it.",
+                            "If the loaded image has transparency or a colorkey, a texture with an alpha channel will be created. Otherwise, SDL_image will attempt to create an Texture in the most format that most reasonably represents the image data (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).",
+                            "There is a separate function to read files from an IOStream, if you need an i/o abstraction to provide data from anywhere instead of a simple filesystem read; that function is LoadTexture_IO().",
+                            "If you would rather decode an image to an Surface (a buffer of pixels in CPU memory), call LoadSurface() instead.",
+                            "When done with the returned texture, the app should dispose of it with a call to DestroyTexture().",
+                            [
+                              {
+                                "tag": "@param renderer",
+                                "content": "the Renderer to use to create the texture."
+                              },
+                              {
+                                "tag": "@param file",
+                                "content": "a path on the filesystem to load an image from."
+                              },
+                              {
+                                "tag": "@post",
+                                "content": "a new texture, or nullptr on error."
+                              }
+                            ],
+                            {
+                              "tag": "@since",
+                              "content": "This function is available since SDL_image 3.0.0."
+                            },
+                            [
+                              {
+                                "tag": "@sa",
+                                "content": "LoadTextureTyped_IO"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "LoadTexture_IO"
+                              }
+                            ]
+                          ],
+                          "name": "Texture",
+                          "kind": "function",
+                          "type": "",
+                          "parameters": [
+                            {
+                              "name": "renderer",
+                              "type": "RendererRef"
+                            },
+                            {
+                              "name": "file",
+                              "type": "StringParam"
+                            }
+                          ],
+                          "sourceName": "IMG_LoadTexture",
+                          "overload": {
+                            "doc": [
+                              "Load an image from an SDL data source into a texture.",
+                              "An Texture represents an image in GPU memory, usable by SDL's 2D Render API. This can be significantly more efficient than using a CPU-bound Surface if you don't need to manipulate the image directly after loading it.",
+                              "If the loaded image has transparency or a colorkey, a texture with an alpha channel will be created. Otherwise, SDL_image will attempt to create an Texture in the most format that most reasonably represents the image data (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).",
+                              "If `closeio` is true, `src` will be closed before returning, whether this function succeeds or not. SDL_image reads everything it needs from `src` during this call in any case.",
+                              "There is a separate function to read files from disk without having to deal with IOStream: `LoadTexture(renderer, \"filename.jpg\")` will call this function and manage those details for you, determining the file type from the filename's extension.",
+                              "There is also LoadTextureTyped_IO(), which is equivalent to this function except a file extension (like \"BMP\", \"JPG\", etc) can be specified, in case SDL_image cannot autodetect the file format.",
+                              "If you would rather decode an image to an Surface (a buffer of pixels in CPU memory), call LoadSurface() instead.",
+                              "When done with the returned texture, the app should dispose of it with a call to DestroyTexture().",
+                              [
+                                {
+                                  "tag": "@param renderer",
+                                  "content": "the Renderer to use to create the texture."
+                                },
+                                {
+                                  "tag": "@param src",
+                                  "content": "an IOStream that data will be read from."
+                                },
+                                {
+                                  "tag": "@param closeio",
+                                  "content": "true to close/free the IOStream before returning, false to leave it open."
+                                },
+                                {
+                                  "tag": "@post",
+                                  "content": "a new texture, or nullptr on error."
+                                }
+                              ],
+                              {
+                                "tag": "@since",
+                                "content": "This function is available since SDL_image 3.0.0."
+                              },
+                              [
+                                {
+                                  "tag": "@sa",
+                                  "content": "LoadTexture"
+                                },
+                                {
+                                  "tag": "@sa",
+                                  "content": "LoadTextureTyped_IO"
+                                }
+                              ]
+                            ],
+                            "name": "Texture",
+                            "kind": "function",
+                            "type": "",
+                            "parameters": [
+                              {
+                                "name": "renderer",
+                                "type": "RendererRef"
+                              },
+                              {
+                                "name": "src",
+                                "type": "IOStreamRef"
+                              },
+                              {
+                                "name": "closeio",
+                                "type": "bool",
+                                "default": "false"
+                              }
+                            ],
+                            "sourceName": "IMG_LoadTexture_IO",
+                            "proto": true
+                          },
+                          "proto": true
+                        }
+                      },
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "Borrow": {
+              "kind": "function",
+              "static": true,
+              "type": "Texture",
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "TextureRaw"
+                }
+              ],
+              "hints": {
+                "body": "if (resource) {\n  ++resource->refcount;\n  return Texture(resource);}\nreturn {};"
+              },
+              "doc": [
+                "Safely borrows the from TextureRaw.",
+                {
+                  "tag": "@param resource",
+                  "content": "a TextureRaw."
+                },
+                "This does not takes ownership!"
+              ],
+              "name": "Borrow"
+            },
+            "~Texture": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyTexture(get());"
+              },
+              "name": "~Texture"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Texture &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Texture &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Texture &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Texture &"
+                  }
+                ],
+                "hints": {
+                  "delete": false,
+                  "body": "if (get() != other.get()) {\n  Texture tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;"
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "type": "TextureBase",
           "hints": {
             "self": "get()",
             "super": "Texture"
@@ -120719,15 +120744,14 @@
             "mayFail": true
           }
         },
-        "Texture::GetProperties": {
-          "name": "Texture::GetProperties",
+        "TextureBase::GetProperties": {
+          "name": "TextureBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetTextureProperties",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::GetTextureProperties"
           },
@@ -121134,15 +121158,14 @@
             "methodName": "GetRenderer"
           }
         },
-        "Texture::GetRenderer": {
-          "name": "Texture::GetRenderer",
+        "TextureBase::GetRenderer": {
+          "name": "TextureBase::GetRenderer",
           "kind": "function",
           "type": "RendererRef",
           "parameters": [],
           "sourceName": "SDL_GetRendererFromTexture",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "methodName": "GetRenderer",
             "delegate": "SDL::GetRendererFromTexture"
@@ -121241,8 +121264,8 @@
             ]
           }
         },
-        "Texture::GetSize": {
-          "name": "Texture::GetSize",
+        "TextureBase::GetSize": {
+          "name": "TextureBase::GetSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -121258,7 +121281,6 @@
           "sourceName": "SDL_GetTextureSize",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::GetTextureSize"
           },
@@ -121268,10 +121290,9 @@
             "immutable": true,
             "type": "Point",
             "parameters": [],
-            "name": "Texture::GetSize",
+            "name": "TextureBase::GetSize",
             "hints": {
               "self": "get()",
-              "super": "Texture",
               "delegate": "SDL::GetTextureSize"
             }
           }
@@ -121287,15 +121308,14 @@
           ],
           "name": "GetTextureSizeFloat"
         },
-        "Texture::GetSizeFloat": {
+        "TextureBase::GetSizeFloat": {
           "kind": "function",
           "immutable": true,
           "type": "FPoint",
           "parameters": [],
-          "name": "Texture::GetSizeFloat",
+          "name": "TextureBase::GetSizeFloat",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "delegate": "SDL::GetTextureSizeFloat"
           }
         },
@@ -121310,15 +121330,14 @@
           ],
           "name": "GetTextureWidth"
         },
-        "Texture::GetWidth": {
+        "TextureBase::GetWidth": {
           "kind": "function",
           "immutable": true,
           "type": "int",
           "parameters": [],
-          "name": "Texture::GetWidth",
+          "name": "TextureBase::GetWidth",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "delegate": "SDL::GetTextureWidth"
           }
         },
@@ -121333,15 +121352,14 @@
           ],
           "name": "GetTextureHeight"
         },
-        "Texture::GetHeight": {
+        "TextureBase::GetHeight": {
           "kind": "function",
           "immutable": true,
           "type": "int",
           "parameters": [],
-          "name": "Texture::GetHeight",
+          "name": "TextureBase::GetHeight",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "delegate": "SDL::GetTextureHeight"
           }
         },
@@ -121356,15 +121374,14 @@
           ],
           "name": "GetTextureFormat"
         },
-        "Texture::GetFormat": {
+        "TextureBase::GetFormat": {
           "kind": "function",
           "immutable": true,
           "type": "PixelFormat",
           "parameters": [],
-          "name": "Texture::GetFormat",
+          "name": "TextureBase::GetFormat",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "delegate": "SDL::GetTextureFormat"
           }
         },
@@ -121430,8 +121447,8 @@
             "patch": 0
           }
         },
-        "Texture::SetPalette": {
-          "name": "Texture::SetPalette",
+        "TextureBase::SetPalette": {
+          "name": "TextureBase::SetPalette",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -121443,7 +121460,6 @@
           "sourceName": "SDL_SetTexturePalette",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::SetTexturePalette"
           },
@@ -121497,15 +121513,14 @@
             "patch": 0
           }
         },
-        "Texture::GetPalette": {
-          "name": "Texture::GetPalette",
+        "TextureBase::GetPalette": {
+          "name": "TextureBase::GetPalette",
           "kind": "function",
           "type": "Palette",
           "parameters": [],
           "sourceName": "SDL_GetTexturePalette",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "delegate": "SDL::GetTexturePalette"
           },
           "since": {
@@ -121592,8 +121607,8 @@
             "mayFail": true
           }
         },
-        "Texture::SetColorMod": {
-          "name": "Texture::SetColorMod",
+        "TextureBase::SetColorMod": {
+          "name": "TextureBase::SetColorMod",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -121613,7 +121628,6 @@
           "sourceName": "SDL_SetTextureColorMod",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::SetTextureColorMod"
           }
@@ -121695,8 +121709,8 @@
             "mayFail": true
           }
         },
-        "Texture::SetColorModFloat": {
-          "name": "Texture::SetColorModFloat",
+        "TextureBase::SetColorModFloat": {
+          "name": "TextureBase::SetColorModFloat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -121716,7 +121730,6 @@
           "sourceName": "SDL_SetTextureColorModFloat",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::SetTextureColorModFloat"
           }
@@ -121795,8 +121808,8 @@
             "mayFail": true
           }
         },
-        "Texture::GetColorMod": {
-          "name": "Texture::GetColorMod",
+        "TextureBase::GetColorMod": {
+          "name": "TextureBase::GetColorMod",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -121816,7 +121829,6 @@
           "sourceName": "SDL_GetTextureColorMod",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::GetTextureColorMod"
           },
@@ -121896,8 +121908,8 @@
             "mayFail": true
           }
         },
-        "Texture::GetColorModFloat": {
-          "name": "Texture::GetColorModFloat",
+        "TextureBase::GetColorModFloat": {
+          "name": "TextureBase::GetColorModFloat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -121917,7 +121929,6 @@
           "sourceName": "SDL_GetTextureColorModFloat",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::GetTextureColorModFloat"
           },
@@ -121984,8 +121995,8 @@
             "mayFail": true
           }
         },
-        "Texture::SetAlphaMod": {
-          "name": "Texture::SetAlphaMod",
+        "TextureBase::SetAlphaMod": {
+          "name": "TextureBase::SetAlphaMod",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -121997,7 +122008,6 @@
           "sourceName": "SDL_SetTextureAlphaMod",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::SetTextureAlphaMod"
           }
@@ -122063,8 +122073,8 @@
             "mayFail": true
           }
         },
-        "Texture::SetAlphaModFloat": {
-          "name": "Texture::SetAlphaModFloat",
+        "TextureBase::SetAlphaModFloat": {
+          "name": "TextureBase::SetAlphaModFloat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -122076,7 +122086,6 @@
           "sourceName": "SDL_SetTextureAlphaModFloat",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::SetTextureAlphaModFloat"
           }
@@ -122135,15 +122144,14 @@
             "mayFail": true
           }
         },
-        "Texture::GetAlphaMod": {
-          "name": "Texture::GetAlphaMod",
+        "TextureBase::GetAlphaMod": {
+          "name": "TextureBase::GetAlphaMod",
           "kind": "function",
           "type": "Uint8",
           "parameters": [],
           "sourceName": "SDL_GetTextureAlphaMod",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::GetTextureAlphaMod"
           },
@@ -122203,15 +122211,14 @@
             "mayFail": true
           }
         },
-        "Texture::GetAlphaModFloat": {
-          "name": "Texture::GetAlphaModFloat",
+        "TextureBase::GetAlphaModFloat": {
+          "name": "TextureBase::GetAlphaModFloat",
           "kind": "function",
           "type": "float",
           "parameters": [],
           "sourceName": "SDL_GetTextureAlphaModFloat",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::GetTextureAlphaModFloat"
           },
@@ -122232,7 +122239,7 @@
           ],
           "name": "SetTextureMod"
         },
-        "Texture::SetMod": {
+        "TextureBase::SetMod": {
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -122241,10 +122248,9 @@
               "name": "c"
             }
           ],
-          "name": "Texture::SetMod",
+          "name": "TextureBase::SetMod",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "delegate": "SDL::SetTextureMod"
           }
         },
@@ -122263,7 +122269,7 @@
           ],
           "name": "SetTextureModFloat"
         },
-        "Texture::SetModFloat": {
+        "TextureBase::SetModFloat": {
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -122272,10 +122278,9 @@
               "name": "c"
             }
           ],
-          "name": "Texture::SetModFloat",
+          "name": "TextureBase::SetModFloat",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "delegate": "SDL::SetTextureModFloat"
           }
         },
@@ -122290,15 +122295,14 @@
           ],
           "name": "GetTextureMod"
         },
-        "Texture::GetMod": {
+        "TextureBase::GetMod": {
           "kind": "function",
           "type": "Color",
           "immutable": true,
           "parameters": [],
-          "name": "Texture::GetMod",
+          "name": "TextureBase::GetMod",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "delegate": "SDL::GetTextureMod"
           }
         },
@@ -122313,15 +122317,14 @@
           ],
           "name": "GetTextureModFloat"
         },
-        "Texture::GetModFloat": {
+        "TextureBase::GetModFloat": {
           "kind": "function",
           "type": "FColor",
           "immutable": true,
           "parameters": [],
-          "name": "Texture::GetModFloat",
+          "name": "TextureBase::GetModFloat",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "delegate": "SDL::GetTextureModFloat"
           }
         },
@@ -122374,8 +122377,8 @@
             "mayFail": true
           }
         },
-        "Texture::SetBlendMode": {
-          "name": "Texture::SetBlendMode",
+        "TextureBase::SetBlendMode": {
+          "name": "TextureBase::SetBlendMode",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -122387,7 +122390,6 @@
           "sourceName": "SDL_SetTextureBlendMode",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::SetTextureBlendMode"
           }
@@ -122436,15 +122438,14 @@
             "mayFail": true
           }
         },
-        "Texture::GetBlendMode": {
-          "name": "Texture::GetBlendMode",
+        "TextureBase::GetBlendMode": {
+          "name": "TextureBase::GetBlendMode",
           "kind": "function",
           "type": "BlendMode",
           "parameters": [],
           "sourceName": "SDL_GetTextureBlendMode",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::GetTextureBlendMode"
           },
@@ -122500,8 +122501,8 @@
             "mayFail": true
           }
         },
-        "Texture::SetScaleMode": {
-          "name": "Texture::SetScaleMode",
+        "TextureBase::SetScaleMode": {
+          "name": "TextureBase::SetScaleMode",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -122513,7 +122514,6 @@
           "sourceName": "SDL_SetTextureScaleMode",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::SetTextureScaleMode"
           }
@@ -122562,15 +122562,14 @@
             "mayFail": true
           }
         },
-        "Texture::GetScaleMode": {
-          "name": "Texture::GetScaleMode",
+        "TextureBase::GetScaleMode": {
+          "name": "TextureBase::GetScaleMode",
           "kind": "function",
           "type": "ScaleMode",
           "parameters": [],
           "sourceName": "SDL_GetTextureScaleMode",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::GetTextureScaleMode"
           },
@@ -122731,8 +122730,8 @@
             ]
           }
         },
-        "Texture::Update": {
-          "name": "Texture::Update",
+        "TextureBase::Update": {
+          "name": "TextureBase::Update",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -122752,7 +122751,6 @@
           "sourceName": "SDL_UpdateTexture",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::UpdateTexture"
           },
@@ -122769,10 +122767,9 @@
                 "name": "rect"
               }
             ],
-            "name": "Texture::Update",
+            "name": "TextureBase::Update",
             "hints": {
               "self": "get()",
-              "super": "Texture",
               "delegate": "SDL::UpdateTexture"
             }
           }
@@ -122880,8 +122877,8 @@
             "mayFail": true
           }
         },
-        "Texture::UpdateYUV": {
-          "name": "Texture::UpdateYUV",
+        "TextureBase::UpdateYUV": {
+          "name": "TextureBase::UpdateYUV",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -122917,7 +122914,6 @@
           "sourceName": "SDL_UpdateYUVTexture",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::UpdateYUVTexture"
           }
@@ -123009,8 +123005,8 @@
             "mayFail": true
           }
         },
-        "Texture::UpdateNV": {
-          "name": "Texture::UpdateNV",
+        "TextureBase::UpdateNV": {
+          "name": "TextureBase::UpdateNV",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -123038,7 +123034,6 @@
           "sourceName": "SDL_UpdateNVTexture",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::UpdateNVTexture"
           }
@@ -123115,8 +123110,8 @@
             "mayFail": true
           }
         },
-        "Texture::Lock": {
-          "name": "Texture::Lock",
+        "TextureBase::Lock": {
+          "name": "TextureBase::Lock",
           "kind": "function",
           "type": "TextureLock",
           "parameters": [
@@ -123136,7 +123131,6 @@
           "sourceName": "SDL_LockTexture",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "body": "return {TextureRef(*this)};",
             "delegate": "SDL::LockTexture"
@@ -123223,8 +123217,8 @@
             "mayFail": true
           }
         },
-        "Texture::LockToSurface": {
-          "name": "Texture::LockToSurface",
+        "TextureBase::LockToSurface": {
+          "name": "TextureBase::LockToSurface",
           "kind": "function",
           "type": "TextureSurfaceLock",
           "parameters": [
@@ -123236,7 +123230,6 @@
           "sourceName": "SDL_LockTextureToSurface",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "mayFail": true,
             "delegate": "SDL::LockTextureToSurface"
           }
@@ -123292,8 +123285,8 @@
           ],
           "sourceName": "SDL_UnlockTexture"
         },
-        "Texture::Unlock": {
-          "name": "Texture::Unlock",
+        "TextureBase::Unlock": {
+          "name": "TextureBase::Unlock",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -123305,7 +123298,6 @@
           "sourceName": "SDL_UnlockTexture",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
             "delegate": "SDL::UnlockTexture"
           },
@@ -123320,10 +123312,9 @@
             ],
             "hints": {
               "self": "get()",
-              "super": "Texture",
               "body": "SDL_assert_paranoid(lock.get() == *this);\nlock.reset();"
             },
-            "name": "Texture::Unlock"
+            "name": "TextureBase::Unlock"
           }
         },
         "TextureSurfaceLock::reset": {
@@ -127717,15 +127708,14 @@
           ],
           "sourceName": "SDL_DestroyTexture"
         },
-        "Texture::Destroy": {
-          "name": "Texture::Destroy",
+        "TextureBase::Destroy": {
+          "name": "TextureBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyTexture",
           "hints": {
             "self": "get()",
-            "super": "Texture",
             "body": "DestroyTexture(release());",
             "delegate": "SDL::DestroyTexture"
           }
@@ -162977,6 +162967,10 @@
         "If you're going to work with threads, you almost certainly need to have a good understanding of thread safety measures: locking and synchronization mechanisms are handled by the functions in SDL_mutex.h."
       ],
       "entries": {
+        "ThreadBase-forward": {
+          "name": "ThreadBase",
+          "kind": "forward"
+        },
         "Thread-forward": {
           "name": "Thread",
           "kind": "forward"
@@ -162996,7 +162990,7 @@
             "Reference for Thread.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Thread>"
+          "type": "ResourceRefT<ThreadBase>"
         },
         "ThreadPriority": {
           "name": "ThreadPriority",
@@ -163205,419 +163199,21 @@
           "type": "void (SDLCALL *)(void * value)",
           "sourceName": "SDL_TLSDestructorCallback"
         },
-        "Thread": {
-          "doc": [
-            "The SDL thread object.",
-            "These are opaque data.",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL 3.2.0."
-            },
-            [
-              {
-                "tag": "@sa",
-                "content": "CreateThread"
-              },
-              {
-                "tag": "@sa",
-                "content": "WaitThread"
-              }
-            ],
-            "@cat resource"
-          ],
-          "name": "Thread",
+        "ThreadBase": {
+          "name": "ThreadBase",
           "kind": "struct",
-          "type": "ResourceBase<ThreadRaw>",
-          "sourceName": "SDL_Thread",
+          "type": "ResourceBaseT<ThreadRaw>",
+          "doc": [
+            "Base class to Thread.",
+            {
+              "tag": "@see",
+              "content": "Thread"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Thread": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "ThreadRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Thread.",
-                {
-                  "tag": "@param resource",
-                  "content": "a ThreadRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Thread",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Thread &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Thread",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Thread &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Thread(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Thread",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const ThreadRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Thread",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "ThreadRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Thread",
-                      "overload": {
-                        "doc": [
-                          "Create a new thread with a default stack size.",
-                          "This is a convenience function, equivalent to calling CreateThreadWithProperties with the following properties set:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Thread.Create.ENTRY_FUNCTION_POINTER`: `fn`"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Thread.Create.NAME_STRING`: `name`"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Thread.Create.USERDATA_POINTER`: `data`"
-                            }
-                          ],
-                          "Note that this \"function\" is actually a macro that calls an internal function with two extra parameters not listed here; they are hidden through preprocessor macros and are needed to support various C runtimes at the point of the function call. Language bindings that aren't using the C headers will need to deal with this.",
-                          "Usually, apps should just call this function the same way on every platform and let the macros hide the details.",
-                          [
-                            {
-                              "tag": "@param fn",
-                              "content": "the ThreadFunction function to call in the new thread."
-                            },
-                            {
-                              "tag": "@param name",
-                              "content": "the name of the thread."
-                            },
-                            {
-                              "tag": "@param data",
-                              "content": "a pointer that is passed to `fn`."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "an opaque pointer to the new thread object on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateThreadWithProperties"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "WaitThread"
-                            }
-                          ]
-                        ],
-                        "name": "Thread",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "fn",
-                            "type": "ThreadFunction"
-                          },
-                          {
-                            "name": "name",
-                            "type": "StringParam"
-                          },
-                          {
-                            "name": "data",
-                            "type": "void *"
-                          }
-                        ],
-                        "sourceName": "SDL_CreateThread",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "overload": {
-                          "kind": "function",
-                          "type": "",
-                          "static": false,
-                          "parameters": [
-                            {
-                              "type": "ThreadCB",
-                              "name": "fn"
-                            },
-                            {
-                              "type": "StringParam",
-                              "name": "name"
-                            }
-                          ],
-                          "name": "Thread",
-                          "doc": [
-                            "Create a new thread with a default stack size.",
-                            "This is a convenience function, equivalent to calling CreateThreadWithProperties with the following properties set:",
-                            [
-                              {
-                                "tag": "-",
-                                "content": "`prop.Thread.Create.ENTRY_FUNCTION_POINTER`: `fn`"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Thread.Create.NAME_STRING`: `name`"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Thread.Create.USERDATA_POINTER`: `data`"
-                              }
-                            ],
-                            "Note that this \"function\" is actually a macro that calls an internal function with two extra parameters not listed here; they are hidden through preprocessor macros and are needed to support various C runtimes at the point of the function call. Language bindings that aren't using the C headers will need to deal with this.",
-                            "Usually, apps should just call this function the same way on every platform and let the macros hide the details.",
-                            [
-                              {
-                                "tag": "@param fn",
-                                "content": "the ThreadFunction function to call in the new thread."
-                              },
-                              {
-                                "tag": "@param name",
-                                "content": "the name of the thread."
-                              },
-                              {
-                                "tag": "@param data",
-                                "content": "a pointer that is passed to `fn`."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "an opaque pointer to the new thread object on success."
-                              },
-                              {
-                                "tag": "@throws",
-                                "content": "Error on failure."
-                              }
-                            ],
-                            {
-                              "tag": "@threadsafety",
-                              "content": "It is safe to call this function from any thread."
-                            },
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL 3.2.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "CreateThreadWithProperties"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "WaitThread"
-                              }
-                            ]
-                          ],
-                          "overload": {
-                            "doc": [
-                              "Create a new thread with with the specified properties.",
-                              "These are the supported properties:",
-                              [
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Thread.Create.ENTRY_FUNCTION_POINTER`: an ThreadFunction value that will be called at the start of the new thread's life. Required."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Thread.Create.NAME_STRING`: the name of the new thread, which might be available to debuggers. Optional, defaults to nullptr."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Thread.Create.USERDATA_POINTER`: an arbitrary app-defined pointer, which is passed to the entry function on the new thread, as its only parameter. Optional, defaults to nullptr."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Thread.Create.STACKSIZE_NUMBER`: the size, in bytes, of the new thread's stack. Optional, defaults to 0 (system-defined default)."
-                                }
-                              ],
-                              "SDL makes an attempt to report `prop.Thread.Create.NAME_STRING` to the system, so that debuggers can display it. Not all platforms support this.",
-                              "Thread naming is a little complicated: Most systems have very small limits for the string length (Haiku has 32 bytes, Linux currently has 16, Visual C++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to see what happens with your system's debugger. The name should be UTF-8 (but using the naming limits of C identifiers is a better bet). There are no requirements for thread naming conventions, so long as the string is null-terminated UTF-8, but these guidelines are helpful in choosing a name:",
-                              "https://stackoverflow.com/questions/149932/naming-conventions-for-threads",
-                              "If a system imposes requirements, SDL will try to munge the string for it (truncate, etc), but the original string contents will be available from GetThreadName().",
-                              "The size (in bytes) of the new stack can be specified with `prop.Thread.Create.STACKSIZE_NUMBER`. Zero means \"use the system default\" which might be wildly different between platforms. x86 Linux generally defaults to eight megabytes, an embedded device might be a few kilobytes instead. You generally need to specify a stack that is a multiple of the system's page size (in many cases, this is 4 kilobytes, but check your system documentation).",
-                              "Note that this \"function\" is actually a macro that calls an internal function with two extra parameters not listed here; they are hidden through preprocessor macros and are needed to support various C runtimes at the point of the function call. Language bindings that aren't using the C headers will need to deal with this.",
-                              "The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so there is no symbol clash, but trying to load an SDL shared library and look for \"CreateThreadWithProperties\" will fail.",
-                              "Usually, apps should just call this function the same way on every platform and let the macros hide the details.",
-                              [
-                                {
-                                  "tag": "@param props",
-                                  "content": "the properties to use."
-                                },
-                                {
-                                  "tag": "@post",
-                                  "content": "an opaque pointer to the new thread object on success."
-                                },
-                                {
-                                  "tag": "@throws",
-                                  "content": "Error on failure."
-                                }
-                              ],
-                              {
-                                "tag": "@threadsafety",
-                                "content": "It is safe to call this function from any thread."
-                              },
-                              {
-                                "tag": "@since",
-                                "content": "This function is available since SDL 3.2.0."
-                              },
-                              [
-                                {
-                                  "tag": "@sa",
-                                  "content": "CreateThread"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "WaitThread"
-                                }
-                              ]
-                            ],
-                            "name": "Thread",
-                            "kind": "function",
-                            "type": "",
-                            "parameters": [
-                              {
-                                "name": "props",
-                                "type": "PropertiesRef"
-                              }
-                            ],
-                            "sourceName": "SDL_CreateThreadWithProperties",
-                            "hints": {
-                              "mayFail": true
-                            },
-                            "proto": true
-                          },
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Thread": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DetachThread(get());"
-              },
-              "name": "~Thread"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Thread &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Thread &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Thread &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Thread &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Detach": {
               "doc": [
@@ -163842,6 +163438,393 @@
                 "delegate": "SDL::GetThreadState"
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Thread": {
+          "doc": [
+            "The SDL thread object.",
+            "These are opaque data.",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "CreateThread"
+              },
+              {
+                "tag": "@sa",
+                "content": "WaitThread"
+              }
+            ],
+            "@cat resource"
+          ],
+          "name": "Thread",
+          "kind": "struct",
+          "type": "ThreadBase",
+          "sourceName": "SDL_Thread",
+          "entries": {
+            "ThreadBase::ThreadBase": {
+              "kind": "alias",
+              "name": "ThreadBase::ThreadBase"
+            },
+            "Thread": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "ThreadRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "ThreadBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Thread.",
+                {
+                  "tag": "@param resource",
+                  "content": "a ThreadRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Thread",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Thread &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Thread",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Thread &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Thread(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Thread",
+                  "overload": {
+                    "doc": [
+                      "Create a new thread with a default stack size.",
+                      "This is a convenience function, equivalent to calling CreateThreadWithProperties with the following properties set:",
+                      [
+                        {
+                          "tag": "-",
+                          "content": "`prop.Thread.Create.ENTRY_FUNCTION_POINTER`: `fn`"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "`prop.Thread.Create.NAME_STRING`: `name`"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "`prop.Thread.Create.USERDATA_POINTER`: `data`"
+                        }
+                      ],
+                      "Note that this \"function\" is actually a macro that calls an internal function with two extra parameters not listed here; they are hidden through preprocessor macros and are needed to support various C runtimes at the point of the function call. Language bindings that aren't using the C headers will need to deal with this.",
+                      "Usually, apps should just call this function the same way on every platform and let the macros hide the details.",
+                      [
+                        {
+                          "tag": "@param fn",
+                          "content": "the ThreadFunction function to call in the new thread."
+                        },
+                        {
+                          "tag": "@param name",
+                          "content": "the name of the thread."
+                        },
+                        {
+                          "tag": "@param data",
+                          "content": "a pointer that is passed to `fn`."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "an opaque pointer to the new thread object on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateThreadWithProperties"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "WaitThread"
+                        }
+                      ]
+                    ],
+                    "name": "Thread",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "fn",
+                        "type": "ThreadFunction"
+                      },
+                      {
+                        "name": "name",
+                        "type": "StringParam"
+                      },
+                      {
+                        "name": "data",
+                        "type": "void *"
+                      }
+                    ],
+                    "sourceName": "SDL_CreateThread",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "overload": {
+                      "kind": "function",
+                      "type": "",
+                      "static": false,
+                      "parameters": [
+                        {
+                          "type": "ThreadCB",
+                          "name": "fn"
+                        },
+                        {
+                          "type": "StringParam",
+                          "name": "name"
+                        }
+                      ],
+                      "name": "Thread",
+                      "doc": [
+                        "Create a new thread with a default stack size.",
+                        "This is a convenience function, equivalent to calling CreateThreadWithProperties with the following properties set:",
+                        [
+                          {
+                            "tag": "-",
+                            "content": "`prop.Thread.Create.ENTRY_FUNCTION_POINTER`: `fn`"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Thread.Create.NAME_STRING`: `name`"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Thread.Create.USERDATA_POINTER`: `data`"
+                          }
+                        ],
+                        "Note that this \"function\" is actually a macro that calls an internal function with two extra parameters not listed here; they are hidden through preprocessor macros and are needed to support various C runtimes at the point of the function call. Language bindings that aren't using the C headers will need to deal with this.",
+                        "Usually, apps should just call this function the same way on every platform and let the macros hide the details.",
+                        [
+                          {
+                            "tag": "@param fn",
+                            "content": "the ThreadFunction function to call in the new thread."
+                          },
+                          {
+                            "tag": "@param name",
+                            "content": "the name of the thread."
+                          },
+                          {
+                            "tag": "@param data",
+                            "content": "a pointer that is passed to `fn`."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "an opaque pointer to the new thread object on success."
+                          },
+                          {
+                            "tag": "@throws",
+                            "content": "Error on failure."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "It is safe to call this function from any thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL 3.2.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "CreateThreadWithProperties"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "WaitThread"
+                          }
+                        ]
+                      ],
+                      "overload": {
+                        "doc": [
+                          "Create a new thread with with the specified properties.",
+                          "These are the supported properties:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`prop.Thread.Create.ENTRY_FUNCTION_POINTER`: an ThreadFunction value that will be called at the start of the new thread's life. Required."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Thread.Create.NAME_STRING`: the name of the new thread, which might be available to debuggers. Optional, defaults to nullptr."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Thread.Create.USERDATA_POINTER`: an arbitrary app-defined pointer, which is passed to the entry function on the new thread, as its only parameter. Optional, defaults to nullptr."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Thread.Create.STACKSIZE_NUMBER`: the size, in bytes, of the new thread's stack. Optional, defaults to 0 (system-defined default)."
+                            }
+                          ],
+                          "SDL makes an attempt to report `prop.Thread.Create.NAME_STRING` to the system, so that debuggers can display it. Not all platforms support this.",
+                          "Thread naming is a little complicated: Most systems have very small limits for the string length (Haiku has 32 bytes, Linux currently has 16, Visual C++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to see what happens with your system's debugger. The name should be UTF-8 (but using the naming limits of C identifiers is a better bet). There are no requirements for thread naming conventions, so long as the string is null-terminated UTF-8, but these guidelines are helpful in choosing a name:",
+                          "https://stackoverflow.com/questions/149932/naming-conventions-for-threads",
+                          "If a system imposes requirements, SDL will try to munge the string for it (truncate, etc), but the original string contents will be available from GetThreadName().",
+                          "The size (in bytes) of the new stack can be specified with `prop.Thread.Create.STACKSIZE_NUMBER`. Zero means \"use the system default\" which might be wildly different between platforms. x86 Linux generally defaults to eight megabytes, an embedded device might be a few kilobytes instead. You generally need to specify a stack that is a multiple of the system's page size (in many cases, this is 4 kilobytes, but check your system documentation).",
+                          "Note that this \"function\" is actually a macro that calls an internal function with two extra parameters not listed here; they are hidden through preprocessor macros and are needed to support various C runtimes at the point of the function call. Language bindings that aren't using the C headers will need to deal with this.",
+                          "The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so there is no symbol clash, but trying to load an SDL shared library and look for \"CreateThreadWithProperties\" will fail.",
+                          "Usually, apps should just call this function the same way on every platform and let the macros hide the details.",
+                          [
+                            {
+                              "tag": "@param props",
+                              "content": "the properties to use."
+                            },
+                            {
+                              "tag": "@post",
+                              "content": "an opaque pointer to the new thread object on success."
+                            },
+                            {
+                              "tag": "@throws",
+                              "content": "Error on failure."
+                            }
+                          ],
+                          {
+                            "tag": "@threadsafety",
+                            "content": "It is safe to call this function from any thread."
+                          },
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL 3.2.0."
+                          },
+                          [
+                            {
+                              "tag": "@sa",
+                              "content": "CreateThread"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "WaitThread"
+                            }
+                          ]
+                        ],
+                        "name": "Thread",
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [
+                          {
+                            "name": "props",
+                            "type": "PropertiesRef"
+                          }
+                        ],
+                        "sourceName": "SDL_CreateThreadWithProperties",
+                        "hints": {
+                          "mayFail": true
+                        },
+                        "proto": true
+                      },
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Thread": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DetachThread(get());"
+              },
+              "name": "~Thread"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Thread &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Thread &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Thread &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Thread &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -164256,8 +164239,8 @@
           ],
           "sourceName": "SDL_GetThreadName"
         },
-        "Thread::GetName": {
-          "name": "Thread::GetName",
+        "ThreadBase::GetName": {
+          "name": "ThreadBase::GetName",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
@@ -164265,7 +164248,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Thread",
             "delegate": "SDL::GetThreadName"
           }
         },
@@ -164335,8 +164317,8 @@
           ],
           "sourceName": "SDL_GetThreadID"
         },
-        "Thread::GetID": {
-          "name": "Thread::GetID",
+        "ThreadBase::GetID": {
+          "name": "ThreadBase::GetID",
           "kind": "function",
           "type": "ThreadID",
           "parameters": [],
@@ -164344,7 +164326,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Thread",
             "delegate": "SDL::GetThreadID"
           }
         },
@@ -164385,8 +164366,8 @@
             "mayFail": true
           }
         },
-        "Thread::SetCurrentPriority": {
-          "name": "Thread::SetCurrentPriority",
+        "ThreadBase::SetCurrentPriority": {
+          "name": "ThreadBase::SetCurrentPriority",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -164398,7 +164379,6 @@
           "sourceName": "SDL_SetCurrentThreadPriority",
           "hints": {
             "self": "get()",
-            "super": "Thread",
             "mayFail": true,
             "delegate": "SDL::SetCurrentThreadPriority",
             "static": true
@@ -164457,8 +164437,8 @@
           ],
           "sourceName": "SDL_WaitThread"
         },
-        "Thread::Wait": {
-          "name": "Thread::Wait",
+        "ThreadBase::Wait": {
+          "name": "ThreadBase::Wait",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -164470,7 +164450,6 @@
           "sourceName": "SDL_WaitThread",
           "hints": {
             "self": "get()",
-            "super": "Thread",
             "delegate": "SDL::WaitThread"
           }
         },
@@ -164511,8 +164490,8 @@
           ],
           "sourceName": "SDL_GetThreadState"
         },
-        "Thread::GetState": {
-          "name": "Thread::GetState",
+        "ThreadBase::GetState": {
+          "name": "ThreadBase::GetState",
           "kind": "function",
           "type": "ThreadState",
           "parameters": [],
@@ -164520,7 +164499,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Thread",
             "delegate": "SDL::GetThreadState"
           }
         },
@@ -164567,15 +164545,14 @@
           ],
           "sourceName": "SDL_DetachThread"
         },
-        "Thread::Detach": {
-          "name": "Thread::Detach",
+        "ThreadBase::Detach": {
+          "name": "ThreadBase::Detach",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DetachThread",
           "hints": {
             "self": "get()",
-            "super": "Thread",
             "body": "DetachThread(release());",
             "delegate": "SDL::DetachThread"
           }
@@ -165298,6 +165275,10 @@
         "SDL offers a way to add items to the \"system tray\" (more correctly called the \"notification area\" on Windows). On platforms that offer this concept, an SDL app can add a tray icon, submenus, checkboxes, and clickable entries, and register a callback that is fired when the user clicks on these pieces."
       ],
       "entries": {
+        "TrayBase-forward": {
+          "name": "TrayBase",
+          "kind": "forward"
+        },
         "Tray-forward": {
           "name": "Tray",
           "kind": "forward"
@@ -165317,7 +165298,7 @@
             "Reference for Tray.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Tray>"
+          "type": "ResourceRefT<TrayBase>"
         },
         "TrayMenuRaw": {
           "name": "TrayMenuRaw",
@@ -165481,227 +165462,21 @@
             }
           ]
         },
-        "Tray": {
-          "doc": [
-            "An opaque handle representing a toplevel system tray object.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Tray",
+        "TrayBase": {
+          "name": "TrayBase",
           "kind": "struct",
-          "type": "ResourceBase<TrayRaw>",
-          "sourceName": "SDL_Tray",
+          "type": "ResourceBaseT<TrayRaw>",
+          "doc": [
+            "Base class to Tray.",
+            {
+              "tag": "@see",
+              "content": "Tray"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Tray": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "TrayRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Tray.",
-                {
-                  "tag": "@param resource",
-                  "content": "a TrayRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Tray",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Tray &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Tray",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Tray &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Tray(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Tray",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const TrayRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Tray",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "TrayRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Tray",
-                      "overload": {
-                        "doc": [
-                          "Create an icon to be placed in the operating system's tray, or equivalent.",
-                          "Many platforms advise not using a system tray unless persistence is a necessary feature. Avoid needlessly creating a tray icon, as the user may feel like it clutters their interface.",
-                          "Using tray icons require the video subsystem.",
-                          [
-                            {
-                              "tag": "@param icon",
-                              "content": "a surface to be used as icon. May be nullptr."
-                            },
-                            {
-                              "tag": "@param tooltip",
-                              "content": "a tooltip to be displayed when the mouse hovers the icon in UTF-8 encoding. Not supported on all platforms. May be nullptr."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "The newly created system tray icon."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "This function should only be called on the main thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateTrayMenu"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetTrayMenu"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyTray"
-                            }
-                          ]
-                        ],
-                        "name": "Tray",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "icon",
-                            "type": "SurfaceRef"
-                          },
-                          {
-                            "name": "tooltip",
-                            "type": "StringParam"
-                          }
-                        ],
-                        "sourceName": "SDL_CreateTray",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Tray": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyTray(get());"
-              },
-              "name": "~Tray"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Tray &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Tray &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Tray &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Tray &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -165891,6 +165666,201 @@
                 "delegate": "SDL::GetTrayMenu"
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Tray": {
+          "doc": [
+            "An opaque handle representing a toplevel system tray object.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Tray",
+          "kind": "struct",
+          "type": "TrayBase",
+          "sourceName": "SDL_Tray",
+          "entries": {
+            "TrayBase::TrayBase": {
+              "kind": "alias",
+              "name": "TrayBase::TrayBase"
+            },
+            "Tray": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "TrayRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "TrayBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Tray.",
+                {
+                  "tag": "@param resource",
+                  "content": "a TrayRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Tray",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Tray &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Tray",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Tray &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Tray(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Tray",
+                  "overload": {
+                    "doc": [
+                      "Create an icon to be placed in the operating system's tray, or equivalent.",
+                      "Many platforms advise not using a system tray unless persistence is a necessary feature. Avoid needlessly creating a tray icon, as the user may feel like it clutters their interface.",
+                      "Using tray icons require the video subsystem.",
+                      [
+                        {
+                          "tag": "@param icon",
+                          "content": "a surface to be used as icon. May be nullptr."
+                        },
+                        {
+                          "tag": "@param tooltip",
+                          "content": "a tooltip to be displayed when the mouse hovers the icon in UTF-8 encoding. Not supported on all platforms. May be nullptr."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "The newly created system tray icon."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "This function should only be called on the main thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateTrayMenu"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetTrayMenu"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyTray"
+                        }
+                      ]
+                    ],
+                    "name": "Tray",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "icon",
+                        "type": "SurfaceRef"
+                      },
+                      {
+                        "name": "tooltip",
+                        "type": "StringParam"
+                      }
+                    ],
+                    "sourceName": "SDL_CreateTray",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Tray": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyTray(get());"
+              },
+              "name": "~Tray"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Tray &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Tray &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Tray &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Tray &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -166196,12 +166166,12 @@
           ],
           "name": "TrayEntry",
           "kind": "struct",
-          "type": "ResourceBase<TrayEntryRaw>",
+          "type": "ResourceBaseT<TrayEntryRaw>",
           "sourceName": "SDL_TrayEntry",
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "TrayEntry": {
               "doc": [
@@ -167127,8 +167097,8 @@
           ],
           "sourceName": "SDL_SetTrayIcon"
         },
-        "Tray::SetIcon": {
-          "name": "Tray::SetIcon",
+        "TrayBase::SetIcon": {
+          "name": "TrayBase::SetIcon",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -167140,7 +167110,6 @@
           "sourceName": "SDL_SetTrayIcon",
           "hints": {
             "self": "get()",
-            "super": "Tray",
             "delegate": "SDL::SetTrayIcon"
           }
         },
@@ -167185,8 +167154,8 @@
           ],
           "sourceName": "SDL_SetTrayTooltip"
         },
-        "Tray::SetTooltip": {
-          "name": "Tray::SetTooltip",
+        "TrayBase::SetTooltip": {
+          "name": "TrayBase::SetTooltip",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -167198,7 +167167,6 @@
           "sourceName": "SDL_SetTrayTooltip",
           "hints": {
             "self": "get()",
-            "super": "Tray",
             "delegate": "SDL::SetTrayTooltip"
           }
         },
@@ -167252,15 +167220,14 @@
           ],
           "sourceName": "SDL_CreateTrayMenu"
         },
-        "Tray::CreateMenu": {
-          "name": "Tray::CreateMenu",
+        "TrayBase::CreateMenu": {
+          "name": "TrayBase::CreateMenu",
           "kind": "function",
           "type": "TrayMenu",
           "parameters": [],
           "sourceName": "SDL_CreateTrayMenu",
           "hints": {
             "self": "get()",
-            "super": "Tray",
             "delegate": "SDL::CreateTrayMenu"
           }
         },
@@ -167376,8 +167343,8 @@
           ],
           "sourceName": "SDL_GetTrayMenu"
         },
-        "Tray::GetMenu": {
-          "name": "Tray::GetMenu",
+        "TrayBase::GetMenu": {
+          "name": "TrayBase::GetMenu",
           "kind": "function",
           "type": "TrayMenu",
           "parameters": [],
@@ -167385,7 +167352,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Tray",
             "delegate": "SDL::GetTrayMenu"
           }
         },
@@ -168419,15 +168385,14 @@
           ],
           "sourceName": "SDL_DestroyTray"
         },
-        "Tray::Destroy": {
-          "name": "Tray::Destroy",
+        "TrayBase::Destroy": {
+          "name": "TrayBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyTray",
           "hints": {
             "self": "get()",
-            "super": "Tray",
             "body": "DestroyTray(release());",
             "delegate": "SDL::DestroyTray"
           }
@@ -198113,6 +198078,10 @@
           ],
           "type": "ResourceRefT<AudioBase>"
         },
+        "TrackBase-forward": {
+          "name": "TrackBase",
+          "kind": "forward"
+        },
         "Track-forward": {
           "name": "Track",
           "kind": "forward"
@@ -198132,7 +198101,7 @@
             "Reference for Track.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Track>"
+          "type": "ResourceRefT<TrackBase>"
         },
         "GroupBase-forward": {
           "name": "GroupBase",
@@ -201615,219 +201584,21 @@
             ]
           ]
         },
-        "Track": {
-          "doc": [
-            "An opaque object that represents a source of sound output to be mixed.",
-            "A Mixer has an arbitrary number of tracks, and each track manages its own unique audio to be mixed together.",
-            "Tracks also have other properties: gain, loop points, fading, 3D position, and other attributes that alter the produced sound; many can be altered during playback.",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL_mixer 3.0.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Track",
+        "TrackBase": {
+          "name": "TrackBase",
           "kind": "struct",
-          "type": "ResourceBase<TrackRaw>",
-          "sourceName": "MIX_Track",
+          "type": "ResourceBaseT<TrackRaw>",
+          "doc": [
+            "Base class to Track.",
+            {
+              "tag": "@see",
+              "content": "Track"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Track": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "TrackRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Track.",
-                {
-                  "tag": "@param resource",
-                  "content": "a TrackRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Track",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Track &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Track",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Track &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Track(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Track",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const TrackRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Track",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "TrackRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Track",
-                      "overload": {
-                        "doc": [
-                          "Create a new track on a mixer.",
-                          "A track provides a single source of audio. All currently-playing tracks will be processed and mixed together to form the final output from the mixer.",
-                          "There are no limits to the number of tracks one may create, beyond running out of memory, but in normal practice there are a small number of tracks that are reused between all loaded audio as appropriate.",
-                          "Tracks are unique to a specific Mixer and can't be transferred between them.",
-                          [
-                            {
-                              "tag": "@param mixer",
-                              "content": "the mixer on which to create this track."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a new Track on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_mixer 3.0.0."
-                          },
-                          {
-                            "tag": "@sa",
-                            "content": "DestroyTrack"
-                          }
-                        ],
-                        "name": "Track",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "mixer",
-                            "type": "MixerRef"
-                          }
-                        ],
-                        "sourceName": "MIX_CreateTrack",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Track": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "MIX_DestroyTrack(get());"
-              },
-              "name": "~Track"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Track &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Track &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Track &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Track &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -203707,6 +203478,193 @@
                 "proto": true
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Track": {
+          "doc": [
+            "An opaque object that represents a source of sound output to be mixed.",
+            "A Mixer has an arbitrary number of tracks, and each track manages its own unique audio to be mixed together.",
+            "Tracks also have other properties: gain, loop points, fading, 3D position, and other attributes that alter the produced sound; many can be altered during playback.",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL_mixer 3.0.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Track",
+          "kind": "struct",
+          "type": "TrackBase",
+          "sourceName": "MIX_Track",
+          "entries": {
+            "TrackBase::TrackBase": {
+              "kind": "alias",
+              "name": "TrackBase::TrackBase"
+            },
+            "Track": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "TrackRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "TrackBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Track.",
+                {
+                  "tag": "@param resource",
+                  "content": "a TrackRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Track",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Track &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Track",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Track &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Track(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Track",
+                  "overload": {
+                    "doc": [
+                      "Create a new track on a mixer.",
+                      "A track provides a single source of audio. All currently-playing tracks will be processed and mixed together to form the final output from the mixer.",
+                      "There are no limits to the number of tracks one may create, beyond running out of memory, but in normal practice there are a small number of tracks that are reused between all loaded audio as appropriate.",
+                      "Tracks are unique to a specific Mixer and can't be transferred between them.",
+                      [
+                        {
+                          "tag": "@param mixer",
+                          "content": "the mixer on which to create this track."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a new Track on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_mixer 3.0.0."
+                      },
+                      {
+                        "tag": "@sa",
+                        "content": "DestroyTrack"
+                      }
+                    ],
+                    "name": "Track",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "mixer",
+                        "type": "MixerRef"
+                      }
+                    ],
+                    "sourceName": "MIX_CreateTrack",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Track": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "MIX_DestroyTrack(get());"
+              },
+              "name": "~Track"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Track &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Track &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Track &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Track &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -206460,15 +206418,14 @@
           ],
           "sourceName": "MIX_DestroyTrack"
         },
-        "Track::Destroy": {
-          "name": "Track::Destroy",
+        "TrackBase::Destroy": {
+          "name": "TrackBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "MIX_DestroyTrack",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "body": "DestroyTrack(release());",
             "delegate": "SDL::DestroyTrack"
           }
@@ -206515,15 +206472,14 @@
             "mayFail": true
           }
         },
-        "Track::GetProperties": {
-          "name": "Track::GetProperties",
+        "TrackBase::GetProperties": {
+          "name": "TrackBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "MIX_GetTrackProperties",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::GetTrackProperties"
           }
@@ -206569,15 +206525,14 @@
             "mayFail": true
           }
         },
-        "Track::GetMixer": {
-          "name": "Track::GetMixer",
+        "TrackBase::GetMixer": {
+          "name": "TrackBase::GetMixer",
           "kind": "function",
           "type": "MixerRef",
           "parameters": [],
           "sourceName": "MIX_GetTrackMixer",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::GetTrackMixer"
           }
@@ -206631,8 +206586,8 @@
             "mayFail": true
           }
         },
-        "Track::SetAudio": {
-          "name": "Track::SetAudio",
+        "TrackBase::SetAudio": {
+          "name": "TrackBase::SetAudio",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -206644,7 +206599,6 @@
           "sourceName": "MIX_SetTrackAudio",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackAudio"
           }
@@ -206700,8 +206654,8 @@
             "mayFail": true
           }
         },
-        "Track::SetAudioStream": {
-          "name": "Track::SetAudioStream",
+        "TrackBase::SetAudioStream": {
+          "name": "TrackBase::SetAudioStream",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -206713,7 +206667,6 @@
           "sourceName": "MIX_SetTrackAudioStream",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackAudioStream"
           }
@@ -206783,8 +206736,8 @@
             "mayFail": true
           }
         },
-        "Track::SetIOStream": {
-          "name": "Track::SetIOStream",
+        "TrackBase::SetIOStream": {
+          "name": "TrackBase::SetIOStream",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -206800,7 +206753,6 @@
           "sourceName": "MIX_SetTrackIOStream",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackIOStream"
           }
@@ -206884,8 +206836,8 @@
             "mayFail": true
           }
         },
-        "Track::SetRawIOStream": {
-          "name": "Track::SetRawIOStream",
+        "TrackBase::SetRawIOStream": {
+          "name": "TrackBase::SetRawIOStream",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -206905,7 +206857,6 @@
           "sourceName": "MIX_SetTrackRawIOStream",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackRawIOStream"
           }
@@ -206962,8 +206913,8 @@
             "mayFail": true
           }
         },
-        "Track::Tag": {
-          "name": "Track::Tag",
+        "TrackBase::Tag": {
+          "name": "TrackBase::Tag",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -206975,7 +206926,6 @@
           "sourceName": "MIX_TagTrack",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::TagTrack"
           }
@@ -207024,8 +206974,8 @@
           ],
           "sourceName": "MIX_UntagTrack"
         },
-        "Track::Untag": {
-          "name": "Track::Untag",
+        "TrackBase::Untag": {
+          "name": "TrackBase::Untag",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -207037,7 +206987,6 @@
           "sourceName": "MIX_UntagTrack",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::UntagTrack"
           }
         },
@@ -207086,15 +207035,14 @@
             "mayFail": true
           }
         },
-        "Track::GetTags": {
-          "name": "Track::GetTags",
+        "TrackBase::GetTags": {
+          "name": "TrackBase::GetTags",
           "kind": "function",
           "type": "OwnArray<char*>",
           "parameters": [],
           "sourceName": "MIX_GetTrackTags",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::GetTrackTags"
           }
@@ -207222,8 +207170,8 @@
             "mayFail": true
           }
         },
-        "Track::SetPlaybackPosition": {
-          "name": "Track::SetPlaybackPosition",
+        "TrackBase::SetPlaybackPosition": {
+          "name": "TrackBase::SetPlaybackPosition",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -207235,7 +207183,6 @@
           "sourceName": "MIX_SetTrackPlaybackPosition",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackPlaybackPosition"
           }
@@ -207280,15 +207227,14 @@
           ],
           "sourceName": "MIX_GetTrackPlaybackPosition"
         },
-        "Track::GetPlaybackPosition": {
-          "name": "Track::GetPlaybackPosition",
+        "TrackBase::GetPlaybackPosition": {
+          "name": "TrackBase::GetPlaybackPosition",
           "kind": "function",
           "type": "Sint64",
           "parameters": [],
           "sourceName": "MIX_GetTrackPlaybackPosition",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::GetTrackPlaybackPosition"
           }
         },
@@ -207328,15 +207274,14 @@
           ],
           "sourceName": "MIX_GetTrackFadeFrames"
         },
-        "Track::GetFadeFrames": {
-          "name": "Track::GetFadeFrames",
+        "TrackBase::GetFadeFrames": {
+          "name": "TrackBase::GetFadeFrames",
           "kind": "function",
           "type": "Sint64",
           "parameters": [],
           "sourceName": "MIX_GetTrackFadeFrames",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::GetTrackFadeFrames"
           }
         },
@@ -207377,15 +207322,14 @@
           ],
           "sourceName": "MIX_GetTrackLoops"
         },
-        "Track::GetLoops": {
-          "name": "Track::GetLoops",
+        "TrackBase::GetLoops": {
+          "name": "TrackBase::GetLoops",
           "kind": "function",
           "type": "int",
           "parameters": [],
           "sourceName": "MIX_GetTrackLoops",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::GetTrackLoops"
           }
         },
@@ -207440,8 +207384,8 @@
             "mayFail": true
           }
         },
-        "Track::SetLoops": {
-          "name": "Track::SetLoops",
+        "TrackBase::SetLoops": {
+          "name": "TrackBase::SetLoops",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -207453,7 +207397,6 @@
           "sourceName": "MIX_SetTrackLoops",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackLoops"
           }
@@ -207497,15 +207440,14 @@
           ],
           "sourceName": "MIX_GetTrackAudio"
         },
-        "Track::GetAudio": {
-          "name": "Track::GetAudio",
+        "TrackBase::GetAudio": {
+          "name": "TrackBase::GetAudio",
           "kind": "function",
           "type": "AudioRef",
           "parameters": [],
           "sourceName": "MIX_GetTrackAudio",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::GetTrackAudio"
           }
         },
@@ -207548,15 +207490,14 @@
           ],
           "sourceName": "MIX_GetTrackAudioStream"
         },
-        "Track::GetAudioStream": {
-          "name": "Track::GetAudioStream",
+        "TrackBase::GetAudioStream": {
+          "name": "TrackBase::GetAudioStream",
           "kind": "function",
           "type": "AudioStreamRef",
           "parameters": [],
           "sourceName": "MIX_GetTrackAudioStream",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::GetTrackAudioStream"
           }
         },
@@ -207597,15 +207538,14 @@
           ],
           "sourceName": "MIX_GetTrackRemaining"
         },
-        "Track::GetRemaining": {
-          "name": "Track::GetRemaining",
+        "TrackBase::GetRemaining": {
+          "name": "TrackBase::GetRemaining",
           "kind": "function",
           "type": "Sint64",
           "parameters": [],
           "sourceName": "MIX_GetTrackRemaining",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::GetTrackRemaining"
           }
         },
@@ -207656,8 +207596,8 @@
           ],
           "sourceName": "MIX_TrackMSToFrames"
         },
-        "Track::MSToFrames": {
-          "name": "Track::MSToFrames",
+        "TrackBase::MSToFrames": {
+          "name": "TrackBase::MSToFrames",
           "kind": "function",
           "type": "Sint64",
           "parameters": [
@@ -207669,7 +207609,6 @@
           "sourceName": "MIX_TrackMSToFrames",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::TrackMSToFrames"
           }
         },
@@ -207721,8 +207660,8 @@
           ],
           "sourceName": "MIX_TrackFramesToMS"
         },
-        "Track::FramesToMS": {
-          "name": "Track::FramesToMS",
+        "TrackBase::FramesToMS": {
+          "name": "TrackBase::FramesToMS",
           "kind": "function",
           "type": "Milliseconds",
           "parameters": [
@@ -207734,7 +207673,6 @@
           "sourceName": "MIX_TrackFramesToMS",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::TrackFramesToMS"
           }
         },
@@ -208093,8 +208031,8 @@
             "mayFail": true
           }
         },
-        "Track::Play": {
-          "name": "Track::Play",
+        "TrackBase::Play": {
+          "name": "TrackBase::Play",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -208106,7 +208044,6 @@
           "sourceName": "MIX_PlayTrack",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::PlayTrack"
           }
@@ -208495,8 +208432,8 @@
           ],
           "sourceName": "MIX_StopTrack"
         },
-        "Track::Stop": {
-          "name": "Track::Stop",
+        "TrackBase::Stop": {
+          "name": "TrackBase::Stop",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -208508,7 +208445,6 @@
           "sourceName": "MIX_StopTrack",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::StopTrack"
           }
         },
@@ -208706,15 +208642,14 @@
           ],
           "sourceName": "MIX_PauseTrack"
         },
-        "Track::Pause": {
-          "name": "Track::Pause",
+        "TrackBase::Pause": {
+          "name": "TrackBase::Pause",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "MIX_PauseTrack",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::PauseTrack"
           }
         },
@@ -208899,15 +208834,14 @@
           ],
           "sourceName": "MIX_ResumeTrack"
         },
-        "Track::Resume": {
-          "name": "Track::Resume",
+        "TrackBase::Resume": {
+          "name": "TrackBase::Resume",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "MIX_ResumeTrack",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::ResumeTrack"
           }
         },
@@ -209110,15 +209044,14 @@
           ],
           "sourceName": "MIX_TrackPlaying"
         },
-        "Track::Playing": {
-          "name": "Track::Playing",
+        "TrackBase::Playing": {
+          "name": "TrackBase::Playing",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "MIX_TrackPlaying",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::TrackPlaying"
           }
         },
@@ -209179,15 +209112,14 @@
           ],
           "sourceName": "MIX_TrackPaused"
         },
-        "Track::Paused": {
-          "name": "Track::Paused",
+        "TrackBase::Paused": {
+          "name": "TrackBase::Paused",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "MIX_TrackPaused",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::TrackPaused"
           }
         },
@@ -209377,8 +209309,8 @@
             "mayFail": true
           }
         },
-        "Track::SetGain": {
-          "name": "Track::SetGain",
+        "TrackBase::SetGain": {
+          "name": "TrackBase::SetGain",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -209390,7 +209322,6 @@
           "sourceName": "MIX_SetTrackGain",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackGain"
           }
@@ -209439,15 +209370,14 @@
           ],
           "sourceName": "MIX_GetTrackGain"
         },
-        "Track::GetGain": {
-          "name": "Track::GetGain",
+        "TrackBase::GetGain": {
+          "name": "TrackBase::GetGain",
           "kind": "function",
           "type": "float",
           "parameters": [],
           "sourceName": "MIX_GetTrackGain",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::GetTrackGain"
           }
         },
@@ -209728,8 +209658,8 @@
             "mayFail": true
           }
         },
-        "Track::SetFrequencyRatio": {
-          "name": "Track::SetFrequencyRatio",
+        "TrackBase::SetFrequencyRatio": {
+          "name": "TrackBase::SetFrequencyRatio",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -209741,7 +209671,6 @@
           "sourceName": "MIX_SetTrackFrequencyRatio",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackFrequencyRatio"
           }
@@ -209786,15 +209715,14 @@
           ],
           "sourceName": "MIX_GetTrackFrequencyRatio"
         },
-        "Track::GetFrequencyRatio": {
-          "name": "Track::GetFrequencyRatio",
+        "TrackBase::GetFrequencyRatio": {
+          "name": "TrackBase::GetFrequencyRatio",
           "kind": "function",
           "type": "float",
           "parameters": [],
           "sourceName": "MIX_GetTrackFrequencyRatio",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "delegate": "SDL::GetTrackFrequencyRatio"
           }
         },
@@ -209852,8 +209780,8 @@
             "mayFail": true
           }
         },
-        "Track::SetOutputChannelMap": {
-          "name": "Track::SetOutputChannelMap",
+        "TrackBase::SetOutputChannelMap": {
+          "name": "TrackBase::SetOutputChannelMap",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -209865,7 +209793,6 @@
           "sourceName": "MIX_SetTrackOutputChannelMap",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackOutputChannelMap"
           }
@@ -209922,8 +209849,8 @@
             "mayFail": true
           }
         },
-        "Track::SetStereo": {
-          "name": "Track::SetStereo",
+        "TrackBase::SetStereo": {
+          "name": "TrackBase::SetStereo",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -209935,7 +209862,6 @@
           "sourceName": "MIX_SetTrackStereo",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackStereo"
           }
@@ -210001,8 +209927,8 @@
             "mayFail": true
           }
         },
-        "Track::Set3DPosition": {
-          "name": "Track::Set3DPosition",
+        "TrackBase::Set3DPosition": {
+          "name": "TrackBase::Set3DPosition",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -210014,7 +209940,6 @@
           "sourceName": "MIX_SetTrack3DPosition",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrack3DPosition"
           }
@@ -210064,15 +209989,14 @@
             "mayFail": true
           }
         },
-        "Track::Get3DPosition": {
-          "name": "Track::Get3DPosition",
+        "TrackBase::Get3DPosition": {
+          "name": "TrackBase::Get3DPosition",
           "kind": "function",
           "type": "Point3D",
           "parameters": [],
           "sourceName": "MIX_GetTrack3DPosition",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::GetTrack3DPosition"
           }
@@ -210374,8 +210298,8 @@
             "mayFail": true
           }
         },
-        "Track::SetGroup": {
-          "name": "Track::SetGroup",
+        "TrackBase::SetGroup": {
+          "name": "TrackBase::SetGroup",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -210387,7 +210311,6 @@
           "sourceName": "MIX_SetTrackGroup",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackGroup"
           }
@@ -210498,8 +210421,8 @@
             ]
           }
         },
-        "Track::SetStoppedCallback": {
-          "name": "Track::SetStoppedCallback",
+        "TrackBase::SetStoppedCallback": {
+          "name": "TrackBase::SetStoppedCallback",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -210515,7 +210438,6 @@
           "sourceName": "MIX_SetTrackStoppedCallback",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackStoppedCallback"
           },
@@ -210528,10 +210450,9 @@
                 "type": "TrackStoppedCB"
               }
             ],
-            "name": "Track::SetStoppedCallback",
+            "name": "TrackBase::SetStoppedCallback",
             "hints": {
               "self": "get()",
-              "super": "Track",
               "delegate": "SDL::SetTrackStoppedCallback"
             }
           }
@@ -210652,8 +210573,8 @@
             ]
           }
         },
-        "Track::SetRawCallback": {
-          "name": "Track::SetRawCallback",
+        "TrackBase::SetRawCallback": {
+          "name": "TrackBase::SetRawCallback",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -210669,7 +210590,6 @@
           "sourceName": "MIX_SetTrackRawCallback",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackRawCallback"
           },
@@ -210682,10 +210602,9 @@
                 "type": "TrackMixCB"
               }
             ],
-            "name": "Track::SetRawCallback",
+            "name": "TrackBase::SetRawCallback",
             "hints": {
               "self": "get()",
-              "super": "Track",
               "delegate": "SDL::SetTrackRawCallback"
             }
           }
@@ -210808,8 +210727,8 @@
             ]
           }
         },
-        "Track::SetCookedCallback": {
-          "name": "Track::SetCookedCallback",
+        "TrackBase::SetCookedCallback": {
+          "name": "TrackBase::SetCookedCallback",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -210825,7 +210744,6 @@
           "sourceName": "MIX_SetTrackCookedCallback",
           "hints": {
             "self": "get()",
-            "super": "Track",
             "mayFail": true,
             "delegate": "SDL::SetTrackCookedCallback"
           },
@@ -210838,10 +210756,9 @@
                 "type": "TrackMixCB"
               }
             ],
-            "name": "Track::SetCookedCallback",
+            "name": "TrackBase::SetCookedCallback",
             "hints": {
               "self": "get()",
-              "super": "Track",
               "delegate": "SDL::SetTrackCookedCallback"
             }
           }

@@ -5556,7 +5556,7 @@ const transform = {
           type: "TextureSurfaceLock",
         },
         "SDL_UnlockTexture": {},
-        "Texture::Unlock": {
+        "TextureBase::Unlock": {
           kind: "function",
           type: "void",
           static: false,

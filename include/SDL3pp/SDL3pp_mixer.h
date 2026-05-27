@@ -138,6 +138,9 @@ using AudioRaw = MIX_Audio*;
 using AudioRef = ResourceRefT<AudioBase>;
 
 // Forward decl
+struct TrackBase;
+
+// Forward decl
 struct Track;
 
 /// Alias to raw representation for Track.
@@ -148,7 +151,7 @@ using TrackRaw = MIX_Track*;
  *
  * This does not take ownership!
  */
-using TrackRef = ResourceRef<Track>;
+using TrackRef = ResourceRefT<TrackBase>;
 
 // Forward decl
 struct GroupBase;
@@ -2117,86 +2120,13 @@ using TrackMixCB = MakeFrontCallback<
   void(TrackRaw track, const AudioSpec* spec, float* pcm, int samples)>;
 
 /**
- * An opaque object that represents a source of sound output to be mixed.
+ * Base class to Track.
  *
- * A Mixer has an arbitrary number of tracks, and each track manages its own
- * unique audio to be mixed together.
- *
- * Tracks also have other properties: gain, loop points, fading, 3D position,
- * and other attributes that alter the produced sound; many can be altered
- * during playback.
- *
- * @since This datatype is available since SDL_mixer 3.0.0.
- *
- * @cat resource
+ * @see Track
  */
-struct Track : ResourceBase<TrackRaw>
+struct TrackBase : ResourceBaseT<TrackRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Track.
-   *
-   * @param resource a TrackRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Track(TrackRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Track(const Track& other) = delete;
-
-  /// Move constructor
-  constexpr Track(Track&& other) noexcept
-    : Track(other.release())
-  {
-  }
-
-  constexpr Track(const TrackRef& other) = delete;
-
-  constexpr Track(TrackRef&& other) = delete;
-
-  /**
-   * Create a new track on a mixer.
-   *
-   * A track provides a single source of audio. All currently-playing tracks
-   * will be processed and mixed together to form the final output from the
-   * mixer.
-   *
-   * There are no limits to the number of tracks one may create, beyond running
-   * out of memory, but in normal practice there are a small number of tracks
-   * that are reused between all loaded audio as appropriate.
-   *
-   * Tracks are unique to a specific Mixer and can't be transferred between
-   * them.
-   *
-   * @param mixer the mixer on which to create this track.
-   * @post a new Track on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa DestroyTrack
-   */
-  Track(MixerRef mixer);
-
-  /// Destructor
-  ~Track() { MIX_DestroyTrack(get()); }
-
-  /// Assignment operator.
-  constexpr Track& operator=(Track&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Track& operator=(const Track& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy the specified track.
@@ -3430,6 +3360,85 @@ struct Track : ResourceBase<TrackRaw>
    * @sa SetTrackRawCallback
    */
   void SetCookedCallback(TrackMixCB cb);
+};
+
+/**
+ * An opaque object that represents a source of sound output to be mixed.
+ *
+ * A Mixer has an arbitrary number of tracks, and each track manages its own
+ * unique audio to be mixed together.
+ *
+ * Tracks also have other properties: gain, loop points, fading, 3D position,
+ * and other attributes that alter the produced sound; many can be altered
+ * during playback.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @cat resource
+ */
+struct Track : TrackBase
+{
+  using TrackBase::TrackBase;
+
+  /**
+   * Constructs from raw Track.
+   *
+   * @param resource a TrackRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Track(TrackRaw resource) noexcept
+    : TrackBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Track(const Track& other) = delete;
+
+  /// Move constructor
+  constexpr Track(Track&& other) noexcept
+    : Track(other.release())
+  {
+  }
+
+  /**
+   * Create a new track on a mixer.
+   *
+   * A track provides a single source of audio. All currently-playing tracks
+   * will be processed and mixed together to form the final output from the
+   * mixer.
+   *
+   * There are no limits to the number of tracks one may create, beyond running
+   * out of memory, but in normal practice there are a small number of tracks
+   * that are reused between all loaded audio as appropriate.
+   *
+   * Tracks are unique to a specific Mixer and can't be transferred between
+   * them.
+   *
+   * @param mixer the mixer on which to create this track.
+   * @post a new Track on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa DestroyTrack
+   */
+  Track(MixerRef mixer);
+
+  /// Destructor
+  ~Track() { MIX_DestroyTrack(get()); }
+
+  /// Assignment operator.
+  constexpr Track& operator=(Track&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Track& operator=(const Track& other) = delete;
 };
 
 /**
@@ -4876,7 +4885,7 @@ inline Track::Track(MixerRef mixer)
  */
 inline void DestroyTrack(TrackRaw track) { MIX_DestroyTrack(track); }
 
-inline void Track::Destroy() { DestroyTrack(release()); }
+inline void TrackBase::Destroy() { DestroyTrack(release()); }
 
 /**
  * Get the properties associated with a track.
@@ -4900,7 +4909,7 @@ inline PropertiesRef GetTrackProperties(TrackRef track)
   return CheckError(MIX_GetTrackProperties(track));
 }
 
-inline PropertiesRef Track::GetProperties()
+inline PropertiesRef TrackBase::GetProperties()
 {
   return SDL::GetTrackProperties(get());
 }
@@ -4923,7 +4932,7 @@ inline MixerRef GetTrackMixer(TrackRef track)
   return CheckError(MIX_GetTrackMixer(track));
 }
 
-inline MixerRef Track::GetMixer() { return SDL::GetTrackMixer(get()); }
+inline MixerRef TrackBase::GetMixer() { return SDL::GetTrackMixer(get()); }
 
 /**
  * Set a Track's input to a Audio.
@@ -4961,7 +4970,7 @@ inline void SetTrackAudio(TrackRef track, AudioRef audio)
   CheckError(MIX_SetTrackAudio(track, audio));
 }
 
-inline void Track::SetAudio(AudioRef audio)
+inline void TrackBase::SetAudio(AudioRef audio)
 {
   SDL::SetTrackAudio(get(), audio);
 }
@@ -5011,7 +5020,7 @@ inline void SetTrackAudioStream(TrackRef track, AudioStreamRef stream)
   CheckError(MIX_SetTrackAudioStream(track, stream));
 }
 
-inline void Track::SetAudioStream(AudioStreamRef stream)
+inline void TrackBase::SetAudioStream(AudioStreamRef stream)
 {
   SDL::SetTrackAudioStream(get(), stream);
 }
@@ -5070,7 +5079,7 @@ inline void SetTrackIOStream(TrackRef track,
   CheckError(MIX_SetTrackIOStream(track, io, closeio));
 }
 
-inline void Track::SetIOStream(IOStreamRef io, bool closeio)
+inline void TrackBase::SetIOStream(IOStreamRef io, bool closeio)
 {
   SDL::SetTrackIOStream(get(), io, closeio);
 }
@@ -5131,9 +5140,9 @@ inline void SetTrackRawIOStream(TrackRef track,
   CheckError(MIX_SetTrackRawIOStream(track, io, &spec, closeio));
 }
 
-inline void Track::SetRawIOStream(IOStreamRef io,
-                                  const AudioSpec& spec,
-                                  bool closeio)
+inline void TrackBase::SetRawIOStream(IOStreamRef io,
+                                      const AudioSpec& spec,
+                                      bool closeio)
 {
   SDL::SetTrackRawIOStream(get(), io, spec, closeio);
 }
@@ -5170,7 +5179,7 @@ inline void TagTrack(TrackRef track, StringParam tag)
   CheckError(MIX_TagTrack(track, tag));
 }
 
-inline void Track::Tag(StringParam tag)
+inline void TrackBase::Tag(StringParam tag)
 {
   SDL::TagTrack(get(), std::move(tag));
 }
@@ -5203,7 +5212,7 @@ inline void UntagTrack(TrackRef track, StringParam tag)
   MIX_UntagTrack(track, tag);
 }
 
-inline void Track::Untag(StringParam tag)
+inline void TrackBase::Untag(StringParam tag)
 {
   SDL::UntagTrack(get(), std::move(tag));
 }
@@ -5228,7 +5237,7 @@ inline OwnArray<char*> GetTrackTags(TrackRef track)
   return OwnArray<char*>(result, count);
 }
 
-inline OwnArray<char*> Track::GetTags() { return SDL::GetTrackTags(get()); }
+inline OwnArray<char*> TrackBase::GetTags() { return SDL::GetTrackTags(get()); }
 
 /**
  * Get all tracks with a specific tag.
@@ -5296,7 +5305,7 @@ inline void SetTrackPlaybackPosition(TrackRef track, Sint64 frames)
   CheckError(MIX_SetTrackPlaybackPosition(track, frames));
 }
 
-inline void Track::SetPlaybackPosition(Sint64 frames)
+inline void TrackBase::SetPlaybackPosition(Sint64 frames)
 {
   SDL::SetTrackPlaybackPosition(get(), frames);
 }
@@ -5329,7 +5338,7 @@ inline Sint64 GetTrackPlaybackPosition(TrackRef track)
   return MIX_GetTrackPlaybackPosition(track);
 }
 
-inline Sint64 Track::GetPlaybackPosition()
+inline Sint64 TrackBase::GetPlaybackPosition()
 {
   return SDL::GetTrackPlaybackPosition(get());
 }
@@ -5361,7 +5370,10 @@ inline Sint64 GetTrackFadeFrames(TrackRef track)
   return MIX_GetTrackFadeFrames(track);
 }
 
-inline Sint64 Track::GetFadeFrames() { return SDL::GetTrackFadeFrames(get()); }
+inline Sint64 TrackBase::GetFadeFrames()
+{
+  return SDL::GetTrackFadeFrames(get());
+}
 
 /**
  * Query how many loops remain for a given track.
@@ -5391,7 +5403,7 @@ inline Sint64 Track::GetFadeFrames() { return SDL::GetTrackFadeFrames(get()); }
  */
 inline int GetTrackLoops(TrackRef track) { return MIX_GetTrackLoops(track); }
 
-inline int Track::GetLoops() { return SDL::GetTrackLoops(get()); }
+inline int TrackBase::GetLoops() { return SDL::GetTrackLoops(get()); }
 
 /**
  * Change the number of times a currently-playing track will loop.
@@ -5426,7 +5438,7 @@ inline void SetTrackLoops(TrackRef track, int num_loops)
   CheckError(MIX_SetTrackLoops(track, num_loops));
 }
 
-inline void Track::SetLoops(int num_loops)
+inline void TrackBase::SetLoops(int num_loops)
 {
   SDL::SetTrackLoops(get(), num_loops);
 }
@@ -5456,7 +5468,7 @@ inline AudioRef GetTrackAudio(TrackRef track)
   return MIX_GetTrackAudio(track);
 }
 
-inline AudioRef Track::GetAudio() { return SDL::GetTrackAudio(get()); }
+inline AudioRef TrackBase::GetAudio() { return SDL::GetTrackAudio(get()); }
 
 /**
  * Query the AudioStream assigned to a track.
@@ -5484,7 +5496,7 @@ inline AudioStreamRef GetTrackAudioStream(TrackRef track)
   return MIX_GetTrackAudioStream(track);
 }
 
-inline AudioStreamRef Track::GetAudioStream()
+inline AudioStreamRef TrackBase::GetAudioStream()
 {
   return SDL::GetTrackAudioStream(get());
 }
@@ -5519,7 +5531,10 @@ inline Sint64 GetTrackRemaining(TrackRef track)
   return MIX_GetTrackRemaining(track);
 }
 
-inline Sint64 Track::GetRemaining() { return SDL::GetTrackRemaining(get()); }
+inline Sint64 TrackBase::GetRemaining()
+{
+  return SDL::GetTrackRemaining(get());
+}
 
 /**
  * Convert milliseconds to sample frames for a track's current format.
@@ -5548,7 +5563,7 @@ inline Sint64 TrackMSToFrames(TrackRef track, Milliseconds ms)
   return MIX_TrackMSToFrames(track, ms.count());
 }
 
-inline Sint64 Track::MSToFrames(Milliseconds ms)
+inline Sint64 TrackBase::MSToFrames(Milliseconds ms)
 {
   return SDL::TrackMSToFrames(get(), ms);
 }
@@ -5583,7 +5598,7 @@ inline Milliseconds TrackFramesToMS(TrackRef track, Sint64 frames)
   return Milliseconds(MIX_TrackFramesToMS(track, frames));
 }
 
-inline Milliseconds Track::FramesToMS(Sint64 frames)
+inline Milliseconds TrackBase::FramesToMS(Sint64 frames)
 {
   return SDL::TrackFramesToMS(get(), frames);
 }
@@ -5817,7 +5832,7 @@ inline void PlayTrack(TrackRef track, PropertiesRef options = nullptr)
   CheckError(MIX_PlayTrack(track, options));
 }
 
-inline void Track::Play(PropertiesRef options)
+inline void TrackBase::Play(PropertiesRef options)
 {
   SDL::PlayTrack(get(), options);
 }
@@ -6001,7 +6016,7 @@ inline bool StopTrack(TrackRef track, Sint64 fade_out_frames)
   return MIX_StopTrack(track, fade_out_frames);
 }
 
-inline bool Track::Stop(Sint64 fade_out_frames)
+inline bool TrackBase::Stop(Sint64 fade_out_frames)
 {
   return SDL::StopTrack(get(), fade_out_frames);
 }
@@ -6113,7 +6128,7 @@ inline void MixerBase::StopTag(StringParam tag, Sint64 fade_out_ms)
  */
 inline bool PauseTrack(TrackRef track) { return MIX_PauseTrack(track); }
 
-inline bool Track::Pause() { return SDL::PauseTrack(get()); }
+inline bool TrackBase::Pause() { return SDL::PauseTrack(get()); }
 
 /**
  * Pause all currently-playing tracks.
@@ -6202,7 +6217,7 @@ inline void MixerBase::PauseTag(StringParam tag)
  */
 inline bool ResumeTrack(TrackRef track) { return MIX_ResumeTrack(track); }
 
-inline bool Track::Resume() { return SDL::ResumeTrack(get()); }
+inline bool TrackBase::Resume() { return SDL::ResumeTrack(get()); }
 
 /**
  * Resume all currently-paused tracks.
@@ -6291,7 +6306,7 @@ inline void MixerBase::ResumeTag(StringParam tag)
  */
 inline bool TrackPlaying(TrackRef track) { return MIX_TrackPlaying(track); }
 
-inline bool Track::Playing() { return SDL::TrackPlaying(get()); }
+inline bool TrackBase::Playing() { return SDL::TrackPlaying(get()); }
 
 /**
  * Query if a track is currently paused.
@@ -6318,7 +6333,7 @@ inline bool Track::Playing() { return SDL::TrackPlaying(get()); }
  */
 inline bool TrackPaused(TrackRef track) { return MIX_TrackPaused(track); }
 
-inline bool Track::Paused() { return SDL::TrackPaused(get()); }
+inline bool TrackBase::Paused() { return SDL::TrackPaused(get()); }
 
 /**
  * Set a mixer's master gain control.
@@ -6402,7 +6417,7 @@ inline void SetTrackGain(TrackRef track, float gain)
   CheckError(MIX_SetTrackGain(track, gain));
 }
 
-inline void Track::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
+inline void TrackBase::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
 
 /**
  * Get a track's gain control.
@@ -6422,7 +6437,7 @@ inline void Track::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
  */
 inline float GetTrackGain(TrackRef track) { return MIX_GetTrackGain(track); }
 
-inline float Track::GetGain() { return SDL::GetTrackGain(get()); }
+inline float TrackBase::GetGain() { return SDL::GetTrackGain(get()); }
 
 /**
  * Set the gain control of all tracks with a specific tag.
@@ -6559,7 +6574,7 @@ inline void SetTrackFrequencyRatio(TrackRef track, float ratio)
   CheckError(MIX_SetTrackFrequencyRatio(track, ratio));
 }
 
-inline void Track::SetFrequencyRatio(float ratio)
+inline void TrackBase::SetFrequencyRatio(float ratio)
 {
   SDL::SetTrackFrequencyRatio(get(), ratio);
 }
@@ -6594,7 +6609,7 @@ inline float GetTrackFrequencyRatio(TrackRef track)
   return MIX_GetTrackFrequencyRatio(track);
 }
 
-inline float Track::GetFrequencyRatio()
+inline float TrackBase::GetFrequencyRatio()
 {
   return SDL::GetTrackFrequencyRatio(get());
 }
@@ -6640,7 +6655,7 @@ inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)
     MIX_SetTrackOutputChannelMap(track, chmap.data(), narrowS32(chmap.size())));
 }
 
-inline void Track::SetOutputChannelMap(std::span<const int> chmap)
+inline void TrackBase::SetOutputChannelMap(std::span<const int> chmap)
 {
   SDL::SetTrackOutputChannelMap(get(), chmap);
 }
@@ -6680,7 +6695,7 @@ inline void SetTrackStereo(TrackRef track, const StereoGains& gains)
   CheckError(MIX_SetTrackStereo(track, &gains));
 }
 
-inline void Track::SetStereo(const StereoGains& gains)
+inline void TrackBase::SetStereo(const StereoGains& gains)
 {
   SDL::SetTrackStereo(get(), gains);
 }
@@ -6732,7 +6747,7 @@ inline void SetTrack3DPosition(TrackRef track, const Point3D& position)
   CheckError(MIX_SetTrack3DPosition(track, &position));
 }
 
-inline void Track::Set3DPosition(const Point3D& position)
+inline void TrackBase::Set3DPosition(const Point3D& position)
 {
   SDL::SetTrack3DPosition(get(), position);
 }
@@ -6760,7 +6775,10 @@ inline Point3D GetTrack3DPosition(TrackRef track)
   return position;
 }
 
-inline Point3D Track::Get3DPosition() { return SDL::GetTrack3DPosition(get()); }
+inline Point3D TrackBase::Get3DPosition()
+{
+  return SDL::GetTrack3DPosition(get());
+}
 
 /**
  * Create a mixing group.
@@ -6893,7 +6911,7 @@ inline void SetTrackGroup(TrackRef track, GroupRef group)
   CheckError(MIX_SetTrackGroup(track, group));
 }
 
-inline void Track::SetGroup(GroupRef group)
+inline void TrackBase::SetGroup(GroupRef group)
 {
   SDL::SetTrackGroup(get(), group);
 }
@@ -6966,12 +6984,13 @@ inline void SetTrackStoppedCallback(TrackRef track, TrackStoppedCB cb)
   SetTrackStoppedCallback(track, cb.wrapper, cb.data);
 }
 
-inline void Track::SetStoppedCallback(TrackStoppedCallback cb, void* userdata)
+inline void TrackBase::SetStoppedCallback(TrackStoppedCallback cb,
+                                          void* userdata)
 {
   SDL::SetTrackStoppedCallback(get(), cb, userdata);
 }
 
-inline void Track::SetStoppedCallback(TrackStoppedCB cb)
+inline void TrackBase::SetStoppedCallback(TrackStoppedCB cb)
 {
   SDL::SetTrackStoppedCallback(get(), cb);
 }
@@ -7044,12 +7063,12 @@ inline void SetTrackRawCallback(TrackRef track, TrackMixCB cb)
   SetTrackRawCallback(track, cb.wrapper, cb.data);
 }
 
-inline void Track::SetRawCallback(TrackMixCallback cb, void* userdata)
+inline void TrackBase::SetRawCallback(TrackMixCallback cb, void* userdata)
 {
   SDL::SetTrackRawCallback(get(), cb, userdata);
 }
 
-inline void Track::SetRawCallback(TrackMixCB cb)
+inline void TrackBase::SetRawCallback(TrackMixCB cb)
 {
   SDL::SetTrackRawCallback(get(), cb);
 }
@@ -7128,12 +7147,12 @@ inline void SetTrackCookedCallback(TrackRef track, TrackMixCB cb)
   SetTrackCookedCallback(track, cb.wrapper, cb.data);
 }
 
-inline void Track::SetCookedCallback(TrackMixCallback cb, void* userdata)
+inline void TrackBase::SetCookedCallback(TrackMixCallback cb, void* userdata)
 {
   SDL::SetTrackCookedCallback(get(), cb, userdata);
 }
 
-inline void Track::SetCookedCallback(TrackMixCB cb)
+inline void TrackBase::SetCookedCallback(TrackMixCB cb)
 {
   SDL::SetTrackCookedCallback(get(), cb);
 }

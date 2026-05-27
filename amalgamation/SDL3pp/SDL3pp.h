@@ -46819,6 +46819,9 @@ constexpr void* SurfaceBase::GetPixels() const
  */
 
 // Forward decl
+struct ThreadBase;
+
+// Forward decl
 struct Thread;
 
 /// Alias to raw representation for Thread.
@@ -46829,7 +46832,7 @@ using ThreadRaw = SDL_Thread*;
  *
  * This does not take ownership!
  */
-using ThreadRef = ResourceRef<Thread>;
+using ThreadRef = ResourceRefT<ThreadBase>;
 
 /**
  * The SDL thread priority.
@@ -46927,6 +46930,147 @@ using ThreadCB = std::function<int()>;
 using TLSDestructorCallback = void(SDLCALL*)(void* value);
 
 /**
+ * Base class to Thread.
+ *
+ * @see Thread
+ */
+struct ThreadBase : ResourceBaseT<ThreadRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Let a thread clean up on exit without intervention.
+   *
+   * A thread may be "detached" to signify that it should not remain until
+   * another thread has called WaitThread() on it. Detaching a thread is useful
+   * for long-running threads that nothing needs to synchronize with or further
+   * manage. When a detached thread is done, it simply goes away.
+   *
+   * There is no way to recover the return code of a detached thread. If you
+   * need this, don't detach the thread and instead use WaitThread().
+   *
+   * Once a thread is detached, you should usually assume the Thread isn't safe
+   * to reference again, as it will become invalid immediately upon the detached
+   * thread's exit, instead of remaining until someone has called WaitThread()
+   * to finally clean it up. As such, don't detach the same thread more than
+   * once.
+   *
+   * If a thread has already exited when passed to DetachThread(), it will stop
+   * waiting for a call to WaitThread() and clean up immediately. It is not safe
+   * to detach a thread that might be used with WaitThread().
+   *
+   * You may not call WaitThread() on a thread that has been detached. Use
+   * either that function or this one, but not both, or behavior is undefined.
+   *
+   * It is safe to pass nullptr to this function; it is a no-op.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateThread
+   * @sa WaitThread
+   */
+  void Detach();
+
+  /**
+   * Get the thread name as it was specified in CreateThread().
+   *
+   * @returns a pointer to a UTF-8 string that names the specified thread, or
+   *          nullptr if it doesn't have a name.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  const char* GetName() const;
+
+  /**
+   * Get the thread identifier for the specified thread.
+   *
+   * This thread identifier is as reported by the underlying operating system.
+   * If SDL is running on a platform that does not support threads the return
+   * value will always be zero.
+   *
+   * @returns the ID of the specified thread, or the ID of the current thread if
+   *          `thread` is nullptr.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetCurrentThreadID
+   */
+  ThreadID GetID() const;
+
+  /**
+   * Set the priority for the current thread.
+   *
+   * Note that some platforms will not let you alter the priority (or at least,
+   * promote the thread to a higher priority) at all, and some require you to be
+   * an administrator account. Be prepared for this to fail.
+   *
+   * @param priority the ThreadPriority to set.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static void SetCurrentPriority(ThreadPriority priority);
+
+  /**
+   * Wait for a thread to finish.
+   *
+   * Threads that haven't been detached will remain until this function cleans
+   * them up. Not doing so is a resource leak.
+   *
+   * Once a thread has been cleaned up through this function, the Thread that
+   * references it becomes invalid and should not be referenced again. As such,
+   * only one thread may call WaitThread() on another.
+   *
+   * The return code from the thread function is placed in the area pointed to
+   * by `status`, if `status` is not nullptr.
+   *
+   * You may not wait on a thread that has been used in a call to
+   * DetachThread(). Use either that function or this one, but not both, or
+   * behavior is undefined.
+   *
+   * It is safe to pass a nullptr thread to this function; it is a no-op.
+   *
+   * Note that the thread pointer is freed by this function and is not valid
+   * afterward.
+   *
+   * @param status a pointer filled in with the value returned from the thread
+   *               function by its 'return', or -1 if the thread has been
+   *               detached or isn't valid, may be nullptr.
+   *
+   * @threadsafety It is safe to call this function from any thread, but only a
+   *               single thread can wait any specific thread to finish.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateThread
+   * @sa DetachThread
+   */
+  void Wait(int* status);
+
+  /**
+   * Get the current state of a thread.
+   *
+   * @returns the current state of a thread, or THREAD_UNKNOWN if the thread
+   *          isn't valid.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadState
+   */
+  ThreadState GetState() const;
+};
+
+/**
  * The SDL thread object.
  *
  * These are opaque data.
@@ -46938,9 +47082,9 @@ using TLSDestructorCallback = void(SDLCALL*)(void* value);
  *
  * @cat resource
  */
-struct Thread : ResourceBase<ThreadRaw>
+struct Thread : ThreadBase
 {
-  using ResourceBase::ResourceBase;
+  using ThreadBase::ThreadBase;
 
   /**
    * Constructs from raw Thread.
@@ -46950,7 +47094,7 @@ struct Thread : ResourceBase<ThreadRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Thread(ThreadRaw resource) noexcept
-    : ResourceBase(resource)
+    : ThreadBase(resource)
   {
   }
 
@@ -46962,10 +47106,6 @@ struct Thread : ResourceBase<ThreadRaw>
     : Thread(other.release())
   {
   }
-
-  constexpr Thread(const ThreadRef& other) = delete;
-
-  constexpr Thread(ThreadRef&& other) = delete;
 
   /**
    * Create a new thread with a default stack size.
@@ -47112,137 +47252,6 @@ struct Thread : ResourceBase<ThreadRaw>
 
   /// Assignment operator.
   Thread& operator=(const Thread& other) = delete;
-
-  /**
-   * Let a thread clean up on exit without intervention.
-   *
-   * A thread may be "detached" to signify that it should not remain until
-   * another thread has called WaitThread() on it. Detaching a thread is useful
-   * for long-running threads that nothing needs to synchronize with or further
-   * manage. When a detached thread is done, it simply goes away.
-   *
-   * There is no way to recover the return code of a detached thread. If you
-   * need this, don't detach the thread and instead use WaitThread().
-   *
-   * Once a thread is detached, you should usually assume the Thread isn't safe
-   * to reference again, as it will become invalid immediately upon the detached
-   * thread's exit, instead of remaining until someone has called WaitThread()
-   * to finally clean it up. As such, don't detach the same thread more than
-   * once.
-   *
-   * If a thread has already exited when passed to DetachThread(), it will stop
-   * waiting for a call to WaitThread() and clean up immediately. It is not safe
-   * to detach a thread that might be used with WaitThread().
-   *
-   * You may not call WaitThread() on a thread that has been detached. Use
-   * either that function or this one, but not both, or behavior is undefined.
-   *
-   * It is safe to pass nullptr to this function; it is a no-op.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateThread
-   * @sa WaitThread
-   */
-  void Detach();
-
-  /**
-   * Get the thread name as it was specified in CreateThread().
-   *
-   * @returns a pointer to a UTF-8 string that names the specified thread, or
-   *          nullptr if it doesn't have a name.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  const char* GetName() const;
-
-  /**
-   * Get the thread identifier for the specified thread.
-   *
-   * This thread identifier is as reported by the underlying operating system.
-   * If SDL is running on a platform that does not support threads the return
-   * value will always be zero.
-   *
-   * @returns the ID of the specified thread, or the ID of the current thread if
-   *          `thread` is nullptr.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetCurrentThreadID
-   */
-  ThreadID GetID() const;
-
-  /**
-   * Set the priority for the current thread.
-   *
-   * Note that some platforms will not let you alter the priority (or at least,
-   * promote the thread to a higher priority) at all, and some require you to be
-   * an administrator account. Be prepared for this to fail.
-   *
-   * @param priority the ThreadPriority to set.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  static void SetCurrentPriority(ThreadPriority priority);
-
-  /**
-   * Wait for a thread to finish.
-   *
-   * Threads that haven't been detached will remain until this function cleans
-   * them up. Not doing so is a resource leak.
-   *
-   * Once a thread has been cleaned up through this function, the Thread that
-   * references it becomes invalid and should not be referenced again. As such,
-   * only one thread may call WaitThread() on another.
-   *
-   * The return code from the thread function is placed in the area pointed to
-   * by `status`, if `status` is not nullptr.
-   *
-   * You may not wait on a thread that has been used in a call to
-   * DetachThread(). Use either that function or this one, but not both, or
-   * behavior is undefined.
-   *
-   * It is safe to pass a nullptr thread to this function; it is a no-op.
-   *
-   * Note that the thread pointer is freed by this function and is not valid
-   * afterward.
-   *
-   * @param status a pointer filled in with the value returned from the thread
-   *               function by its 'return', or -1 if the thread has been
-   *               detached or isn't valid, may be nullptr.
-   *
-   * @threadsafety It is safe to call this function from any thread, but only a
-   *               single thread can wait any specific thread to finish.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateThread
-   * @sa DetachThread
-   */
-  void Wait(int* status);
-
-  /**
-   * Get the current state of a thread.
-   *
-   * @returns the current state of a thread, or THREAD_UNKNOWN if the thread
-   *          isn't valid.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadState
-   */
-  ThreadState GetState() const;
 };
 
 /**
@@ -47458,7 +47467,10 @@ inline const char* GetThreadName(ThreadRef thread)
   return SDL_GetThreadName(thread);
 }
 
-inline const char* Thread::GetName() const { return SDL::GetThreadName(get()); }
+inline const char* ThreadBase::GetName() const
+{
+  return SDL::GetThreadName(get());
+}
 
 /**
  * Get the thread identifier for the current thread.
@@ -47502,7 +47514,7 @@ inline ThreadID GetThreadID(ThreadRef thread)
   return SDL_GetThreadID(thread);
 }
 
-inline ThreadID Thread::GetID() const { return SDL::GetThreadID(get()); }
+inline ThreadID ThreadBase::GetID() const { return SDL::GetThreadID(get()); }
 
 /**
  * Set the priority for the current thread.
@@ -47523,7 +47535,7 @@ inline void SetCurrentThreadPriority(ThreadPriority priority)
   CheckError(SDL_SetCurrentThreadPriority(priority));
 }
 
-inline void Thread::SetCurrentPriority(ThreadPriority priority)
+inline void ThreadBase::SetCurrentPriority(ThreadPriority priority)
 {
   SDL::SetCurrentThreadPriority(priority);
 }
@@ -47568,7 +47580,7 @@ inline void WaitThread(ThreadRef thread, int* status)
   SDL_WaitThread(thread, status);
 }
 
-inline void Thread::Wait(int* status) { SDL::WaitThread(get(), status); }
+inline void ThreadBase::Wait(int* status) { SDL::WaitThread(get(), status); }
 
 /**
  * Get the current state of a thread.
@@ -47588,7 +47600,7 @@ inline ThreadState GetThreadState(ThreadRef thread)
   return SDL_GetThreadState(thread);
 }
 
-inline ThreadState Thread::GetState() const
+inline ThreadState ThreadBase::GetState() const
 {
   return SDL::GetThreadState(get());
 }
@@ -47630,7 +47642,7 @@ inline ThreadState Thread::GetState() const
  */
 inline void DetachThread(ThreadRaw thread) { SDL_DetachThread(thread); }
 
-inline void Thread::Detach() { DetachThread(release()); }
+inline void ThreadBase::Detach() { DetachThread(release()); }
 
 /**
  * Get the current thread's value associated with a thread local storage ID.
@@ -50527,6 +50539,9 @@ inline void InitState::SetInitialized(bool initialized)
  */
 
 // Forward decl
+struct TrayBase;
+
+// Forward decl
 struct Tray;
 
 /// Alias to raw representation for Tray.
@@ -50537,7 +50552,7 @@ using TrayRaw = SDL_Tray*;
  *
  * This does not take ownership!
  */
-using TrayRef = ResourceRef<Tray>;
+using TrayRef = ResourceRefT<TrayBase>;
 
 /// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
@@ -50612,78 +50627,13 @@ using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
 using TrayCB = MakeFrontCallback<void(TrayEntryRaw entry)>;
 
 /**
- * An opaque handle representing a toplevel system tray object.
+ * Base class to Tray.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Tray
  */
-struct Tray : ResourceBase<TrayRaw>
+struct TrayBase : ResourceBaseT<TrayRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Tray.
-   *
-   * @param resource a TrayRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Tray(TrayRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Tray(const Tray& other) = delete;
-
-  /// Move constructor
-  constexpr Tray(Tray&& other) noexcept
-    : Tray(other.release())
-  {
-  }
-
-  constexpr Tray(const TrayRef& other) = delete;
-
-  constexpr Tray(TrayRef&& other) = delete;
-
-  /**
-   * Create an icon to be placed in the operating system's tray, or equivalent.
-   *
-   * Many platforms advise not using a system tray unless persistence is a
-   * necessary feature. Avoid needlessly creating a tray icon, as the user may
-   * feel like it clutters their interface.
-   *
-   * Using tray icons require the video subsystem.
-   *
-   * @param icon a surface to be used as icon. May be nullptr.
-   * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
-   *                UTF-8 encoding. Not supported on all platforms. May be
-   *                nullptr.
-   * @post The newly created system tray icon.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateTrayMenu
-   * @sa GetTrayMenu
-   * @sa DestroyTray
-   */
-  Tray(SurfaceRef icon, StringParam tooltip);
-
-  /// Destructor
-  ~Tray() { SDL_DestroyTray(get()); }
-
-  /// Assignment operator.
-  constexpr Tray& operator=(Tray&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Tray& operator=(const Tray& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroys a tray object.
@@ -50772,6 +50722,77 @@ struct Tray : ResourceBase<TrayRaw>
    * @sa CreateTrayMenu
    */
   TrayMenu GetMenu() const;
+};
+
+/**
+ * An opaque handle representing a toplevel system tray object.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Tray : TrayBase
+{
+  using TrayBase::TrayBase;
+
+  /**
+   * Constructs from raw Tray.
+   *
+   * @param resource a TrayRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Tray(TrayRaw resource) noexcept
+    : TrayBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Tray(const Tray& other) = delete;
+
+  /// Move constructor
+  constexpr Tray(Tray&& other) noexcept
+    : Tray(other.release())
+  {
+  }
+
+  /**
+   * Create an icon to be placed in the operating system's tray, or equivalent.
+   *
+   * Many platforms advise not using a system tray unless persistence is a
+   * necessary feature. Avoid needlessly creating a tray icon, as the user may
+   * feel like it clutters their interface.
+   *
+   * Using tray icons require the video subsystem.
+   *
+   * @param icon a surface to be used as icon. May be nullptr.
+   * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
+   *                UTF-8 encoding. Not supported on all platforms. May be
+   *                nullptr.
+   * @post The newly created system tray icon.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateTrayMenu
+   * @sa GetTrayMenu
+   * @sa DestroyTray
+   */
+  Tray(SurfaceRef icon, StringParam tooltip);
+
+  /// Destructor
+  ~Tray() { SDL_DestroyTray(get()); }
+
+  /// Assignment operator.
+  constexpr Tray& operator=(Tray&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Tray& operator=(const Tray& other) = delete;
 };
 
 /**
@@ -50917,9 +50938,9 @@ public:
  *
  * @cat resource
  */
-struct TrayEntry : ResourceBase<TrayEntryRaw>
+struct TrayEntry : ResourceBaseT<TrayEntryRaw>
 {
-  using ResourceBase::ResourceBase;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Insert a tray entry at a given position.
@@ -51276,7 +51297,10 @@ inline void SetTrayIcon(TrayRef tray, SurfaceRef icon)
   SDL_SetTrayIcon(tray, icon);
 }
 
-inline void Tray::SetIcon(SurfaceRef icon) { SDL::SetTrayIcon(get(), icon); }
+inline void TrayBase::SetIcon(SurfaceRef icon)
+{
+  SDL::SetTrayIcon(get(), icon);
+}
 
 /**
  * Updates the system tray icon's tooltip.
@@ -51296,7 +51320,7 @@ inline void SetTrayTooltip(TrayRef tray, StringParam tooltip)
   SDL_SetTrayTooltip(tray, tooltip);
 }
 
-inline void Tray::SetTooltip(StringParam tooltip)
+inline void TrayBase::SetTooltip(StringParam tooltip)
 {
   SDL::SetTrayTooltip(get(), std::move(tooltip));
 }
@@ -51328,7 +51352,7 @@ inline TrayMenu CreateTrayMenu(TrayRef tray)
   return SDL_CreateTrayMenu(tray);
 }
 
-inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(get()); }
+inline TrayMenu TrayBase::CreateMenu() { return SDL::CreateTrayMenu(get()); }
 
 /**
  * Create a submenu for a system tray entry.
@@ -51386,7 +51410,7 @@ inline TrayMenu TrayEntry::CreateSubmenu()
  */
 inline TrayMenu GetTrayMenu(TrayRef tray) { return SDL_GetTrayMenu(tray); }
 
-inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(get()); }
+inline TrayMenu TrayBase::GetMenu() const { return SDL::GetTrayMenu(get()); }
 
 /**
  * Gets a previously created tray entry submenu.
@@ -51799,7 +51823,7 @@ inline void TrayEntry::Click() { SDL::ClickTrayEntry(get()); }
  */
 inline void DestroyTray(TrayRaw tray) { SDL_DestroyTray(tray); }
 
-inline void Tray::Destroy() { DestroyTray(release()); }
+inline void TrayBase::Destroy() { DestroyTray(release()); }
 
 /**
  * Gets the menu containing a certain tray entry.
@@ -80693,6 +80717,9 @@ struct Renderer;
 using RendererRaw = SDL_Renderer*;
 
 // Forward decl
+struct TextureBase;
+
+// Forward decl
 struct Texture;
 
 /// Alias to raw representation for Texture.
@@ -80706,7 +80733,7 @@ using TextureRawConst = const SDL_Texture*;
  *
  * This does not take ownership!
  */
-using TextureRef = ResourceRef<Texture>;
+using TextureRef = ResourceRefT<TextureBase>;
 
 /// Safely wrap Texture for non owning const parameters
 using TextureConstRef = ResourceConstRef<TextureRaw, TextureRawConst>;
@@ -82886,333 +82913,16 @@ struct Renderer : RendererBase
 };
 
 /**
- * An efficient driver-specific representation of pixel data
+ * Base class to Texture.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa CreateTexture
- * @sa CreateTextureFromSurface
- * @sa CreateTextureWithProperties
- * @sa DestroyTexture
- *
- * @cat resource
+ * @see Texture
  */
-struct Texture : ResourceBase<TextureRaw, TextureRawConst>
+struct TextureBase : ResourceBaseT<TextureRaw, TextureRawConst>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Texture.
-   *
-   * @param resource a TextureRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Texture(TextureRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Texture(const Texture& other)
-    : Texture(other.get())
-  {
-    if (auto res = get()) ++res->refcount;
-  }
-
-  /// Move constructor
-  constexpr Texture(Texture&& other) noexcept
-    : Texture(other.release())
-  {
-  }
-
-  /**
-   * Create a texture for a rendering context.
-   *
-   * The contents of a texture when first created are not defined.
-   *
-   * @param renderer the rendering context.
-   * @param format one of the enumerated values in PixelFormat.
-   * @param access one of the enumerated values in TextureAccess.
-   * @param size the width and height of the texture in pixels.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateTextureFromSurface
-   * @sa CreateTextureWithProperties
-   * @sa DestroyTexture
-   * @sa GetTextureSize
-   * @sa UpdateTexture
-   */
-  Texture(RendererRef renderer,
-          PixelFormat format,
-          TextureAccess access,
-          const PointRaw& size);
-
-  /**
-   * Create a texture from an existing surface.
-   *
-   * The surface is not modified or freed by this function.
-   *
-   * The TextureAccess hint for the created texture is `TEXTUREACCESS_STATIC`.
-   *
-   * The pixel format of the created texture may be different from the pixel
-   * format of the surface, and can be queried using the
-   * prop.Texture.FORMAT_NUMBER property.
-   *
-   * @param renderer the rendering context.
-   * @param surface the Surface structure containing pixel data used to fill the
-   *                texture.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateTexture
-   * @sa CreateTextureWithProperties
-   * @sa DestroyTexture
-   */
-  Texture(RendererRef renderer, SurfaceRef surface);
-
-  /**
-   * Create a texture for a rendering context with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.Texture.Create.COLORSPACE_NUMBER`: an Colorspace value describing
-   *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
-   *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
-   *   other RGB textures and COLORSPACE_JPEG for YUV textures.
-   * - `prop.Texture.Create.FORMAT_NUMBER`: one of the enumerated values in
-   *   PixelFormat, defaults to the best RGBA format for the renderer
-   * - `prop.Texture.Create.ACCESS_NUMBER`: one of the enumerated values in
-   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop.Texture.Create.WIDTH_NUMBER`: the width of the texture in pixels,
-   *   required
-   * - `prop.Texture.Create.HEIGHT_NUMBER`: the height of the texture in pixels,
-   *   required
-   * - `prop.Texture.Create.PALETTE_POINTER`: an Palette to use with palettized
-   *   texture formats. This can be set later with SetTexturePalette()
-   * - `prop.Texture.Create.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
-   *   textures, this defines the value of 100% diffuse white, with higher
-   *   values being displayed in the High Dynamic Range headroom. This defaults
-   *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop.Texture.Create.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
-   *   textures, this defines the maximum dynamic range used by the content, in
-   *   terms of the SDR white point. This would be equivalent to maxCLL /
-   *   prop.Texture.Create.SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
-   *   defined, any values outside the range supported by the display will be
-   *   scaled into the available HDR headroom, otherwise they are clipped.
-   *
-   * With the direct3d11 renderer:
-   *
-   * - `prop.Texture.Create.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.Create.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop.Texture.Create.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the direct3d12 renderer:
-   *
-   * - `prop.Texture.Create.D3D12_TEXTURE_POINTER`: the ID3D12Resource
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.Create.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop.Texture.Create.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the metal renderer:
-   *
-   * - `prop.Texture.Create.METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
-   *   associated with the texture, if you want to create a texture from an
-   *   existing pixel buffer.
-   *
-   * With the opengl renderer:
-   *
-   * - `prop.Texture.Create.OPENGL_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.Create.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `prop.Texture.Create.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop.Texture.Create.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the opengles2 renderer:
-   *
-   * - `prop.Texture.Create.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.Create.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `prop.Texture.Create.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop.Texture.Create.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the vulkan renderer:
-   *
-   * - `prop.Texture.Create.VULKAN_TEXTURE_NUMBER`: the VkImage associated with
-   *   the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.Create.VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
-   *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
-   *
-   * With the GPU renderer:
-   *
-   * - `prop.Texture.Create.GPU_TEXTURE_POINTER`: the GPUTexture associated with
-   *   the texture, if you want to wrap an existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
-   *   with the U plane of a YUV texture, if you want to wrap an existing
-   *   texture.
-   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
-   *   with the V plane of a YUV texture, if you want to wrap an existing
-   *   texture.
-   *
-   * @param renderer the rendering context.
-   * @param props the properties to use.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateProperties
-   * @sa CreateTexture
-   * @sa CreateTextureFromSurface
-   * @sa DestroyTexture
-   * @sa GetTextureSize
-   * @sa UpdateTexture
-   */
-  Texture(RendererRef renderer, PropertiesRef props);
-
-  /**
-   * Load an image from a filesystem path into a texture.
-   *
-   * An Texture represents an image in GPU memory, usable by SDL's 2D Render
-   * API. This can be significantly more efficient than using a CPU-bound
-   * Surface if you don't need to manipulate the image directly after loading
-   * it.
-   *
-   * If the loaded image has transparency or a colorkey, a texture with an alpha
-   * channel will be created. Otherwise, SDL_image will attempt to create an
-   * Texture in the most format that most reasonably represents the image data
-   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
-   *
-   * There is a separate function to read files from an IOStream, if you need an
-   * i/o abstraction to provide data from anywhere instead of a simple
-   * filesystem read; that function is LoadTexture_IO().
-   *
-   * If you would rather decode an image to an Surface (a buffer of pixels in
-   * CPU memory), call LoadSurface() instead.
-   *
-   * @param renderer the Renderer to use to create the texture.
-   * @param file a path on the filesystem to load an image from.
-   * @post a new texture, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa LoadTextureTyped_IO
-   * @sa LoadTexture_IO
-   */
-  Texture(RendererRef renderer, StringParam file);
-
-  /**
-   * Load an image from an SDL data source into a texture.
-   *
-   * An Texture represents an image in GPU memory, usable by SDL's 2D Render
-   * API. This can be significantly more efficient than using a CPU-bound
-   * Surface if you don't need to manipulate the image directly after loading
-   * it.
-   *
-   * If the loaded image has transparency or a colorkey, a texture with an alpha
-   * channel will be created. Otherwise, SDL_image will attempt to create an
-   * Texture in the most format that most reasonably represents the image data
-   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
-   *
-   * If `closeio` is true, `src` will be closed before returning, whether this
-   * function succeeds or not. SDL_image reads everything it needs from `src`
-   * during this call in any case.
-   *
-   * There is a separate function to read files from disk without having to deal
-   * with IOStream: `LoadTexture(renderer, "filename.jpg")` will call this
-   * function and manage those details for you, determining the file type from
-   * the filename's extension.
-   *
-   * There is also LoadTextureTyped_IO(), which is equivalent to this function
-   * except a file extension (like "BMP", "JPG", etc) can be specified, in case
-   * SDL_image cannot autodetect the file format.
-   *
-   * If you would rather decode an image to an Surface (a buffer of pixels in
-   * CPU memory), call LoadSurface() instead.
-   *
-   * @param renderer the Renderer to use to create the texture.
-   * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
-   * @post a new texture, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa LoadTexture
-   * @sa LoadTextureTyped_IO
-   */
-  Texture(RendererRef renderer, IOStreamRef src, bool closeio = false);
-
-  /**
-   * Safely borrows the from TextureRaw.
-   *
-   * @param resource a TextureRaw.
-   *
-   * This does not takes ownership!
-   */
-  static Texture Borrow(TextureRaw resource)
-  {
-    if (resource) {
-      ++resource->refcount;
-      return Texture(resource);
-    }
-    return {};
-  }
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to TextureConstRef
   constexpr operator TextureConstRef() const noexcept { return get(); }
-
-  /// Destructor
-  ~Texture() { SDL_DestroyTexture(get()); }
-
-  /// Assignment operator.
-  constexpr Texture& operator=(Texture&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Texture& operator=(const Texture& other)
-  {
-    if (get() != other.get()) {
-      Texture tmp(other);
-      swap(*this, tmp);
-    }
-    return *this;
-  }
 
   /**
    * Destroy the specified texture.
@@ -83947,6 +83657,333 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
 };
 
 /**
+ * An efficient driver-specific representation of pixel data
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa CreateTexture
+ * @sa CreateTextureFromSurface
+ * @sa CreateTextureWithProperties
+ * @sa DestroyTexture
+ *
+ * @cat resource
+ */
+struct Texture : TextureBase
+{
+  using TextureBase::TextureBase;
+
+  /**
+   * Constructs from raw Texture.
+   *
+   * @param resource a TextureRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Texture(TextureRaw resource) noexcept
+    : TextureBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Texture(const Texture& other)
+    : Texture(other.get())
+  {
+    if (auto res = get()) ++res->refcount;
+  }
+
+  /// Move constructor
+  constexpr Texture(Texture&& other) noexcept
+    : Texture(other.release())
+  {
+  }
+
+  /**
+   * Create a texture for a rendering context.
+   *
+   * The contents of a texture when first created are not defined.
+   *
+   * @param renderer the rendering context.
+   * @param format one of the enumerated values in PixelFormat.
+   * @param access one of the enumerated values in TextureAccess.
+   * @param size the width and height of the texture in pixels.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateTextureFromSurface
+   * @sa CreateTextureWithProperties
+   * @sa DestroyTexture
+   * @sa GetTextureSize
+   * @sa UpdateTexture
+   */
+  Texture(RendererRef renderer,
+          PixelFormat format,
+          TextureAccess access,
+          const PointRaw& size);
+
+  /**
+   * Create a texture from an existing surface.
+   *
+   * The surface is not modified or freed by this function.
+   *
+   * The TextureAccess hint for the created texture is `TEXTUREACCESS_STATIC`.
+   *
+   * The pixel format of the created texture may be different from the pixel
+   * format of the surface, and can be queried using the
+   * prop.Texture.FORMAT_NUMBER property.
+   *
+   * @param renderer the rendering context.
+   * @param surface the Surface structure containing pixel data used to fill the
+   *                texture.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateTexture
+   * @sa CreateTextureWithProperties
+   * @sa DestroyTexture
+   */
+  Texture(RendererRef renderer, SurfaceRef surface);
+
+  /**
+   * Create a texture for a rendering context with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.Texture.Create.COLORSPACE_NUMBER`: an Colorspace value describing
+   *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
+   *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
+   *   other RGB textures and COLORSPACE_JPEG for YUV textures.
+   * - `prop.Texture.Create.FORMAT_NUMBER`: one of the enumerated values in
+   *   PixelFormat, defaults to the best RGBA format for the renderer
+   * - `prop.Texture.Create.ACCESS_NUMBER`: one of the enumerated values in
+   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
+   * - `prop.Texture.Create.WIDTH_NUMBER`: the width of the texture in pixels,
+   *   required
+   * - `prop.Texture.Create.HEIGHT_NUMBER`: the height of the texture in pixels,
+   *   required
+   * - `prop.Texture.Create.PALETTE_POINTER`: an Palette to use with palettized
+   *   texture formats. This can be set later with SetTexturePalette()
+   * - `prop.Texture.Create.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   *   textures, this defines the value of 100% diffuse white, with higher
+   *   values being displayed in the High Dynamic Range headroom. This defaults
+   *   to 100 for HDR10 textures and 1.0 for floating point textures.
+   * - `prop.Texture.Create.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   *   textures, this defines the maximum dynamic range used by the content, in
+   *   terms of the SDR white point. This would be equivalent to maxCLL /
+   *   prop.Texture.Create.SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+   *   defined, any values outside the range supported by the display will be
+   *   scaled into the available HDR headroom, otherwise they are clipped.
+   *
+   * With the direct3d11 renderer:
+   *
+   * - `prop.Texture.Create.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.Create.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop.Texture.Create.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the direct3d12 renderer:
+   *
+   * - `prop.Texture.Create.D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.Create.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop.Texture.Create.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the metal renderer:
+   *
+   * - `prop.Texture.Create.METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   *   associated with the texture, if you want to create a texture from an
+   *   existing pixel buffer.
+   *
+   * With the opengl renderer:
+   *
+   * - `prop.Texture.Create.OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.Create.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `prop.Texture.Create.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop.Texture.Create.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the opengles2 renderer:
+   *
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the vulkan renderer:
+   *
+   * - `prop.Texture.Create.VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+   *   the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.Create.VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+   *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
+   *
+   * With the GPU renderer:
+   *
+   * - `prop.Texture.Create.GPU_TEXTURE_POINTER`: the GPUTexture associated with
+   *   the texture, if you want to wrap an existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
+   *   with the U plane of a YUV texture, if you want to wrap an existing
+   *   texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
+   *   with the V plane of a YUV texture, if you want to wrap an existing
+   *   texture.
+   *
+   * @param renderer the rendering context.
+   * @param props the properties to use.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateProperties
+   * @sa CreateTexture
+   * @sa CreateTextureFromSurface
+   * @sa DestroyTexture
+   * @sa GetTextureSize
+   * @sa UpdateTexture
+   */
+  Texture(RendererRef renderer, PropertiesRef props);
+
+  /**
+   * Load an image from a filesystem path into a texture.
+   *
+   * An Texture represents an image in GPU memory, usable by SDL's 2D Render
+   * API. This can be significantly more efficient than using a CPU-bound
+   * Surface if you don't need to manipulate the image directly after loading
+   * it.
+   *
+   * If the loaded image has transparency or a colorkey, a texture with an alpha
+   * channel will be created. Otherwise, SDL_image will attempt to create an
+   * Texture in the most format that most reasonably represents the image data
+   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
+   *
+   * There is a separate function to read files from an IOStream, if you need an
+   * i/o abstraction to provide data from anywhere instead of a simple
+   * filesystem read; that function is LoadTexture_IO().
+   *
+   * If you would rather decode an image to an Surface (a buffer of pixels in
+   * CPU memory), call LoadSurface() instead.
+   *
+   * @param renderer the Renderer to use to create the texture.
+   * @param file a path on the filesystem to load an image from.
+   * @post a new texture, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa LoadTextureTyped_IO
+   * @sa LoadTexture_IO
+   */
+  Texture(RendererRef renderer, StringParam file);
+
+  /**
+   * Load an image from an SDL data source into a texture.
+   *
+   * An Texture represents an image in GPU memory, usable by SDL's 2D Render
+   * API. This can be significantly more efficient than using a CPU-bound
+   * Surface if you don't need to manipulate the image directly after loading
+   * it.
+   *
+   * If the loaded image has transparency or a colorkey, a texture with an alpha
+   * channel will be created. Otherwise, SDL_image will attempt to create an
+   * Texture in the most format that most reasonably represents the image data
+   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
+   *
+   * If `closeio` is true, `src` will be closed before returning, whether this
+   * function succeeds or not. SDL_image reads everything it needs from `src`
+   * during this call in any case.
+   *
+   * There is a separate function to read files from disk without having to deal
+   * with IOStream: `LoadTexture(renderer, "filename.jpg")` will call this
+   * function and manage those details for you, determining the file type from
+   * the filename's extension.
+   *
+   * There is also LoadTextureTyped_IO(), which is equivalent to this function
+   * except a file extension (like "BMP", "JPG", etc) can be specified, in case
+   * SDL_image cannot autodetect the file format.
+   *
+   * If you would rather decode an image to an Surface (a buffer of pixels in
+   * CPU memory), call LoadSurface() instead.
+   *
+   * @param renderer the Renderer to use to create the texture.
+   * @param src an IOStream that data will be read from.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
+   * @post a new texture, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa LoadTexture
+   * @sa LoadTextureTyped_IO
+   */
+  Texture(RendererRef renderer, IOStreamRef src, bool closeio = false);
+
+  /**
+   * Safely borrows the from TextureRaw.
+   *
+   * @param resource a TextureRaw.
+   *
+   * This does not takes ownership!
+   */
+  static Texture Borrow(TextureRaw resource)
+  {
+    if (resource) {
+      ++resource->refcount;
+      return Texture(resource);
+    }
+    return {};
+  }
+
+  /// Destructor
+  ~Texture() { SDL_DestroyTexture(get()); }
+
+  /// Assignment operator.
+  constexpr Texture& operator=(Texture&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Texture& operator=(const Texture& other)
+  {
+    if (get() != other.get()) {
+      Texture tmp(other);
+      swap(*this, tmp);
+    }
+    return *this;
+  }
+};
+
+/**
  * Lock a portion of the texture for **write-only** pixel access.
  *
  * As an optimization, the pixels made available for editing don't necessarily
@@ -83956,19 +83993,6 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
  *
  * You must use UnlockTexture() to unlock the pixels and apply any changes.
  *
- * @param texture the texture to lock for access, which was created with
- *                `TEXTUREACCESS_STREAMING`.
- * @param rect an Rect structure representing the area to lock for access;
- *             nullptr to lock the entire texture.
- * @param pixels this is filled in with a pointer to the locked pixels,
- *               appropriately offset by the locked area.
- * @param pitch this is filled in with the pitch of the locked pixels; the pitch
- *              is the length of one row in bytes.
- * @returns true on success or false if the texture is not valid or was not
- *          created with `TEXTUREACCESS_STREAMING`; call GetError() for more
- *          information.
- *
- * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -85468,7 +85492,7 @@ inline PropertiesRef GetTextureProperties(TextureConstRef texture)
   return CheckError(SDL_GetTextureProperties(texture));
 }
 
-inline PropertiesRef Texture::GetProperties() const
+inline PropertiesRef TextureBase::GetProperties() const
 {
   return SDL::GetTextureProperties(get());
 }
@@ -85602,7 +85626,7 @@ inline RendererRef GetRendererFromTexture(TextureConstRef texture)
   return CheckError(SDL_GetRendererFromTexture(texture));
 }
 
-inline RendererRef Texture::GetRenderer() const
+inline RendererRef TextureBase::GetRenderer() const
 {
   return SDL::GetRendererFromTexture(get());
 }
@@ -85632,12 +85656,12 @@ inline Point GetTextureSize(TextureConstRef texture)
   return Point(texture->w, texture->h);
 }
 
-inline void Texture::GetSize(float* w, float* h) const
+inline void TextureBase::GetSize(float* w, float* h) const
 {
   SDL::GetTextureSize(get(), w, h);
 }
 
-inline Point Texture::GetSize() const { return SDL::GetTextureSize(get()); }
+inline Point TextureBase::GetSize() const { return SDL::GetTextureSize(get()); }
 
 /// Get the size of a texture, as floating point values.
 inline FPoint GetTextureSizeFloat(TextureConstRef texture)
@@ -85647,7 +85671,7 @@ inline FPoint GetTextureSizeFloat(TextureConstRef texture)
   return p;
 }
 
-inline FPoint Texture::GetSizeFloat() const
+inline FPoint TextureBase::GetSizeFloat() const
 {
   return SDL::GetTextureSizeFloat(get());
 }
@@ -85655,12 +85679,12 @@ inline FPoint Texture::GetSizeFloat() const
 /// Get the width in pixels.
 inline int GetTextureWidth(TextureConstRef texture) { return texture->w; }
 
-inline int Texture::GetWidth() const { return SDL::GetTextureWidth(get()); }
+inline int TextureBase::GetWidth() const { return SDL::GetTextureWidth(get()); }
 
 /// Get the height in pixels.
 inline int GetTextureHeight(TextureConstRef texture) { return texture->h; }
 
-inline int Texture::GetHeight() const { return SDL::GetTextureHeight(get()); }
+inline int TextureBase::GetHeight() const { return GetTextureHeight(get()); }
 
 /// Get the pixel format.
 inline PixelFormat GetTextureFormat(TextureConstRef texture)
@@ -85668,7 +85692,7 @@ inline PixelFormat GetTextureFormat(TextureConstRef texture)
   return texture->format;
 }
 
-inline PixelFormat Texture::GetFormat() const
+inline PixelFormat TextureBase::GetFormat() const
 {
   return SDL::GetTextureFormat(get());
 }
@@ -85699,7 +85723,7 @@ inline void SetTexturePalette(TextureRef texture, PaletteRef palette)
   CheckError(SDL_SetTexturePalette(texture, palette));
 }
 
-inline void Texture::SetPalette(PaletteRef palette)
+inline void TextureBase::SetPalette(PaletteRef palette)
 {
   SDL::SetTexturePalette(get(), palette);
 }
@@ -85722,7 +85746,7 @@ inline Palette GetTexturePalette(TextureRef texture)
   return Palette::Borrow(SDL_GetTexturePalette(texture));
 }
 
-inline Palette Texture::GetPalette() { return SDL::GetTexturePalette(get()); }
+inline Palette TextureBase::GetPalette() { return GetTexturePalette(get()); }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -85757,7 +85781,7 @@ inline void SetTextureColorMod(TextureRef texture, Uint8 r, Uint8 g, Uint8 b)
   CheckError(SDL_SetTextureColorMod(texture, r, g, b));
 }
 
-inline void Texture::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
+inline void TextureBase::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
 {
   SDL::SetTextureColorMod(get(), r, g, b);
 }
@@ -85796,7 +85820,7 @@ inline void SetTextureColorModFloat(TextureRef texture,
   CheckError(SDL_SetTextureColorModFloat(texture, r, g, b));
 }
 
-inline void Texture::SetColorModFloat(float r, float g, float b)
+inline void TextureBase::SetColorModFloat(float r, float g, float b)
 {
   SDL::SetTextureColorModFloat(get(), r, g, b);
 }
@@ -85826,7 +85850,7 @@ inline void GetTextureColorMod(TextureConstRef texture,
   CheckError(SDL_GetTextureColorMod(texture, r, g, b));
 }
 
-inline void Texture::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
+inline void TextureBase::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
 {
   SDL::GetTextureColorMod(get(), r, g, b);
 }
@@ -85856,7 +85880,7 @@ inline void GetTextureColorModFloat(TextureConstRef texture,
   CheckError(SDL_GetTextureColorModFloat(texture, r, g, b));
 }
 
-inline void Texture::GetColorModFloat(float* r, float* g, float* b) const
+inline void TextureBase::GetColorModFloat(float* r, float* g, float* b) const
 {
   SDL::GetTextureColorModFloat(get(), r, g, b);
 }
@@ -85889,7 +85913,7 @@ inline void SetTextureAlphaMod(TextureRef texture, Uint8 alpha)
   CheckError(SDL_SetTextureAlphaMod(texture, alpha));
 }
 
-inline void Texture::SetAlphaMod(Uint8 alpha)
+inline void TextureBase::SetAlphaMod(Uint8 alpha)
 {
   SDL::SetTextureAlphaMod(get(), alpha);
 }
@@ -85922,7 +85946,7 @@ inline void SetTextureAlphaModFloat(TextureRef texture, float alpha)
   CheckError(SDL_SetTextureAlphaModFloat(texture, alpha));
 }
 
-inline void Texture::SetAlphaModFloat(float alpha)
+inline void TextureBase::SetAlphaModFloat(float alpha)
 {
   SDL::SetTextureAlphaModFloat(get(), alpha);
 }
@@ -85949,7 +85973,7 @@ inline Uint8 GetTextureAlphaMod(TextureConstRef texture)
   return alpha;
 }
 
-inline Uint8 Texture::GetAlphaMod() const
+inline Uint8 TextureBase::GetAlphaMod() const
 {
   return SDL::GetTextureAlphaMod(get());
 }
@@ -85976,7 +86000,7 @@ inline float GetTextureAlphaModFloat(TextureConstRef texture)
   return alpha;
 }
 
-inline float Texture::GetAlphaModFloat() const
+inline float TextureBase::GetAlphaModFloat() const
 {
   return SDL::GetTextureAlphaModFloat(get());
 }
@@ -86010,7 +86034,7 @@ inline void SetTextureMod(TextureRef texture, Color c)
   SetTextureAlphaMod(texture, c.a);
 }
 
-inline void Texture::SetMod(Color c) { SDL::SetTextureMod(get(), c); }
+inline void TextureBase::SetMod(Color c) { SDL::SetTextureMod(get(), c); }
 
 /**
  * Set an additional color and alpha values multiplied into render copy
@@ -86041,7 +86065,7 @@ inline void SetTextureModFloat(TextureRef texture, FColor c)
   SetTextureAlphaModFloat(texture, c.a);
 }
 
-inline void Texture::SetModFloat(FColor c)
+inline void TextureBase::SetModFloat(FColor c)
 {
   SDL::SetTextureModFloat(get(), c);
 }
@@ -86068,7 +86092,7 @@ inline Color GetTextureMod(TextureConstRef texture)
   return c;
 }
 
-inline Color Texture::GetMod() const { return SDL::GetTextureMod(get()); }
+inline Color TextureBase::GetMod() const { return SDL::GetTextureMod(get()); }
 
 /**
  * Get the additional color value multiplied into render copy operations.
@@ -86092,7 +86116,7 @@ inline FColor GetTextureModFloat(TextureConstRef texture)
   return c;
 }
 
-inline FColor Texture::GetModFloat() const
+inline FColor TextureBase::GetModFloat() const
 {
   return SDL::GetTextureModFloat(get());
 }
@@ -86118,7 +86142,7 @@ inline void SetTextureBlendMode(TextureRef texture, BlendMode blendMode)
   CheckError(SDL_SetTextureBlendMode(texture, blendMode));
 }
 
-inline void Texture::SetBlendMode(BlendMode blendMode)
+inline void TextureBase::SetBlendMode(BlendMode blendMode)
 {
   SDL::SetTextureBlendMode(get(), blendMode);
 }
@@ -86143,7 +86167,7 @@ inline BlendMode GetTextureBlendMode(TextureConstRef texture)
   return blendMode;
 }
 
-inline BlendMode Texture::GetBlendMode() const
+inline BlendMode TextureBase::GetBlendMode() const
 {
   return SDL::GetTextureBlendMode(get());
 }
@@ -86170,7 +86194,7 @@ inline void SetTextureScaleMode(TextureRef texture, ScaleMode scaleMode)
   CheckError(SDL_SetTextureScaleMode(texture, scaleMode));
 }
 
-inline void Texture::SetScaleMode(ScaleMode scaleMode)
+inline void TextureBase::SetScaleMode(ScaleMode scaleMode)
 {
   SDL::SetTextureScaleMode(get(), scaleMode);
 }
@@ -86195,7 +86219,7 @@ inline ScaleMode GetTextureScaleMode(TextureConstRef texture)
   return scaleMode;
 }
 
-inline ScaleMode Texture::GetScaleMode() const
+inline ScaleMode TextureBase::GetScaleMode() const
 {
   return SDL::GetTextureScaleMode(get());
 }
@@ -86276,15 +86300,15 @@ inline void UpdateTexture(TextureRef texture,
   UpdateTexture(texture, rect, surface->pixels, surface->pitch);
 }
 
-inline void Texture::Update(OptionalRef<const RectRaw> rect,
-                            const void* pixels,
-                            int pitch)
+inline void TextureBase::Update(OptionalRef<const RectRaw> rect,
+                                const void* pixels,
+                                int pitch)
 {
   SDL::UpdateTexture(get(), rect, pixels, pitch);
 }
 
-inline void Texture::Update(SurfaceConstRef surface,
-                            OptionalRef<const RectRaw> rect)
+inline void TextureBase::Update(SurfaceConstRef surface,
+                                OptionalRef<const RectRaw> rect)
 {
   SDL::UpdateTexture(get(), surface, rect);
 }
@@ -86327,13 +86351,13 @@ inline void UpdateYUVTexture(TextureRef texture,
     texture, rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch));
 }
 
-inline void Texture::UpdateYUV(OptionalRef<const RectRaw> rect,
-                               const Uint8* Yplane,
-                               int Ypitch,
-                               const Uint8* Uplane,
-                               int Upitch,
-                               const Uint8* Vplane,
-                               int Vpitch)
+inline void TextureBase::UpdateYUV(OptionalRef<const RectRaw> rect,
+                                   const Uint8* Yplane,
+                                   int Ypitch,
+                                   const Uint8* Uplane,
+                                   int Upitch,
+                                   const Uint8* Vplane,
+                                   int Vpitch)
 {
   SDL::UpdateYUVTexture(
     get(), rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch);
@@ -86374,11 +86398,11 @@ inline void UpdateNVTexture(TextureRef texture,
     SDL_UpdateNVTexture(texture, rect, Yplane, Ypitch, UVplane, UVpitch));
 }
 
-inline void Texture::UpdateNV(OptionalRef<const RectRaw> rect,
-                              const Uint8* Yplane,
-                              int Ypitch,
-                              const Uint8* UVplane,
-                              int UVpitch)
+inline void TextureBase::UpdateNV(OptionalRef<const RectRaw> rect,
+                                  const Uint8* Yplane,
+                                  int Ypitch,
+                                  const Uint8* UVplane,
+                                  int UVpitch)
 {
   SDL::UpdateNVTexture(get(), rect, Yplane, Ypitch, UVplane, UVpitch);
 }
@@ -86418,9 +86442,9 @@ inline void LockTexture(TextureRef texture,
   CheckError(SDL_LockTexture(texture, rect, pixels, pitch));
 }
 
-inline TextureLock Texture::Lock(OptionalRef<const RectRaw> rect,
-                                 void** pixels,
-                                 int* pitch)
+inline TextureLock TextureBase::Lock(OptionalRef<const RectRaw> rect,
+                                     void** pixels,
+                                     int* pitch)
 {
   return {TextureRef(*this), rect, pixels, pitch};
 }
@@ -86474,7 +86498,7 @@ inline Surface LockTextureToSurface(
   return Surface::Borrow(surface);
 }
 
-inline TextureSurfaceLock Texture::LockToSurface(
+inline TextureSurfaceLock TextureBase::LockToSurface(
   OptionalRef<const RectRaw> rect)
 {
   return {TextureRef(*this), rect};
@@ -86508,13 +86532,13 @@ inline TextureSurfaceLock::TextureSurfaceLock(TextureRef resource,
  */
 inline void UnlockTexture(TextureRef texture) { SDL_UnlockTexture(texture); }
 
-inline void Texture::Unlock(TextureLock&& lock)
+inline void TextureBase::Unlock(TextureLock&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
 }
 
-inline void Texture::Unlock(TextureSurfaceLock&& lock)
+inline void TextureBase::Unlock(TextureSurfaceLock&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -88370,7 +88394,7 @@ inline void RendererBase::Present() { SDL::RenderPresent(get()); }
  */
 inline void DestroyTexture(TextureRaw texture) { SDL_DestroyTexture(texture); }
 
-inline void Texture::Destroy() { DestroyTexture(release()); }
+inline void TextureBase::Destroy() { DestroyTexture(release()); }
 
 /**
  * Destroy the rendering context for a window and free all associated textures.
@@ -94096,6 +94120,9 @@ using AudioRaw = MIX_Audio*;
 using AudioRef = ResourceRefT<AudioBase>;
 
 // Forward decl
+struct TrackBase;
+
+// Forward decl
 struct Track;
 
 /// Alias to raw representation for Track.
@@ -94106,7 +94133,7 @@ using TrackRaw = MIX_Track*;
  *
  * This does not take ownership!
  */
-using TrackRef = ResourceRef<Track>;
+using TrackRef = ResourceRefT<TrackBase>;
 
 // Forward decl
 struct GroupBase;
@@ -96075,86 +96102,13 @@ using TrackMixCB = MakeFrontCallback<
   void(TrackRaw track, const AudioSpec* spec, float* pcm, int samples)>;
 
 /**
- * An opaque object that represents a source of sound output to be mixed.
+ * Base class to Track.
  *
- * A Mixer has an arbitrary number of tracks, and each track manages its own
- * unique audio to be mixed together.
- *
- * Tracks also have other properties: gain, loop points, fading, 3D position,
- * and other attributes that alter the produced sound; many can be altered
- * during playback.
- *
- * @since This datatype is available since SDL_mixer 3.0.0.
- *
- * @cat resource
+ * @see Track
  */
-struct Track : ResourceBase<TrackRaw>
+struct TrackBase : ResourceBaseT<TrackRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Track.
-   *
-   * @param resource a TrackRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Track(TrackRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Track(const Track& other) = delete;
-
-  /// Move constructor
-  constexpr Track(Track&& other) noexcept
-    : Track(other.release())
-  {
-  }
-
-  constexpr Track(const TrackRef& other) = delete;
-
-  constexpr Track(TrackRef&& other) = delete;
-
-  /**
-   * Create a new track on a mixer.
-   *
-   * A track provides a single source of audio. All currently-playing tracks
-   * will be processed and mixed together to form the final output from the
-   * mixer.
-   *
-   * There are no limits to the number of tracks one may create, beyond running
-   * out of memory, but in normal practice there are a small number of tracks
-   * that are reused between all loaded audio as appropriate.
-   *
-   * Tracks are unique to a specific Mixer and can't be transferred between
-   * them.
-   *
-   * @param mixer the mixer on which to create this track.
-   * @post a new Track on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa DestroyTrack
-   */
-  Track(MixerRef mixer);
-
-  /// Destructor
-  ~Track() { MIX_DestroyTrack(get()); }
-
-  /// Assignment operator.
-  constexpr Track& operator=(Track&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Track& operator=(const Track& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy the specified track.
@@ -97388,6 +97342,85 @@ struct Track : ResourceBase<TrackRaw>
    * @sa SetTrackRawCallback
    */
   void SetCookedCallback(TrackMixCB cb);
+};
+
+/**
+ * An opaque object that represents a source of sound output to be mixed.
+ *
+ * A Mixer has an arbitrary number of tracks, and each track manages its own
+ * unique audio to be mixed together.
+ *
+ * Tracks also have other properties: gain, loop points, fading, 3D position,
+ * and other attributes that alter the produced sound; many can be altered
+ * during playback.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @cat resource
+ */
+struct Track : TrackBase
+{
+  using TrackBase::TrackBase;
+
+  /**
+   * Constructs from raw Track.
+   *
+   * @param resource a TrackRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Track(TrackRaw resource) noexcept
+    : TrackBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Track(const Track& other) = delete;
+
+  /// Move constructor
+  constexpr Track(Track&& other) noexcept
+    : Track(other.release())
+  {
+  }
+
+  /**
+   * Create a new track on a mixer.
+   *
+   * A track provides a single source of audio. All currently-playing tracks
+   * will be processed and mixed together to form the final output from the
+   * mixer.
+   *
+   * There are no limits to the number of tracks one may create, beyond running
+   * out of memory, but in normal practice there are a small number of tracks
+   * that are reused between all loaded audio as appropriate.
+   *
+   * Tracks are unique to a specific Mixer and can't be transferred between
+   * them.
+   *
+   * @param mixer the mixer on which to create this track.
+   * @post a new Track on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa DestroyTrack
+   */
+  Track(MixerRef mixer);
+
+  /// Destructor
+  ~Track() { MIX_DestroyTrack(get()); }
+
+  /// Assignment operator.
+  constexpr Track& operator=(Track&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Track& operator=(const Track& other) = delete;
 };
 
 /**
@@ -98834,7 +98867,7 @@ inline Track::Track(MixerRef mixer)
  */
 inline void DestroyTrack(TrackRaw track) { MIX_DestroyTrack(track); }
 
-inline void Track::Destroy() { DestroyTrack(release()); }
+inline void TrackBase::Destroy() { DestroyTrack(release()); }
 
 /**
  * Get the properties associated with a track.
@@ -98858,7 +98891,7 @@ inline PropertiesRef GetTrackProperties(TrackRef track)
   return CheckError(MIX_GetTrackProperties(track));
 }
 
-inline PropertiesRef Track::GetProperties()
+inline PropertiesRef TrackBase::GetProperties()
 {
   return SDL::GetTrackProperties(get());
 }
@@ -98881,7 +98914,7 @@ inline MixerRef GetTrackMixer(TrackRef track)
   return CheckError(MIX_GetTrackMixer(track));
 }
 
-inline MixerRef Track::GetMixer() { return SDL::GetTrackMixer(get()); }
+inline MixerRef TrackBase::GetMixer() { return SDL::GetTrackMixer(get()); }
 
 /**
  * Set a Track's input to a Audio.
@@ -98919,7 +98952,7 @@ inline void SetTrackAudio(TrackRef track, AudioRef audio)
   CheckError(MIX_SetTrackAudio(track, audio));
 }
 
-inline void Track::SetAudio(AudioRef audio)
+inline void TrackBase::SetAudio(AudioRef audio)
 {
   SDL::SetTrackAudio(get(), audio);
 }
@@ -98969,7 +99002,7 @@ inline void SetTrackAudioStream(TrackRef track, AudioStreamRef stream)
   CheckError(MIX_SetTrackAudioStream(track, stream));
 }
 
-inline void Track::SetAudioStream(AudioStreamRef stream)
+inline void TrackBase::SetAudioStream(AudioStreamRef stream)
 {
   SDL::SetTrackAudioStream(get(), stream);
 }
@@ -99028,7 +99061,7 @@ inline void SetTrackIOStream(TrackRef track,
   CheckError(MIX_SetTrackIOStream(track, io, closeio));
 }
 
-inline void Track::SetIOStream(IOStreamRef io, bool closeio)
+inline void TrackBase::SetIOStream(IOStreamRef io, bool closeio)
 {
   SDL::SetTrackIOStream(get(), io, closeio);
 }
@@ -99089,9 +99122,9 @@ inline void SetTrackRawIOStream(TrackRef track,
   CheckError(MIX_SetTrackRawIOStream(track, io, &spec, closeio));
 }
 
-inline void Track::SetRawIOStream(IOStreamRef io,
-                                  const AudioSpec& spec,
-                                  bool closeio)
+inline void TrackBase::SetRawIOStream(IOStreamRef io,
+                                      const AudioSpec& spec,
+                                      bool closeio)
 {
   SDL::SetTrackRawIOStream(get(), io, spec, closeio);
 }
@@ -99128,7 +99161,7 @@ inline void TagTrack(TrackRef track, StringParam tag)
   CheckError(MIX_TagTrack(track, tag));
 }
 
-inline void Track::Tag(StringParam tag)
+inline void TrackBase::Tag(StringParam tag)
 {
   SDL::TagTrack(get(), std::move(tag));
 }
@@ -99161,7 +99194,7 @@ inline void UntagTrack(TrackRef track, StringParam tag)
   MIX_UntagTrack(track, tag);
 }
 
-inline void Track::Untag(StringParam tag)
+inline void TrackBase::Untag(StringParam tag)
 {
   SDL::UntagTrack(get(), std::move(tag));
 }
@@ -99186,7 +99219,7 @@ inline OwnArray<char*> GetTrackTags(TrackRef track)
   return OwnArray<char*>(result, count);
 }
 
-inline OwnArray<char*> Track::GetTags() { return SDL::GetTrackTags(get()); }
+inline OwnArray<char*> TrackBase::GetTags() { return SDL::GetTrackTags(get()); }
 
 /**
  * Get all tracks with a specific tag.
@@ -99254,7 +99287,7 @@ inline void SetTrackPlaybackPosition(TrackRef track, Sint64 frames)
   CheckError(MIX_SetTrackPlaybackPosition(track, frames));
 }
 
-inline void Track::SetPlaybackPosition(Sint64 frames)
+inline void TrackBase::SetPlaybackPosition(Sint64 frames)
 {
   SDL::SetTrackPlaybackPosition(get(), frames);
 }
@@ -99287,7 +99320,7 @@ inline Sint64 GetTrackPlaybackPosition(TrackRef track)
   return MIX_GetTrackPlaybackPosition(track);
 }
 
-inline Sint64 Track::GetPlaybackPosition()
+inline Sint64 TrackBase::GetPlaybackPosition()
 {
   return SDL::GetTrackPlaybackPosition(get());
 }
@@ -99319,7 +99352,10 @@ inline Sint64 GetTrackFadeFrames(TrackRef track)
   return MIX_GetTrackFadeFrames(track);
 }
 
-inline Sint64 Track::GetFadeFrames() { return SDL::GetTrackFadeFrames(get()); }
+inline Sint64 TrackBase::GetFadeFrames()
+{
+  return SDL::GetTrackFadeFrames(get());
+}
 
 /**
  * Query how many loops remain for a given track.
@@ -99349,7 +99385,7 @@ inline Sint64 Track::GetFadeFrames() { return SDL::GetTrackFadeFrames(get()); }
  */
 inline int GetTrackLoops(TrackRef track) { return MIX_GetTrackLoops(track); }
 
-inline int Track::GetLoops() { return SDL::GetTrackLoops(get()); }
+inline int TrackBase::GetLoops() { return SDL::GetTrackLoops(get()); }
 
 /**
  * Change the number of times a currently-playing track will loop.
@@ -99384,7 +99420,7 @@ inline void SetTrackLoops(TrackRef track, int num_loops)
   CheckError(MIX_SetTrackLoops(track, num_loops));
 }
 
-inline void Track::SetLoops(int num_loops)
+inline void TrackBase::SetLoops(int num_loops)
 {
   SDL::SetTrackLoops(get(), num_loops);
 }
@@ -99414,7 +99450,7 @@ inline AudioRef GetTrackAudio(TrackRef track)
   return MIX_GetTrackAudio(track);
 }
 
-inline AudioRef Track::GetAudio() { return SDL::GetTrackAudio(get()); }
+inline AudioRef TrackBase::GetAudio() { return SDL::GetTrackAudio(get()); }
 
 /**
  * Query the AudioStream assigned to a track.
@@ -99442,7 +99478,7 @@ inline AudioStreamRef GetTrackAudioStream(TrackRef track)
   return MIX_GetTrackAudioStream(track);
 }
 
-inline AudioStreamRef Track::GetAudioStream()
+inline AudioStreamRef TrackBase::GetAudioStream()
 {
   return SDL::GetTrackAudioStream(get());
 }
@@ -99477,7 +99513,10 @@ inline Sint64 GetTrackRemaining(TrackRef track)
   return MIX_GetTrackRemaining(track);
 }
 
-inline Sint64 Track::GetRemaining() { return SDL::GetTrackRemaining(get()); }
+inline Sint64 TrackBase::GetRemaining()
+{
+  return SDL::GetTrackRemaining(get());
+}
 
 /**
  * Convert milliseconds to sample frames for a track's current format.
@@ -99506,7 +99545,7 @@ inline Sint64 TrackMSToFrames(TrackRef track, Milliseconds ms)
   return MIX_TrackMSToFrames(track, ms.count());
 }
 
-inline Sint64 Track::MSToFrames(Milliseconds ms)
+inline Sint64 TrackBase::MSToFrames(Milliseconds ms)
 {
   return SDL::TrackMSToFrames(get(), ms);
 }
@@ -99541,7 +99580,7 @@ inline Milliseconds TrackFramesToMS(TrackRef track, Sint64 frames)
   return Milliseconds(MIX_TrackFramesToMS(track, frames));
 }
 
-inline Milliseconds Track::FramesToMS(Sint64 frames)
+inline Milliseconds TrackBase::FramesToMS(Sint64 frames)
 {
   return SDL::TrackFramesToMS(get(), frames);
 }
@@ -99775,7 +99814,7 @@ inline void PlayTrack(TrackRef track, PropertiesRef options = nullptr)
   CheckError(MIX_PlayTrack(track, options));
 }
 
-inline void Track::Play(PropertiesRef options)
+inline void TrackBase::Play(PropertiesRef options)
 {
   SDL::PlayTrack(get(), options);
 }
@@ -99959,7 +99998,7 @@ inline bool StopTrack(TrackRef track, Sint64 fade_out_frames)
   return MIX_StopTrack(track, fade_out_frames);
 }
 
-inline bool Track::Stop(Sint64 fade_out_frames)
+inline bool TrackBase::Stop(Sint64 fade_out_frames)
 {
   return SDL::StopTrack(get(), fade_out_frames);
 }
@@ -100071,7 +100110,7 @@ inline void MixerBase::StopTag(StringParam tag, Sint64 fade_out_ms)
  */
 inline bool PauseTrack(TrackRef track) { return MIX_PauseTrack(track); }
 
-inline bool Track::Pause() { return SDL::PauseTrack(get()); }
+inline bool TrackBase::Pause() { return SDL::PauseTrack(get()); }
 
 /**
  * Pause all currently-playing tracks.
@@ -100160,7 +100199,7 @@ inline void MixerBase::PauseTag(StringParam tag)
  */
 inline bool ResumeTrack(TrackRef track) { return MIX_ResumeTrack(track); }
 
-inline bool Track::Resume() { return SDL::ResumeTrack(get()); }
+inline bool TrackBase::Resume() { return SDL::ResumeTrack(get()); }
 
 /**
  * Resume all currently-paused tracks.
@@ -100249,7 +100288,7 @@ inline void MixerBase::ResumeTag(StringParam tag)
  */
 inline bool TrackPlaying(TrackRef track) { return MIX_TrackPlaying(track); }
 
-inline bool Track::Playing() { return SDL::TrackPlaying(get()); }
+inline bool TrackBase::Playing() { return SDL::TrackPlaying(get()); }
 
 /**
  * Query if a track is currently paused.
@@ -100276,7 +100315,7 @@ inline bool Track::Playing() { return SDL::TrackPlaying(get()); }
  */
 inline bool TrackPaused(TrackRef track) { return MIX_TrackPaused(track); }
 
-inline bool Track::Paused() { return SDL::TrackPaused(get()); }
+inline bool TrackBase::Paused() { return SDL::TrackPaused(get()); }
 
 /**
  * Set a mixer's master gain control.
@@ -100360,7 +100399,7 @@ inline void SetTrackGain(TrackRef track, float gain)
   CheckError(MIX_SetTrackGain(track, gain));
 }
 
-inline void Track::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
+inline void TrackBase::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
 
 /**
  * Get a track's gain control.
@@ -100380,7 +100419,7 @@ inline void Track::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
  */
 inline float GetTrackGain(TrackRef track) { return MIX_GetTrackGain(track); }
 
-inline float Track::GetGain() { return SDL::GetTrackGain(get()); }
+inline float TrackBase::GetGain() { return SDL::GetTrackGain(get()); }
 
 /**
  * Set the gain control of all tracks with a specific tag.
@@ -100517,7 +100556,7 @@ inline void SetTrackFrequencyRatio(TrackRef track, float ratio)
   CheckError(MIX_SetTrackFrequencyRatio(track, ratio));
 }
 
-inline void Track::SetFrequencyRatio(float ratio)
+inline void TrackBase::SetFrequencyRatio(float ratio)
 {
   SDL::SetTrackFrequencyRatio(get(), ratio);
 }
@@ -100552,7 +100591,7 @@ inline float GetTrackFrequencyRatio(TrackRef track)
   return MIX_GetTrackFrequencyRatio(track);
 }
 
-inline float Track::GetFrequencyRatio()
+inline float TrackBase::GetFrequencyRatio()
 {
   return SDL::GetTrackFrequencyRatio(get());
 }
@@ -100598,7 +100637,7 @@ inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)
     MIX_SetTrackOutputChannelMap(track, chmap.data(), narrowS32(chmap.size())));
 }
 
-inline void Track::SetOutputChannelMap(std::span<const int> chmap)
+inline void TrackBase::SetOutputChannelMap(std::span<const int> chmap)
 {
   SDL::SetTrackOutputChannelMap(get(), chmap);
 }
@@ -100638,7 +100677,7 @@ inline void SetTrackStereo(TrackRef track, const StereoGains& gains)
   CheckError(MIX_SetTrackStereo(track, &gains));
 }
 
-inline void Track::SetStereo(const StereoGains& gains)
+inline void TrackBase::SetStereo(const StereoGains& gains)
 {
   SDL::SetTrackStereo(get(), gains);
 }
@@ -100690,7 +100729,7 @@ inline void SetTrack3DPosition(TrackRef track, const Point3D& position)
   CheckError(MIX_SetTrack3DPosition(track, &position));
 }
 
-inline void Track::Set3DPosition(const Point3D& position)
+inline void TrackBase::Set3DPosition(const Point3D& position)
 {
   SDL::SetTrack3DPosition(get(), position);
 }
@@ -100718,7 +100757,10 @@ inline Point3D GetTrack3DPosition(TrackRef track)
   return position;
 }
 
-inline Point3D Track::Get3DPosition() { return SDL::GetTrack3DPosition(get()); }
+inline Point3D TrackBase::Get3DPosition()
+{
+  return SDL::GetTrack3DPosition(get());
+}
 
 /**
  * Create a mixing group.
@@ -100851,7 +100893,7 @@ inline void SetTrackGroup(TrackRef track, GroupRef group)
   CheckError(MIX_SetTrackGroup(track, group));
 }
 
-inline void Track::SetGroup(GroupRef group)
+inline void TrackBase::SetGroup(GroupRef group)
 {
   SDL::SetTrackGroup(get(), group);
 }
@@ -100924,12 +100966,13 @@ inline void SetTrackStoppedCallback(TrackRef track, TrackStoppedCB cb)
   SetTrackStoppedCallback(track, cb.wrapper, cb.data);
 }
 
-inline void Track::SetStoppedCallback(TrackStoppedCallback cb, void* userdata)
+inline void TrackBase::SetStoppedCallback(TrackStoppedCallback cb,
+                                          void* userdata)
 {
   SDL::SetTrackStoppedCallback(get(), cb, userdata);
 }
 
-inline void Track::SetStoppedCallback(TrackStoppedCB cb)
+inline void TrackBase::SetStoppedCallback(TrackStoppedCB cb)
 {
   SDL::SetTrackStoppedCallback(get(), cb);
 }
@@ -101002,12 +101045,12 @@ inline void SetTrackRawCallback(TrackRef track, TrackMixCB cb)
   SetTrackRawCallback(track, cb.wrapper, cb.data);
 }
 
-inline void Track::SetRawCallback(TrackMixCallback cb, void* userdata)
+inline void TrackBase::SetRawCallback(TrackMixCallback cb, void* userdata)
 {
   SDL::SetTrackRawCallback(get(), cb, userdata);
 }
 
-inline void Track::SetRawCallback(TrackMixCB cb)
+inline void TrackBase::SetRawCallback(TrackMixCB cb)
 {
   SDL::SetTrackRawCallback(get(), cb);
 }
@@ -101086,12 +101129,12 @@ inline void SetTrackCookedCallback(TrackRef track, TrackMixCB cb)
   SetTrackCookedCallback(track, cb.wrapper, cb.data);
 }
 
-inline void Track::SetCookedCallback(TrackMixCallback cb, void* userdata)
+inline void TrackBase::SetCookedCallback(TrackMixCallback cb, void* userdata)
 {
   SDL::SetTrackCookedCallback(get(), cb, userdata);
 }
 
-inline void Track::SetCookedCallback(TrackMixCB cb)
+inline void TrackBase::SetCookedCallback(TrackMixCB cb)
 {
   SDL::SetTrackCookedCallback(get(), cb);
 }

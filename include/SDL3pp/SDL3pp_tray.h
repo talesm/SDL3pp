@@ -19,6 +19,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct TrayBase;
+
+// Forward decl
 struct Tray;
 
 /// Alias to raw representation for Tray.
@@ -29,7 +32,7 @@ using TrayRaw = SDL_Tray*;
  *
  * This does not take ownership!
  */
-using TrayRef = ResourceRef<Tray>;
+using TrayRef = ResourceRefT<TrayBase>;
 
 /// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
@@ -104,78 +107,13 @@ using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
 using TrayCB = MakeFrontCallback<void(TrayEntryRaw entry)>;
 
 /**
- * An opaque handle representing a toplevel system tray object.
+ * Base class to Tray.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Tray
  */
-struct Tray : ResourceBase<TrayRaw>
+struct TrayBase : ResourceBaseT<TrayRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Tray.
-   *
-   * @param resource a TrayRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Tray(TrayRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Tray(const Tray& other) = delete;
-
-  /// Move constructor
-  constexpr Tray(Tray&& other) noexcept
-    : Tray(other.release())
-  {
-  }
-
-  constexpr Tray(const TrayRef& other) = delete;
-
-  constexpr Tray(TrayRef&& other) = delete;
-
-  /**
-   * Create an icon to be placed in the operating system's tray, or equivalent.
-   *
-   * Many platforms advise not using a system tray unless persistence is a
-   * necessary feature. Avoid needlessly creating a tray icon, as the user may
-   * feel like it clutters their interface.
-   *
-   * Using tray icons require the video subsystem.
-   *
-   * @param icon a surface to be used as icon. May be nullptr.
-   * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
-   *                UTF-8 encoding. Not supported on all platforms. May be
-   *                nullptr.
-   * @post The newly created system tray icon.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateTrayMenu
-   * @sa GetTrayMenu
-   * @sa DestroyTray
-   */
-  Tray(SurfaceRef icon, StringParam tooltip);
-
-  /// Destructor
-  ~Tray() { SDL_DestroyTray(get()); }
-
-  /// Assignment operator.
-  constexpr Tray& operator=(Tray&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Tray& operator=(const Tray& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroys a tray object.
@@ -264,6 +202,77 @@ struct Tray : ResourceBase<TrayRaw>
    * @sa CreateTrayMenu
    */
   TrayMenu GetMenu() const;
+};
+
+/**
+ * An opaque handle representing a toplevel system tray object.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Tray : TrayBase
+{
+  using TrayBase::TrayBase;
+
+  /**
+   * Constructs from raw Tray.
+   *
+   * @param resource a TrayRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Tray(TrayRaw resource) noexcept
+    : TrayBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Tray(const Tray& other) = delete;
+
+  /// Move constructor
+  constexpr Tray(Tray&& other) noexcept
+    : Tray(other.release())
+  {
+  }
+
+  /**
+   * Create an icon to be placed in the operating system's tray, or equivalent.
+   *
+   * Many platforms advise not using a system tray unless persistence is a
+   * necessary feature. Avoid needlessly creating a tray icon, as the user may
+   * feel like it clutters their interface.
+   *
+   * Using tray icons require the video subsystem.
+   *
+   * @param icon a surface to be used as icon. May be nullptr.
+   * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
+   *                UTF-8 encoding. Not supported on all platforms. May be
+   *                nullptr.
+   * @post The newly created system tray icon.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateTrayMenu
+   * @sa GetTrayMenu
+   * @sa DestroyTray
+   */
+  Tray(SurfaceRef icon, StringParam tooltip);
+
+  /// Destructor
+  ~Tray() { SDL_DestroyTray(get()); }
+
+  /// Assignment operator.
+  constexpr Tray& operator=(Tray&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Tray& operator=(const Tray& other) = delete;
 };
 
 /**
@@ -409,9 +418,9 @@ public:
  *
  * @cat resource
  */
-struct TrayEntry : ResourceBase<TrayEntryRaw>
+struct TrayEntry : ResourceBaseT<TrayEntryRaw>
 {
-  using ResourceBase::ResourceBase;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Insert a tray entry at a given position.
@@ -768,7 +777,10 @@ inline void SetTrayIcon(TrayRef tray, SurfaceRef icon)
   SDL_SetTrayIcon(tray, icon);
 }
 
-inline void Tray::SetIcon(SurfaceRef icon) { SDL::SetTrayIcon(get(), icon); }
+inline void TrayBase::SetIcon(SurfaceRef icon)
+{
+  SDL::SetTrayIcon(get(), icon);
+}
 
 /**
  * Updates the system tray icon's tooltip.
@@ -788,7 +800,7 @@ inline void SetTrayTooltip(TrayRef tray, StringParam tooltip)
   SDL_SetTrayTooltip(tray, tooltip);
 }
 
-inline void Tray::SetTooltip(StringParam tooltip)
+inline void TrayBase::SetTooltip(StringParam tooltip)
 {
   SDL::SetTrayTooltip(get(), std::move(tooltip));
 }
@@ -820,7 +832,7 @@ inline TrayMenu CreateTrayMenu(TrayRef tray)
   return SDL_CreateTrayMenu(tray);
 }
 
-inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(get()); }
+inline TrayMenu TrayBase::CreateMenu() { return SDL::CreateTrayMenu(get()); }
 
 /**
  * Create a submenu for a system tray entry.
@@ -878,7 +890,7 @@ inline TrayMenu TrayEntry::CreateSubmenu()
  */
 inline TrayMenu GetTrayMenu(TrayRef tray) { return SDL_GetTrayMenu(tray); }
 
-inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(get()); }
+inline TrayMenu TrayBase::GetMenu() const { return SDL::GetTrayMenu(get()); }
 
 /**
  * Gets a previously created tray entry submenu.
@@ -1291,7 +1303,7 @@ inline void TrayEntry::Click() { SDL::ClickTrayEntry(get()); }
  */
 inline void DestroyTray(TrayRaw tray) { SDL_DestroyTray(tray); }
 
-inline void Tray::Destroy() { DestroyTray(release()); }
+inline void TrayBase::Destroy() { DestroyTray(release()); }
 
 /**
  * Gets the menu containing a certain tray entry.
