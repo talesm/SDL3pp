@@ -1691,9 +1691,8 @@ struct Surface : SurfaceBase
 
   /// Copy constructor
   constexpr Surface(const Surface& other)
-    : Surface(other.get())
+    : Surface(Borrow(other.get()))
   {
-    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor

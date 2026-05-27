@@ -2512,9 +2512,8 @@ struct Palette : PaletteBase
 
   /// Copy constructor
   constexpr Palette(const Palette& other)
-    : Palette(other.get())
+    : Palette(Borrow(other.get()))
   {
-    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor

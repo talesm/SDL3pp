@@ -105,7 +105,7 @@ SCENARIO("Reference counting")
       }
       AND_WHEN("Copy SurfaceRef to another Surface")
       {
-        Surface copy2(copy);
+        Surface copy2(Surface::Borrow(copy));
         THEN("Reference count is increased")
         {
           CHECK(surface->refcount == 2);

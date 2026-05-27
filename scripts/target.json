@@ -99732,9 +99732,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "Palette(other.get())"
-                  ],
-                  "body": "if (auto res = get()) ++res->refcount;"
+                    "Palette(Borrow(other.get()))"
+                  ]
                 },
                 "doc": [
                   "Copy constructor"
@@ -117265,9 +117264,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "Texture(other.get())"
-                  ],
-                  "body": "if (auto res = get()) ++res->refcount;"
+                    "Texture(Borrow(other.get()))"
+                  ]
                 },
                 "doc": [
                   "Copy constructor"
@@ -152726,9 +152724,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "Surface(other.get())"
-                  ],
-                  "body": "if (auto res = get()) ++res->refcount;"
+                    "Surface(Borrow(other.get()))"
+                  ]
                 },
                 "doc": [
                   "Copy constructor"
@@ -213521,9 +213518,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "Address(other.get())"
-                  ],
-                  "body": "if (auto res = get()) ++res->NET_RefAddress;"
+                    "Address(Borrow(other.get()))"
+                  ]
                 },
                 "doc": [
                   "Copy constructor"

@@ -3019,9 +3019,8 @@ struct Texture : TextureBase
 
   /// Copy constructor
   constexpr Texture(const Texture& other)
-    : Texture(other.get())
+    : Texture(Borrow(other.get()))
   {
-    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor

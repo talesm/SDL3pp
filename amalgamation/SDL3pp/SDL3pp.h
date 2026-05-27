@@ -27829,9 +27829,8 @@ struct Palette : PaletteBase
 
   /// Copy constructor
   constexpr Palette(const Palette& other)
-    : Palette(other.get())
+    : Palette(Borrow(other.get()))
   {
-    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor
@@ -43531,9 +43530,8 @@ struct Surface : SurfaceBase
 
   /// Copy constructor
   constexpr Surface(const Surface& other)
-    : Surface(other.get())
+    : Surface(Borrow(other.get()))
   {
-    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor
@@ -83892,9 +83890,8 @@ struct Texture : TextureBase
 
   /// Copy constructor
   constexpr Texture(const Texture& other)
-    : Texture(other.get())
+    : Texture(Borrow(other.get()))
   {
-    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor

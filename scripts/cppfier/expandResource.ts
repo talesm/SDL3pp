@@ -326,8 +326,7 @@ function createBaselineCtors(
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
         delete: shared ? undefined : true,
-        init: shared ? [`${targetName}(other.get())`] : undefined,
-        body: shared ? `if (auto res = get()) ++res->${shared};` : undefined,
+        init: shared ? [`${targetName}(Borrow(other.get()))`] : undefined,
       },
       doc: ["Copy constructor"],
     },
