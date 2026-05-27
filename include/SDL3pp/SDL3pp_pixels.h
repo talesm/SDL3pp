@@ -2512,7 +2512,7 @@ struct Palette : PaletteBase
 
   /// Copy constructor
   constexpr Palette(const Palette& other)
-    : Palette(Borrow(other.get()))
+    : Palette(borrow(other.get()))
   {
   }
 
@@ -2548,7 +2548,7 @@ struct Palette : PaletteBase
    *
    * This does not takes ownership!
    */
-  static Palette Borrow(PaletteRaw resource)
+  static Palette borrow(PaletteRaw resource)
   {
     if (resource) {
       ++resource->refcount;

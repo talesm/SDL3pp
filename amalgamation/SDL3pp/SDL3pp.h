@@ -27829,7 +27829,7 @@ struct Palette : PaletteBase
 
   /// Copy constructor
   constexpr Palette(const Palette& other)
-    : Palette(Borrow(other.get()))
+    : Palette(borrow(other.get()))
   {
   }
 
@@ -27865,7 +27865,7 @@ struct Palette : PaletteBase
    *
    * This does not takes ownership!
    */
-  static Palette Borrow(PaletteRaw resource)
+  static Palette borrow(PaletteRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -43530,7 +43530,7 @@ struct Surface : SurfaceBase
 
   /// Copy constructor
   constexpr Surface(const Surface& other)
-    : Surface(Borrow(other.get()))
+    : Surface(borrow(other.get()))
   {
   }
 
@@ -43680,7 +43680,7 @@ struct Surface : SurfaceBase
    *
    * This does not takes ownership!
    */
-  static Surface Borrow(SurfaceRaw resource)
+  static Surface borrow(SurfaceRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -44237,7 +44237,7 @@ inline Colorspace SurfaceBase::GetColorspace() const
  */
 inline Palette CreateSurfacePalette(SurfaceRef surface)
 {
-  return Palette::Borrow(CheckError(SDL_CreateSurfacePalette(surface)));
+  return Palette::borrow(CheckError(SDL_CreateSurfacePalette(surface)));
 }
 
 inline Palette SurfaceBase::CreatePalette()
@@ -44290,7 +44290,7 @@ inline void SurfaceBase::SetPalette(PaletteRef palette)
  */
 inline Palette GetSurfacePalette(SurfaceConstRef surface)
 {
-  return Palette::Borrow(SDL_GetSurfacePalette(surface));
+  return Palette::borrow(SDL_GetSurfacePalette(surface));
 }
 
 inline Palette SurfaceBase::GetPalette() const
@@ -48524,7 +48524,7 @@ inline std::optional<CameraSpec> CameraBase::GetFormat()
 inline Surface AcquireCameraFrame(CameraRef camera,
                                   Uint64* timestampNS = nullptr)
 {
-  return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));
+  return Surface::borrow(SDL_AcquireCameraFrame(camera, timestampNS));
 }
 
 inline CameraFrame CameraBase::AcquireFrame(Uint64* timestampNS)
@@ -58095,7 +58095,7 @@ inline bool WindowBase::HasSurface() const
  */
 inline Surface GetWindowSurface(WindowRef window)
 {
-  return Surface::Borrow(CheckError(SDL_GetWindowSurface(window)));
+  return Surface::borrow(CheckError(SDL_GetWindowSurface(window)));
 }
 
 inline Surface WindowBase::GetSurface() { return SDL::GetWindowSurface(get()); }
@@ -83890,7 +83890,7 @@ struct Texture : TextureBase
 
   /// Copy constructor
   constexpr Texture(const Texture& other)
-    : Texture(Borrow(other.get()))
+    : Texture(borrow(other.get()))
   {
   }
 
@@ -84156,7 +84156,7 @@ struct Texture : TextureBase
    *
    * This does not takes ownership!
    */
-  static Texture Borrow(TextureRaw resource)
+  static Texture borrow(TextureRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -85962,7 +85962,7 @@ inline void TextureBase::SetPalette(PaletteRef palette)
  */
 inline Palette GetTexturePalette(TextureRef texture)
 {
-  return Palette::Borrow(SDL_GetTexturePalette(texture));
+  return Palette::borrow(SDL_GetTexturePalette(texture));
 }
 
 inline Palette TextureBase::GetPalette() { return GetTexturePalette(get()); }
@@ -86714,7 +86714,7 @@ inline Surface LockTextureToSurface(
 {
   SurfaceRaw surface = nullptr;
   CheckError(SDL_LockTextureToSurface(texture, rect, &surface));
-  return Surface::Borrow(surface);
+  return Surface::borrow(surface);
 }
 
 inline TextureSurfaceLock TextureBase::LockToSurface(
@@ -86851,7 +86851,7 @@ inline void RendererBase::ResetTarget() { SDL::ResetRenderTarget(get()); }
 inline Texture GetRenderTarget(RendererRef renderer)
 {
   if (auto texture = SDL_GetRenderTarget(renderer))
-    return Texture::Borrow(texture);
+    return Texture::borrow(texture);
   return {};
 }
 
@@ -91449,7 +91449,7 @@ struct Address : AddressBase
    *
    * This does not takes ownership!
    */
-  static Address Borrow(AddressRaw resource)
+  static Address borrow(AddressRaw resource)
   {
     if (resource) {
       NET_RefAddress(resource);
@@ -105018,7 +105018,7 @@ inline int AnimationBase::GetCount() const
  */
 inline Surface GetAnimationFrame(AnimationConstRef anim, int index)
 {
-  return Surface::Borrow(anim->frames[index]);
+  return Surface::borrow(anim->frames[index]);
 }
 
 inline Surface AnimationBase::GetFrame(int index) const
@@ -106570,7 +106570,7 @@ inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
 {
   SDL_Surface* frame = nullptr;
   CheckError(IMG_GetAnimationDecoderFrame(decoder, &frame, duration));
-  return Surface::Borrow(frame);
+  return Surface::borrow(frame);
 }
 
 inline Surface AnimationDecoderBase::GetFrame(Uint64* duration)

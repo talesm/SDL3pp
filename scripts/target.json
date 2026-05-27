@@ -99732,7 +99732,7 @@
                 ],
                 "hints": {
                   "init": [
-                    "Palette(Borrow(other.get()))"
+                    "Palette(borrow(other.get()))"
                   ]
                 },
                 "doc": [
@@ -99818,7 +99818,7 @@
                 }
               }
             },
-            "Borrow": {
+            "borrow": {
               "kind": "function",
               "static": true,
               "type": "Palette",
@@ -99839,7 +99839,7 @@
                 },
                 "This does not takes ownership!"
               ],
-              "name": "Borrow"
+              "name": "borrow"
             },
             "~Palette": {
               "kind": "function",
@@ -117264,7 +117264,7 @@
                 ],
                 "hints": {
                   "init": [
-                    "Texture(Borrow(other.get()))"
+                    "Texture(borrow(other.get()))"
                   ]
                 },
                 "doc": [
@@ -117761,7 +117761,7 @@
                 }
               }
             },
-            "Borrow": {
+            "borrow": {
               "kind": "function",
               "static": true,
               "type": "Texture",
@@ -117782,7 +117782,7 @@
                 },
                 "This does not takes ownership!"
               ],
-              "name": "Borrow"
+              "name": "borrow"
             },
             "~Texture": {
               "kind": "function",
@@ -152724,7 +152724,7 @@
                 ],
                 "hints": {
                   "init": [
-                    "Surface(Borrow(other.get()))"
+                    "Surface(borrow(other.get()))"
                   ]
                 },
                 "doc": [
@@ -152989,7 +152989,7 @@
                 }
               }
             },
-            "Borrow": {
+            "borrow": {
               "kind": "function",
               "static": true,
               "type": "Surface",
@@ -153010,7 +153010,7 @@
                 },
                 "This does not takes ownership!"
               ],
-              "name": "Borrow"
+              "name": "borrow"
             },
             "~Surface": {
               "kind": "function",
@@ -213518,7 +213518,7 @@
                 ],
                 "hints": {
                   "init": [
-                    "Address(Borrow(other.get()))"
+                    "Address(borrow(other.get()))"
                   ]
                 },
                 "doc": [
@@ -213654,7 +213654,7 @@
                 }
               }
             },
-            "Borrow": {
+            "borrow": {
               "kind": "function",
               "static": true,
               "type": "Address",
@@ -213675,7 +213675,7 @@
                 },
                 "This does not takes ownership!"
               ],
-              "name": "Borrow"
+              "name": "borrow"
             },
             "~Address": {
               "kind": "function",

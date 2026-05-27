@@ -18,6 +18,7 @@ Breaking changes:
   - [x] New ResourceRefT becomes template to new ResourceRef
 - [x] Rename StartTextInput overload with properties to
   StartTextInputWithProperties;
+- [x] Rename Borrow() to borrow();
 
 Non-breaking changes
 

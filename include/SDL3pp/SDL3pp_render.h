@@ -3019,7 +3019,7 @@ struct Texture : TextureBase
 
   /// Copy constructor
   constexpr Texture(const Texture& other)
-    : Texture(Borrow(other.get()))
+    : Texture(borrow(other.get()))
   {
   }
 
@@ -3285,7 +3285,7 @@ struct Texture : TextureBase
    *
    * This does not takes ownership!
    */
-  static Texture Borrow(TextureRaw resource)
+  static Texture borrow(TextureRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -5091,7 +5091,7 @@ inline void TextureBase::SetPalette(PaletteRef palette)
  */
 inline Palette GetTexturePalette(TextureRef texture)
 {
-  return Palette::Borrow(SDL_GetTexturePalette(texture));
+  return Palette::borrow(SDL_GetTexturePalette(texture));
 }
 
 inline Palette TextureBase::GetPalette() { return GetTexturePalette(get()); }
@@ -5843,7 +5843,7 @@ inline Surface LockTextureToSurface(
 {
   SurfaceRaw surface = nullptr;
   CheckError(SDL_LockTextureToSurface(texture, rect, &surface));
-  return Surface::Borrow(surface);
+  return Surface::borrow(surface);
 }
 
 inline TextureSurfaceLock TextureBase::LockToSurface(
@@ -5980,7 +5980,7 @@ inline void RendererBase::ResetTarget() { SDL::ResetRenderTarget(get()); }
 inline Texture GetRenderTarget(RendererRef renderer)
 {
   if (auto texture = SDL_GetRenderTarget(renderer))
-    return Texture::Borrow(texture);
+    return Texture::borrow(texture);
   return {};
 }
 

@@ -1691,7 +1691,7 @@ struct Surface : SurfaceBase
 
   /// Copy constructor
   constexpr Surface(const Surface& other)
-    : Surface(Borrow(other.get()))
+    : Surface(borrow(other.get()))
   {
   }
 
@@ -1841,7 +1841,7 @@ struct Surface : SurfaceBase
    *
    * This does not takes ownership!
    */
-  static Surface Borrow(SurfaceRaw resource)
+  static Surface borrow(SurfaceRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -2398,7 +2398,7 @@ inline Colorspace SurfaceBase::GetColorspace() const
  */
 inline Palette CreateSurfacePalette(SurfaceRef surface)
 {
-  return Palette::Borrow(CheckError(SDL_CreateSurfacePalette(surface)));
+  return Palette::borrow(CheckError(SDL_CreateSurfacePalette(surface)));
 }
 
 inline Palette SurfaceBase::CreatePalette()
@@ -2451,7 +2451,7 @@ inline void SurfaceBase::SetPalette(PaletteRef palette)
  */
 inline Palette GetSurfacePalette(SurfaceConstRef surface)
 {
-  return Palette::Borrow(SDL_GetSurfacePalette(surface));
+  return Palette::borrow(SDL_GetSurfacePalette(surface));
 }
 
 inline Palette SurfaceBase::GetPalette() const

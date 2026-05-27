@@ -3052,7 +3052,7 @@ inline int AnimationBase::GetCount() const
  */
 inline Surface GetAnimationFrame(AnimationConstRef anim, int index)
 {
-  return Surface::Borrow(anim->frames[index]);
+  return Surface::borrow(anim->frames[index]);
 }
 
 inline Surface AnimationBase::GetFrame(int index) const
@@ -4604,7 +4604,7 @@ inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
 {
   SDL_Surface* frame = nullptr;
   CheckError(IMG_GetAnimationDecoderFrame(decoder, &frame, duration));
-  return Surface::Borrow(frame);
+  return Surface::borrow(frame);
 }
 
 inline Surface AnimationDecoderBase::GetFrame(Uint64* duration)

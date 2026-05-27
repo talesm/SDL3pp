@@ -1413,7 +1413,7 @@
  inline Palette GetTexturePalette(TextureRef texture)
  {
 -  return SDL_GetTexturePalette(texture);
-+  return Palette::Borrow(SDL_GetTexturePalette(texture));
++  return Palette::borrow(SDL_GetTexturePalette(texture));
  }
  
 -inline Palette TextureBase::GetPalette()
@@ -1691,7 +1691,7 @@
 -  return CheckError(SDL_LockTextureToSurface(texture, rect));
 +  SurfaceRaw surface = nullptr;
 +  CheckError(SDL_LockTextureToSurface(texture, rect, &surface));
-+  return Surface::Borrow(surface);
++  return Surface::borrow(surface);
  }
  
  inline TextureSurfaceLock TextureBase::LockToSurface(
@@ -1755,7 +1755,7 @@
  {
 -  return SDL_GetRenderTarget(renderer);
 +  if (auto texture = SDL_GetRenderTarget(renderer))
-+    return Texture::Borrow(texture);
++    return Texture::borrow(texture);
 +  return {};
  }
  

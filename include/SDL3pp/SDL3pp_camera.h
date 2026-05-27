@@ -921,7 +921,7 @@ inline std::optional<CameraSpec> CameraBase::GetFormat()
 inline Surface AcquireCameraFrame(CameraRef camera,
                                   Uint64* timestampNS = nullptr)
 {
-  return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));
+  return Surface::borrow(SDL_AcquireCameraFrame(camera, timestampNS));
 }
 
 inline CameraFrame CameraBase::AcquireFrame(Uint64* timestampNS)

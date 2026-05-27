@@ -39,7 +39,7 @@
  
 -  /// Copy constructor
 -  constexpr Address(const Address& other)
--    : Address(Borrow(other.get()))
+-    : Address(borrow(other.get()))
 -  {
 -  }
 -
@@ -56,7 +56,7 @@
    /**
     * Safely borrows the from AddressRaw.
 @@ -816,7 +817,7 @@
-   static Address Borrow(AddressRaw resource)
+   static Address borrow(AddressRaw resource)
    {
      if (resource) {
 -      ++resource->NET_RefAddress;

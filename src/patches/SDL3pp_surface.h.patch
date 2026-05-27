@@ -936,7 +936,7 @@
  inline Palette CreateSurfacePalette(SurfaceRef surface)
  {
 -  return CheckError(SDL_CreateSurfacePalette(surface));
-+  return Palette::Borrow(CheckError(SDL_CreateSurfacePalette(surface)));
++  return Palette::borrow(CheckError(SDL_CreateSurfacePalette(surface)));
  }
  
  inline Palette SurfaceBase::CreatePalette()
@@ -945,7 +945,7 @@
  inline Palette GetSurfacePalette(SurfaceConstRef surface)
  {
 -  return SDL_GetSurfacePalette(surface);
-+  return Palette::Borrow(SDL_GetSurfacePalette(surface));
++  return Palette::borrow(SDL_GetSurfacePalette(surface));
  }
  
  inline Palette SurfaceBase::GetPalette() const

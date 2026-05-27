@@ -326,7 +326,7 @@ function createBaselineCtors(
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
         delete: shared ? undefined : true,
-        init: shared ? [`${targetName}(Borrow(other.get()))`] : undefined,
+        init: shared ? [`${targetName}(borrow(other.get()))`] : undefined,
       },
       doc: ["Copy constructor"],
     },
@@ -355,7 +355,7 @@ function addBorrowFunction(
   if (shared === true) {
     ctors[`${targetName}#3`].hints = {};
   } else {
-    ctors["Borrow"] = {
+    ctors["borrow"] = {
       kind: "function",
       static: true,
       type: targetName,

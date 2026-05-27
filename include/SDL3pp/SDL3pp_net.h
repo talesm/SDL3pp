@@ -814,7 +814,7 @@ struct Address : AddressBase
    *
    * This does not takes ownership!
    */
-  static Address Borrow(AddressRaw resource)
+  static Address borrow(AddressRaw resource)
   {
     if (resource) {
       NET_RefAddress(resource);

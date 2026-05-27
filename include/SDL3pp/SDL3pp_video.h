@@ -6274,7 +6274,7 @@ inline bool WindowBase::HasSurface() const
  */
 inline Surface GetWindowSurface(WindowRef window)
 {
-  return Surface::Borrow(CheckError(SDL_GetWindowSurface(window)));
+  return Surface::borrow(CheckError(SDL_GetWindowSurface(window)));
 }
 
 inline Surface WindowBase::GetSurface() { return SDL::GetWindowSurface(get()); }
