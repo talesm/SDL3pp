@@ -38,10 +38,6 @@ ExternalProject_Add(SDL3TTFBase
 
 file(GLOB CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/*.ts)
 
-add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/node_modules 
-  COMMAND npm install
-)
-
 set(CPPFIER_GRAMMAR_SOURCES 
   ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderLexer.ts
   ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderListener.ts
@@ -100,9 +96,9 @@ add_custom_target(SDL3pp_refresh
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
-add_custom_command(OUTPUT ${SDL3PP_WRAPPED_HEADERS} 
+add_custom_command(OUTPUT include/SDL3pp/SDL3pp_init.h
   COMMAND ${CMAKE_COMMAND} --build . -t SDL3pp_refresh
-  COMMAND touch ${SDL3PP_WRAPPED_HEADERS}
+  COMMAND touch include/SDL3pp/SDL3pp_init.h
   DEPENDS ${PROJECT_SOURCE_DIR}/scripts/target.json
 )
 

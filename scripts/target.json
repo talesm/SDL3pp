@@ -211329,7 +211329,7 @@
           ],
           "name": "SDL_NET_VERSION",
           "kind": "def",
-          "value": "\\\n  SDL_VERSIONNUM(                                                              \\\n    SDL_NET_MAJOR_VERSION, SDL_NET_MINOR_VERSION, SDL_NET_MICRO_VERSION)",
+          "value": "\\\n    SDL_VERSIONNUM(SDL_NET_MAJOR_VERSION, SDL_NET_MINOR_VERSION, SDL_NET_MICRO_VERSION)",
           "sourceName": "SDL_NET_VERSION"
         },
         "SDL_NET_VERSION_ATLEAST": {
@@ -211356,7 +211356,7 @@
               "type": ""
             }
           ],
-          "value": "\\\n  ((SDL_NET_MAJOR_VERSION >= X) &&                                             \\\n   (SDL_NET_MAJOR_VERSION > X || SDL_NET_MINOR_VERSION >= Y) &&                \\\n   (SDL_NET_MAJOR_VERSION > X || SDL_NET_MINOR_VERSION > Y ||                  \\\n    SDL_NET_MICRO_VERSION >= Z))",
+          "value": "\\\n    ((SDL_NET_MAJOR_VERSION >= X) && \\\n     (SDL_NET_MAJOR_VERSION > X || SDL_NET_MINOR_VERSION >= Y) && \\\n     (SDL_NET_MAJOR_VERSION > X || SDL_NET_MINOR_VERSION > Y || SDL_NET_MICRO_VERSION >= Z))",
           "sourceName": "SDL_NET_VERSION_ATLEAST"
         },
         "NET": {
@@ -215679,7 +215679,7 @@
             "REUSEADDR_BOOLEAN": {
               "name": "REUSEADDR_BOOLEAN",
               "kind": "var",
-              "value": "\\\n  \"NET.datagram_socket.reuseaddr\"",
+              "value": "\"NET.datagram_socket.reuseaddr\"",
               "sourceName": "NET_PROP_DATAGRAM_SOCKET_REUSEADDR_BOOLEAN",
               "type": "auto",
               "constexpr": true,
@@ -215690,7 +215690,7 @@
             "ALLOW_BROADCAST_BOOLEAN": {
               "name": "ALLOW_BROADCAST_BOOLEAN",
               "kind": "var",
-              "value": "\\\n  \"NET.datagram_socket.allow_broadcast\"",
+              "value": "\"NET.datagram_socket.allow_broadcast\"",
               "sourceName": "NET_PROP_DATAGRAM_SOCKET_ALLOW_BROADCAST_BOOLEAN",
               "type": "auto",
               "constexpr": true,
