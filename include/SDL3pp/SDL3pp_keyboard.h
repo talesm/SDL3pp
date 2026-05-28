@@ -198,9 +198,82 @@ inline Keycode::Keycode(StringParam name)
 {
 }
 
+/**
+ * Get the key code corresponding to the given scancode according to the current
+ * keyboard layout.
+ *
+ * If you want to get the keycode as it would be delivered in key events,
+ * including options specified in SDL_HINT_KEYCODE_OPTIONS, then you should pass
+ * `key_event` as true. Otherwise this function simply translates the scancode
+ * based on the given modifier state.
+ *
+ * @param scancode the desired Scancode to query.
+ * @param modstate the modifier state to use when translating the scancode to a
+ *                 keycode.
+ * @param key_event true if the keycode will be used in key events.
+ * @returns the Keycode that corresponds to the given Scancode.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetKeyName
+ * @sa GetScancodeFromKey
+ */
+inline Keycode GetKeyFromScancode(Scancode scancode,
+                                  Keymod modstate,
+                                  bool key_event)
+{
+  return SDL_GetKeyFromScancode(scancode, modstate, key_event);
+}
+
+/**
+ * Get the scancode corresponding to the given key code according to the current
+ * keyboard layout.
+ *
+ * Note that there may be multiple scancode+modifier states that can generate
+ * this keycode, this will just return the first one found.
+ *
+ * @param key the desired Keycode to query.
+ * @param modstate a pointer to the modifier state that would be used when the
+ *                 scancode generates this key, may be nullptr.
+ * @returns the Scancode that corresponds to the given Keycode.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetKeyFromScancode
+ * @sa GetScancodeName
+ */
+inline Scancode GetScancodeFromKey(Keycode key, Keymod* modstate = nullptr)
+{
+  return SDL_GetScancodeFromKey(key, modstate);
+}
+
 inline Scancode Keycode::GetScancode(Keymod* modstate) const
 {
   return SDL_GetScancodeFromKey(m_keycode, modstate);
+}
+
+/**
+ * Set a human-readable name for a scancode.
+ *
+ * @param scancode the desired Scancode.
+ * @param name the name to use for the scancode, encoded as UTF-8. The string is
+ *             not copied, so the pointer given to this function must stay valid
+ *             while SDL is being used.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetScancodeName
+ */
+inline void SetScancodeName(Scancode scancode, StringParam name)
+{
+  CheckError(SDL_SetScancodeName(scancode, name));
 }
 
 inline void Scancode::SetName(StringParam name)
@@ -208,9 +281,57 @@ inline void Scancode::SetName(StringParam name)
   CheckError(SDL_SetScancodeName(m_scancode, name));
 }
 
+/**
+ * Get a human-readable name for a scancode.
+ *
+ * **Warning**: The returned name is by design not stable across platforms, e.g.
+ * the name for `SCANCODE_LGUI` is "Left GUI" under Linux but "Left Windows"
+ * under Microsoft Windows, and some scancodes like `SCANCODE_NONUSBACKSLASH`
+ * don't have any name at all. There are even scancodes that share names, e.g.
+ * `SCANCODE_RETURN` and `SCANCODE_RETURN2` (both called "Return"). This
+ * function is therefore unsuitable for creating a stable cross-platform two-way
+ * mapping between strings and scancodes.
+ *
+ * @param scancode the desired Scancode to query.
+ * @returns a pointer to the name for the scancode. If the scancode doesn't have
+ *          a name this function returns an empty string ("").
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetScancodeFromKey
+ * @sa GetScancodeFromName
+ * @sa SetScancodeName
+ */
+inline const char* GetScancodeName(Scancode scancode)
+{
+  return SDL_GetScancodeName(scancode);
+}
+
 inline const char* Scancode::GetName() const
 {
   return SDL_GetScancodeName(m_scancode);
+}
+
+/**
+ * Get a scancode from a human-readable name.
+ *
+ * @param name the human-readable scancode name.
+ * @returns the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't recognized;
+ *          call GetError() for more information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetKeyFromName
+ * @sa GetScancodeFromKey
+ * @sa GetScancodeName
+ */
+inline Scancode GetScancodeFromName(StringParam name)
+{
+  return SDL_GetScancodeFromName(name);
 }
 
 inline Scancode::Scancode(StringParam name)
@@ -218,9 +339,49 @@ inline Scancode::Scancode(StringParam name)
 {
 }
 
+/**
+ * Get a human-readable name for a key.
+ *
+ * If the key doesn't have a name, this function returns an empty string ("").
+ *
+ * Letters will be presented in their uppercase form, if applicable.
+ *
+ * @param key the desired Keycode to query.
+ * @returns a UTF-8 encoded string of the key name.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetKeyFromName
+ * @sa GetKeyFromScancode
+ * @sa GetScancodeFromKey
+ */
+inline const char* GetKeyName(Keycode key) { return SDL_GetKeyName(key); }
+
 inline const char* Keycode::GetName() const
 {
   return SDL_GetKeyName(m_keycode);
+}
+
+/**
+ * Get a key code from a human-readable name.
+ *
+ * @param name the human-readable key name.
+ * @returns key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call
+ *          GetError() for more information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetKeyFromScancode
+ * @sa GetKeyName
+ * @sa GetScancodeFromName
+ */
+inline Keycode GetKeyFromName(StringParam name)
+{
+  return SDL_GetKeyFromName(name);
 }
 
 /**

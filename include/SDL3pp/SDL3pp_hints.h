@@ -2491,8 +2491,8 @@ namespace SDL {
  * Some platforms like Emscripten only provide modified keycodes and the options
  * are not used.
  *
- * These options do not affect the return value of Keycode.Keycode() or
- * Keycode.GetScancode(), they just apply to the keycode included in key events.
+ * These options do not affect the return value of GetKeyFromScancode() or
+ * GetScancodeFromKey(), they just apply to the keycode included in key events.
  *
  * This hint can be set anytime.
  *
@@ -2667,8 +2667,8 @@ namespace SDL {
  * that both Alt and Option are pressed, the Option key will be ignored. This is
  * particularly useful for applications like terminal emulators and graphical
  * user interfaces (GUIs) that rely on Alt key functionality for shortcuts or
- * navigation. This does not apply to Keycode.Keycode and only has an effect if
- * IME is enabled.
+ * navigation. This does not apply to GetKeyFromScancode and only has an effect
+ * if IME is enabled.
  *
  * This hint can be set anytime.
  *

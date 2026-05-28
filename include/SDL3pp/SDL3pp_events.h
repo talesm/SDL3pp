@@ -518,11 +518,11 @@ using KeyboardDeviceEvent = SDL_KeyboardDeviceEvent;
  * current keyboard layout, applying any options specified in
  * SDL_HINT_KEYCODE_OPTIONS. You can get the Keycode corresponding to the event
  * scancode and modifiers directly from the keyboard layout, bypassing
- * SDL_HINT_KEYCODE_OPTIONS, by calling Keycode.Keycode().
+ * SDL_HINT_KEYCODE_OPTIONS, by calling GetKeyFromScancode().
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Keycode.Keycode
+ * @sa GetKeyFromScancode
  * @sa SDL_HINT_KEYCODE_OPTIONS
  */
 using KeyboardEvent = SDL_KeyboardEvent;

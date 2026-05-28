@@ -61,6 +61,7 @@ Backlog
   - [ ] Update [./docs/transformation.md](transformation);
   - [ ] Update [./docs/callback.md](callback);
 - [ ] Create ReadPixelRaw/WritePixelRaw on surface;
+- [ ] Make string based ctors for Scancode && Keycode explicit;
 - [ ] All SDL_*ID representing devices must have uniform interface:
   - [ ] AudioDeviceID;
   - [ ] CameraID;

@@ -2593,30 +2593,73 @@ const transform = {
           type: "std::span<const bool>",
           parameters: [],
         },
-        "SDL_GetKeyFromScancode": {
-          "name": "Keycode::Keycode"
+        "Keycode::Keycode": {
+          before: "SDL_GetKeyFromScancode",
+          kind: "function",
+          type: "",
+          parameters: [{
+            name: "scancode",
+            type: "Scancode"
+          },
+          {
+            name: "modstate",
+            type: "Keymod"
+          },
+          {
+            name: "key_event",
+            type: "bool"
+          }],
+          hints: {
+            delegate: "SDL_GetKeyFromScancode",
+            copyDoc: "SDL_GetKeyFromScancode",
+          },
         },
         "SDL_GetScancodeFromKey": {
-          "name": "Keycode::GetScancode",
-          "type": "Scancode",
-          "immutable": true
+          name: "Keycode::GetScancode",
+          immutable: true,
+          parameters: [{}, { default: "nullptr" }],
+          link: {
+            name: "GetScancodeFromKey",
+            parameters: [{}, { default: "nullptr" }]
+          },
         },
         "SDL_SetScancodeName": {
-          "name": "Scancode::SetName"
+          name: "Scancode::SetName",
+          link: { name: "SetScancodeName" },
         },
         "SDL_GetScancodeName": {
           "name": "Scancode::GetName",
-          "immutable": true
+          "immutable": true,
+          link: { name: "GetScancodeName" },
         },
-        "SDL_GetScancodeFromName": {
-          "name": "Scancode::Scancode"
+        "Scancode::Scancode": {
+          after: "SDL_GetScancodeFromName",
+          kind: "function",
+          type: "",
+          parameters: [{ name: "name", type: "StringParam" }],
+          hints: {
+            init: ['m_scancode(SDL_GetScancodeFromName(name))'],
+            copyDoc: "SDL_GetScancodeFromName",
+          },
         },
         "SDL_GetKeyName": {
-          "name": "Keycode::GetName",
-          "immutable": true
+          name: "Keycode::GetName",
+          immutable: true,
+          link: { name: "GetKeyName" },
         },
-        "SDL_GetKeyFromName": {
-          "name": "Keycode::Keycode"
+        "Keycode::Keycode#2": {
+          before: "SDL_GetKeyFromName",
+          kind: "function",
+          name: "Keycode::Keycode",
+          type: "",
+          parameters: [{
+            name: "name",
+            type: "StringParam"
+          }],
+          hints: {
+            init: ['m_keycode(SDL_GetKeyFromName(name))'],
+            copyDoc: "SDL_GetKeyFromName",
+          },
         },
         "WindowBase::StartTextInput": {
           after: "SDL_StartTextInput",

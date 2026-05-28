@@ -150,8 +150,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Keycode.GetName
-   * @sa Keycode.GetScancode
+   * @sa GetKeyName
+   * @sa GetScancodeFromKey
    */
   Keycode(Scancode scancode, Keymod modstate, bool key_event);
 
@@ -166,9 +166,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Keycode.Keycode
-   * @sa Keycode.GetName
-   * @sa Scancode.Scancode
+   * @sa GetKeyFromScancode
+   * @sa GetKeyName
+   * @sa GetScancodeFromName
    */
   Keycode(StringParam name);
 
@@ -200,10 +200,10 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Keycode.Keycode
-   * @sa Scancode.GetName
+   * @sa GetKeyFromScancode
+   * @sa GetScancodeName
    */
-  Scancode GetScancode(Keymod* modstate) const;
+  Scancode GetScancode(Keymod* modstate = nullptr) const;
 
   /**
    * Get a human-readable name for a key.
@@ -218,9 +218,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Keycode.Keycode
-   * @sa Keycode.Keycode
-   * @sa Keycode.GetScancode
+   * @sa GetKeyFromName
+   * @sa GetKeyFromScancode
+   * @sa GetScancodeFromKey
    */
   const char* GetName() const;
 };

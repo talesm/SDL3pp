@@ -66,7 +66,7 @@
  }
  
  /**
-@@ -378,13 +382,26 @@
+@@ -539,13 +543,26 @@
    SDL::StartTextInputWithProperties(get(), props);
  }
  
@@ -97,7 +97,7 @@
  
  constexpr auto AUTOCORRECT_BOOLEAN =
    SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN; ///< Autocorrect enabled.
-@@ -433,6 +450,7 @@
+@@ -594,6 +611,7 @@
   * @since This function is available since SDL 3.2.0.
   *
   * @sa StartTextInput
@@ -105,7 +105,7 @@
   */
  inline void StopTextInput(WindowRef window)
  {
-@@ -483,7 +501,7 @@
+@@ -644,7 +662,7 @@
   */
  inline void SetTextInputArea(WindowRef window, const RectRaw& rect, int cursor)
  {

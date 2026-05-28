@@ -68,9 +68,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Keycode.Keycode
-   * @sa Keycode.GetScancode
-   * @sa Scancode.GetName
+   * @sa GetKeyFromName
+   * @sa GetScancodeFromKey
+   * @sa GetScancodeName
    */
   Scancode(StringParam name);
 
@@ -93,7 +93,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Scancode.GetName
+   * @sa GetScancodeName
    */
   void SetName(StringParam name);
 
@@ -115,9 +115,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Keycode.GetScancode
-   * @sa Scancode.Scancode
-   * @sa Scancode.SetName
+   * @sa GetScancodeFromKey
+   * @sa GetScancodeFromName
+   * @sa SetScancodeName
    */
   const char* GetName() const;
 };
