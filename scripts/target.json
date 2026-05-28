@@ -103144,6 +103144,32 @@
               },
               "proto": true
             },
+            "Set": {
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "type": "StringParam",
+                  "name": "name"
+                },
+                {
+                  "type": "V &&",
+                  "name": "value"
+                }
+              ],
+              "template": [
+                {
+                  "type": "class",
+                  "name": "V"
+                }
+              ],
+              "hints": {
+                "delegate": "SDL::SetProperty"
+              },
+              "name": "Set",
+              "static": false,
+              "proto": true
+            },
             "SetPointerPropertyWithCleanup": {
               "doc": [
                 "Set a pointer property in a group of properties with a cleanup function that is called when the property is deleted.",
@@ -104797,6 +104823,59 @@
             "private": true,
             "body": "if (!m_lock) return;\nUnlockProperties(m_lock);\nm_lock = {};"
           }
+        },
+        "SetProperty": {
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "type": "PropertiesRef",
+              "name": "props"
+            },
+            {
+              "type": "StringParam",
+              "name": "name"
+            },
+            {
+              "type": "V &&",
+              "name": "value"
+            }
+          ],
+          "template": [
+            {
+              "type": "class",
+              "name": "V"
+            }
+          ],
+          "hints": {
+            "methodName": "Set"
+          },
+          "name": "SetProperty"
+        },
+        "PropertiesBase::Set": {
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "type": "StringParam",
+              "name": "name"
+            },
+            {
+              "type": "V &&",
+              "name": "value"
+            }
+          ],
+          "template": [
+            {
+              "type": "class",
+              "name": "V"
+            }
+          ],
+          "hints": {
+            "self": "get()",
+            "delegate": "SDL::SetProperty"
+          },
+          "name": "PropertiesBase::Set"
         },
         "SetPointerPropertyWithCleanup": {
           "doc": [

@@ -12,12 +12,14 @@ Todo for next version
 Backlog
 -------
 
+- [ ] Add a constructor to Properties similar to std::map initializer list;
+- [ ] Add operator[] to Properties;
+- [ ] Add begin and end to Properties;
 - [ ] Create ResourceConstBase
   - [ ] When resource has ResourceConstRef, derive from ResourceConstBase
     - It has only the immutable methods from ResourceBase;
   - [ ] ResourceBase derives from ResourceConstBase
   - [ ] Make ResourceConstRef derive from ResourceConstBase
-- [ ] Add a constructor to Properties similar to std::map initializer list;
 - [ ] Revamp README, with examples and clearer instructions to integrate to
   project and everything else moved to other files;
 - [ ] Docs improvements:

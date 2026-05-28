@@ -4219,6 +4219,20 @@ const transform = {
     "SDL_properties.h": {
       localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_resource.h", "SDL3pp_strings.h", "SDL3pp_version.h"],
       transform: {
+        "SDL_PropertyType": {
+          enum: "SDL_PROPERTY_TYPE_",
+          before: "SDL_PropertiesID",
+        },
+        "SDL_EnumeratePropertiesCallback": {
+          kind: "alias",
+          before: "SDL_PropertiesID",
+          callback: "std",
+        },
+        "SDL_CleanupPropertyCallback": {
+          kind: "alias",
+          before: "SDL_PropertiesID",
+          callback: "std",
+        },
         "SDL_PropertiesID": {
           name: "Properties",
           lock: {
@@ -4234,19 +4248,22 @@ const transform = {
           },
         },
         "SDL_PROP_NAME_STRING": { kind: "var" },
-        "SDL_PropertyType": {
-          enum: "SDL_PROPERTY_TYPE_",
-          before: "SDL_PropertiesID",
-        },
-        "SDL_EnumeratePropertiesCallback": {
-          kind: "alias",
-          before: "SDL_PropertiesID",
-          callback: "std",
-        },
-        "SDL_CleanupPropertyCallback": {
-          kind: "alias",
-          before: "SDL_PropertiesID",
-          callback: "std",
+        "SetProperty": {
+          kind: "function",
+          type: "void",
+          after: "SDL_UnlockProperties",
+          parameters: [{
+            type: "PropertiesRef",
+            name: "props"
+          }, {
+            type: "StringParam",
+            name: "name"
+          }, {
+            type: "V &&",
+            name: "value"
+          }],
+          template: [{ type: "class", name: "V" }],
+          hints: { methodName: "Set" },
         },
         "SetPointerPropertyWithCleanup": {
           kind: "function",

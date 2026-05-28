@@ -18,7 +18,22 @@
   *
   * Properties can be added to and retrieved from a property group through the
   * following functions:
-@@ -296,7 +297,6 @@
+@@ -246,6 +247,14 @@
+    */
+   void Unlock(PropertiesLock&& lock);
+ 
++  /**
++   * Set a property in a group of properties.
++   *
++   * @param name the name of the property to modify.
++   * @param value the new value of the property, or nullptr to delete the
++   *              property.
++   * @throws Error on failure.
++   */
+   template<class V>
+   void Set(StringParam name, V&& value);
+ 
+@@ -299,7 +308,6 @@
     *              property.
     * @param cleanup the function to call when this property is deleted, or
     *                nullptr if no cleanup is necessary.
@@ -26,7 +41,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -577,7 +577,6 @@
+@@ -580,7 +588,6 @@
     * properties. The properties are locked during enumeration.
     *
     * @param callback the function to call for each property.
@@ -34,7 +49,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -586,6 +585,13 @@
+@@ -589,6 +596,13 @@
     */
    void Enumerate(EnumeratePropertiesCB callback);
  
@@ -48,7 +63,7 @@
    Uint64 GetCount();
  };
  
-@@ -595,6 +601,9 @@
+@@ -598,6 +612,9 @@
   * @since This datatype is available since SDL 3.2.0.
   *
   * @cat resource
@@ -58,7 +73,7 @@
   */
  struct Properties : PropertiesBase
  {
-@@ -685,7 +694,7 @@
+@@ -688,7 +705,7 @@
     * or want to guarantee that properties being queried aren't freed in another
     * thread.
     *
@@ -67,7 +82,7 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
-@@ -709,8 +718,6 @@
+@@ -712,8 +729,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -76,7 +91,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -734,8 +741,6 @@
+@@ -737,8 +752,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -85,7 +100,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -775,7 +780,7 @@
+@@ -778,7 +791,7 @@
   *
   * @since This constant is available since SDL 3.4.0.
   */
@@ -94,7 +109,7 @@
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
-@@ -792,7 +797,7 @@
+@@ -795,7 +808,7 @@
   */
  inline PropertiesRef GetGlobalProperties()
  {
@@ -103,7 +118,62 @@
  }
  
  /**
-@@ -965,7 +970,6 @@
+@@ -911,16 +924,52 @@
+   m_lock = {};
+ }
+ 
++/**
++ * Set a property in a group of properties.
++ *
++ * @param props the properties to modify.
++ * @param name the name of the property to modify.
++ * @param value the new value of the property, or nullptr to delete the
++ *              property.
++ * @throws Error on failure.
++ */
+ template<class V>
+ inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
+ {
+-  static_assert(false, "Not implemented");
++  if constexpr (std::is_same_v<V, bool>) {
++    props.SetBooleanProperty(std::move(name), std::forward<V>(value));
++  } else if constexpr (std::is_integral_v<V>) {
++    props.SetNumberProperty(std::move(name), std::forward<V>(value));
++  } else {
++    struct Visitor
++    {
++      PropertiesRef props;
++      StringParam name;
++
++      void operator()(std::monostate) { props.ClearProperty(std::move(name)); }
++      void operator()(void* v) { props.SetPointerProperty(std::move(name), v); }
++
++      void operator()(StringParam&& v)
++      {
++        props.SetStringProperty(std::move(name), std::move(v));
++      }
++      void operator()(const char* v)
++      {
++        props.SetStringProperty(std::move(name), std::move(v));
++      }
++
++      void operator()(Sint64 v) { props.SetNumberProperty(std::move(name), v); }
++      void operator()(float v) { props.SetFloatProperty(std::move(name), v); }
++      void operator()(bool v) { props.SetBooleanProperty(std::move(name), v); }
++    };
++    Visitor{props, std::move(name)}(std::forward<V>(value));
++  }
+ }
+ 
+ template<class V>
+ inline void PropertiesBase::Set(StringParam name, V&& value)
+ {
+-  SDL::SetProperty(get(), std::move(name), value);
++  SDL::SetProperty(get(), std::move(name), std::forward<V>(value));
+ }
+ 
+ /**
+@@ -980,7 +1029,6 @@
   *              property.
   * @param cleanup the function to call when this property is deleted, or nullptr
   *                if no cleanup is necessary.
@@ -111,7 +181,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -981,7 +985,12 @@
+@@ -996,7 +1044,12 @@
                                            void* value,
                                            CleanupPropertyCB cleanup)
  {
@@ -125,7 +195,7 @@
  }
  
  inline void PropertiesBase::SetPointerPropertyWithCleanup(
-@@ -999,7 +1008,8 @@
+@@ -1014,7 +1067,8 @@
    void* value,
    CleanupPropertyCB cleanup)
  {
@@ -135,7 +205,7 @@
  }
  
  /**
-@@ -1416,7 +1426,6 @@
+@@ -1431,7 +1485,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -143,7 +213,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1426,7 +1435,13 @@
+@@ -1441,7 +1494,13 @@
  inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
@@ -158,7 +228,7 @@
  }
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1437,12 +1452,22 @@
+@@ -1452,12 +1511,22 @@
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback)
  {
@@ -183,7 +253,7 @@
  }
  
  inline Uint64 PropertiesBase::GetCount() { return SDL::CountProperties(get()); }
-@@ -1472,6 +1497,17 @@
+@@ -1487,6 +1556,17 @@
  
  /// @}
  

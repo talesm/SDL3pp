@@ -9431,6 +9431,17 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
   void Unlock(PropertiesLock&& lock);
 
   /**
+   * Set a property in a group of properties.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or nullptr to delete the
+   *              property.
+   * @throws Error on failure.
+   */
+  template<class V>
+  void Set(StringParam name, V&& value);
+
+  /**
    * Set a pointer property in a group of properties with a cleanup function
    * that is called when the property is deleted.
    *
@@ -10094,6 +10105,54 @@ inline void PropertiesLock::reset()
   if (!m_lock) return;
   UnlockProperties(m_lock);
   m_lock = {};
+}
+
+/**
+ * Set a property in a group of properties.
+ *
+ * @param props the properties to modify.
+ * @param name the name of the property to modify.
+ * @param value the new value of the property, or nullptr to delete the
+ *              property.
+ * @throws Error on failure.
+ */
+template<class V>
+inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
+{
+  if constexpr (std::is_same_v<V, bool>) {
+    props.SetBooleanProperty(std::move(name), std::forward<V>(value));
+  } else if constexpr (std::is_integral_v<V>) {
+    props.SetNumberProperty(std::move(name), std::forward<V>(value));
+  } else {
+    struct Visitor
+    {
+      PropertiesRef props;
+      StringParam name;
+
+      void operator()(std::monostate) { props.ClearProperty(std::move(name)); }
+      void operator()(void* v) { props.SetPointerProperty(std::move(name), v); }
+
+      void operator()(StringParam&& v)
+      {
+        props.SetStringProperty(std::move(name), std::move(v));
+      }
+      void operator()(const char* v)
+      {
+        props.SetStringProperty(std::move(name), std::move(v));
+      }
+
+      void operator()(Sint64 v) { props.SetNumberProperty(std::move(name), v); }
+      void operator()(float v) { props.SetFloatProperty(std::move(name), v); }
+      void operator()(bool v) { props.SetBooleanProperty(std::move(name), v); }
+    };
+    Visitor{props, std::move(name)}(std::forward<V>(value));
+  }
+}
+
+template<class V>
+inline void PropertiesBase::Set(StringParam name, V&& value)
+{
+  SDL::SetProperty(get(), std::move(name), std::forward<V>(value));
 }
 
 /**
