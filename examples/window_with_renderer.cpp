@@ -8,7 +8,9 @@ int main(int argc, char** argv)
 {
   SDL::Init(SDL::INIT_VIDEO);
   constexpr SDL::Point WINDOW_SZ = {400, 400};
-  auto [window, renderer] = SDL::CreateWindowAndRenderer("Test", WINDOW_SZ);
+  SDL::Window window;
+  SDL::Renderer renderer;
+  SDL::CreateWindowAndRenderer("Test", WINDOW_SZ, 0, &window, &renderer);
 
   SDL::Texture characterTexture{
     renderer, std::format("{}../assets/smiley.png", SDL::GetBasePath())};

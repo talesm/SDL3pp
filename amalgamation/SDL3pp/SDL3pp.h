@@ -51701,6 +51701,9 @@ using GLContextRef = GLContext;
 // Forward decl
 struct RendererBase;
 
+// Forward decl
+struct Renderer;
+
 /**
  * Reference for Renderer.
  *
@@ -54364,28 +54367,6 @@ struct Window : WindowBase
     : Window(other.release())
   {
   }
-
-  /**
-   * Create a window and default renderer.
-   *
-   * @param title the title of the window, in UTF-8 encoding.
-   * @param size the width and height of the window.
-   * @param window_flags the flags used to create the window (see
-   *                     CreateWindow()).
-   * @param renderer a pointer filled with the renderer.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateRenderer
-   * @sa CreateWindow
-   */
-  Window(StringParam title,
-         const PointRaw& size,
-         WindowFlags window_flags,
-         RendererBase* renderer);
 
   /**
    * Create a window with the specified dimensions and flags.
@@ -80458,12 +80439,6 @@ inline const char* GetAppMetadataProperty(StringParam name)
  * @{
  */
 
-// Forward decl
-struct RendererBase;
-
-// Forward decl
-struct Renderer;
-
 /// Alias to raw representation for Renderer.
 using RendererRaw = SDL_Renderer*;
 
@@ -84068,7 +84043,7 @@ inline void CreateWindowAndRenderer(StringParam title,
                                     const PointRaw& size,
                                     WindowFlags window_flags,
                                     Window* window,
-                                    RendererBase* renderer)
+                                    Renderer* renderer)
 {
   SDL_Window* windowRaw = nullptr;
   SDL_Renderer* rendererRaw = nullptr;
@@ -84076,34 +84051,6 @@ inline void CreateWindowAndRenderer(StringParam title,
     std::move(title), size, window_flags, &windowRaw, &rendererRaw);
   if (window) *window = Window{windowRaw};
   if (renderer) *renderer = Renderer{rendererRaw};
-}
-
-/**
- * Create a window and default renderer.
- *
- * @param title the title of the window, in UTF-8 encoding.
- * @param size the width and height of the window.
- * @param window_flags the flags used to create the window (see CreateWindow()).
- * @returns a pair with window and renderer.
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa CreateRenderer
- * @sa CreateWindow
- */
-inline std::pair<Window, Renderer> CreateWindowAndRenderer(
-  StringParam title,
-  const PointRaw& size,
-  WindowFlags window_flags = 0)
-{
-  SDL_Window* window = nullptr;
-  SDL_Renderer* renderer = nullptr;
-  CreateWindowAndRendererRaw(
-    std::move(title), size, window_flags, &window, &renderer);
-  return {Window{window}, Renderer(renderer)};
 }
 
 /**
@@ -84126,23 +84073,12 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
 inline Window CreateWindowAndRenderer(StringParam title,
                                       const PointRaw& size,
                                       WindowFlags window_flags,
-                                      RendererBase* renderer)
+                                      Renderer* renderer = nullptr)
 {
   Window window;
-  Renderer rendererT;
   CreateWindowAndRenderer(
-    std::move(title), size, window_flags, &window, &rendererT);
-  if (renderer) *renderer = rendererT;
+    std::move(title), size, window_flags, &window, renderer);
   return window;
-}
-
-inline Window::Window(StringParam title,
-                      const PointRaw& size,
-                      WindowFlags window_flags,
-                      RendererBase* renderer)
-  : Window(
-      CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))
-{
 }
 
 /**

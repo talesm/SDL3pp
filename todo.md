@@ -23,6 +23,8 @@ Breaking changes:
   - [x] Remove TextEngineBase::Destroy();
   - [x] Remove restrictions on copy;
   - [x] Make TextEngineRef based on ResourceRefT;
+- [x] Remove pair returning overload of CreateWindowAndRenderer()
+- [x] Remove Window returning overload of CreateWindowAndRenderer()
 
 Non-breaking changes
 
@@ -76,7 +78,6 @@ Backlog
   - [ ] TouchID;
   - [ ] WindowID;
 - [ ] Satellites libraries:
-  - [ ] SDL_net
   - [ ] SDL_gfx
 - [ ] Add examples for input;
 

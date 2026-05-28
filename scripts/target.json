@@ -117862,7 +117862,7 @@
             },
             {
               "name": "renderer",
-              "type": "RendererBase *"
+              "type": "Renderer *"
             }
           ],
           "sourceName": "SDL_CreateWindowAndRenderer",
@@ -117871,7 +117871,8 @@
           },
           "overload": {
             "kind": "function",
-            "type": "std::pair<Window, Renderer>",
+            "name": "CreateWindowAndRenderer",
+            "type": "Window",
             "parameters": [
               {
                 "type": "StringParam",
@@ -117883,11 +117884,14 @@
               },
               {
                 "type": "WindowFlags",
-                "name": "window_flags",
-                "default": "0"
+                "name": "window_flags"
+              },
+              {
+                "type": "Renderer *",
+                "name": "renderer",
+                "default": "nullptr"
               }
             ],
-            "name": "CreateWindowAndRenderer",
             "doc": [
               "Create a window and default renderer.",
               [
@@ -117938,113 +117942,8 @@
                   "content": "CreateWindow"
                 }
               ]
-            ],
-            "overload": {
-              "kind": "function",
-              "name": "CreateWindowAndRenderer",
-              "type": "Window",
-              "parameters": [
-                {
-                  "type": "StringParam",
-                  "name": "title"
-                },
-                {
-                  "type": "const PointRaw &",
-                  "name": "size"
-                },
-                {
-                  "type": "WindowFlags",
-                  "name": "window_flags"
-                },
-                {
-                  "type": "RendererBase *",
-                  "name": "renderer"
-                }
-              ],
-              "doc": [
-                "Create a window and default renderer.",
-                [
-                  {
-                    "tag": "@param title",
-                    "content": "the title of the window, in UTF-8 encoding."
-                  },
-                  {
-                    "tag": "@param width",
-                    "content": "the width of the window."
-                  },
-                  {
-                    "tag": "@param height",
-                    "content": "the height of the window."
-                  },
-                  {
-                    "tag": "@param window_flags",
-                    "content": "the flags used to create the window (see CreateWindow())."
-                  },
-                  {
-                    "tag": "@param window",
-                    "content": "a pointer filled with the window, or nullptr on error."
-                  },
-                  {
-                    "tag": "@param renderer",
-                    "content": "a pointer filled with the renderer, or nullptr on error."
-                  },
-                  {
-                    "tag": "@throws",
-                    "content": "Error on failure."
-                  }
-                ],
-                {
-                  "tag": "@threadsafety",
-                  "content": "This function should only be called on the main thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                [
-                  {
-                    "tag": "@sa",
-                    "content": "CreateRenderer"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "CreateWindow"
-                  }
-                ]
-              ]
-            }
-          }
-        },
-        "Window::Window": {
-          "kind": "function",
-          "type": "",
-          "parameters": [
-            {
-              "type": "StringParam",
-              "name": "title"
-            },
-            {
-              "type": "const PointRaw &",
-              "name": "size"
-            },
-            {
-              "type": "WindowFlags",
-              "name": "window_flags"
-            },
-            {
-              "type": "RendererBase *",
-              "name": "renderer"
-            }
-          ],
-          "hints": {
-            "self": "get()",
-            "super": "Window",
-            "mayFail": true,
-            "init": [
-              "Window(CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))"
             ]
-          },
-          "name": "Window::Window"
+          }
         },
         "CreateRenderer": {
           "doc": [
@@ -168595,6 +168494,10 @@
           "kind": "forward",
           "name": "RendererBase"
         },
+        "Renderer-forward": {
+          "kind": "forward",
+          "name": "Renderer"
+        },
         "RendererRef": {
           "kind": "alias",
           "type": "ResourceRefT<RendererBase>",
@@ -174475,63 +174378,132 @@
                 ],
                 "name": "Window",
                 "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "parameters": [
-                    {
-                      "type": "StringParam",
-                      "name": "title"
-                    },
-                    {
-                      "type": "const PointRaw &",
-                      "name": "size"
-                    },
-                    {
-                      "type": "WindowFlags",
-                      "name": "window_flags"
-                    },
-                    {
-                      "type": "RendererBase *",
-                      "name": "renderer"
-                    }
-                  ],
-                  "hints": {
-                    "mayFail": true,
-                    "init": [
-                      "Window(CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))"
-                    ]
-                  },
-                  "name": "Window",
                   "doc": [
-                    "Create a window and default renderer.",
+                    "Create a window with the specified dimensions and flags.",
+                    "The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.",
+                    "`flags` may be any of the following OR'd together:",
+                    [
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_FULLSCREEN`: fullscreen window at desktop resolution"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_OPENGL`: window usable with an OpenGL context"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_HIDDEN`: window is not visible"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_BORDERLESS`: no window decoration"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_RESIZABLE`: window can be resized"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_MINIMIZED`: window is minimized"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_MAXIMIZED`: window is maximized"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_INPUT_FOCUS`: window has input focus"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_MOUSE_FOCUS`: window has mouse focus"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_EXTERNAL`: window not created by SDL"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_MODAL`: window is modal"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back buffer if possible"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to MOUSE_GRABBED)"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_ALWAYS_ON_TOP`: window should always be above others"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_UTILITY`: window should be treated as a utility window, not showing in the task bar and window list"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_TOOLTIP`: window should be treated as a tooltip and does not get mouse or keyboard focus, requires a parent window"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_POPUP_MENU`: window should be treated as a popup menu, requires a parent window"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_VULKAN`: window usable with a Vulkan instance"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_METAL`: window usable with a Metal instance"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_TRANSPARENT`: window with transparent buffer"
+                      },
+                      {
+                        "tag": "-",
+                        "content": "`WINDOW_NOT_FOCUSABLE`: window should not be focusable"
+                      }
+                    ],
+                    "The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation time, ShowWindow() can be used to show it later.",
+                    "On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist property to YES, otherwise you will not receive a High-DPI OpenGL canvas.",
+                    "The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use GetWindowSize() to query the client area's size in window coordinates, and GetWindowSizeInPixels() or GetRenderOutputSize() to query the drawable size in pixels. Note that the drawable size can vary after the window is created and should be queried again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.",
+                    "If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN flags, then the corresponding LoadLibrary function (GL_LoadLibrary or Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function is called by DestroyWindow().",
+                    "If WINDOW_VULKAN is specified and there isn't a working Vulkan driver, CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.",
+                    "If WINDOW_METAL is specified on an OS that does not support Metal, CreateWindow() will fail.",
+                    "If you intend to use this window with an Renderer, you should use CreateWindowAndRenderer() instead of this function, to avoid window flicker.",
+                    "On non-Apple devices, SDL requires you to either not link to the Vulkan loader or link to a dynamic library version. This limitation may be removed in a future version of SDL.",
                     [
                       {
                         "tag": "@param title",
                         "content": "the title of the window, in UTF-8 encoding."
                       },
                       {
-                        "tag": "@param width",
+                        "tag": "@param w",
                         "content": "the width of the window."
                       },
                       {
-                        "tag": "@param height",
+                        "tag": "@param h",
                         "content": "the height of the window."
                       },
                       {
-                        "tag": "@param window_flags",
-                        "content": "the flags used to create the window (see CreateWindow())."
-                      },
-                      {
-                        "tag": "@param window",
-                        "content": "a pointer filled with the window, or nullptr on error."
-                      },
-                      {
-                        "tag": "@param renderer",
-                        "content": "a pointer filled with the renderer, or nullptr on error."
+                        "tag": "@param flags",
+                        "content": "0, or one or more WindowFlags OR'd together."
                       },
                       {
                         "tag": "@post",
-                        "content": "true on success or false on failure; call GetError() for more information."
+                        "content": "the window that was created or nullptr on failure; call GetError() for more information."
                       }
                     ],
                     {
@@ -174545,126 +174517,104 @@
                     [
                       {
                         "tag": "@sa",
-                        "content": "CreateRenderer"
+                        "content": "CreateWindowAndRenderer"
                       },
                       {
                         "tag": "@sa",
-                        "content": "CreateWindow"
+                        "content": "CreatePopupWindow"
+                      },
+                      {
+                        "tag": "@sa",
+                        "content": "CreateWindowWithProperties"
+                      },
+                      {
+                        "tag": "@sa",
+                        "content": "DestroyWindow"
                       }
                     ]
                   ],
-                  "proto": true,
+                  "name": "Window",
+                  "kind": "function",
+                  "type": "",
+                  "parameters": [
+                    {
+                      "name": "title",
+                      "type": "StringParam"
+                    },
+                    {
+                      "type": "const PointRaw &",
+                      "name": "size"
+                    },
+                    {
+                      "name": "flags",
+                      "type": "WindowFlags",
+                      "default": "0"
+                    }
+                  ],
+                  "sourceName": "SDL_CreateWindow",
                   "overload": {
                     "doc": [
-                      "Create a window with the specified dimensions and flags.",
+                      "Create a child popup window of the specified parent window.",
                       "The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.",
-                      "`flags` may be any of the following OR'd together:",
+                      "The flags parameter **must** contain at least one of the following:",
                       [
                         {
                           "tag": "-",
-                          "content": "`WINDOW_FULLSCREEN`: fullscreen window at desktop resolution"
+                          "content": "`WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any input events."
                         },
                         {
                           "tag": "-",
-                          "content": "`WINDOW_OPENGL`: window usable with an OpenGL context"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_HIDDEN`: window is not visible"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_BORDERLESS`: no window decoration"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_RESIZABLE`: window can be resized"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_MINIMIZED`: window is minimized"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_MAXIMIZED`: window is maximized"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_INPUT_FOCUS`: window has input focus"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_MOUSE_FOCUS`: window has mouse focus"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_EXTERNAL`: window not created by SDL"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_MODAL`: window is modal"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back buffer if possible"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to MOUSE_GRABBED)"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_ALWAYS_ON_TOP`: window should always be above others"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_UTILITY`: window should be treated as a utility window, not showing in the task bar and window list"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_TOOLTIP`: window should be treated as a tooltip and does not get mouse or keyboard focus, requires a parent window"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_POPUP_MENU`: window should be treated as a popup menu, requires a parent window"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_VULKAN`: window usable with a Vulkan instance"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_METAL`: window usable with a Metal instance"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_TRANSPARENT`: window with transparent buffer"
-                        },
-                        {
-                          "tag": "-",
-                          "content": "`WINDOW_NOT_FOCUSABLE`: window should not be focusable"
+                          "content": "`WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost popup menu will implicitly gain the keyboard focus."
                         }
                       ],
-                      "The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation time, ShowWindow() can be used to show it later.",
-                      "On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist property to YES, otherwise you will not receive a High-DPI OpenGL canvas.",
-                      "The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use GetWindowSize() to query the client area's size in window coordinates, and GetWindowSizeInPixels() or GetRenderOutputSize() to query the drawable size in pixels. Note that the drawable size can vary after the window is created and should be queried again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.",
-                      "If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN flags, then the corresponding LoadLibrary function (GL_LoadLibrary or Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function is called by DestroyWindow().",
-                      "If WINDOW_VULKAN is specified and there isn't a working Vulkan driver, CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.",
-                      "If WINDOW_METAL is specified on an OS that does not support Metal, CreateWindow() will fail.",
-                      "If you intend to use this window with an Renderer, you should use CreateWindowAndRenderer() instead of this function, to avoid window flicker.",
-                      "On non-Apple devices, SDL requires you to either not link to the Vulkan loader or link to a dynamic library version. This limitation may be removed in a future version of SDL.",
+                      "The following flags are not relevant to popup window creation and will be ignored:",
                       [
                         {
-                          "tag": "@param title",
-                          "content": "the title of the window, in UTF-8 encoding."
+                          "tag": "-",
+                          "content": "`WINDOW_MINIMIZED`"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "`WINDOW_MAXIMIZED`"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "`WINDOW_FULLSCREEN`"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "`WINDOW_BORDERLESS`"
+                        }
+                      ],
+                      "The following flags are incompatible with popup window creation and will cause it to fail:",
+                      [
+                        {
+                          "tag": "-",
+                          "content": "`WINDOW_UTILITY`"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "`WINDOW_MODAL`"
+                        }
+                      ],
+                      "The parent parameter **must** be non-null and a valid window. The parent of a popup window can be either a regular, toplevel window, or another popup window.",
+                      "Popup windows cannot be minimized, maximized, made fullscreen, raised, flash, be made a modal window, be the parent of a toplevel window, or grab the mouse and/or keyboard. Attempts to do so will fail.",
+                      "Popup windows implicitly do not have a border/decorations and do not appear on the taskbar/dock or in lists of windows such as alt-tab menus.",
+                      "By default, popup window positions will automatically be constrained to keep the entire window within display bounds. This can be overridden with the `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN` property.",
+                      "By default, popup menus will automatically grab keyboard focus from the parent when shown. This behavior can be overridden by setting the `WINDOW_NOT_FOCUSABLE` flag, setting the `prop.Window.Create.FOCUSABLE_BOOLEAN` property to false, or toggling it after creation via the `SetWindowFocusable()` function.",
+                      "If a parent window is hidden or destroyed, any child popup windows will be recursively hidden or destroyed as well. Child popup windows not explicitly hidden will be restored when the parent is shown.",
+                      [
+                        {
+                          "tag": "@param parent",
+                          "content": "the parent of the window, must not be nullptr."
+                        },
+                        {
+                          "tag": "@param offset_x",
+                          "content": "the x position of the popup window relative to the origin of the parent."
+                        },
+                        {
+                          "tag": "@param offset_y",
+                          "content": "the y position of the popup window relative to the origin of the parent window."
                         },
                         {
                           "tag": "@param w",
@@ -174676,7 +174626,7 @@
                         },
                         {
                           "tag": "@param flags",
-                          "content": "0, or one or more WindowFlags OR'd together."
+                          "content": "WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more additional WindowFlags OR'd together."
                         },
                         {
                           "tag": "@post",
@@ -174694,11 +174644,7 @@
                       [
                         {
                           "tag": "@sa",
-                          "content": "CreateWindowAndRenderer"
-                        },
-                        {
-                          "tag": "@sa",
-                          "content": "CreatePopupWindow"
+                          "content": "CreateWindow"
                         },
                         {
                           "tag": "@sa",
@@ -174707,6 +174653,10 @@
                         {
                           "tag": "@sa",
                           "content": "DestroyWindow"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetWindowParent"
                         }
                       ]
                     ],
@@ -174715,8 +174665,12 @@
                     "type": "",
                     "parameters": [
                       {
-                        "name": "title",
-                        "type": "StringParam"
+                        "name": "parent",
+                        "type": "WindowRef"
+                      },
+                      {
+                        "type": "const PointRaw &",
+                        "name": "offset"
                       },
                       {
                         "type": "const PointRaw &",
@@ -174728,82 +174682,206 @@
                         "default": "0"
                       }
                     ],
-                    "sourceName": "SDL_CreateWindow",
+                    "sourceName": "SDL_CreatePopupWindow",
                     "overload": {
                       "doc": [
-                        "Create a child popup window of the specified parent window.",
+                        "Create a window with the specified properties.",
                         "The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.",
-                        "The flags parameter **must** contain at least one of the following:",
+                        "These are the supported properties:",
                         [
                           {
                             "tag": "-",
-                            "content": "`WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any input events."
+                            "content": "`prop.Window.Create.ALWAYS_ON_TOP_BOOLEAN`: true if the window should be always on top"
                           },
                           {
                             "tag": "-",
-                            "content": "`WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost popup menu will implicitly gain the keyboard focus."
+                            "content": "`prop.Window.Create.BORDERLESS_BOOLEAN`: true if the window has no window decoration"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN`: true if the \"tooltip\" and \"menu\" window types should be automatically constrained to be entirely within display bounds (default), false if no constraints on the position are desired."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the window will be used with an externally managed graphics context."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.FOCUSABLE_BOOLEAN`: true if the window should accept keyboard input (defaults true)"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.FULLSCREEN_BOOLEAN`: true if the window should start in fullscreen mode at desktop resolution"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.HEIGHT_NUMBER`: the height of the window"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.HIDDEN_BOOLEAN`: true if the window should start hidden"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses a high pixel density buffer if possible"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.MAXIMIZED_BOOLEAN`: true if the window should start maximized"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.MENU_BOOLEAN`: true if the window is a popup menu"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.METAL_BOOLEAN`: true if the window will be used with Metal rendering"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.MINIMIZED_BOOLEAN`: true if the window should start minimized"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.MODAL_BOOLEAN`: true if the window is modal to its parent"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.MOUSE_GRABBED_BOOLEAN`: true if the window starts with grabbed mouse focus"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.OPENGL_BOOLEAN`: true if the window will be used with OpenGL rendering"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.PARENT_POINTER`: an Window that will be the parent of this window, required for windows with the \"tooltip\", \"menu\", and \"modal\" properties"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.RESIZABLE_BOOLEAN`: true if the window should be resizable"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.TITLE_STRING`: the title of the window, in UTF-8 encoding"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.TRANSPARENT_BOOLEAN`: true if the window show transparent in the areas with alpha of 0"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.TOOLTIP_BOOLEAN`: true if the window is a tooltip"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.UTILITY_BOOLEAN`: true if the window is a utility window, not showing in the task bar and window list"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.VULKAN_BOOLEAN`: true if the window will be used with Vulkan rendering"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.WIDTH_NUMBER`: the width of the window"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.X_NUMBER`: the x position of the window, or `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative to the parent for windows with the \"tooltip\" or \"menu\" property set."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.Y_NUMBER`: the y position of the window, or `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative to the parent for windows with the \"tooltip\" or \"menu\" property set."
                           }
                         ],
-                        "The following flags are not relevant to popup window creation and will be ignored:",
+                        "These are additional supported properties on macOS:",
                         [
                           {
                             "tag": "-",
-                            "content": "`WINDOW_MINIMIZED`"
+                            "content": "`prop.Window.Create.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow associated with the window, if you want to wrap an existing window."
                           },
                           {
                             "tag": "-",
-                            "content": "`WINDOW_MAXIMIZED`"
-                          },
-                          {
-                            "tag": "-",
-                            "content": "`WINDOW_FULLSCREEN`"
-                          },
-                          {
-                            "tag": "-",
-                            "content": "`WINDOW_BORDERLESS`"
+                            "content": "`prop.Window.Create.COCOA_VIEW_POINTER`: the `(__unsafe_unretained)` NSView associated with the window, defaults to `[window contentView]`"
                           }
                         ],
-                        "The following flags are incompatible with popup window creation and will cause it to fail:",
+                        "These are additional supported properties on iOS, tvOS, and visionOS:",
+                        {
+                          "tag": "-",
+                          "content": "`prop.Window.Create.WINDOWSCENE_POINTER`: the `(__unsafe_unretained)` UIWindowScene associated with the window, defaults to the active window scene."
+                        },
+                        "These are additional supported properties on Wayland:",
                         [
                           {
                             "tag": "-",
-                            "content": "`WINDOW_UTILITY`"
+                            "content": "`prop.Window.Create.WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the application wants to use the Wayland surface for a custom role and does not want it attached to an XDG toplevel window. See [README-wayland](README-wayland) for more information on using custom surfaces."
                           },
                           {
                             "tag": "-",
-                            "content": "`WINDOW_MODAL`"
+                            "content": "`prop.Window.Create.WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the application wants an associated `wl_egl_window` object to be created and attached to the window, even if the window does not have the OpenGL property or `WINDOW_OPENGL` flag set."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.WAYLAND_WL_SURFACE_POINTER` - the wl_surface associated with the window, if you want to wrap an existing window. See [README-wayland](README-wayland) for more information."
                           }
                         ],
-                        "The parent parameter **must** be non-null and a valid window. The parent of a popup window can be either a regular, toplevel window, or another popup window.",
-                        "Popup windows cannot be minimized, maximized, made fullscreen, raised, flash, be made a modal window, be the parent of a toplevel window, or grab the mouse and/or keyboard. Attempts to do so will fail.",
-                        "Popup windows implicitly do not have a border/decorations and do not appear on the taskbar/dock or in lists of windows such as alt-tab menus.",
-                        "By default, popup window positions will automatically be constrained to keep the entire window within display bounds. This can be overridden with the `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN` property.",
-                        "By default, popup menus will automatically grab keyboard focus from the parent when shown. This behavior can be overridden by setting the `WINDOW_NOT_FOCUSABLE` flag, setting the `prop.Window.Create.FOCUSABLE_BOOLEAN` property to false, or toggling it after creation via the `SetWindowFocusable()` function.",
-                        "If a parent window is hidden or destroyed, any child popup windows will be recursively hidden or destroyed as well. Child popup windows not explicitly hidden will be restored when the parent is shown.",
+                        "These are additional supported properties on Windows:",
                         [
                           {
-                            "tag": "@param parent",
-                            "content": "the parent of the window, must not be nullptr."
+                            "tag": "-",
+                            "content": "`prop.Window.Create.WIN32_HWND_POINTER`: the HWND associated with the window, if you want to wrap an existing window."
                           },
                           {
-                            "tag": "@param offset_x",
-                            "content": "the x position of the popup window relative to the origin of the parent."
+                            "tag": "-",
+                            "content": "`prop.Window.Create.WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another window to share pixel format with, useful for OpenGL windows"
+                          }
+                        ],
+                        "These are additional supported properties with X11:",
+                        {
+                          "tag": "-",
+                          "content": "`prop.Window.Create.X11_WINDOW_NUMBER`: the X11 Window associated with the window, if you want to wrap an existing window."
+                        },
+                        "The window is implicitly shown if the \"hidden\" property is not set.",
+                        "These are additional supported properties with Emscripten:",
+                        [
+                          {
+                            "tag": "-",
+                            "content": "`prop.Window.Create.EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the canvas element. This should start with a '#' sign"
                           },
                           {
-                            "tag": "@param offset_y",
-                            "content": "the y position of the popup window relative to the origin of the parent window."
+                            "tag": "-",
+                            "content": "`prop.Window.Create.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the binding element for keyboard inputs for this canvas. The variable can be one of:"
                           },
                           {
-                            "tag": "@param w",
-                            "content": "the width of the window."
+                            "tag": "-",
+                            "content": "\"#window\": the javascript window object (default)"
                           },
                           {
-                            "tag": "@param h",
-                            "content": "the height of the window."
+                            "tag": "-",
+                            "content": "\"#document\": the javascript document object"
                           },
                           {
-                            "tag": "@param flags",
-                            "content": "WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more additional WindowFlags OR'd together."
+                            "tag": "-",
+                            "content": "\"#screen\": the javascript window.screen object"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "\"#canvas\": the WebGL canvas element"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "\"#none\": Don't bind anything at all"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "any other string without a leading # sign applies to the element on the page with that ID. Windows with the \"tooltip\" and \"menu\" properties are popup windows and have the behaviors and guidelines outlined in CreatePopupWindow()."
+                          }
+                        ],
+                        "If this window is being created to be used with an Renderer, you should not add a graphics API specific property (`prop.Window.Create.OPENGL_BOOLEAN`, etc), as SDL will handle that internally when it chooses a renderer. However, SDL might need to recreate your window at that point, which may cause the window to appear briefly, and then flicker as it is recreated. The correct approach to this is to create the window with the `prop.Window.Create.HIDDEN_BOOLEAN` property set to true, then create the renderer, then show the window with ShowWindow().",
+                        [
+                          {
+                            "tag": "@param props",
+                            "content": "the properties to use."
                           },
                           {
                             "tag": "@post",
@@ -174821,19 +174899,15 @@
                         [
                           {
                             "tag": "@sa",
+                            "content": "CreateProperties"
+                          },
+                          {
+                            "tag": "@sa",
                             "content": "CreateWindow"
                           },
                           {
                             "tag": "@sa",
-                            "content": "CreateWindowWithProperties"
-                          },
-                          {
-                            "tag": "@sa",
                             "content": "DestroyWindow"
-                          },
-                          {
-                            "tag": "@sa",
-                            "content": "GetWindowParent"
                           }
                         ]
                       ],
@@ -174842,268 +174916,16 @@
                       "type": "",
                       "parameters": [
                         {
-                          "name": "parent",
-                          "type": "WindowRef"
-                        },
-                        {
-                          "type": "const PointRaw &",
-                          "name": "offset"
-                        },
-                        {
-                          "type": "const PointRaw &",
-                          "name": "size"
-                        },
-                        {
-                          "name": "flags",
-                          "type": "WindowFlags",
-                          "default": "0"
+                          "name": "props",
+                          "type": "PropertiesRef"
                         }
                       ],
-                      "sourceName": "SDL_CreatePopupWindow",
-                      "overload": {
-                        "doc": [
-                          "Create a window with the specified properties.",
-                          "The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.",
-                          "These are the supported properties:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.ALWAYS_ON_TOP_BOOLEAN`: true if the window should be always on top"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.BORDERLESS_BOOLEAN`: true if the window has no window decoration"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN`: true if the \"tooltip\" and \"menu\" window types should be automatically constrained to be entirely within display bounds (default), false if no constraints on the position are desired."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the window will be used with an externally managed graphics context."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.FOCUSABLE_BOOLEAN`: true if the window should accept keyboard input (defaults true)"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.FULLSCREEN_BOOLEAN`: true if the window should start in fullscreen mode at desktop resolution"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.HEIGHT_NUMBER`: the height of the window"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.HIDDEN_BOOLEAN`: true if the window should start hidden"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses a high pixel density buffer if possible"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.MAXIMIZED_BOOLEAN`: true if the window should start maximized"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.MENU_BOOLEAN`: true if the window is a popup menu"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.METAL_BOOLEAN`: true if the window will be used with Metal rendering"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.MINIMIZED_BOOLEAN`: true if the window should start minimized"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.MODAL_BOOLEAN`: true if the window is modal to its parent"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.MOUSE_GRABBED_BOOLEAN`: true if the window starts with grabbed mouse focus"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.OPENGL_BOOLEAN`: true if the window will be used with OpenGL rendering"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.PARENT_POINTER`: an Window that will be the parent of this window, required for windows with the \"tooltip\", \"menu\", and \"modal\" properties"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.RESIZABLE_BOOLEAN`: true if the window should be resizable"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.TITLE_STRING`: the title of the window, in UTF-8 encoding"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.TRANSPARENT_BOOLEAN`: true if the window show transparent in the areas with alpha of 0"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.TOOLTIP_BOOLEAN`: true if the window is a tooltip"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.UTILITY_BOOLEAN`: true if the window is a utility window, not showing in the task bar and window list"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.VULKAN_BOOLEAN`: true if the window will be used with Vulkan rendering"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.WIDTH_NUMBER`: the width of the window"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.X_NUMBER`: the x position of the window, or `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative to the parent for windows with the \"tooltip\" or \"menu\" property set."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.Y_NUMBER`: the y position of the window, or `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative to the parent for windows with the \"tooltip\" or \"menu\" property set."
-                            }
-                          ],
-                          "These are additional supported properties on macOS:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow associated with the window, if you want to wrap an existing window."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.COCOA_VIEW_POINTER`: the `(__unsafe_unretained)` NSView associated with the window, defaults to `[window contentView]`"
-                            }
-                          ],
-                          "These are additional supported properties on iOS, tvOS, and visionOS:",
-                          {
-                            "tag": "-",
-                            "content": "`prop.Window.Create.WINDOWSCENE_POINTER`: the `(__unsafe_unretained)` UIWindowScene associated with the window, defaults to the active window scene."
-                          },
-                          "These are additional supported properties on Wayland:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the application wants to use the Wayland surface for a custom role and does not want it attached to an XDG toplevel window. See [README-wayland](README-wayland) for more information on using custom surfaces."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the application wants an associated `wl_egl_window` object to be created and attached to the window, even if the window does not have the OpenGL property or `WINDOW_OPENGL` flag set."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.WAYLAND_WL_SURFACE_POINTER` - the wl_surface associated with the window, if you want to wrap an existing window. See [README-wayland](README-wayland) for more information."
-                            }
-                          ],
-                          "These are additional supported properties on Windows:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.WIN32_HWND_POINTER`: the HWND associated with the window, if you want to wrap an existing window."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another window to share pixel format with, useful for OpenGL windows"
-                            }
-                          ],
-                          "These are additional supported properties with X11:",
-                          {
-                            "tag": "-",
-                            "content": "`prop.Window.Create.X11_WINDOW_NUMBER`: the X11 Window associated with the window, if you want to wrap an existing window."
-                          },
-                          "The window is implicitly shown if the \"hidden\" property is not set.",
-                          "These are additional supported properties with Emscripten:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the canvas element. This should start with a '#' sign"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.Window.Create.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the binding element for keyboard inputs for this canvas. The variable can be one of:"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "\"#window\": the javascript window object (default)"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "\"#document\": the javascript document object"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "\"#screen\": the javascript window.screen object"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "\"#canvas\": the WebGL canvas element"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "\"#none\": Don't bind anything at all"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "any other string without a leading # sign applies to the element on the page with that ID. Windows with the \"tooltip\" and \"menu\" properties are popup windows and have the behaviors and guidelines outlined in CreatePopupWindow()."
-                            }
-                          ],
-                          "If this window is being created to be used with an Renderer, you should not add a graphics API specific property (`prop.Window.Create.OPENGL_BOOLEAN`, etc), as SDL will handle that internally when it chooses a renderer. However, SDL might need to recreate your window at that point, which may cause the window to appear briefly, and then flicker as it is recreated. The correct approach to this is to create the window with the `prop.Window.Create.HIDDEN_BOOLEAN` property set to true, then create the renderer, then show the window with ShowWindow().",
-                          [
-                            {
-                              "tag": "@param props",
-                              "content": "the properties to use."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "the window that was created or nullptr on failure; call GetError() for more information."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "This function should only be called on the main thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateProperties"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "CreateWindow"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyWindow"
-                            }
-                          ]
-                        ],
-                        "name": "Window",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "props",
-                            "type": "PropertiesRef"
-                          }
-                        ],
-                        "sourceName": "SDL_CreateWindowWithProperties",
-                        "proto": true
-                      },
+                      "sourceName": "SDL_CreateWindowWithProperties",
                       "proto": true
                     },
                     "proto": true
-                  }
+                  },
+                  "proto": true
                 }
               }
             },

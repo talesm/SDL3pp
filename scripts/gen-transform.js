@@ -4893,28 +4893,11 @@ const transform = {
             name: "window"
           },
           {
-            type: "RendererBase *",
+            type: "Renderer *",
             name: "renderer"
           }],
         },
         "CreateWindowAndRenderer": {
-          kind: "function",
-          type: "std::pair<Window, Renderer>",
-          parameters: [{
-            type: "StringParam",
-            name: "title"
-          },
-          {
-            type: "const PointRaw &",
-            name: "size"
-          },
-          {
-            type: "WindowFlags",
-            name: "window_flags",
-            default: "0"
-          }]
-        },
-        "CreateWindowAndRenderer#2": {
           kind: "function",
           name: "CreateWindowAndRenderer",
           type: "Window",
@@ -4931,34 +4914,10 @@ const transform = {
             name: "window_flags"
           },
           {
-            type: "RendererBase *",
-            name: "renderer"
+            type: "Renderer *",
+            name: "renderer",
+            default: "nullptr",
           }]
-        },
-        "Window::Window": {
-          kind: "function",
-          type: "",
-          parameters: [{
-            type: "StringParam",
-            name: "title"
-          },
-          {
-            type: "const PointRaw &",
-            name: "size"
-          },
-          {
-            type: "WindowFlags",
-            name: "window_flags"
-          },
-          {
-            type: "RendererBase *",
-            name: "renderer"
-          }],
-          hints: {
-            mayFail: true,
-            init: ["Window(CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))"],
-            copyDoc: "SDL_CreateWindowAndRenderer",
-          },
         },
         "WindowBase::GetRenderer": {
           after: "SDL_GetRenderer",
@@ -8039,6 +7998,7 @@ const transform = {
       },
       transform: {
         "RendererBase": { kind: "forward" },
+        "Renderer": { kind: "forward" },
         "RendererRef": {
           kind: "alias",
           type: "ResourceRefT<RendererBase>",

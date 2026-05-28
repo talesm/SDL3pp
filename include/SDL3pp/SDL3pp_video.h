@@ -75,6 +75,9 @@ using GLContextRef = GLContext;
 // Forward decl
 struct RendererBase;
 
+// Forward decl
+struct Renderer;
+
 /**
  * Reference for Renderer.
  *
@@ -2738,28 +2741,6 @@ struct Window : WindowBase
     : Window(other.release())
   {
   }
-
-  /**
-   * Create a window and default renderer.
-   *
-   * @param title the title of the window, in UTF-8 encoding.
-   * @param size the width and height of the window.
-   * @param window_flags the flags used to create the window (see
-   *                     CreateWindow()).
-   * @param renderer a pointer filled with the renderer.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateRenderer
-   * @sa CreateWindow
-   */
-  Window(StringParam title,
-         const PointRaw& size,
-         WindowFlags window_flags,
-         RendererBase* renderer);
 
   /**
    * Create a window with the specified dimensions and flags.

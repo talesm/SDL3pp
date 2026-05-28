@@ -109,8 +109,7 @@ struct Main : SDL::AppInterface
 
   Main()
   {
-    std::tie(window, renderer) =
-      SDL::CreateWindowAndRenderer("Test", WINDOW_SZ);
+    SDL::CreateWindowAndRenderer("Test", WINDOW_SZ, 0, &window, &renderer);
     renderer.SetScale({2.f, 2.f});
   }
 
