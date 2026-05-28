@@ -81,13 +81,6 @@ Backlog
   - [ ] SDL_gfx
 - [ ] Add examples for input;
 
-Think about
------------
-
-- Build and test on github
-- Check if possible to make std::function based callbacks could be made a
-  concept.
-
 Version release checklist
 -------------------------
 

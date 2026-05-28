@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 0.11.0
+## Version 0.11.1
 
 Simplify and refactor resource system.
 
@@ -26,6 +26,8 @@ Breaking changes:
   - Remove TextEngineBase::Destroy();
   - Remove restrictions on copy;
   - Make TextEngineRef based on ResourceRefT;
+- Remove pair returning overload of CreateWindowAndRenderer()
+- Remove Window constructor overload for CreateWindowAndRenderer()
 
 Non-breaking changes
 
@@ -46,6 +48,10 @@ Non-breaking changes
   - GetWindowRelativeMouseMode();
   - GetRenderer();
 - TextEngineRef now has access to its methods;
+
+## Version 0.11.0
+
+** Retired due oversight on CreateWindowAndRenderer, use 0.11.1 above.
 
 ## Version 0.10.2
 
