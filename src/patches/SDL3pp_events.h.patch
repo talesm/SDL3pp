@@ -197,9 +197,9 @@
   * @returns true if this got an event or false if the timeout elapsed without
   *          any events available.
   *
-@@ -1268,15 +1282,15 @@
- inline bool WaitEventTimeout(Event* event,
-                              std::chrono::milliseconds timeoutDuration)
+@@ -1267,15 +1281,15 @@
+  */
+ inline bool WaitEventTimeout(Event* event, Milliseconds timeoutDuration)
  {
 -  static_assert(false, "Not implemented");
 +  return WaitEventTimeout(event,
@@ -216,7 +216,7 @@
   *
   * As this function may implicitly call PumpEvents(), you can only call this
   * function in the thread that initialized the video subsystem.
-@@ -1284,12 +1298,10 @@
+@@ -1283,12 +1297,10 @@
   * The timeout is not guaranteed, the actual wait time could be longer due to
   * system scheduling.
   *
@@ -233,9 +233,9 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -1302,7 +1314,8 @@
- inline std::optional<Event> WaitEventTimeout(
-   std::chrono::milliseconds timeoutDuration)
+@@ -1300,7 +1312,8 @@
+  */
+ inline std::optional<Event> WaitEventTimeout(Milliseconds timeoutDuration)
  {
 -  static_assert(false, "Not implemented");
 +  if (Event event; WaitEventTimeout(&event, timeoutDuration)) return event;
@@ -243,7 +243,7 @@
  }
  
  /**
-@@ -1369,7 +1382,7 @@
+@@ -1367,7 +1380,7 @@
   */
  inline void PushEvent(const Event& event)
  {
@@ -252,7 +252,7 @@
  }
  
  /**
-@@ -1393,7 +1406,7 @@
+@@ -1391,7 +1404,7 @@
  using EventFilter = bool(SDLCALL*)(void* userdata, Event* event);
  
  /**
@@ -261,7 +261,7 @@
   *
   * @param event the event that triggered the callback.
   * @returns true to permit event to be added to the queue, and false to disallow
-@@ -1405,12 +1418,34 @@
+@@ -1403,12 +1416,34 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -296,7 +296,7 @@
  using EventWatcherCB = MakeFrontCallback<bool(Event* event)>;
  
  /**
-@@ -1486,12 +1521,13 @@
+@@ -1484,12 +1519,13 @@
   * event filter, but events pushed onto the queue with PeepEvents() do not.
   *
   * @param filter a function to call when an event happens.
@@ -311,7 +311,7 @@
   * @sa AddEventWatch
   * @sa SetEventEnabled
   * @sa GetEventFilter
-@@ -1500,7 +1536,10 @@
+@@ -1498,7 +1534,10 @@
   */
  inline void SetEventFilter(EventFilterCB filter)
  {
@@ -323,7 +323,7 @@
  }
  
  /**
-@@ -1578,19 +1617,20 @@
+@@ -1576,19 +1615,20 @@
   * PeepEvents().
   *
   * @param filter an EventFilter function to call when an event happens.
@@ -346,7 +346,7 @@
  }
  
  /**
-@@ -1645,18 +1685,24 @@
+@@ -1643,18 +1683,24 @@
   * filter until this function returns.
   *
   * @param filter the EventFilter function to call when an event happens.
@@ -373,7 +373,7 @@
  }
  
  /**
-@@ -1733,26 +1779,26 @@
+@@ -1731,26 +1777,26 @@
  /**
   * Generate an English description of an event.
   *
@@ -412,7 +412,7 @@
   * @returns number of bytes needed for the full string, not counting the
   *          null-terminator byte.
   *
-@@ -1762,7 +1808,9 @@
+@@ -1760,7 +1806,9 @@
   */
  inline int GetEventDescription(const Event& event, TargetBytes buf)
  {
@@ -423,7 +423,7 @@
  }
  
  /**
-@@ -1785,11 +1833,8 @@
+@@ -1783,11 +1831,8 @@
   * complete string, not counting the nullptr-terminator, whether the string was
   * truncated or not. Unlike snprintf(), though, this function never returns -1.
   *
@@ -437,7 +437,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1797,7 +1842,11 @@
+@@ -1795,7 +1840,11 @@
   */
  inline std::string GetEventDescription(const Event& event)
  {

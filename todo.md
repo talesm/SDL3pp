@@ -1,50 +1,11 @@
 Todo for next version
 =====================
 
-Breaking changes:
-
-- [x] Remove old entry point (break compat);
-- [x] Properties::Create is now a constructor;
-- [x] Refactor resource to become less hack-y (probably breaking compat):
-  - [x] Create new ResourceBase and make ResourceOwned derive from it;
-    - It has the constructors to nullptr (default) and constructor from Raw;
-    - Everything is trivial;
-    - Dtor is trivial, but protected
-  - [x] Move all methods to ResourceBase, except constructors;
-  - [x] Create ResourceBaseT absorbs common functionality from new ResourceBase
-  - [x] New ResourceRef is derived explicitly from ResourceBase:
-    - Can be also constructed from Any const ResourceBase &;
-    - Can be converted to raw resource;
-  - [x] New ResourceRefT becomes template to new ResourceRef
-- [x] Rename StartTextInput overload with properties to
-  StartTextInputWithProperties;
-- [x] Rename Borrow() to borrow();
-- [x] Make TextEngine behave as ResourceBase:
-  - [x] Remove TextEngineBase::Destroy();
-  - [x] Remove restrictions on copy;
-  - [x] Make TextEngineRef based on ResourceRefT;
-- [x] Remove pair returning overload of CreateWindowAndRenderer()
-- [x] Remove Window returning overload of CreateWindowAndRenderer()
-
-Non-breaking changes
-
-- [x] Document refers to free functions instead of method versions;
-- [x] Fix ObjectRef(nullptr).
-- [x] Add standalone functions for window related methods defined in different
-  files:
-  - [x] StartTextInput();
-  - [x] StartTextInputWithProperties();
-  - [x] TextInputActive();
-  - [x] StopTextInput();
-  - [x] ClearComposition();
-  - [x] SetTextInputArea();
-  - [x] GetTextInputArea();
-  - [x] ScreenKeyboardShown
-  - [x] WarpMouseInWindow();
-  - [x] SetWindowRelativeMouseMode();
-  - [x] GetWindowRelativeMouseMode();
-  - [x] GetRenderer();
-- [x] TextEngineRef now has access to its methods;
+- [x] Create free functions for Keycode and Scancode methods;
+- [x] Create free functions for Time related functions;
+- [x] Standardize the time unit types usage:
+  - [x] Milliseconds as alias to std::chrono::milliseconds;
+  - [x] Nanoseconds as alias to std::chrono::nanoseconds;
 
 Backlog
 -------

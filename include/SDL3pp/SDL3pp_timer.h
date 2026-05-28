@@ -20,12 +20,49 @@ namespace SDL {
  * time (Delay(), DelayNS(), DelayPrecise()), and firing a callback function
  * after a certain amount of time has elapsed (AddTimer(), etc).
  *
+ * There are also useful macros to functions between time units, like
+ * TimeFromPosix() and such.
+ *
  * @{
  */
+
+/**
+ * Convert seconds to nanoseconds.
+ *
+ * This only converts whole numbers, not fractional seconds.
+ *
+ * @param time the number of seconds to convert.
+ * @returns the converted Time.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Time TimeFromPosix(Sint64 time)
+{
+  return Time::FromNS(SDL_SECONDS_TO_NS(time));
+}
 
 constexpr Time Time::FromPosix(Sint64 time)
 {
   return Time::FromNS(SDL_SECONDS_TO_NS(time));
+}
+
+/**
+ * Convert nanoseconds to seconds.
+ *
+ * This only converts whole numbers, not fractional seconds.
+ *
+ * @param time the number of nanoseconds to convert.
+ * @returns Posix time (in seconds).
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Sint64 TimeToPosix(Time time)
+{
+  return SDL_NS_TO_SECONDS(time.ToPosix());
 }
 
 constexpr Sint64 Time::ToPosix() const
@@ -46,10 +83,7 @@ constexpr Sint64 Time::ToPosix() const
  * @sa GetTicksMS
  * @sa GetTicksNS
  */
-inline std::chrono::nanoseconds GetTicks()
-{
-  return std::chrono::nanoseconds(SDL_GetTicksNS());
-}
+inline Nanoseconds GetTicks() { return Nanoseconds(SDL_GetTicksNS()); }
 
 /**
  * Get the number of milliseconds that have elapsed since the SDL library
@@ -146,10 +180,7 @@ inline void Delay(Uint32 ms) { SDL_Delay(ms); }
  * @sa DelayNS
  * @sa DelayPrecise(std::chrono::nanoseconds)
  */
-inline void Delay(std::chrono::nanoseconds duration)
-{
-  SDL_DelayNS(duration.count());
-}
+inline void Delay(Nanoseconds duration) { SDL_DelayNS(duration.count()); }
 
 /**
  * Wait a specified number of nanoseconds before returning.
@@ -205,7 +236,7 @@ inline void DelayPrecise(Uint64 ns) { SDL_DelayPrecise(ns); }
  * @sa DelayNS
  * @sa DelayPrecise(Uint64)
  */
-inline void DelayPrecise(std::chrono::nanoseconds duration)
+inline void DelayPrecise(Nanoseconds duration)
 {
   SDL_DelayPrecise(duration.count());
 }
@@ -302,14 +333,14 @@ using NSTimerCallback = Uint64(SDLCALL*)(void* userdata,
 struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
 {
   /// ctor
-  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+  template<std::invocable<TimerID, Nanoseconds> F>
   TimerCB(const F& func)
     : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>(func)
   {
   }
 
   /// @private
-  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+  template<std::invocable<TimerID, Nanoseconds> F>
   static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
   {
     return func(timerID, std::chrono::nanoseconds(interval)).count();
@@ -350,7 +381,7 @@ struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
  * @sa AddTimer(std::chrono::nanoseconds, TimerCB)
  * @sa RemoveTimer
  */
-inline TimerID AddTimer(std::chrono::milliseconds interval,
+inline TimerID AddTimer(Milliseconds interval,
                         MSTimerCallback callback,
                         void* userdata)
 {
@@ -392,7 +423,7 @@ inline TimerID AddTimer(std::chrono::milliseconds interval,
  * @sa AddTimer(std::chrono::nanoseconds, TimerCB)
  * @sa RemoveTimer
  */
-inline TimerID AddTimer(std::chrono::nanoseconds interval,
+inline TimerID AddTimer(Nanoseconds interval,
                         NSTimerCallback callback,
                         void* userdata)
 {
@@ -436,7 +467,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  * @sa AddTimer(std::chrono::nanoseconds, NSTimerCallback, void*)
  * @sa RemoveTimer()
  */
-inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
+inline TimerID AddTimer(Nanoseconds interval, TimerCB callback)
 {
   return SDL_AddTimerNS(interval.count(), callback.wrapper, callback.data);
 }

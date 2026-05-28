@@ -31,16 +31,16 @@
   * @returns true if the wait succeeds or false if the wait times out.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1229,7 +1229,7 @@
- inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
-                                  std::chrono::milliseconds timeout)
+@@ -1228,7 +1228,7 @@
+  */
+ inline bool WaitSemaphoreTimeout(SemaphoreRef sem, Milliseconds timeout)
  {
 -  return SDL_WaitSemaphoreTimeout(sem, timeout);
 +  return SDL_WaitSemaphoreTimeout(sem, narrowS32(timeout.count()));
  }
  
- inline bool SemaphoreBase::WaitTimeout(std::chrono::milliseconds timeout)
-@@ -1361,8 +1361,8 @@
+ inline bool SemaphoreBase::WaitTimeout(Milliseconds timeout)
+@@ -1360,8 +1360,8 @@
     * behavior.
     *
     * @param mutex the mutex used to coordinate thread access.
@@ -51,7 +51,7 @@
     * @returns true if the condition variable is signaled, false if the condition
     *          is not signaled in the allotted time.
     *
-@@ -1569,8 +1569,8 @@
+@@ -1568,8 +1568,8 @@
   *
   * @param cond the condition variable to wait on.
   * @param mutex the mutex used to coordinate thread access.
@@ -62,16 +62,16 @@
   * @returns true if the condition variable is signaled, false if the condition
   *          is not signaled in the allotted time.
   *
-@@ -1586,7 +1586,7 @@
+@@ -1585,7 +1585,7 @@
                                   MutexRef mutex,
-                                  std::chrono::milliseconds timeout)
+                                  Milliseconds timeout)
  {
 -  return SDL_WaitConditionTimeout(cond, mutex, timeout);
 +  return SDL_WaitConditionTimeout(cond, mutex, narrowS32(timeout.count()));
  }
  
- inline bool ConditionBase::WaitTimeout(MutexRef mutex,
-@@ -1619,8 +1619,8 @@
+ inline bool ConditionBase::WaitTimeout(MutexRef mutex, Milliseconds timeout)
+@@ -1617,8 +1617,8 @@
   *
   * Here is an example of using this:
   *
@@ -82,7 +82,7 @@
   *
   *    bool InitSystem(void)
   *    {
-@@ -1674,7 +1674,7 @@
+@@ -1672,7 +1672,7 @@
  struct InitState : InitStateRaw
  {
    constexpr InitState()

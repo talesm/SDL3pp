@@ -1002,7 +1002,7 @@ struct SemaphoreBase : ResourceBaseT<SemaphoreRaw>
    * @sa TryWaitSemaphore
    * @sa WaitSemaphore
    */
-  bool WaitTimeout(std::chrono::milliseconds timeout);
+  bool WaitTimeout(Milliseconds timeout);
 
   /**
    * Atomically increment a semaphore's value and wake waiting threads.
@@ -1226,13 +1226,12 @@ inline bool SemaphoreBase::TryWait() { return SDL::TryWaitSemaphore(get()); }
  * @sa TryWaitSemaphore
  * @sa WaitSemaphore
  */
-inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
-                                 std::chrono::milliseconds timeout)
+inline bool WaitSemaphoreTimeout(SemaphoreRef sem, Milliseconds timeout)
 {
   return SDL_WaitSemaphoreTimeout(sem, narrowS32(timeout.count()));
 }
 
-inline bool SemaphoreBase::WaitTimeout(std::chrono::milliseconds timeout)
+inline bool SemaphoreBase::WaitTimeout(Milliseconds timeout)
 {
   return SDL::WaitSemaphoreTimeout(get(), timeout);
 }
@@ -1374,7 +1373,7 @@ struct ConditionBase : ResourceBaseT<ConditionRaw>
    * @sa SignalCondition
    * @sa WaitCondition
    */
-  bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout);
+  bool WaitTimeout(MutexRef mutex, Milliseconds timeout);
 };
 
 /**
@@ -1584,13 +1583,12 @@ inline void ConditionBase::Wait(MutexRef mutex)
  */
 inline bool WaitConditionTimeout(ConditionRef cond,
                                  MutexRef mutex,
-                                 std::chrono::milliseconds timeout)
+                                 Milliseconds timeout)
 {
   return SDL_WaitConditionTimeout(cond, mutex, narrowS32(timeout.count()));
 }
 
-inline bool ConditionBase::WaitTimeout(MutexRef mutex,
-                                       std::chrono::milliseconds timeout)
+inline bool ConditionBase::WaitTimeout(MutexRef mutex, Milliseconds timeout)
 {
   return SDL::WaitConditionTimeout(get(), mutex, timeout);
 }

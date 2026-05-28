@@ -356,9 +356,9 @@ constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
  * SDL times are signed, 64-bit integers representing nanoseconds since the Unix
  * epoch (Jan 1, 1970).
  *
- * They can be converted between POSIX time_t values with Time.ToPosix() and
- * Time.FromPosix(), and between Windows FILETIME values with Time.ToWindows()
- * and Time.FromWindows().
+ * They can be converted between POSIX time_t values with TimeToPosix() and
+ * TimeFromPosix(), and between Windows FILETIME values with TimeToWindows() and
+ * TimeFromWindows().
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -387,7 +387,7 @@ public:
    *
    * @param time the value to be wrapped
    */
-  constexpr Time(std::chrono::nanoseconds time) noexcept
+  constexpr Time(Nanoseconds time) noexcept
     : m_time(time)
   {
   }
@@ -399,7 +399,7 @@ public:
   }
 
   /// Converts to nanoseconds period
-  constexpr operator std::chrono::nanoseconds() const { return m_time; }
+  constexpr operator Nanoseconds() const { return m_time; }
 
   /**
    * Gets the current value of the system realtime clock in nanoseconds since

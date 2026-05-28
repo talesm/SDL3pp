@@ -1279,8 +1279,7 @@ inline std::optional<Event> WaitEventTimeout(Sint32 timeoutMS)
  * @sa PushEvent
  * @sa WaitEvent
  */
-inline bool WaitEventTimeout(Event* event,
-                             std::chrono::milliseconds timeoutDuration)
+inline bool WaitEventTimeout(Event* event, Milliseconds timeoutDuration)
 {
   return WaitEventTimeout(event,
                           Sint32(std::max(timeoutDuration.count(), Sint64(1))));
@@ -1311,8 +1310,7 @@ inline bool WaitEventTimeout(Event* event,
  * @sa PushEvent
  * @sa WaitEvent
  */
-inline std::optional<Event> WaitEventTimeout(
-  std::chrono::milliseconds timeoutDuration)
+inline std::optional<Event> WaitEventTimeout(Milliseconds timeoutDuration)
 {
   if (Event event; WaitEventTimeout(&event, timeoutDuration)) return event;
   return std::nullopt;

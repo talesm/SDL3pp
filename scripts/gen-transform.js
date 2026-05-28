@@ -1432,7 +1432,7 @@ const transform = {
               "name": "event"
             },
             {
-              "type": "std::chrono::milliseconds",
+              "type": "Milliseconds",
               "name": "timeoutDuration"
             }
           ]
@@ -1443,7 +1443,7 @@ const transform = {
           type: "std::optional<Event>",
           parameters: [
             {
-              "type": "std::chrono::milliseconds",
+              "type": "Milliseconds",
               "name": "timeoutDuration"
             }
           ]
@@ -3506,7 +3506,7 @@ const transform = {
               parameters: [
                 {},
                 {
-                  type: "std::chrono::milliseconds",
+                  type: "Milliseconds",
                   name: "timeout"
                 },
               ]
@@ -3527,7 +3527,7 @@ const transform = {
                 {},
                 {},
                 {
-                  type: "std::chrono::milliseconds",
+                  type: "Milliseconds",
                   name: "timeout"
                 },
               ]
@@ -5856,13 +5856,13 @@ const transform = {
         "Nanoseconds": {
           before: "SDL_Time",
           kind: "alias",
-          type: "std::chrono::nanoseconds",
+          type: "std::chrono::Nanoseconds",
           doc: ["Duration in Nanoseconds (Uint64)."]
         },
         "Milliseconds": {
           before: "SDL_Time",
           kind: "alias",
-          type: "std::chrono::milliseconds",
+          type: "std::chrono::Milliseconds",
           doc: ["Duration in Miliseconds (Uint32)."]
         },
         "ToSeconds": {
@@ -5893,7 +5893,7 @@ const transform = {
           type: "Sint64",
           constexpr: true,
           parameters: [{
-            type: "std::chrono::nanoseconds",
+            type: "Nanoseconds",
             name: "duration"
           }],
           doc: ["Converts a time duration to seconds (float)."]
@@ -5918,12 +5918,12 @@ const transform = {
               constexpr: true,
               parameters: [
                 {
-                  "type": "std::chrono::nanoseconds",
+                  "type": "Nanoseconds",
                   "name": "time"
                 }
               ]
             },
-            "operator std::chrono::nanoseconds": {
+            "operator Nanoseconds": {
               "kind": "function",
               "type": "",
               "immutable": true,
@@ -5980,7 +5980,7 @@ const transform = {
               "constexpr": true,
               "parameters": [
                 {
-                  "type": "std::chrono::nanoseconds",
+                  "type": "Nanoseconds",
                   "name": "interval"
                 }
               ]
@@ -5991,7 +5991,7 @@ const transform = {
               "constexpr": true,
               "parameters": [
                 {
-                  "type": "std::chrono::nanoseconds",
+                  "type": "Nanoseconds",
                   "name": "interval"
                 }
               ]
@@ -7717,14 +7717,21 @@ const transform = {
         },
         "SDL_GetCurrentTime": {
           name: "Time::Current",
-          type: "Time"
+          type: "Time",
+          link: {
+            name: "GetCurrentTime",
+            type: "Time",
+            parameters: [],
+          },
         },
         "SDL_TimeFromWindows": {
-          name: "Time::FromWindows"
+          name: "Time::FromWindows",
+          link: { name: "TimeFromWindows" },
         },
         "SDL_TimeToWindows": {
           name: "Time::ToWindows",
-          immutable: true
+          immutable: true,
+          link: { name: "TimeToWindows" },
         },
         "SDL_TimeToDateTime": {
           type: "DateTime",
@@ -7761,7 +7768,14 @@ const transform = {
               "type": "Sint64",
               "name": "time"
             }
-          ]
+          ],
+          link: {
+            name: "TimeFromPosix",
+            kind: "function",
+            type: "Time",
+            constexpr: true,
+            parameters: [{ type: "Sint64", name: "time" }],
+          },
         },
         "SDL_NS_TO_SECONDS": {
           "name": "Time::ToPosix",
@@ -7769,11 +7783,18 @@ const transform = {
           "type": "Sint64",
           "constexpr": true,
           "immutable": true,
-          "parameters": []
+          "parameters": [],
+          link: {
+            name: "TimeToPosix",
+            kind: "function",
+            type: "Sint64",
+            constexpr: true,
+            parameters: [{ type: "Time", name: "time" }],
+          },
         },
         "SDL_GetTicks": {
-          type: "std::chrono::nanoseconds",
-          hints: { body: "return std::chrono::nanoseconds(SDL_GetTicksNS());" },
+          type: "Nanoseconds",
+          hints: { body: "return Nanoseconds(SDL_GetTicksNS());" },
         },
         "GetTicksMS": {
           kind: "function",
@@ -7786,7 +7807,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [{
-            type: "std::chrono::nanoseconds",
+            type: "Nanoseconds",
             name: "duration"
           }],
           hints: { body: "SDL_DelayNS(duration.count());" },
@@ -7796,7 +7817,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [{
-            type: "std::chrono::nanoseconds",
+            type: "Nanoseconds",
             name: "duration"
           }]
         },
@@ -7808,20 +7829,20 @@ const transform = {
           callback: {
             wrapper: "TimerCB",
             functorSupport: "lightweight",
-            type: "std::chrono::nanoseconds",
+            type: "Nanoseconds",
             parameters: [{
               name: "timerID",
               type: "TimerID"
             }, {
               name: "interval",
-              type: "std::chrono::nanoseconds"
+              type: "Nanoseconds"
             }]
           },
         },
         "SDL_AddTimer": {
           parameters: [
             {
-              type: "std::chrono::milliseconds",
+              type: "Milliseconds",
               name: "interval"
             },
             {
@@ -7838,7 +7859,7 @@ const transform = {
           name: "AddTimer",
           parameters: [
             {
-              type: "std::chrono::nanoseconds",
+              type: "Nanoseconds",
               name: "interval"
             },
             {
@@ -7856,7 +7877,7 @@ const transform = {
           type: "TimerID",
           parameters: [
             {
-              type: "std::chrono::nanoseconds",
+              type: "Nanoseconds",
               name: "interval"
             },
             {

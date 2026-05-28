@@ -198,7 +198,7 @@
  constexpr Sint64 MIN_SINT64 = SDL_MIN_SINT64;
  
  /**
-@@ -322,8 +325,10 @@
+@@ -322,42 +325,32 @@
   */
  using Uint64 = ::Uint64;
  
@@ -209,8 +209,15 @@
  constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
  
  /// Duration in seconds (float).
-@@ -336,28 +341,16 @@
- using Milliseconds = std::chrono::milliseconds;
+ using Seconds = std::chrono::duration<float>;
+ 
+ /// Duration in Nanoseconds (Uint64).
+-using Nanoseconds = std::chrono::Nanoseconds;
++using Nanoseconds = std::chrono::nanoseconds;
+ 
+ /// Duration in Miliseconds (Uint32).
+-using Milliseconds = std::chrono::Milliseconds;
++using Milliseconds = std::chrono::milliseconds;
  
  /// Converts a time duration to seconds (float).
 -constexpr float ToSeconds(Seconds duration)
@@ -227,7 +234,7 @@
 +constexpr Seconds FromSeconds(float duration) { return Seconds(duration); }
  
 -/// Converts a time duration to seconds (float).
--constexpr Sint64 ToNS(std::chrono::nanoseconds duration)
+-constexpr Sint64 ToNS(Nanoseconds duration)
 -{
 -  static_assert(false, "Not implemented");
 -}
@@ -268,7 +275,7 @@
     *
     * @param time the value to be wrapped
     */
--  constexpr Time(std::chrono::nanoseconds time) {}
+-  constexpr Time(Nanoseconds time) {}
 -
 -  /**
 -   * Unwraps to the underlying Time.
@@ -276,12 +283,12 @@
 -   * @returns the underlying TimeRaw.
 -   */
 -  constexpr operator TimeRaw() const noexcept { return m_time; }
-+  constexpr Time(std::chrono::nanoseconds time) noexcept
++  constexpr Time(Nanoseconds time) noexcept
 +    : m_time(time)
 +  {
 +  }
  
--  constexpr operator std::chrono::nanoseconds() const
+-  constexpr operator Nanoseconds() const
 +  /// True if not zero
 +  constexpr explicit operator bool() const
    {
@@ -290,7 +297,7 @@
    }
  
 +  /// Converts to nanoseconds period
-+  constexpr operator std::chrono::nanoseconds() const { return m_time; }
++  constexpr operator Nanoseconds() const { return m_time; }
 +
    /**
     * Gets the current value of the system realtime clock in nanoseconds since
@@ -355,16 +362,18 @@
 +      Seconds(interval));
    }
  
+-  constexpr Time& operator+=(Nanoseconds interval)
 +  /// Increment time
-   constexpr Time& operator+=(std::chrono::nanoseconds interval)
++  constexpr Time& operator+=(std::chrono::nanoseconds interval)
    {
 -    static_assert(false, "Not implemented");
 +    m_time += interval;
 +    return *this;
    }
  
+-  constexpr Time& operator-=(Nanoseconds interval)
 +  /// Decrement
-   constexpr Time& operator-=(std::chrono::nanoseconds interval)
++  constexpr Time& operator-=(std::chrono::nanoseconds interval)
    {
 -    static_assert(false, "Not implemented");
 +    m_time -= interval;
