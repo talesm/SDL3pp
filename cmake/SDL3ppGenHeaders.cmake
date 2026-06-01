@@ -23,7 +23,7 @@ ExternalProject_Add(SDL3MixerBase
 )
 ExternalProject_Add(SDL3NetBase
   PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/base/
-  URL               https://github.com/libsdl-org/SDL_net/releases/download/prerelease-3.1.0/SDL3_net-3.1.0.tar.gz
+  URL               https://github.com/libsdl-org/SDL_net/releases/download/release-3.2.0/SDL3_net-3.2.0.tar.gz
   CONFIGURE_COMMAND ""
   BUILD_COMMAND     ""
   INSTALL_COMMAND   ""

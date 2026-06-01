@@ -454,6 +454,49 @@ struct AddressBase : ResourceBaseT<AddressRaw>
   const char* GetString();
 
   /**
+   * Get the protocol-level bytes of a network address from a resolved address.
+   *
+   * This data is not human-readable, is protocol-specific, and might not even
+   * be in a specific byte order.
+   *
+   * This is only useful for possibly hashing, to map a address to a specific
+   * player in a game, or possibly for handing to a system-level networking API
+   * (which is _not_ recommended; an app does this at their own risk).
+   *
+   * Do not store these bytes for future runs of the program; there is no
+   * promise the format won't change.
+   *
+   * On return `*num_bytes` will hold the number of bytes provided with the
+   * address. Since the data is not nullptr-terminated, this is the only way to
+   * determine its size; as such, this parameter must not be nullptr.
+   *
+   * Do not free or modify the returned data; it belongs to the Address that was
+   * queried, and is valid as long as the object lives. Either make sure the
+   * address has a reference as long as you need this or make a copy of the
+   * bytes.
+   *
+   * This will return nullptr if resolution is still in progress, or if
+   * resolution failed. You can use GetAddressStatus() or WaitUntilResolved() to
+   * make sure resolution has successfully completed before calling this.
+   *
+   * A human-readable version is available in GetAddressString() and isn't any
+   * less efficient to query than the raw bytes.
+   *
+   * @param num_bytes on return, will be set to the number of bytes returned.
+   * @returns a pointer to bytes on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa GetAddressString
+   * @sa GetAddressStatus
+   * @sa WaitUntilResolved
+   */
+  const void* GetBytes(int* num_bytes);
+
+  /**
    * Compare two Address objects.
    *
    * This compares two addresses, returning a value that is useful for qsort (or
@@ -1018,6 +1061,57 @@ inline const char* AddressBase::GetString()
 }
 
 /**
+ * Get the protocol-level bytes of a network address from a resolved address.
+ *
+ * This data is not human-readable, is protocol-specific, and might not even be
+ * in a specific byte order.
+ *
+ * This is only useful for possibly hashing, to map a address to a specific
+ * player in a game, or possibly for handing to a system-level networking API
+ * (which is _not_ recommended; an app does this at their own risk).
+ *
+ * Do not store these bytes for future runs of the program; there is no promise
+ * the format won't change.
+ *
+ * On return `*num_bytes` will hold the number of bytes provided with the
+ * address. Since the data is not nullptr-terminated, this is the only way to
+ * determine its size; as such, this parameter must not be nullptr.
+ *
+ * Do not free or modify the returned data; it belongs to the Address that was
+ * queried, and is valid as long as the object lives. Either make sure the
+ * address has a reference as long as you need this or make a copy of the bytes.
+ *
+ * This will return nullptr if resolution is still in progress, or if resolution
+ * failed. You can use GetAddressStatus() or WaitUntilResolved() to make sure
+ * resolution has successfully completed before calling this.
+ *
+ * A human-readable version is available in GetAddressString() and isn't any
+ * less efficient to query than the raw bytes.
+ *
+ * @param address The Address to query.
+ * @param num_bytes on return, will be set to the number of bytes returned.
+ * @returns a pointer to bytes on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL_net 3.0.0.
+ *
+ * @sa GetAddressString
+ * @sa GetAddressStatus
+ * @sa WaitUntilResolved
+ */
+inline const void* GetAddressBytes(AddressRef address, int* num_bytes)
+{
+  return CheckError(NET_GetAddressBytes(address, num_bytes));
+}
+
+inline const void* AddressBase::GetBytes(int* num_bytes)
+{
+  return SDL::GetAddressBytes(get(), num_bytes);
+}
+
+/**
  * Add a reference to an Address.
  *
  * Since several pieces of the library might share a single Address, including a
@@ -1152,6 +1246,7 @@ inline auto AddressBase::operator<=>(const AddressBase& other) const
 /// @private
 struct LocalAddressesArrayDeleter
 {
+  /// @private
   static void operator()(AddressRef* addresses);
 };
 
@@ -1180,9 +1275,8 @@ using LocalAddressesArray = OwnArray<AddressRef, LocalAddressesArrayDeleter>;
  * nullptr-terminated. You can also pass a pointer to an int, which will return
  * the final count, not counting the nullptr at the end of the array.
  *
- * @param num_addresses on exit, will be set to the number of addresses
- *                      returned. Can be nullptr.
- * @returns  one for each bindable address on the system on success.
+ * @returns A nullptr-terminated array of AddressRef, one for each bindable
+ *          address on the system on success.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -1499,7 +1593,7 @@ struct StreamSocketBase : ResourceBaseT<StreamSocketRaw>
    * on what is available at the time, and also the app isn't required to read
    * all available data at once.
    *
-   * This call never blocks; if no new data isn't available at the time of the
+   * This call never blocks; if no new data is available at the time of the
    * call, it returns 0 immediately. The caller can try again later.
    *
    * If the connection has failed (remote side dropped us, or one of a million
@@ -2377,8 +2471,8 @@ inline int StreamSocketBase::WaitUntilDrained(Sint32 timeout)
  * available at the time, and also the app isn't required to read all available
  * data at once.
  *
- * This call never blocks; if no new data isn't available at the time of the
- * call, it returns 0 immediately. The caller can try again later.
+ * This call never blocks; if no new data is available at the time of the call,
+ * it returns 0 immediately. The caller can try again later.
  *
  * If the connection has failed (remote side dropped us, or one of a million
  * other networking failures occurred), this function will report failure by

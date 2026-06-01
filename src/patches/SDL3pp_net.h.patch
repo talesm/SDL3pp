@@ -33,7 +33,7 @@
  namespace NET {
  
  /**
-@@ -718,12 +725,6 @@
+@@ -761,12 +768,6 @@
    {
    }
  
@@ -46,7 +46,7 @@
    /// Move constructor
    constexpr Address(Address&& other) noexcept
      : Address(other.release())
-@@ -804,7 +805,7 @@
+@@ -847,7 +848,7 @@
     *
     * @since This function is available since SDL_net 3.0.0.
     */
@@ -55,7 +55,7 @@
  
    /**
     * Safely borrows the from AddressRaw.
-@@ -816,7 +817,7 @@
+@@ -859,7 +860,7 @@
    static Address borrow(AddressRaw resource)
    {
      if (resource) {
@@ -64,7 +64,7 @@
        return Address(resource);
      }
      return {};
-@@ -889,8 +890,8 @@
+@@ -932,8 +933,8 @@
  {
  }
  
@@ -75,7 +75,7 @@
  {
  }
  
-@@ -1140,12 +1141,12 @@
+@@ -1234,17 +1235,18 @@
  
  inline bool AddressBase::operator==(const AddressBase& other) const
  {
@@ -90,7 +90,13 @@
  }
  
  /// @private
-@@ -1179,10 +1180,6 @@
+ struct LocalAddressesArrayDeleter
+ {
++  /// @private
+   static void operator()(AddressRef* addresses);
+ };
+ 
+@@ -1273,13 +1275,8 @@
   * nullptr-terminated. You can also pass a pointer to an int, which will return
   * the final count, not counting the nullptr at the end of the array.
   *
@@ -98,10 +104,15 @@
 - * is safe to keep any addresses you want from this array even after calling
 - * that function, as long as you called RefAddress() on them.
 - *
-  * @param num_addresses on exit, will be set to the number of addresses
-  *                      returned. Can be nullptr.
-  * @returns  one for each bindable address on the system on success.
-@@ -1210,15 +1207,19 @@
+- * @param num_addresses on exit, will be set to the number of addresses
+- *                      returned. Can be nullptr.
+- * @returns  one for each bindable address on the system on success.
++ * @returns A nullptr-terminated array of AddressRef, one for each bindable
++ *          address on the system on success.
+  * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -1304,15 +1301,19 @@
   *
   * It is safe to pass a nullptr in here, it will be ignored.
   *
@@ -123,7 +134,7 @@
  }
  
  inline void LocalAddressesArrayDeleter::operator()(AddressRef* addresses)
-@@ -2156,7 +2157,7 @@
+@@ -2250,7 +2251,7 @@
   */
  inline Address GetStreamSocketAddress(StreamSocketRef sock)
  {
@@ -132,7 +143,7 @@
  }
  
  inline Address StreamSocketBase::GetAddress()
-@@ -2642,7 +2643,7 @@
+@@ -2736,7 +2737,7 @@
     * should assume it is no longer usable and should destroy it with
     * SDL_DestroyDatagramSocket().
     *
@@ -141,7 +152,7 @@
     * @returns true if data sent or queued for transmission, false on failure;
     *          call GetError() for details.
     *
-@@ -2689,9 +2690,8 @@
+@@ -2783,9 +2784,8 @@
     * should assume it is no longer usable and should destroy it with
     * SDL_DestroyDatagramSocket().
     *
@@ -153,7 +164,7 @@
     *
     * @threadsafety You should not operate on the same socket from multiple
     *               threads at the same time without supplying a serialization
-@@ -2946,7 +2946,6 @@
+@@ -3040,7 +3040,6 @@
     * SDL_DestroyDatagramSocket().
     *
     * @param sock the datagram socket to send data through.
@@ -161,7 +172,7 @@
     * @returns true if data sent or queued for transmission, false on failure;
     *          call GetError() for details.
     *
-@@ -3024,12 +3023,11 @@
+@@ -3118,12 +3117,11 @@
     * "connection" to fail at this level, but may report failure for
     * unrecoverable system-level conditions; once a datagram socket fails, you
     * should assume it is no longer usable and should destroy it with
@@ -177,7 +188,7 @@
     *
     * @threadsafety You should not operate on the same socket from multiple
     *               threads at the same time without supplying a serialization
-@@ -3346,9 +3344,8 @@
+@@ -3440,9 +3438,8 @@
   * is no longer usable and should destroy it with SDL_DestroyDatagramSocket().
   *
   * @param sock the datagram socket to send data through.
@@ -189,7 +200,7 @@
   *
   * @threadsafety You should not operate on the same socket from multiple threads
   *               at the same time without supplying a serialization mechanism.
-@@ -3369,7 +3366,7 @@
+@@ -3463,7 +3460,7 @@
  
  inline bool DatagramSocketBase::ReceiveDatagram(Datagram& dgram)
  {
@@ -198,7 +209,7 @@
  }
  
  inline Datagram DatagramSocketBase::ReceiveDatagram()
-@@ -3377,11 +3374,17 @@
+@@ -3471,11 +3468,17 @@
    return SDL::ReceiveDatagram(get());
  }
  
@@ -218,7 +229,7 @@
  }
  
  /**
-@@ -3541,4 +3544,6 @@
+@@ -3635,4 +3638,6 @@
  
  } // namespace SDL
  

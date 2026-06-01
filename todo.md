@@ -7,7 +7,7 @@ Todo for next version
   - [x] Milliseconds as alias to std::chrono::milliseconds;
   - [x] Nanoseconds as alias to std::chrono::nanoseconds;
 - [x] Update SDL to 3.4.10
-- [ ] Update SDL_NET to 3.2.0
+- [x] Update SDL_NET to 3.2.0
 
 Backlog
 -------

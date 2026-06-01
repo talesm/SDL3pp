@@ -197,7 +197,7 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 
 // Check if SDL_net is available
 #if !defined(SDL3PP_DISABLE_NET) && !defined(SDL3PP_ENABLE_NET) &&             \
-  __has_include(<SDL3_net/SDL_net.h>)
+  (__has_include(<SDL3_net/SDL_net.h>) || defined(SDL3PP_DOC))
 #define SDL3PP_ENABLE_NET
 #endif
 

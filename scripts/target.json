@@ -212257,6 +212257,69 @@
               },
               "proto": true
             },
+            "GetBytes": {
+              "doc": [
+                "Get the protocol-level bytes of a network address from a resolved address.",
+                "This data is not human-readable, is protocol-specific, and might not even be in a specific byte order.",
+                "This is only useful for possibly hashing, to map a address to a specific player in a game, or possibly for handing to a system-level networking API (which is _not_ recommended; an app does this at their own risk).",
+                "Do not store these bytes for future runs of the program; there is no promise the format won't change.",
+                "On return `*num_bytes` will hold the number of bytes provided with the address. Since the data is not nullptr-terminated, this is the only way to determine its size; as such, this parameter must not be nullptr.",
+                "Do not free or modify the returned data; it belongs to the Address that was queried, and is valid as long as the object lives. Either make sure the address has a reference as long as you need this or make a copy of the bytes.",
+                "This will return nullptr if resolution is still in progress, or if resolution failed. You can use GetAddressStatus() or WaitUntilResolved() to make sure resolution has successfully completed before calling this.",
+                "A human-readable version is available in GetAddressString() and isn't any less efficient to query than the raw bytes.",
+                [
+                  {
+                    "tag": "@param num_bytes",
+                    "content": "on return, will be set to the number of bytes returned."
+                  },
+                  {
+                    "tag": "@returns",
+                    "content": "a pointer to bytes on success."
+                  },
+                  {
+                    "tag": "@throws",
+                    "content": "Error on failure."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL_net 3.0.0."
+                },
+                [
+                  {
+                    "tag": "@sa",
+                    "content": "GetAddressString"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "GetAddressStatus"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "WaitUntilResolved"
+                  }
+                ]
+              ],
+              "name": "GetBytes",
+              "kind": "function",
+              "type": "const void *",
+              "parameters": [
+                {
+                  "name": "num_bytes",
+                  "type": "int *"
+                }
+              ],
+              "sourceName": "NET_GetAddressBytes",
+              "hints": {
+                "mayFail": true,
+                "delegate": "SDL::GetAddressBytes"
+              },
+              "proto": true
+            },
             "Compare": {
               "doc": [
                 "Compare two Address objects.",
@@ -213134,6 +213197,92 @@
             "delegate": "SDL::GetAddressString"
           }
         },
+        "GetAddressBytes": {
+          "doc": [
+            "Get the protocol-level bytes of a network address from a resolved address.",
+            "This data is not human-readable, is protocol-specific, and might not even be in a specific byte order.",
+            "This is only useful for possibly hashing, to map a address to a specific player in a game, or possibly for handing to a system-level networking API (which is _not_ recommended; an app does this at their own risk).",
+            "Do not store these bytes for future runs of the program; there is no promise the format won't change.",
+            "On return `*num_bytes` will hold the number of bytes provided with the address. Since the data is not nullptr-terminated, this is the only way to determine its size; as such, this parameter must not be nullptr.",
+            "Do not free or modify the returned data; it belongs to the Address that was queried, and is valid as long as the object lives. Either make sure the address has a reference as long as you need this or make a copy of the bytes.",
+            "This will return nullptr if resolution is still in progress, or if resolution failed. You can use GetAddressStatus() or WaitUntilResolved() to make sure resolution has successfully completed before calling this.",
+            "A human-readable version is available in GetAddressString() and isn't any less efficient to query than the raw bytes.",
+            [
+              {
+                "tag": "@param address",
+                "content": "The Address to query."
+              },
+              {
+                "tag": "@param num_bytes",
+                "content": "on return, will be set to the number of bytes returned."
+              },
+              {
+                "tag": "@returns",
+                "content": "a pointer to bytes on success."
+              },
+              {
+                "tag": "@throws",
+                "content": "Error on failure."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL_net 3.0.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "GetAddressString"
+              },
+              {
+                "tag": "@sa",
+                "content": "GetAddressStatus"
+              },
+              {
+                "tag": "@sa",
+                "content": "WaitUntilResolved"
+              }
+            ]
+          ],
+          "name": "GetAddressBytes",
+          "kind": "function",
+          "type": "const void *",
+          "parameters": [
+            {
+              "name": "address",
+              "type": "AddressRef"
+            },
+            {
+              "name": "num_bytes",
+              "type": "int *"
+            }
+          ],
+          "sourceName": "NET_GetAddressBytes",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "AddressBase::GetBytes": {
+          "name": "AddressBase::GetBytes",
+          "kind": "function",
+          "type": "const void *",
+          "parameters": [
+            {
+              "name": "num_bytes",
+              "type": "int *"
+            }
+          ],
+          "sourceName": "NET_GetAddressBytes",
+          "hints": {
+            "self": "get()",
+            "mayFail": true,
+            "delegate": "SDL::GetAddressBytes"
+          }
+        },
         "RefAddress": {
           "doc": [
             "Add a reference to an Address.",
@@ -213807,7 +213956,7 @@
                 "(This is opposed to Datagram sockets, which send chunks of data that might arrive in any order, or not arrive at all, but you never wait for missing chunks to show up.)",
                 "Stream sockets are _bidirectional_; you can read and write from the same stream, and the other end of the connection can, too.",
                 "This function returns data that has arrived for the stream socket that hasn't been read yet. Data is provided in the order it was sent on the remote side. This function may return less data than requested, depending on what is available at the time, and also the app isn't required to read all available data at once.",
-                "This call never blocks; if no new data isn't available at the time of the call, it returns 0 immediately. The caller can try again later.",
+                "This call never blocks; if no new data is available at the time of the call, it returns 0 immediately. The caller can try again later.",
                 "If the connection has failed (remote side dropped us, or one of a million other networking failures occurred), this function will report failure by returning -1. Stream sockets only report failure for unrecoverable conditions; once a stream socket fails, you should assume it is no longer usable and should destroy it with DestroyStreamSocket().",
                 [
                   {
@@ -215182,7 +215331,7 @@
             "(This is opposed to Datagram sockets, which send chunks of data that might arrive in any order, or not arrive at all, but you never wait for missing chunks to show up.)",
             "Stream sockets are _bidirectional_; you can read and write from the same stream, and the other end of the connection can, too.",
             "This function returns data that has arrived for the stream socket that hasn't been read yet. Data is provided in the order it was sent on the remote side. This function may return less data than requested, depending on what is available at the time, and also the app isn't required to read all available data at once.",
-            "This call never blocks; if no new data isn't available at the time of the call, it returns 0 immediately. The caller can try again later.",
+            "This call never blocks; if no new data is available at the time of the call, it returns 0 immediately. The caller can try again later.",
             "If the connection has failed (remote side dropped us, or one of a million other networking failures occurred), this function will report failure by returning -1. Stream sockets only report failure for unrecoverable conditions; once a stream socket fails, you should assume it is no longer usable and should destroy it with DestroyStreamSocket().",
             [
               {
