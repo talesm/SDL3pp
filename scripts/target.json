@@ -102855,6 +102855,10 @@
           ],
           "sourceName": "SDL_PROPERTY_TYPE_BOOLEAN"
         },
+        "PropertyProxy-forward": {
+          "kind": "forward",
+          "name": "PropertyProxy"
+        },
         "EnumeratePropertiesCallback": {
           "name": "EnumeratePropertiesCallback",
           "kind": "alias",
@@ -104544,6 +104548,28 @@
               "content": "UnlockProperties"
             }
           ]
+        },
+        "PropertyProxy": {
+          "kind": "struct",
+          "entries": {
+            "m_props": {
+              "kind": "var",
+              "type": "PropertiesRef",
+              "hints": {
+                "changeAccess": "private"
+              },
+              "name": "m_props"
+            },
+            "m_name": {
+              "kind": "var",
+              "type": "StringParam",
+              "name": "m_name"
+            }
+          },
+          "hints": {
+            "private": true
+          },
+          "name": "PropertyProxy"
         },
         "PROP_NAME_STRING": {
           "doc": [

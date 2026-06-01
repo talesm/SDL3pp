@@ -50,58 +50,6 @@ TEST_CASE("Property .Set()")
   CHECK(props.GetPropertyType("HeyPointer") == PROPERTY_TYPE_POINTER);
 }
 
-class PropertyProxy
-{
-  PropertiesRef m_props;
-  StringParam m_name;
-
-public:
-  constexpr PropertyProxy(PropertiesRef props, StringParam name)
-    : m_props(props)
-    , m_name(std::move(name))
-  {
-  }
-
-  bool IsValid() const { return m_props.HasProperty(m_name.c_str()); }
-
-  PropertyType GetType() const
-  {
-    return m_props.GetPropertyType(m_name.c_str());
-  }
-
-  const char* GetName() const { return m_name; }
-
-  operator void*() const { return m_props.GetPointerProperty(m_name.c_str()); }
-
-  operator const char*() const
-  {
-    return m_props.GetStringProperty(m_name.c_str());
-  }
-
-  template<std::integral T>
-  operator T() const
-  {
-    return T(m_props.GetNumberProperty(m_name.c_str()));
-  }
-
-  operator float() const { return m_props.GetFloatProperty(m_name.c_str()); }
-
-  operator bool() const { return m_props.GetBooleanProperty(m_name.c_str()); }
-
-  template<class T>
-  auto visit(T visitor) const
-  {
-    switch (GetType()) {
-    case SDL_PROPERTY_TYPE_POINTER: return visitor((void*)(*this));
-    case SDL_PROPERTY_TYPE_STRING: return visitor((const char*)(*this));
-    case SDL_PROPERTY_TYPE_NUMBER: return visitor(Sint64(*this));
-    case SDL_PROPERTY_TYPE_FLOAT: return visitor(float(*this));
-    case SDL_PROPERTY_TYPE_BOOLEAN: return visitor(bool(*this));
-    default: return visitor(std::nullopt);
-    }
-  }
-};
-
 TEST_CASE("PropertyProxy")
 {
   Properties props;

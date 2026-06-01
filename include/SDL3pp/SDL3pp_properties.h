@@ -79,6 +79,9 @@ constexpr PropertyType PROPERTY_TYPE_FLOAT = SDL_PROPERTY_TYPE_FLOAT; ///< FLOAT
 constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
   SDL_PROPERTY_TYPE_BOOLEAN; ///< BOOLEAN
 
+// Forward decl
+struct PropertyProxy;
+
 /**
  * A callback used to enumerate all the properties in a group of properties.
  *
@@ -767,6 +770,74 @@ public:
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
+};
+
+/// Represent a property name from a given Properties
+class PropertyProxy
+{
+public:
+  /// Constructor
+  constexpr PropertyProxy(PropertiesRef props, StringParam name)
+    : m_props(props)
+    , m_name(std::move(name))
+  {
+  }
+
+  /// True if the there is a property with this name.
+  bool IsValid() const { return m_props.HasProperty(m_name.c_str()); }
+
+  /// Get Property type.
+  PropertyType GetType() const
+  {
+    return m_props.GetPropertyType(m_name.c_str());
+  }
+
+  /// Get Property name.
+  const char* GetName() const { return m_name; }
+
+  /// Get the property group this proxy belongs to.
+  PropertiesRef GetProperties() const { return m_props; }
+
+  /// Get property as a void pointer
+  operator void*() const { return m_props.GetPointerProperty(m_name.c_str()); }
+
+  /// Get property as string.
+  operator const char*() const
+  {
+    return m_props.GetStringProperty(m_name.c_str());
+  }
+
+  /// Get property as integral type.
+  template<std::integral T>
+  operator T() const
+  {
+    return T(m_props.GetNumberProperty(m_name.c_str()));
+  }
+
+  /// Get property as float.
+  operator float() const { return m_props.GetFloatProperty(m_name.c_str()); }
+
+  /// Get property as boolean.
+  operator bool() const { return m_props.GetBooleanProperty(m_name.c_str()); }
+
+  /// Call visitor with the correct type based on its GetType().
+  template<class T>
+  auto visit(T visitor) const
+  {
+    switch (GetType()) {
+    case SDL_PROPERTY_TYPE_POINTER: return visitor((void*)(*this));
+    case SDL_PROPERTY_TYPE_STRING: return visitor((const char*)(*this));
+    case SDL_PROPERTY_TYPE_NUMBER: return visitor(Sint64(*this));
+    case SDL_PROPERTY_TYPE_FLOAT: return visitor(float(*this));
+    case SDL_PROPERTY_TYPE_BOOLEAN: return visitor(bool(*this));
+    default: return visitor(std::nullopt);
+    }
+  }
+
+private:
+  PropertiesRef m_props;
+
+  StringParam m_name;
 };
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)

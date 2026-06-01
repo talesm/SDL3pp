@@ -4223,6 +4223,11 @@ const transform = {
           enum: "SDL_PROPERTY_TYPE_",
           before: "SDL_PropertiesID",
         },
+        "PropertyProxy#forward": {
+          kind: "forward",
+          before: "SDL_PropertiesID",
+          name: "PropertyProxy",
+        },
         "SDL_EnumeratePropertiesCallback": {
           kind: "alias",
           before: "SDL_PropertiesID",
@@ -4248,6 +4253,22 @@ const transform = {
           },
         },
         "SDL_PROP_NAME_STRING": { kind: "var" },
+        "PropertyProxy": {
+          kind: "struct",
+          after: "PropertiesLock",
+          entries: {
+            "m_props": {
+              kind: "var",
+              type: "PropertiesRef",
+              hints: { changeAccess: "private" },
+            },
+            "m_name": {
+              kind: "var",
+              type: "StringParam",
+            },
+          },
+          hints: { private: true },
+        },
         "SetProperty": {
           kind: "function",
           type: "void",
