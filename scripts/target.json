@@ -103686,6 +103686,23 @@
               },
               "proto": true
             },
+            "Get": {
+              "kind": "function",
+              "type": "PropertyProxy",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "StringParam",
+                  "name": "name"
+                }
+              ],
+              "hints": {
+                "delegate": "SDL::GetProperty"
+              },
+              "name": "Get",
+              "static": false,
+              "proto": true
+            },
             "GetPointerProperty": {
               "doc": [
                 "Get a pointer property from a group of properties.",
@@ -105666,6 +105683,40 @@
             "self": "get()",
             "delegate": "SDL::GetPropertyType"
           }
+        },
+        "GetProperty": {
+          "kind": "function",
+          "type": "PropertyProxy",
+          "parameters": [
+            {
+              "type": "PropertiesRef",
+              "name": "props"
+            },
+            {
+              "type": "StringParam",
+              "name": "name"
+            }
+          ],
+          "hints": {
+            "methodName": "Get"
+          },
+          "name": "GetProperty"
+        },
+        "PropertiesBase::Get": {
+          "kind": "function",
+          "type": "PropertyProxy",
+          "immutable": true,
+          "parameters": [
+            {
+              "type": "StringParam",
+              "name": "name"
+            }
+          ],
+          "hints": {
+            "self": "get()",
+            "delegate": "SDL::GetProperty"
+          },
+          "name": "PropertiesBase::Get"
         },
         "GetPointerProperty": {
           "doc": [

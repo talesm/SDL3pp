@@ -4309,6 +4309,19 @@ const transform = {
         },
         "SDL_HasProperty": { immutable: true },
         "SDL_GetPropertyType": { immutable: true },
+        "GetProperty": {
+          kind: "function",
+          type: "PropertyProxy",
+          immutable: true,
+          parameters: [{
+            type: "PropertiesRef",
+            name: "props"
+          }, {
+            type: "StringParam",
+            name: "name"
+          }],
+          hints: { methodName: "Get" },
+        },
         "SDL_GetPointerProperty": {
           immutable: true,
           parameters: [{}, {}, { default: "nullptr" }]

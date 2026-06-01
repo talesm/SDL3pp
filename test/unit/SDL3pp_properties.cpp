@@ -50,10 +50,10 @@ TEST_CASE("Property .Set()")
   CHECK(props.GetPropertyType("HeyPointer") == PROPERTY_TYPE_POINTER);
 }
 
-TEST_CASE("PropertyProxy")
+TEST_CASE("Property .Get")
 {
   Properties props;
-  PropertyProxy pp{props, "key"};
+  PropertyProxy pp = props.Get("key");
   CHECK(pp.IsValid() == false);
 
   props.Set("key", "value");

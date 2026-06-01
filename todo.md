@@ -4,7 +4,7 @@ Todo for next version
 - [ ] Improvements over Properties:
   - [x] Add PropertiesRef.Set();
   - [x] Get*Property are const;
-  - [ ] Add PropertiesRef.Get();
+  - [x] Add PropertiesRef.Get();
   - [ ] Add a constructor to Properties similar to std::map initializer list;
   - [ ] Add operator[] to Properties;
   - [ ] Add begin and end to Properties;

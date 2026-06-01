@@ -9624,6 +9624,14 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
   PropertyType GetPropertyType(StringParam name) const;
 
   /**
+   * Get a property from a group of properties.
+   *
+   * @param name the name of the property to query.
+   * @returns A proxy that is convertible to any valid property type.
+   */
+  PropertyProxy Get(StringParam name) const;
+
+  /**
    * Get a pointer property from a group of properties.
    *
    * By convention, the names of properties that SDL exposes on objects will
@@ -10511,6 +10519,23 @@ inline PropertyType GetPropertyType(PropertiesRef props, StringParam name)
 inline PropertyType PropertiesBase::GetPropertyType(StringParam name) const
 {
   return SDL::GetPropertyType(get(), std::move(name));
+}
+
+/**
+ * Get a property from a group of properties.
+ *
+ * @param props the properties to query.
+ * @param name the name of the property to query.
+ * @returns A proxy that is convertible to any valid property type.
+ */
+inline PropertyProxy GetProperty(PropertiesRef props, StringParam name)
+{
+  return {props, std::move(name)};
+}
+
+inline PropertyProxy PropertiesBase::Get(StringParam name) const
+{
+  return SDL::GetProperty(get(), std::move(name));
 }
 
 /**
