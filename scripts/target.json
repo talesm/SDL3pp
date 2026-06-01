@@ -102859,6 +102859,10 @@
           "kind": "forward",
           "name": "PropertyProxy"
         },
+        "PropertyMutableProxy-forward": {
+          "kind": "forward",
+          "name": "PropertyMutableProxy"
+        },
         "EnumeratePropertiesCallback": {
           "name": "EnumeratePropertiesCallback",
           "kind": "alias",
@@ -103039,6 +103043,23 @@
                 "body": "DestroyProperties(release());",
                 "delegate": "SDL::DestroyProperties"
               },
+              "proto": true
+            },
+            "operator[]": {
+              "kind": "function",
+              "type": "PropertyProxy",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "StringParam",
+                  "name": "name"
+                }
+              ],
+              "hints": {
+                "body": "return {*this, std::move(name)};"
+              },
+              "name": "operator[]",
+              "static": false,
               "proto": true
             },
             "Copy": {
@@ -104588,6 +104609,37 @@
           },
           "name": "PropertyProxy"
         },
+        "PropertyMutableProxy": {
+          "kind": "struct",
+          "type": "PropertyProxy",
+          "entries": {
+            "PropertyProxy::PropertyProxy": {
+              "kind": "alias",
+              "name": "PropertyProxy::PropertyProxy"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "PropertyMutableProxy &",
+              "template": [
+                {
+                  "type": "PropertyValue",
+                  "name": "V"
+                }
+              ],
+              "parameters": [
+                {
+                  "type": "V &&",
+                  "name": "value"
+                }
+              ],
+              "hints": {
+                "body": "GetProperties().Set(GetName(), std::forward<V>(value)); return *this;"
+              },
+              "name": "operator="
+            }
+          },
+          "name": "PropertyMutableProxy"
+        },
         "PROP_NAME_STRING": {
           "doc": [
             "A generic property for naming things.",
@@ -104881,6 +104933,22 @@
             "private": true,
             "body": "if (!m_lock) return;\nUnlockProperties(m_lock);\nm_lock = {};"
           }
+        },
+        "PropertiesBase::operator[]": {
+          "kind": "function",
+          "type": "PropertyProxy",
+          "immutable": true,
+          "parameters": [
+            {
+              "type": "StringParam",
+              "name": "name"
+            }
+          ],
+          "hints": {
+            "self": "get()",
+            "body": "return {*this, std::move(name)};"
+          },
+          "name": "PropertiesBase::operator[]"
         },
         "SetProperty": {
           "kind": "function",

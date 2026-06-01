@@ -4228,6 +4228,11 @@ const transform = {
           before: "SDL_PropertiesID",
           name: "PropertyProxy",
         },
+        "PropertyMutableProxy#forward": {
+          kind: "forward",
+          before: "SDL_PropertiesID",
+          name: "PropertyMutableProxy",
+        },
         "SDL_EnumeratePropertiesCallback": {
           kind: "alias",
           before: "SDL_PropertiesID",
@@ -4269,10 +4274,32 @@ const transform = {
           },
           hints: { private: true },
         },
+        "PropertyMutableProxy": {
+          kind: "struct",
+          type: "PropertyProxy",
+          entries: {
+            "PropertyProxy::PropertyProxy": "alias",
+            "operator=": {
+              kind: "function",
+              type: "PropertyMutableProxy &",
+              template: [{ type: "PropertyValue", name: "V" }],
+              parameters: [{ type: "V &&", name: "value" }],
+              hints: { body: "GetProperties().Set(GetName(), std::forward<V>(value)); return *this;" },
+            }
+          },
+        },
+        "PropertiesBase::operator[]": {
+          before: "SetProperty",
+          kind: "function",
+          type: "PropertyProxy",
+          immutable: true,
+          parameters: [{ type: "StringParam", name: "name" }],
+          hints: { body: "return {*this, std::move(name)};" },
+        },
         "SetProperty": {
+          after: "SDL_UnlockProperties",
           kind: "function",
           type: "void",
-          after: "SDL_UnlockProperties",
           parameters: [{
             type: "PropertiesRef",
             name: "props"

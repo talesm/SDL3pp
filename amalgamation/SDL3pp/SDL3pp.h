@@ -9265,6 +9265,9 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
 // Forward decl
 struct PropertyProxy;
 
+// Forward decl
+struct PropertyMutableProxy;
+
 /// A value assignable to a property.
 template<class T>
 concept PropertyValue =
@@ -9387,6 +9390,22 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa CreateProperties
    */
   void Destroy();
+
+  /**
+   * Access a property from a group of properties.
+   *
+   * @param name the name of the property to query.
+   * @returns A proxy that is convertible to any valid property type.
+   */
+  PropertyProxy operator[](StringParam name) const;
+
+  /**
+   * Access a property from a group of properties.
+   *
+   * @param name the name of the property to query.
+   * @returns A proxy that is convertible to any valid property type.
+   */
+  PropertyMutableProxy operator[](StringParam name);
 
   /**
    * Copy a group of properties.
@@ -10038,6 +10057,20 @@ private:
   StringParam m_name;
 };
 
+/// Represent a mutable property name from a given Properties
+struct PropertyMutableProxy : PropertyProxy
+{
+  using PropertyProxy::PropertyProxy;
+
+  /// Change the value of this property.
+  template<PropertyValue V>
+  PropertyMutableProxy& operator=(V&& value)
+  {
+    GetProperties().Set(GetName(), std::forward<V>(value));
+    return *this;
+  }
+};
+
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
@@ -10193,6 +10226,16 @@ inline void PropertiesLock::reset()
   if (!m_lock) return;
   UnlockProperties(m_lock);
   m_lock = {};
+}
+
+inline PropertyProxy PropertiesBase::operator[](StringParam name) const
+{
+  return {*this, std::move(name)};
+}
+
+inline PropertyMutableProxy PropertiesBase::operator[](StringParam name)
+{
+  return {*this, std::move(name)};
 }
 
 /**

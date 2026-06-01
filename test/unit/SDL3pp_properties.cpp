@@ -103,4 +103,11 @@ TEST_CASE("Property.Set(PropertyProxy) ")
   CHECK_EQ(Sint64(props.Get("key2")), 10);
 }
 
+TEST_CASE("PropertiesRef.operator[]")
+{
+  Properties props;
+  props.Set("key", 10);
+  CHECK_EQ(Sint64(props["key"]), 10);
+}
+
 } // namespace SDL
