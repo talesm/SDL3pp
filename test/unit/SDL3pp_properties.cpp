@@ -91,4 +91,16 @@ TEST_CASE("Property .Get")
   CHECK_EQ(std::any_cast<float>(r), 10.5f);
 }
 
+TEST_CASE("Property.Set(PropertyProxy) ")
+{
+  Properties props;
+  REQUIRE_NOTHROW(props.Set("key", props.Get("non-existing key")));
+  CHECK_FALSE(props.HasProperty("key"));
+
+  props.Set("key", 10);
+  REQUIRE_NOTHROW(props.Set("key2", props.Get("key")));
+  CHECK_EQ(Sint64(props.Get("key")), 10);
+  CHECK_EQ(Sint64(props.Get("key2")), 10);
+}
+
 } // namespace SDL

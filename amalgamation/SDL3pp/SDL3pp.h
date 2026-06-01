@@ -10211,6 +10211,7 @@ inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
       StringParam name;
 
       void operator()(std::monostate) { props.ClearProperty(std::move(name)); }
+      void operator()(std::nullopt_t) { props.ClearProperty(std::move(name)); }
       void operator()(void* v) { props.SetPointerProperty(std::move(name), v); }
 
       void operator()(StringParam&& v)
@@ -10225,6 +10226,11 @@ inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
       void operator()(Sint64 v) { props.SetNumberProperty(std::move(name), v); }
       void operator()(float v) { props.SetFloatProperty(std::move(name), v); }
       void operator()(bool v) { props.SetBooleanProperty(std::move(name), v); }
+
+      void operator()(const PropertyProxy& prop)
+      {
+        prop.visit([this](auto v) { (*this)(v); });
+      }
     };
     Visitor{props, std::move(name)}(std::forward<V>(value));
   }
