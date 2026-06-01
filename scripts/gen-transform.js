@@ -4288,11 +4288,26 @@ const transform = {
         },
         "SDL_HasProperty": { immutable: true },
         "SDL_GetPropertyType": { immutable: true },
-        "SDL_GetPointerProperty": { immutable: true },
-        "SDL_GetStringProperty": { immutable: true },
-        "SDL_GetNumberProperty": { immutable: true },
-        "SDL_GetFloatProperty": { immutable: true },
-        "SDL_GetBooleanProperty": { immutable: true },
+        "SDL_GetPointerProperty": {
+          immutable: true,
+          parameters: [{}, {}, { default: "nullptr" }]
+        },
+        "SDL_GetStringProperty": {
+          immutable: true,
+          parameters: [{}, {}, { default: "\"\"" }]
+        },
+        "SDL_GetNumberProperty": {
+          immutable: true,
+          parameters: [{}, {}, { default: "0" }]
+        },
+        "SDL_GetFloatProperty": {
+          immutable: true,
+          parameters: [{}, {}, { default: "0" }]
+        },
+        "SDL_GetBooleanProperty": {
+          immutable: true,
+          parameters: [{}, {}, { default: "false" }]
+        },
         "SDL_EnumerateProperties": { immutable: true },
         "EnumerateProperties": {
           kind: "function",

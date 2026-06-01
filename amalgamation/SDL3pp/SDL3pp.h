@@ -9649,7 +9649,8 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetPointerProperty
    */
-  void* GetPointerProperty(StringParam name, void* default_value) const;
+  void* GetPointerProperty(StringParam name,
+                           void* default_value = nullptr) const;
 
   /**
    * Get a string property from a group of properties.
@@ -9672,7 +9673,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa SetStringProperty
    */
   const char* GetStringProperty(StringParam name,
-                                StringParam default_value) const;
+                                StringParam default_value = "") const;
 
   /**
    * Get a number property from a group of properties.
@@ -9693,7 +9694,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetNumberProperty
    */
-  Sint64 GetNumberProperty(StringParam name, Sint64 default_value) const;
+  Sint64 GetNumberProperty(StringParam name, Sint64 default_value = 0) const;
 
   /**
    * Get a floating point property from a group of properties.
@@ -9714,7 +9715,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetFloatProperty
    */
-  float GetFloatProperty(StringParam name, float default_value) const;
+  float GetFloatProperty(StringParam name, float default_value = 0) const;
 
   /**
    * Get a boolean property from a group of properties.
@@ -9735,7 +9736,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetBooleanProperty
    */
-  bool GetBooleanProperty(StringParam name, bool default_value) const;
+  bool GetBooleanProperty(StringParam name, bool default_value = false) const;
 
   /**
    * Clear a property from a group of properties.
@@ -10473,7 +10474,7 @@ inline PropertyType PropertiesBase::GetPropertyType(StringParam name) const
  */
 inline void* GetPointerProperty(PropertiesRef props,
                                 StringParam name,
-                                void* default_value)
+                                void* default_value = nullptr)
 {
   return SDL_GetPointerProperty(props, name, default_value);
 }
@@ -10507,7 +10508,7 @@ inline void* PropertiesBase::GetPointerProperty(StringParam name,
  */
 inline const char* GetStringProperty(PropertiesRef props,
                                      StringParam name,
-                                     StringParam default_value)
+                                     StringParam default_value = "")
 {
   return SDL_GetStringProperty(props, name, default_value);
 }
@@ -10542,7 +10543,7 @@ inline const char* PropertiesBase::GetStringProperty(
  */
 inline Sint64 GetNumberProperty(PropertiesRef props,
                                 StringParam name,
-                                Sint64 default_value)
+                                Sint64 default_value = 0)
 {
   return SDL_GetNumberProperty(props, name, default_value);
 }
@@ -10575,7 +10576,7 @@ inline Sint64 PropertiesBase::GetNumberProperty(StringParam name,
  */
 inline float GetFloatProperty(PropertiesRef props,
                               StringParam name,
-                              float default_value)
+                              float default_value = 0)
 {
   return SDL_GetFloatProperty(props, name, default_value);
 }
@@ -10608,7 +10609,7 @@ inline float PropertiesBase::GetFloatProperty(StringParam name,
  */
 inline bool GetBooleanProperty(PropertiesRef props,
                                StringParam name,
-                               bool default_value)
+                               bool default_value = false)
 {
   return SDL_GetBooleanProperty(props, name, default_value);
 }

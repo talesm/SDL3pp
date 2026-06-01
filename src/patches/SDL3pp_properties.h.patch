@@ -41,7 +41,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -581,7 +589,6 @@
+@@ -582,7 +590,6 @@
     * properties. The properties are locked during enumeration.
     *
     * @param callback the function to call for each property.
@@ -49,7 +49,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -590,6 +597,13 @@
+@@ -591,6 +598,13 @@
     */
    void Enumerate(EnumeratePropertiesCB callback) const;
  
@@ -63,7 +63,7 @@
    Uint64 GetCount() const;
  };
  
-@@ -599,6 +613,9 @@
+@@ -600,6 +614,9 @@
   * @since This datatype is available since SDL 3.2.0.
   *
   * @cat resource
@@ -73,7 +73,7 @@
   */
  struct Properties : PropertiesBase
  {
-@@ -689,7 +706,7 @@
+@@ -690,7 +707,7 @@
     * or want to guarantee that properties being queried aren't freed in another
     * thread.
     *
@@ -82,7 +82,7 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
-@@ -713,8 +730,6 @@
+@@ -714,8 +731,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -91,7 +91,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -738,8 +753,6 @@
+@@ -739,8 +754,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -100,7 +100,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -779,7 +792,7 @@
+@@ -780,7 +793,7 @@
   *
   * @since This constant is available since SDL 3.4.0.
   */
@@ -109,7 +109,7 @@
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
-@@ -796,7 +809,7 @@
+@@ -797,7 +810,7 @@
   */
  inline PropertiesRef GetGlobalProperties()
  {
@@ -118,7 +118,7 @@
  }
  
  /**
-@@ -912,16 +925,52 @@
+@@ -913,16 +926,52 @@
    m_lock = {};
  }
  
@@ -173,7 +173,7 @@
  }
  
  /**
-@@ -981,7 +1030,6 @@
+@@ -982,7 +1031,6 @@
   *              property.
   * @param cleanup the function to call when this property is deleted, or nullptr
   *                if no cleanup is necessary.
@@ -181,7 +181,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -997,7 +1045,12 @@
+@@ -998,7 +1046,12 @@
                                            void* value,
                                            CleanupPropertyCB cleanup)
  {
@@ -195,7 +195,7 @@
  }
  
  inline void PropertiesBase::SetPointerPropertyWithCleanup(
-@@ -1015,7 +1068,8 @@
+@@ -1016,7 +1069,8 @@
    void* value,
    CleanupPropertyCB cleanup)
  {
@@ -205,7 +205,7 @@
  }
  
  /**
-@@ -1433,7 +1487,6 @@
+@@ -1434,7 +1488,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -213,7 +213,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1443,7 +1496,13 @@
+@@ -1444,7 +1497,13 @@
  inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
@@ -228,7 +228,7 @@
  }
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1454,12 +1513,22 @@
+@@ -1455,12 +1514,22 @@
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
  {
@@ -253,7 +253,7 @@
  }
  
  inline Uint64 PropertiesBase::GetCount() const
-@@ -1492,6 +1561,17 @@
+@@ -1493,6 +1562,17 @@
  
  /// @}
  

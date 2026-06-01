@@ -103749,7 +103749,8 @@
                 },
                 {
                   "name": "default_value",
-                  "type": "void *"
+                  "type": "void *",
+                  "default": "nullptr"
                 }
               ],
               "sourceName": "SDL_GetPointerProperty",
@@ -103809,7 +103810,8 @@
                 },
                 {
                   "name": "default_value",
-                  "type": "StringParam"
+                  "type": "StringParam",
+                  "default": "\"\""
                 }
               ],
               "sourceName": "SDL_GetStringProperty",
@@ -103870,7 +103872,8 @@
                 },
                 {
                   "name": "default_value",
-                  "type": "Sint64"
+                  "type": "Sint64",
+                  "default": "0"
                 }
               ],
               "sourceName": "SDL_GetNumberProperty",
@@ -103931,7 +103934,8 @@
                 },
                 {
                   "name": "default_value",
-                  "type": "float"
+                  "type": "float",
+                  "default": "0"
                 }
               ],
               "sourceName": "SDL_GetFloatProperty",
@@ -103992,7 +103996,8 @@
                 },
                 {
                   "name": "default_value",
-                  "type": "bool"
+                  "type": "bool",
+                  "default": "false"
                 }
               ],
               "sourceName": "SDL_GetBooleanProperty",
@@ -105711,7 +105716,8 @@
             },
             {
               "name": "default_value",
-              "type": "void *"
+              "type": "void *",
+              "default": "nullptr"
             }
           ],
           "sourceName": "SDL_GetPointerProperty"
@@ -105795,7 +105801,8 @@
             },
             {
               "name": "default_value",
-              "type": "StringParam"
+              "type": "StringParam",
+              "default": "\"\""
             }
           ],
           "sourceName": "SDL_GetStringProperty"
@@ -105880,7 +105887,8 @@
             },
             {
               "name": "default_value",
-              "type": "Sint64"
+              "type": "Sint64",
+              "default": "0"
             }
           ],
           "sourceName": "SDL_GetNumberProperty"
@@ -105965,7 +105973,8 @@
             },
             {
               "name": "default_value",
-              "type": "float"
+              "type": "float",
+              "default": "0"
             }
           ],
           "sourceName": "SDL_GetFloatProperty"
@@ -106050,7 +106059,8 @@
             },
             {
               "name": "default_value",
-              "type": "bool"
+              "type": "bool",
+              "default": "false"
             }
           ],
           "sourceName": "SDL_GetBooleanProperty"

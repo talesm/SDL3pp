@@ -55,27 +55,31 @@ public:
   {
   }
 
-  bool IsValid() { return m_props.HasProperty(m_name.c_str()); }
+  bool IsValid() const { return m_props.HasProperty(m_name.c_str()); }
 
-  PropertyType GetType() { return m_props.GetPropertyType(m_name.c_str()); }
+  PropertyType GetType() const
+  {
+    return m_props.GetPropertyType(m_name.c_str());
+  }
 
   const char* GetName() const { return m_name; }
 
-  operator void*()
+  operator void*() const { return m_props.GetPointerProperty(m_name.c_str()); }
+
+  operator const char*() const
   {
-    return m_props.GetPointerProperty(m_name.c_str(), nullptr);
+    return m_props.GetStringProperty(m_name.c_str());
   }
-  operator const char*()
-  {
-    return m_props.GetStringProperty(m_name.c_str(), "");
-  }
+
   template<std::integral T>
-  operator T()
+  operator T() const
   {
-    return T(m_props.GetNumberProperty(m_name.c_str(), 0));
+    return T(m_props.GetNumberProperty(m_name.c_str()));
   }
-  operator float() { return m_props.GetFloatProperty(m_name.c_str(), 0); }
-  operator bool() { return m_props.GetBooleanProperty(m_name.c_str(), false); }
+
+  operator float() const { return m_props.GetFloatProperty(m_name.c_str()); }
+
+  operator bool() const { return m_props.GetBooleanProperty(m_name.c_str()); }
 };
 
 TEST_CASE("PropertyProxy")
