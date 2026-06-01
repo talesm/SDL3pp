@@ -1,5 +1,6 @@
 #include "SDL3pp/SDL3pp_properties.h"
 #include "doctest.h"
+#include <any>
 
 namespace SDL {
 
@@ -31,12 +32,18 @@ TEST_CASE("Property .Set()")
   CHECK(props.GetPropertyType("HEY") == PROPERTY_TYPE_INVALID);
   CHECK_NOTHROW(props.Set("Hey2", std::string("YOU")));
   CHECK(props.GetPropertyType("Hey2") == PROPERTY_TYPE_STRING);
-  CHECK_NOTHROW(props.Set("Hey3", true));
-  CHECK(props.GetPropertyType("Hey3") == PROPERTY_TYPE_BOOLEAN);
   CHECK_NOTHROW(props.Set("HeyInt", 20));
   CHECK(props.GetPropertyType("HeyInt") == PROPERTY_TYPE_NUMBER);
   CHECK_NOTHROW(props.Set("HeyFloat", 2.5f));
   CHECK(props.GetPropertyType("HeyFloat") == PROPERTY_TYPE_FLOAT);
+  CHECK_NOTHROW(props.Set("Hey3", true));
+  CHECK(props.GetPropertyType("Hey3") == PROPERTY_TYPE_BOOLEAN);
+  bool b = false;
+  CHECK_NOTHROW(props.Set("HeyBoolean", b));
+  CHECK(props.GetPropertyType("HeyBoolean") == PROPERTY_TYPE_BOOLEAN);
+  bool& bref = b;
+  CHECK_NOTHROW(props.Set("HeyBoolean2", bref));
+  CHECK(props.GetPropertyType("HeyBoolean2") == PROPERTY_TYPE_BOOLEAN);
 
   int a = 42;
   CHECK_NOTHROW(props.Set("HeyPointer", &a));
@@ -80,6 +87,19 @@ public:
   operator float() const { return m_props.GetFloatProperty(m_name.c_str()); }
 
   operator bool() const { return m_props.GetBooleanProperty(m_name.c_str()); }
+
+  template<class T>
+  auto visit(T visitor) const
+  {
+    switch (GetType()) {
+    case SDL_PROPERTY_TYPE_POINTER: return visitor((void*)(*this));
+    case SDL_PROPERTY_TYPE_STRING: return visitor((const char*)(*this));
+    case SDL_PROPERTY_TYPE_NUMBER: return visitor(Sint64(*this));
+    case SDL_PROPERTY_TYPE_FLOAT: return visitor(float(*this));
+    case SDL_PROPERTY_TYPE_BOOLEAN: return visitor(bool(*this));
+    default: return visitor(std::nullopt);
+    }
+  }
 };
 
 TEST_CASE("PropertyProxy")
@@ -118,6 +138,9 @@ TEST_CASE("PropertyProxy")
   CHECK(Sint64(pp) == 11);
   CHECK(float(pp) == 10.5f);
   CHECK((void*)(pp) == nullptr);
+
+  auto r = pp.visit([](auto v) { return std::any(v); });
+  CHECK_EQ(std::any_cast<float>(r), 10.5f);
 }
 
 } // namespace SDL
