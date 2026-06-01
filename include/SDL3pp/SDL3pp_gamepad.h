@@ -213,35 +213,38 @@ constexpr GamepadButton GAMEPAD_BUTTON_DPAD_RIGHT =
 
 /**
  * Additional button (e.g. Xbox Series X share button, PS5 microphone button,
- * Nintendo Switch Pro capture button, Amazon Luna microphone button, Google
- * Stadia capture button)
+ * Nintendo Switch Pro capture button, Steam Controller QAM button, Amazon Luna
+ * microphone button, Google Stadia capture button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_MISC1 = SDL_GAMEPAD_BUTTON_MISC1;
 
 /**
  * Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1,
- * DualSense Edge RB button, Right Joy-Con SR button)
+ * DualSense Edge RB button, Right Joy-Con SR button, Steam Controller R4
+ * button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE1 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1;
 
 /**
  * Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3,
- * DualSense Edge LB button, Left Joy-Con SL button)
+ * DualSense Edge LB button, Left Joy-Con SL button, Steam Controller L4 button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE1 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE1;
 
 /**
  * Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2,
- * DualSense Edge right Fn button, Right Joy-Con SL button)
+ * DualSense Edge right Fn button, Right Joy-Con SL button, Steam Controller R5
+ * button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2;
 
 /**
  * Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4,
- * DualSense Edge left Fn button, Left Joy-Con SR button)
+ * DualSense Edge left Fn button, Left Joy-Con SR button, Steam Controller L5
+ * button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE2;

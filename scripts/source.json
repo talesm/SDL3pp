@@ -3365,7 +3365,7 @@
               },
               {
                 "tag": "-",
-                "content": "You push data as you have it, and pull it when you need it"
+                "content": "You push data as you have it, and pull it when you need it; the stream will buffer data as needed."
               },
               {
                 "tag": "-",
@@ -4331,14 +4331,15 @@
         "SDL_CreateAudioStream": {
           "doc": [
             "Create a new audio stream.",
+            "Note that `src_spec` or `dst_spec` may be NULL, but any attempts to put or get data from an audio stream will fail until it has valid specs assigned to both ends of the stream. Specs can be assigned later through SDL_SetAudioStreamFormat(), or binding the stream to an audio device (which will set the format of only the input or output, depending on what kind of device the stream was bound to).",
             [
               {
                 "tag": "\\param src_spec",
-                "content": "the format details of the input audio."
+                "content": "the format details of the input audio. May be NULL."
               },
               {
                 "tag": "\\param dst_spec",
-                "content": "the format details of the output audio."
+                "content": "the format details of the output audio. May be NULL."
               },
               {
                 "tag": "\\returns",
@@ -4498,6 +4499,7 @@
             "Future calls to and SDL_GetAudioStreamAvailable and SDL_GetAudioStreamData will reflect the new format, and future calls to SDL_PutAudioStreamData must provide data in the new input formats.",
             "Data that was previously queued in the stream will still be operated on in the format that was current when it was added, which is to say you can put the end of a sound file in one format to a stream, change formats for the next sound file, and start putting that new data while the previous sound file is still queued, and everything will still play back correctly.",
             "If a stream is bound to a device, then the format of the side of the stream bound to a device cannot be changed (src_spec for recording devices, dst_spec for playback devices). Attempts to make a change to this side will be ignored, but this will not report an error. The other side's format can be changed.",
+            "`src_spec` and `dst_spec` may each be NULL; a NULL spec signals not to change the current format for that side of the stream.",
             [
               {
                 "tag": "\\param stream",
@@ -11810,7 +11812,7 @@
             },
             "which": {
               "doc": [
-                "The mouse instance id in relative mode, SDL_TOUCH_MOUSEID for touch events, or 0"
+                "The mouse instance id in relative mode, SDL_TOUCH_MOUSEID for touch events, SDL_PEN_MOUSEID for pen events, or 0"
               ],
               "name": "which",
               "kind": "var",
@@ -15938,7 +15940,7 @@
             },
             "SDL_GAMEPAD_BUTTON_MISC1": {
               "doc": [
-                "Additional button (e.g. Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button, Google Stadia capture button)"
+                "Additional button (e.g. Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Steam Controller QAM button, Amazon Luna microphone button, Google Stadia capture button)"
               ],
               "name": "SDL_GAMEPAD_BUTTON_MISC1",
               "kind": "var",
@@ -15946,7 +15948,7 @@
             },
             "SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1": {
               "doc": [
-                "Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1, DualSense Edge RB button, Right Joy-Con SR button)"
+                "Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1, DualSense Edge RB button, Right Joy-Con SR button, Steam Controller R4 button)"
               ],
               "name": "SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1",
               "kind": "var",
@@ -15954,7 +15956,7 @@
             },
             "SDL_GAMEPAD_BUTTON_LEFT_PADDLE1": {
               "doc": [
-                "Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3, DualSense Edge LB button, Left Joy-Con SL button)"
+                "Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3, DualSense Edge LB button, Left Joy-Con SL button, Steam Controller L4 button)"
               ],
               "name": "SDL_GAMEPAD_BUTTON_LEFT_PADDLE1",
               "kind": "var",
@@ -15962,7 +15964,7 @@
             },
             "SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2": {
               "doc": [
-                "Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2, DualSense Edge right Fn button, Right Joy-Con SL button)"
+                "Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2, DualSense Edge right Fn button, Right Joy-Con SL button, Steam Controller R5 button)"
               ],
               "name": "SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2",
               "kind": "var",
@@ -15970,7 +15972,7 @@
             },
             "SDL_GAMEPAD_BUTTON_LEFT_PADDLE2": {
               "doc": [
-                "Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4, DualSense Edge left Fn button, Left Joy-Con SR button)"
+                "Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4, DualSense Edge left Fn button, Left Joy-Con SR button, Steam Controller L5 button)"
               ],
               "name": "SDL_GAMEPAD_BUTTON_LEFT_PADDLE2",
               "kind": "var",
@@ -39149,6 +39151,33 @@
           "name": "SDL_HINT_VIDEO_WIN_D3DCOMPILER",
           "kind": "def",
           "value": "\"SDL_VIDEO_WIN_D3DCOMPILER\""
+        },
+        "SDL_HINT_VIDEO_X11_ENABLE_XSYNC_EXT": {
+          "doc": [
+            "A variable controlling whether the X Synchronization Extension is enabled.",
+            "If set, this can result in smoother window resizing when rendering using OpenGL, however, there are some conditions:",
+            "- It is only activated on windows created with the `SDL_WINDOW_OPENGL` flag (windows using an SDL OpenGL renderer have this automatically set). - When activated, presentation must be done with `SDL_GL_SwapWindow()` (`SDL_RenderPresent()` calls this internally for OpenGL renderers as well).",
+            "Enabling this and presenting via an external mechanism will result in sync requests not being acked, and hangs and other odd window behavior may result.",
+            "The variable can be set to the following values:",
+            [
+              {
+                "tag": "-",
+                "content": "\"0\": The X Synchronization Extension is disabled. (default)"
+              },
+              {
+                "tag": "-",
+                "content": "\"1\": The X Synchronization Extension is enabled."
+              }
+            ],
+            "This hint should be set before creating a window.",
+            {
+              "tag": "\\since",
+              "content": "This hint is available since SDL 3.4.10."
+            }
+          ],
+          "name": "SDL_HINT_VIDEO_X11_ENABLE_XSYNC_EXT",
+          "kind": "def",
+          "value": "\"SDL_VIDEO_X11_ENABLE_XSYNC_EXT\""
         },
         "SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT": {
           "doc": [
@@ -75004,7 +75033,7 @@
         "SDL_stack_free": {
           "doc": [
             "Free memory previously allocated with SDL_stack_alloc.",
-            "If SDL used alloca() to allocate this memory, this macro does nothing and the allocated memory will be automatically released when the function that called SDL_stack_alloc() returns. If SDL used SDL_malloc(), it will SDL_free the memory immediately.",
+            "If SDL used alloca() to allocate this memory, this macro does nothing (other than insert `((void)(data)` so the compiler sees an expression) and the allocated memory will be automatically released when the function that called SDL_stack_alloc() returns. If SDL used SDL_malloc(), it will SDL_free the memory immediately.",
             {
               "tag": "\\param data",
               "content": "the pointer, from SDL_stack_alloc(), to free."
@@ -75030,7 +75059,7 @@
               "type": ""
             }
           ],
-          "value": ""
+          "value": "((void)(data))"
         },
         "SDL_malloc": {
           "doc": [
@@ -94894,7 +94923,7 @@
           ],
           "name": "SDL_MICRO_VERSION",
           "kind": "def",
-          "value": "8"
+          "value": "10"
         },
         "SDL_VERSIONNUM": {
           "doc": [

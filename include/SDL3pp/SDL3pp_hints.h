@@ -4092,6 +4092,35 @@ namespace SDL {
  */
 #define SDL_HINT_VIDEO_WIN_D3DCOMPILER "SDL_VIDEO_WIN_D3DCOMPILER"
 
+#if SDL_VERSION_ATLEAST(3, 4, 10)
+
+/**
+ * A variable controlling whether the X Synchronization Extension is enabled.
+ *
+ * If set, this can result in smoother window resizing when rendering using
+ * OpenGL, however, there are some conditions:
+ *
+ * - It is only activated on windows created with the `WINDOW_OPENGL` flag
+ * (windows using an SDL OpenGL renderer have this automatically set). - When
+ * activated, presentation must be done with `GL_SwapWindow()`
+ * (`RenderPresent()` calls this internally for OpenGL renderers as well).
+ *
+ * Enabling this and presenting via an external mechanism will result in sync
+ * requests not being acked, and hangs and other odd window behavior may result.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": The X Synchronization Extension is disabled. (default)
+ * - "1": The X Synchronization Extension is enabled.
+ *
+ * This hint should be set before creating a window.
+ *
+ * @since This hint is available since SDL 3.4.10.
+ */
+#define SDL_HINT_VIDEO_X11_ENABLE_XSYNC_EXT "SDL_VIDEO_X11_ENABLE_XSYNC_EXT"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 10)
+
 #if SDL_VERSION_ATLEAST(3, 2, 10)
 
 /**

@@ -7101,6 +7101,35 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_VIDEO_WIN_D3DCOMPILER "SDL_VIDEO_WIN_D3DCOMPILER"
 
+#if SDL_VERSION_ATLEAST(3, 4, 10)
+
+/**
+ * A variable controlling whether the X Synchronization Extension is enabled.
+ *
+ * If set, this can result in smoother window resizing when rendering using
+ * OpenGL, however, there are some conditions:
+ *
+ * - It is only activated on windows created with the `WINDOW_OPENGL` flag
+ * (windows using an SDL OpenGL renderer have this automatically set). - When
+ * activated, presentation must be done with `GL_SwapWindow()`
+ * (`RenderPresent()` calls this internally for OpenGL renderers as well).
+ *
+ * Enabling this and presenting via an external mechanism will result in sync
+ * requests not being acked, and hangs and other odd window behavior may result.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": The X Synchronization Extension is disabled. (default)
+ * - "1": The X Synchronization Extension is enabled.
+ *
+ * This hint should be set before creating a window.
+ *
+ * @since This hint is available since SDL 3.4.10.
+ */
+#define SDL_HINT_VIDEO_X11_ENABLE_XSYNC_EXT "SDL_VIDEO_X11_ENABLE_XSYNC_EXT"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 10)
+
 #if SDL_VERSION_ATLEAST(3, 2, 10)
 
 /**
@@ -34871,6 +34900,9 @@ struct AudioStreamBase : ResourceBaseT<AudioStreamRaw>
    * be ignored, but this will not report an error. The other side's format can
    * be changed.
    *
+   * `src_spec` and `dst_spec` may each be nullptr; a nullptr spec signals not
+   * to change the current format for that side of the stream.
+   *
    * @param src_spec the new format of the audio input; if nullptr, it is not
    *                 changed.
    * @param dst_spec the new format of the audio output; if nullptr, it is not
@@ -35754,7 +35786,8 @@ struct AudioStreamBase : ResourceBaseT<AudioStreamRaw>
  * - It can handle incoming data in any variable size.
  * - It can handle input/output format changes on the fly.
  * - It can remap audio channels between inputs and outputs.
- * - You push data as you have it, and pull it when you need it
+ * - You push data as you have it, and pull it when you need it; the stream will
+ *   buffer data as needed.
  * - It can also function as a basic audio data queue even if you just have
  *   sound that needs to pass from one place to another.
  * - You can hook callbacks up to them when more data is added or requested, to
@@ -35795,8 +35828,15 @@ struct AudioStream : AudioStreamBase
   /**
    * Create a new audio stream.
    *
-   * @param src_spec the format details of the input audio.
-   * @param dst_spec the format details of the output audio.
+   * Note that `src_spec` or `dst_spec` may be nullptr, but any attempts to put
+   * or get data from an audio stream will fail until it has valid specs
+   * assigned to both ends of the stream. Specs can be assigned later through
+   * SetAudioStreamFormat(), or binding the stream to an audio device (which
+   * will set the format of only the input or output, depending on what kind of
+   * device the stream was bound to).
+   *
+   * @param src_spec the format details of the input audio. May be nullptr.
+   * @param dst_spec the format details of the output audio. May be nullptr.
    * @post a new audio stream on success.
    * @throws Error on failure.
    *
@@ -36784,8 +36824,15 @@ inline AudioDeviceRef AudioStreamBase::GetDevice() const
 /**
  * Create a new audio stream.
  *
- * @param src_spec the format details of the input audio.
- * @param dst_spec the format details of the output audio.
+ * Note that `src_spec` or `dst_spec` may be nullptr, but any attempts to put or
+ * get data from an audio stream will fail until it has valid specs assigned to
+ * both ends of the stream. Specs can be assigned later through
+ * SetAudioStreamFormat(), or binding the stream to an audio device (which will
+ * set the format of only the input or output, depending on what kind of device
+ * the stream was bound to).
+ *
+ * @param src_spec the format details of the input audio. May be nullptr.
+ * @param dst_spec the format details of the output audio. May be nullptr.
  * @returns a new audio stream on success.
  * @throws Error on failure.
  *
@@ -36934,6 +36981,9 @@ inline void AudioStreamBase::GetFormat(AudioSpec* src_spec,
  * for playback devices). Attempts to make a change to this side will be
  * ignored, but this will not report an error. The other side's format can be
  * changed.
+ *
+ * `src_spec` and `dst_spec` may each be nullptr; a nullptr spec signals not to
+ * change the current format for that side of the stream.
  *
  * @param stream the stream the format is being changed.
  * @param src_spec the new format of the audio input; if nullptr, it is not
@@ -75527,35 +75577,38 @@ constexpr GamepadButton GAMEPAD_BUTTON_DPAD_RIGHT =
 
 /**
  * Additional button (e.g. Xbox Series X share button, PS5 microphone button,
- * Nintendo Switch Pro capture button, Amazon Luna microphone button, Google
- * Stadia capture button)
+ * Nintendo Switch Pro capture button, Steam Controller QAM button, Amazon Luna
+ * microphone button, Google Stadia capture button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_MISC1 = SDL_GAMEPAD_BUTTON_MISC1;
 
 /**
  * Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1,
- * DualSense Edge RB button, Right Joy-Con SR button)
+ * DualSense Edge RB button, Right Joy-Con SR button, Steam Controller R4
+ * button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE1 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1;
 
 /**
  * Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3,
- * DualSense Edge LB button, Left Joy-Con SL button)
+ * DualSense Edge LB button, Left Joy-Con SL button, Steam Controller L4 button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE1 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE1;
 
 /**
  * Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2,
- * DualSense Edge right Fn button, Right Joy-Con SL button)
+ * DualSense Edge right Fn button, Right Joy-Con SL button, Steam Controller R5
+ * button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2;
 
 /**
  * Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4,
- * DualSense Edge left Fn button, Left Joy-Con SR button)
+ * DualSense Edge left Fn button, Left Joy-Con SR button, Steam Controller L5
+ * button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE2;

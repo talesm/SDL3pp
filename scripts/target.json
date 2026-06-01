@@ -7441,6 +7441,7 @@
                 "Future calls to and GetAudioStreamAvailable and GetAudioStreamData will reflect the new format, and future calls to PutAudioStreamData must provide data in the new input formats.",
                 "Data that was previously queued in the stream will still be operated on in the format that was current when it was added, which is to say you can put the end of a sound file in one format to a stream, change formats for the next sound file, and start putting that new data while the previous sound file is still queued, and everything will still play back correctly.",
                 "If a stream is bound to a device, then the format of the side of the stream bound to a device cannot be changed (src_spec for recording devices, dst_spec for playback devices). Attempts to make a change to this side will be ignored, but this will not report an error. The other side's format can be changed.",
+                "`src_spec` and `dst_spec` may each be nullptr; a nullptr spec signals not to change the current format for that side of the stream.",
                 [
                   {
                     "tag": "@param src_spec",
@@ -8883,7 +8884,7 @@
               },
               {
                 "tag": "-",
-                "content": "You push data as you have it, and pull it when you need it"
+                "content": "You push data as you have it, and pull it when you need it; the stream will buffer data as needed."
               },
               {
                 "tag": "-",
@@ -8963,14 +8964,15 @@
                 "overload": {
                   "doc": [
                     "Create a new audio stream.",
+                    "Note that `src_spec` or `dst_spec` may be nullptr, but any attempts to put or get data from an audio stream will fail until it has valid specs assigned to both ends of the stream. Specs can be assigned later through SetAudioStreamFormat(), or binding the stream to an audio device (which will set the format of only the input or output, depending on what kind of device the stream was bound to).",
                     [
                       {
                         "tag": "@param src_spec",
-                        "content": "the format details of the input audio."
+                        "content": "the format details of the input audio. May be nullptr."
                       },
                       {
                         "tag": "@param dst_spec",
-                        "content": "the format details of the output audio."
+                        "content": "the format details of the output audio. May be nullptr."
                       },
                       {
                         "tag": "@post",
@@ -9142,14 +9144,15 @@
                       "name": "AudioStream",
                       "doc": [
                         "Create a new audio stream.",
+                        "Note that `src_spec` or `dst_spec` may be nullptr, but any attempts to put or get data from an audio stream will fail until it has valid specs assigned to both ends of the stream. Specs can be assigned later through SetAudioStreamFormat(), or binding the stream to an audio device (which will set the format of only the input or output, depending on what kind of device the stream was bound to).",
                         [
                           {
                             "tag": "@param src_spec",
-                            "content": "the format details of the input audio."
+                            "content": "the format details of the input audio. May be nullptr."
                           },
                           {
                             "tag": "@param dst_spec",
-                            "content": "the format details of the output audio."
+                            "content": "the format details of the output audio. May be nullptr."
                           },
                           {
                             "tag": "@post",
@@ -10715,14 +10718,15 @@
         "CreateAudioStream": {
           "doc": [
             "Create a new audio stream.",
+            "Note that `src_spec` or `dst_spec` may be nullptr, but any attempts to put or get data from an audio stream will fail until it has valid specs assigned to both ends of the stream. Specs can be assigned later through SetAudioStreamFormat(), or binding the stream to an audio device (which will set the format of only the input or output, depending on what kind of device the stream was bound to).",
             [
               {
                 "tag": "@param src_spec",
-                "content": "the format details of the input audio."
+                "content": "the format details of the input audio. May be nullptr."
               },
               {
                 "tag": "@param dst_spec",
-                "content": "the format details of the output audio."
+                "content": "the format details of the output audio. May be nullptr."
               },
               {
                 "tag": "@returns",
@@ -11036,6 +11040,7 @@
             "Future calls to and GetAudioStreamAvailable and GetAudioStreamData will reflect the new format, and future calls to PutAudioStreamData must provide data in the new input formats.",
             "Data that was previously queued in the stream will still be operated on in the format that was current when it was added, which is to say you can put the end of a sound file in one format to a stream, change formats for the next sound file, and start putting that new data while the previous sound file is still queued, and everything will still play back correctly.",
             "If a stream is bound to a device, then the format of the side of the stream bound to a device cannot be changed (src_spec for recording devices, dst_spec for playback devices). Attempts to make a change to this side will be ignored, but this will not report an error. The other side's format can be changed.",
+            "`src_spec` and `dst_spec` may each be nullptr; a nullptr spec signals not to change the current format for that side of the stream.",
             [
               {
                 "tag": "@param stream",
@@ -24493,7 +24498,7 @@
           "constexpr": true,
           "type": "GamepadButton",
           "doc": [
-            "Additional button (e.g. Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button, Google Stadia capture button)"
+            "Additional button (e.g. Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Steam Controller QAM button, Amazon Luna microphone button, Google Stadia capture button)"
           ],
           "sourceName": "SDL_GAMEPAD_BUTTON_MISC1"
         },
@@ -24503,7 +24508,7 @@
           "constexpr": true,
           "type": "GamepadButton",
           "doc": [
-            "Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1, DualSense Edge RB button, Right Joy-Con SR button)"
+            "Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1, DualSense Edge RB button, Right Joy-Con SR button, Steam Controller R4 button)"
           ],
           "sourceName": "SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1"
         },
@@ -24513,7 +24518,7 @@
           "constexpr": true,
           "type": "GamepadButton",
           "doc": [
-            "Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3, DualSense Edge LB button, Left Joy-Con SL button)"
+            "Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3, DualSense Edge LB button, Left Joy-Con SL button, Steam Controller L4 button)"
           ],
           "sourceName": "SDL_GAMEPAD_BUTTON_LEFT_PADDLE1"
         },
@@ -24523,7 +24528,7 @@
           "constexpr": true,
           "type": "GamepadButton",
           "doc": [
-            "Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2, DualSense Edge right Fn button, Right Joy-Con SL button)"
+            "Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2, DualSense Edge right Fn button, Right Joy-Con SL button, Steam Controller R5 button)"
           ],
           "sourceName": "SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2"
         },
@@ -24533,7 +24538,7 @@
           "constexpr": true,
           "type": "GamepadButton",
           "doc": [
-            "Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4, DualSense Edge left Fn button, Left Joy-Con SR button)"
+            "Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4, DualSense Edge left Fn button, Left Joy-Con SR button, Steam Controller L5 button)"
           ],
           "sourceName": "SDL_GAMEPAD_BUTTON_LEFT_PADDLE2"
         },
@@ -61136,6 +61141,40 @@
           "kind": "def",
           "value": "\"SDL_VIDEO_WIN_D3DCOMPILER\"",
           "sourceName": "SDL_HINT_VIDEO_WIN_D3DCOMPILER"
+        },
+        "SDL_HINT_VIDEO_X11_ENABLE_XSYNC_EXT": {
+          "doc": [
+            "A variable controlling whether the X Synchronization Extension is enabled.",
+            "If set, this can result in smoother window resizing when rendering using OpenGL, however, there are some conditions:",
+            "- It is only activated on windows created with the `WINDOW_OPENGL` flag (windows using an SDL OpenGL renderer have this automatically set). - When activated, presentation must be done with `GL_SwapWindow()` (`RenderPresent()` calls this internally for OpenGL renderers as well).",
+            "Enabling this and presenting via an external mechanism will result in sync requests not being acked, and hangs and other odd window behavior may result.",
+            "The variable can be set to the following values:",
+            [
+              {
+                "tag": "-",
+                "content": "\"0\": The X Synchronization Extension is disabled. (default)"
+              },
+              {
+                "tag": "-",
+                "content": "\"1\": The X Synchronization Extension is enabled."
+              }
+            ],
+            "This hint should be set before creating a window.",
+            {
+              "tag": "@since",
+              "content": "This hint is available since SDL 3.4.10."
+            }
+          ],
+          "name": "SDL_HINT_VIDEO_X11_ENABLE_XSYNC_EXT",
+          "kind": "def",
+          "value": "\"SDL_VIDEO_X11_ENABLE_XSYNC_EXT\"",
+          "sourceName": "SDL_HINT_VIDEO_X11_ENABLE_XSYNC_EXT",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 10
+          }
         },
         "SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT": {
           "doc": [
