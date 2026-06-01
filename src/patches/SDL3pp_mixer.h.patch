@@ -1,6 +1,6 @@
 --- build/generated/SDL3pp_mixer.h
 +++ include/SDL3pp/SDL3pp_mixer.h
-@@ -1,10 +1,13 @@
+@@ -1,14 +1,17 @@
  #ifndef SDL3PP_MIXER_H_
  #define SDL3PP_MIXER_H_
  
@@ -15,6 +15,11 @@
  namespace SDL {
  
  /**
+- * @defgroup CategorySDLMixer Category SDLMixer
++ * @defgroup CategorySDLMixer An audio mixer that supports various file formats
+  *
+  * SDL_mixer is a library to make complicated audio processing tasks easier.
+  *
 @@ -447,9 +450,8 @@
     * @param predecode if true, data will be fully uncompressed before returning.
     * @param closeio true if SDL_mixer should close `io` before returning

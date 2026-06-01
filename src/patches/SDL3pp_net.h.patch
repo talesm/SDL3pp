@@ -1,6 +1,6 @@
 --- build/generated/SDL3pp_net.h
 +++ include/SDL3pp/SDL3pp_net.h
-@@ -1,10 +1,13 @@
+@@ -1,14 +1,17 @@
  #ifndef SDL3PP_NET_H_
  #define SDL3PP_NET_H_
  
@@ -15,6 +15,11 @@
  namespace SDL {
  
  /**
+- * @defgroup CategorySDLNet Category SDLNet
++ * @defgroup CategorySDLNet A small cross-platform networking library
+  *
+  * SDL_net is a simple library to help with networking.
+  *
 @@ -181,6 +184,8 @@
  /// Safely wrap Datagram for non owning const parameters
  using DatagramConstRef = ResourceConstRef<DatagramRaw, DatagramRawConst>;

@@ -124,6 +124,8 @@ Category                            | Header
 Category               | Header
 ---------------------- | --------------------
 @ref CategorySDLImage  | SDL3pp_image.h
+@ref CategorySDLMixer  | SDL3pp_mixer.h
+@ref CategorySDLNet    | SDL3pp_net.h
 @ref CategorySDLTTF    | SDL3pp_ttf.h
 
 ## C++ Support
@@ -243,6 +245,8 @@ thread facilities.
 @defgroup CategoriesLibs Satellite Libraries
 @{
 @addtogroup CategorySDLImage
+@addtogroup CategorySDLMixer
+@addtogroup CategorySDLNet
 @addtogroup CategorySDLTTF
 @}
 

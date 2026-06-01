@@ -90414,7 +90414,7 @@ inline PenDeviceType GetPenDeviceType(PenID instance_id)
 namespace SDL {
 
 /**
- * @defgroup CategorySDLNet Category SDLNet
+ * @defgroup CategorySDLNet A small cross-platform networking library
  *
  * SDL_net is a simple library to help with networking.
  *
@@ -94050,7 +94050,7 @@ inline int WaitUntilInputAvailable(void** vsockets,
 namespace SDL {
 
 /**
- * @defgroup CategorySDLMixer Category SDLMixer
+ * @defgroup CategorySDLMixer An audio mixer that supports various file formats
  *
  * SDL_mixer is a library to make complicated audio processing tasks easier.
  *

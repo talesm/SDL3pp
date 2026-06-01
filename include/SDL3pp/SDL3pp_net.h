@@ -11,7 +11,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategorySDLNet Category SDLNet
+ * @defgroup CategorySDLNet A small cross-platform networking library
  *
  * SDL_net is a simple library to help with networking.
  *

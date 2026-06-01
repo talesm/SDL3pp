@@ -11,7 +11,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategorySDLMixer Category SDLMixer
+ * @defgroup CategorySDLMixer An audio mixer that supports various file formats
  *
  * SDL_mixer is a library to make complicated audio processing tasks easier.
  *
