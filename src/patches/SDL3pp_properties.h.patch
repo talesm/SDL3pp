@@ -41,7 +41,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -580,7 +588,6 @@
+@@ -581,7 +589,6 @@
     * properties. The properties are locked during enumeration.
     *
     * @param callback the function to call for each property.
@@ -49,9 +49,9 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -589,6 +596,13 @@
+@@ -590,6 +597,13 @@
     */
-   void Enumerate(EnumeratePropertiesCB callback);
+   void Enumerate(EnumeratePropertiesCB callback) const;
  
 +  /**
 +   * Returns the number of properties this has
@@ -60,10 +60,10 @@
 +   *
 +   * @return Uint64
 +   */
-   Uint64 GetCount();
+   Uint64 GetCount() const;
  };
  
-@@ -598,6 +612,9 @@
+@@ -599,6 +613,9 @@
   * @since This datatype is available since SDL 3.2.0.
   *
   * @cat resource
@@ -73,7 +73,7 @@
   */
  struct Properties : PropertiesBase
  {
-@@ -688,7 +705,7 @@
+@@ -689,7 +706,7 @@
     * or want to guarantee that properties being queried aren't freed in another
     * thread.
     *
@@ -82,7 +82,7 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
-@@ -712,8 +729,6 @@
+@@ -713,8 +730,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -91,7 +91,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -737,8 +752,6 @@
+@@ -738,8 +753,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -100,7 +100,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -778,7 +791,7 @@
+@@ -779,7 +792,7 @@
   *
   * @since This constant is available since SDL 3.4.0.
   */
@@ -109,7 +109,7 @@
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
-@@ -795,7 +808,7 @@
+@@ -796,7 +809,7 @@
   */
  inline PropertiesRef GetGlobalProperties()
  {
@@ -118,7 +118,7 @@
  }
  
  /**
-@@ -911,16 +924,52 @@
+@@ -912,16 +925,52 @@
    m_lock = {};
  }
  
@@ -173,7 +173,7 @@
  }
  
  /**
-@@ -980,7 +1029,6 @@
+@@ -981,7 +1030,6 @@
   *              property.
   * @param cleanup the function to call when this property is deleted, or nullptr
   *                if no cleanup is necessary.
@@ -181,7 +181,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -996,7 +1044,12 @@
+@@ -997,7 +1045,12 @@
                                            void* value,
                                            CleanupPropertyCB cleanup)
  {
@@ -195,7 +195,7 @@
  }
  
  inline void PropertiesBase::SetPointerPropertyWithCleanup(
-@@ -1014,7 +1067,8 @@
+@@ -1015,7 +1068,8 @@
    void* value,
    CleanupPropertyCB cleanup)
  {
@@ -205,7 +205,7 @@
  }
  
  /**
-@@ -1431,7 +1485,6 @@
+@@ -1433,7 +1487,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -213,7 +213,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1441,7 +1494,13 @@
+@@ -1443,7 +1496,13 @@
  inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
@@ -228,9 +228,9 @@
  }
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1452,12 +1511,22 @@
+@@ -1454,12 +1513,22 @@
  
- inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback)
+ inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
  {
 -  SDL::EnumerateProperties(get(), callback);
 +  SDL::EnumerateProperties(get(), std::move(callback));
@@ -252,8 +252,8 @@
 +  return count;
  }
  
- inline Uint64 PropertiesBase::GetCount() { return SDL::CountProperties(get()); }
-@@ -1487,6 +1556,17 @@
+ inline Uint64 PropertiesBase::GetCount() const
+@@ -1492,6 +1561,17 @@
  
  /// @}
  

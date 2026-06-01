@@ -420,7 +420,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    *
    * @sa GetPropertyType
    */
-  bool HasProperty(StringParam name);
+  bool HasProperty(StringParam name) const;
 
   /**
    * Get the type of a property in a group of properties.
@@ -435,7 +435,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    *
    * @sa HasProperty
    */
-  PropertyType GetPropertyType(StringParam name);
+  PropertyType GetPropertyType(StringParam name) const;
 
   /**
    * Get a pointer property from a group of properties.
@@ -466,7 +466,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetPointerProperty
    */
-  void* GetPointerProperty(StringParam name, void* default_value);
+  void* GetPointerProperty(StringParam name, void* default_value) const;
 
   /**
    * Get a string property from a group of properties.
@@ -488,7 +488,8 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetStringProperty
    */
-  const char* GetStringProperty(StringParam name, StringParam default_value);
+  const char* GetStringProperty(StringParam name,
+                                StringParam default_value) const;
 
   /**
    * Get a number property from a group of properties.
@@ -509,7 +510,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetNumberProperty
    */
-  Sint64 GetNumberProperty(StringParam name, Sint64 default_value);
+  Sint64 GetNumberProperty(StringParam name, Sint64 default_value) const;
 
   /**
    * Get a floating point property from a group of properties.
@@ -530,7 +531,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetFloatProperty
    */
-  float GetFloatProperty(StringParam name, float default_value);
+  float GetFloatProperty(StringParam name, float default_value) const;
 
   /**
    * Get a boolean property from a group of properties.
@@ -551,7 +552,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetBooleanProperty
    */
-  bool GetBooleanProperty(StringParam name, bool default_value);
+  bool GetBooleanProperty(StringParam name, bool default_value) const;
 
   /**
    * Clear a property from a group of properties.
@@ -579,7 +580,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Enumerate(EnumeratePropertiesCallback callback, void* userdata);
+  void Enumerate(EnumeratePropertiesCallback callback, void* userdata) const;
 
   /**
    * Enumerate the properties contained in a group of properties.
@@ -594,7 +595,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Enumerate(EnumeratePropertiesCB callback);
+  void Enumerate(EnumeratePropertiesCB callback) const;
 
   /**
    * Returns the number of properties this has
@@ -603,7 +604,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    *
    * @return Uint64
    */
-  Uint64 GetCount();
+  Uint64 GetCount() const;
 };
 
 /**
@@ -1229,7 +1230,7 @@ inline bool HasProperty(PropertiesRef props, StringParam name)
   return SDL_HasProperty(props, name);
 }
 
-inline bool PropertiesBase::HasProperty(StringParam name)
+inline bool PropertiesBase::HasProperty(StringParam name) const
 {
   return SDL::HasProperty(get(), std::move(name));
 }
@@ -1252,7 +1253,7 @@ inline PropertyType GetPropertyType(PropertiesRef props, StringParam name)
   return SDL_GetPropertyType(props, name);
 }
 
-inline PropertyType PropertiesBase::GetPropertyType(StringParam name)
+inline PropertyType PropertiesBase::GetPropertyType(StringParam name) const
 {
   return SDL::GetPropertyType(get(), std::move(name));
 }
@@ -1295,7 +1296,7 @@ inline void* GetPointerProperty(PropertiesRef props,
 }
 
 inline void* PropertiesBase::GetPointerProperty(StringParam name,
-                                                void* default_value)
+                                                void* default_value) const
 {
   return SDL::GetPointerProperty(get(), std::move(name), default_value);
 }
@@ -1328,8 +1329,9 @@ inline const char* GetStringProperty(PropertiesRef props,
   return SDL_GetStringProperty(props, name, default_value);
 }
 
-inline const char* PropertiesBase::GetStringProperty(StringParam name,
-                                                     StringParam default_value)
+inline const char* PropertiesBase::GetStringProperty(
+  StringParam name,
+  StringParam default_value) const
 {
   return SDL::GetStringProperty(
     get(), std::move(name), std::move(default_value));
@@ -1363,7 +1365,7 @@ inline Sint64 GetNumberProperty(PropertiesRef props,
 }
 
 inline Sint64 PropertiesBase::GetNumberProperty(StringParam name,
-                                                Sint64 default_value)
+                                                Sint64 default_value) const
 {
   return SDL::GetNumberProperty(get(), std::move(name), default_value);
 }
@@ -1396,7 +1398,7 @@ inline float GetFloatProperty(PropertiesRef props,
 }
 
 inline float PropertiesBase::GetFloatProperty(StringParam name,
-                                              float default_value)
+                                              float default_value) const
 {
   return SDL::GetFloatProperty(get(), std::move(name), default_value);
 }
@@ -1429,7 +1431,7 @@ inline bool GetBooleanProperty(PropertiesRef props,
 }
 
 inline bool PropertiesBase::GetBooleanProperty(StringParam name,
-                                               bool default_value)
+                                               bool default_value) const
 {
   return SDL::GetBooleanProperty(get(), std::move(name), default_value);
 }
@@ -1504,12 +1506,12 @@ inline void EnumerateProperties(PropertiesRef props,
 }
 
 inline void PropertiesBase::Enumerate(EnumeratePropertiesCallback callback,
-                                      void* userdata)
+                                      void* userdata) const
 {
   SDL::EnumerateProperties(get(), callback, userdata);
 }
 
-inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback)
+inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
 {
   SDL::EnumerateProperties(get(), std::move(callback));
 }
@@ -1529,7 +1531,10 @@ inline Uint64 CountProperties(PropertiesRef props)
   return count;
 }
 
-inline Uint64 PropertiesBase::GetCount() { return SDL::CountProperties(get()); }
+inline Uint64 PropertiesBase::GetCount() const
+{
+  return SDL::CountProperties(get());
+}
 
 /**
  * Destroy a group of properties.

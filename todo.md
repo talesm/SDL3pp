@@ -1,20 +1,17 @@
 Todo for next version
 =====================
 
-- [x] Create free functions for Keycode and Scancode methods;
-- [x] Create free functions for Time related functions;
-- [x] Standardize the time unit types usage:
-  - [x] Milliseconds as alias to std::chrono::milliseconds;
-  - [x] Nanoseconds as alias to std::chrono::nanoseconds;
-- [x] Update SDL to 3.4.10
-- [x] Update SDL_NET to 3.2.0
+- [ ] Improvements over Properties:
+  - [x] Add PropertiesRef.Set();
+  - [x] Get*Property are const;
+  - [ ] Add PropertiesRef.Get();
+  - [ ] Add a constructor to Properties similar to std::map initializer list;
+  - [ ] Add operator[] to Properties;
+  - [ ] Add begin and end to Properties;
 
 Backlog
 -------
 
-- [ ] Add a constructor to Properties similar to std::map initializer list;
-- [ ] Add operator[] to Properties;
-- [ ] Add begin and end to Properties;
 - [ ] Create ResourceConstBase
   - [ ] When resource has ResourceConstRef, derive from ResourceConstBase
     - It has only the immutable methods from ResourceBase;

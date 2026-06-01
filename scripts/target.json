@@ -103634,6 +103634,7 @@
                 }
               ],
               "sourceName": "SDL_HasProperty",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::HasProperty"
               },
@@ -103675,6 +103676,7 @@
                 }
               ],
               "sourceName": "SDL_GetPropertyType",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::GetPropertyType"
               },
@@ -103751,6 +103753,7 @@
                 }
               ],
               "sourceName": "SDL_GetPointerProperty",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::GetPointerProperty"
               },
@@ -103810,6 +103813,7 @@
                 }
               ],
               "sourceName": "SDL_GetStringProperty",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::GetStringProperty"
               },
@@ -103870,6 +103874,7 @@
                 }
               ],
               "sourceName": "SDL_GetNumberProperty",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::GetNumberProperty"
               },
@@ -103930,6 +103935,7 @@
                 }
               ],
               "sourceName": "SDL_GetFloatProperty",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::GetFloatProperty"
               },
@@ -103990,6 +103996,7 @@
                 }
               ],
               "sourceName": "SDL_GetBooleanProperty",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::GetBooleanProperty"
               },
@@ -104078,9 +104085,11 @@
                 "mayFail": true,
                 "delegate": "SDL::EnumerateProperties"
               },
+              "immutable": true,
               "overload": {
                 "kind": "function",
                 "type": "void",
+                "immutable": true,
                 "parameters": [
                   {
                     "type": "EnumeratePropertiesCB",
@@ -104125,6 +104134,7 @@
             "GetCount": {
               "kind": "function",
               "type": "Uint64",
+              "immutable": true,
               "parameters": [],
               "hints": {
                 "delegate": "SDL::CountProperties"
@@ -105558,6 +105568,7 @@
             }
           ],
           "sourceName": "SDL_HasProperty",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::HasProperty"
@@ -105619,6 +105630,7 @@
             }
           ],
           "sourceName": "SDL_GetPropertyType",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::GetPropertyType"
@@ -105719,6 +105731,7 @@
             }
           ],
           "sourceName": "SDL_GetPointerProperty",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::GetPointerProperty"
@@ -105802,6 +105815,7 @@
             }
           ],
           "sourceName": "SDL_GetStringProperty",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::GetStringProperty"
@@ -105886,6 +105900,7 @@
             }
           ],
           "sourceName": "SDL_GetNumberProperty",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::GetNumberProperty"
@@ -105970,6 +105985,7 @@
             }
           ],
           "sourceName": "SDL_GetFloatProperty",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::GetFloatProperty"
@@ -106054,6 +106070,7 @@
             }
           ],
           "sourceName": "SDL_GetBooleanProperty",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::GetBooleanProperty"
@@ -106238,9 +106255,11 @@
             "mayFail": true,
             "delegate": "SDL::EnumerateProperties"
           },
+          "immutable": true,
           "overload": {
             "kind": "function",
             "type": "void",
+            "immutable": true,
             "parameters": [
               {
                 "type": "EnumeratePropertiesCB",
@@ -106271,6 +106290,7 @@
         "PropertiesBase::GetCount": {
           "kind": "function",
           "type": "Uint64",
+          "immutable": true,
           "parameters": [],
           "hints": {
             "self": "get()",

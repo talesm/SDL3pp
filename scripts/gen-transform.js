@@ -4286,10 +4286,18 @@ const transform = {
             name: "cleanup"
           }]
         },
+        "SDL_HasProperty": { immutable: true },
+        "SDL_GetPropertyType": { immutable: true },
+        "SDL_GetPointerProperty": { immutable: true },
+        "SDL_GetStringProperty": { immutable: true },
+        "SDL_GetNumberProperty": { immutable: true },
+        "SDL_GetFloatProperty": { immutable: true },
+        "SDL_GetBooleanProperty": { immutable: true },
+        "SDL_EnumerateProperties": { immutable: true },
         "EnumerateProperties": {
           kind: "function",
           type: "void",
-          after: "SDL_EnumerateProperties",
+          immutable: true,
           parameters: [{
             type: "PropertiesRef",
             name: "props"
@@ -4301,6 +4309,7 @@ const transform = {
         "CountProperties": {
           kind: "function",
           type: "Uint64",
+          immutable: true,
           parameters: [{
             type: "PropertiesRef",
             name: "props"
