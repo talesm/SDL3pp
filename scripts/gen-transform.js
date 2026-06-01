@@ -4283,7 +4283,7 @@ const transform = {
             type: "V &&",
             name: "value"
           }],
-          template: [{ type: "class", name: "V" }],
+          template: [{ type: "PropertyValue", name: "V" }],
           hints: { methodName: "Set" },
         },
         "SetPointerPropertyWithCleanup": {

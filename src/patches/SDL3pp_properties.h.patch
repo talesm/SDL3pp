@@ -18,7 +18,21 @@
   *
   * Properties can be added to and retrieved from a property group through the
   * following functions:
-@@ -249,6 +250,14 @@
+@@ -81,6 +82,13 @@
+ // Forward decl
+ struct PropertyProxy;
+ 
++/// A value assignable to a property.
++template<class T>
++concept PropertyValue =
++  std::convertible_to<T, const PropertyProxy&> ||
++  std::convertible_to<T, void*> || std::convertible_to<T, StringParam> ||
++  std::convertible_to<T, Sint64> || std::convertible_to<T, float>;
++
+ /**
+  * A callback used to enumerate all the properties in a group of properties.
+  *
+@@ -249,6 +257,14 @@
     */
    void Unlock(PropertiesLock&& lock);
  
@@ -30,10 +44,10 @@
 +   *              property.
 +   * @throws Error on failure.
 +   */
-   template<class V>
+   template<PropertyValue V>
    void Set(StringParam name, V&& value);
  
-@@ -302,7 +311,6 @@
+@@ -302,7 +318,6 @@
     *              property.
     * @param cleanup the function to call when this property is deleted, or
     *                nullptr if no cleanup is necessary.
@@ -41,7 +55,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -432,6 +440,12 @@
+@@ -432,6 +447,12 @@
     */
    PropertyType GetPropertyType(StringParam name) const;
  
@@ -54,7 +68,7 @@
    PropertyProxy Get(StringParam name) const;
  
    /**
-@@ -587,7 +601,6 @@
+@@ -587,7 +608,6 @@
     * properties. The properties are locked during enumeration.
     *
     * @param callback the function to call for each property.
@@ -62,7 +76,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -596,6 +609,13 @@
+@@ -596,6 +616,13 @@
     */
    void Enumerate(EnumeratePropertiesCB callback) const;
  
@@ -76,7 +90,7 @@
    Uint64 GetCount() const;
  };
  
-@@ -605,6 +625,9 @@
+@@ -605,6 +632,9 @@
   * @since This datatype is available since SDL 3.2.0.
   *
   * @cat resource
@@ -86,7 +100,7 @@
   */
  struct Properties : PropertiesBase
  {
-@@ -695,7 +718,7 @@
+@@ -695,7 +725,7 @@
     * or want to guarantee that properties being queried aren't freed in another
     * thread.
     *
@@ -95,7 +109,7 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
-@@ -719,8 +742,6 @@
+@@ -719,8 +749,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -104,7 +118,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -744,8 +765,6 @@
+@@ -744,8 +772,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -113,7 +127,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -761,8 +780,68 @@
+@@ -761,8 +787,68 @@
    void release() { m_lock.release(); }
  };
  
@@ -182,7 +196,7 @@
  private:
    PropertiesRef m_props;
  
-@@ -793,7 +872,7 @@
+@@ -793,7 +879,7 @@
   *
   * @since This constant is available since SDL 3.4.0.
   */
@@ -191,7 +205,7 @@
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
-@@ -810,7 +889,7 @@
+@@ -810,7 +896,7 @@
   */
  inline PropertiesRef GetGlobalProperties()
  {
@@ -200,7 +214,7 @@
  }
  
  /**
-@@ -926,16 +1005,58 @@
+@@ -926,16 +1012,58 @@
    m_lock = {};
  }
  
@@ -213,7 +227,7 @@
 + *              property.
 + * @throws Error on failure.
 + */
- template<class V>
+ template<PropertyValue V>
  inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
  {
 -  static_assert(false, "Not implemented");
@@ -253,7 +267,7 @@
 +  }
  }
  
- template<class V>
+ template<PropertyValue V>
  inline void PropertiesBase::Set(StringParam name, V&& value)
  {
 -  SDL::SetProperty(get(), std::move(name), value);
@@ -261,7 +275,7 @@
  }
  
  /**
-@@ -995,7 +1116,6 @@
+@@ -995,7 +1123,6 @@
   *              property.
   * @param cleanup the function to call when this property is deleted, or nullptr
   *                if no cleanup is necessary.
@@ -269,7 +283,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1011,7 +1131,12 @@
+@@ -1011,7 +1138,12 @@
                                            void* value,
                                            CleanupPropertyCB cleanup)
  {
@@ -283,7 +297,7 @@
  }
  
  inline void PropertiesBase::SetPointerPropertyWithCleanup(
-@@ -1029,7 +1154,8 @@
+@@ -1029,7 +1161,8 @@
    void* value,
    CleanupPropertyCB cleanup)
  {
@@ -293,7 +307,7 @@
  }
  
  /**
-@@ -1218,9 +1344,16 @@
+@@ -1218,9 +1351,16 @@
    return SDL::GetPropertyType(get(), std::move(name));
  }
  
@@ -311,7 +325,7 @@
  }
  
  inline PropertyProxy PropertiesBase::Get(StringParam name) const
-@@ -1457,7 +1590,6 @@
+@@ -1457,7 +1597,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -319,7 +333,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1467,7 +1599,13 @@
+@@ -1467,7 +1606,13 @@
  inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
@@ -334,7 +348,7 @@
  }
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1478,12 +1616,22 @@
+@@ -1478,12 +1623,22 @@
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
  {
@@ -359,7 +373,7 @@
  }
  
  inline Uint64 PropertiesBase::GetCount() const
-@@ -1516,6 +1664,17 @@
+@@ -1516,6 +1671,17 @@
  
  /// @}
  

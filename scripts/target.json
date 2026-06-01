@@ -103163,7 +103163,7 @@
               ],
               "template": [
                 {
-                  "type": "class",
+                  "type": "PropertyValue",
                   "name": "V"
                 }
               ],
@@ -104901,7 +104901,7 @@
           ],
           "template": [
             {
-              "type": "class",
+              "type": "PropertyValue",
               "name": "V"
             }
           ],
@@ -104925,7 +104925,7 @@
           ],
           "template": [
             {
-              "type": "class",
+              "type": "PropertyValue",
               "name": "V"
             }
           ],

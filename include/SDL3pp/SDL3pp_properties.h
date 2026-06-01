@@ -82,6 +82,13 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
 // Forward decl
 struct PropertyProxy;
 
+/// A value assignable to a property.
+template<class T>
+concept PropertyValue =
+  std::convertible_to<T, const PropertyProxy&> ||
+  std::convertible_to<T, void*> || std::convertible_to<T, StringParam> ||
+  std::convertible_to<T, Sint64> || std::convertible_to<T, float>;
+
 /**
  * A callback used to enumerate all the properties in a group of properties.
  *
@@ -258,7 +265,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    *              property.
    * @throws Error on failure.
    */
-  template<class V>
+  template<PropertyValue V>
   void Set(StringParam name, V&& value);
 
   /**
@@ -1014,7 +1021,7 @@ inline void PropertiesLock::reset()
  *              property.
  * @throws Error on failure.
  */
-template<class V>
+template<PropertyValue V>
 inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
 {
   if constexpr (std::is_same_v<V, bool>) {
@@ -1053,7 +1060,7 @@ inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
   }
 }
 
-template<class V>
+template<PropertyValue V>
 inline void PropertiesBase::Set(StringParam name, V&& value)
 {
   SDL::SetProperty(get(), std::move(name), std::forward<V>(value));
