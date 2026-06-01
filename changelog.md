@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 0.11.2
+
+Upgrade base SDL version to 3.4.10, release SDL3_net bindings (3.2.0) and add a
+few missing standalone function related to keyboard and Time.
+
+- Update SDL to 3.4.10
+- Update SDL_net to 3.2.0
+- Create free functions for Keycode and Scancode methods;
+- Create free functions for Time related functions;
+- Standardize the time unit types usage:
+  - Milliseconds as alias to std::chrono::milliseconds;
+  - Nanoseconds as alias to std::chrono::nanoseconds;
+
 ## Version 0.11.1
 
 Simplify and refactor resource system.
