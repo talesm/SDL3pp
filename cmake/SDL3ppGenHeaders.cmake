@@ -66,7 +66,6 @@ add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
           ${PROJECT_SOURCE_DIR}/scripts/config-source.json 
           ${CPPFIER_SOURCES}
           ${CPPFIER_GRAMMAR_SOURCES}
-          ${PROJECT_SOURCE_DIR}/node_modules 
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
@@ -96,9 +95,9 @@ add_custom_target(SDL3pp_refresh
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
-add_custom_command(OUTPUT include/SDL3pp/SDL3pp_init.h
+add_custom_command(OUTPUT include/SDL3pp/SDL3pp_init.h ${SDL3PP_WRAPPED_HEADERS}
   COMMAND ${CMAKE_COMMAND} --build . -t SDL3pp_refresh
-  COMMAND touch include/SDL3pp/SDL3pp_init.h
+  COMMAND touch ${SDL3PP_WRAPPED_HEADERS}
   DEPENDS ${PROJECT_SOURCE_DIR}/scripts/target.json
 )
 
