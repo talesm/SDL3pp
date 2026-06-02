@@ -10039,7 +10039,7 @@ class PropertyProxy
 {
 public:
   /// Constructor
-  constexpr PropertyProxy(PropertiesRef props, StringParam name)
+  PropertyProxy(PropertiesRef props, StringParam name)
     : m_props(props)
     , m_name(std::move(name))
   {

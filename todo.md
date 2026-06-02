@@ -8,7 +8,7 @@ Todo for next version
   - [x] Add a constructor to Properties similar to std::map initializer list;
   - [x] Add operator[] to Properties;
   - [x] Add begin and end to Properties;
-- [ ] Pass StringParam by const reference;
+- [ ] Make StringParam totally non-owning;
 
 Backlog
 -------

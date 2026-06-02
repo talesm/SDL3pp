@@ -106577,6 +106577,7 @@
         }
       },
       "includes": [
+        "optional",
         "variant",
         "SDL3/SDL_properties.h"
       ],

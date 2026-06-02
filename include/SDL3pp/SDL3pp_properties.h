@@ -1,6 +1,7 @@
 #ifndef SDL3PP_PROPERTIES_H_
 #define SDL3PP_PROPERTIES_H_
 
+#include <optional>
 #include <variant>
 #include <SDL3/SDL_properties.h>
 #include "SDL3pp_callbackWrapper.h"
@@ -866,7 +867,7 @@ class PropertyProxy
 {
 public:
   /// Constructor
-  constexpr PropertyProxy(PropertiesRef props, StringParam name)
+  PropertyProxy(PropertiesRef props, StringParam name)
     : m_props(props)
     , m_name(std::move(name))
   {
