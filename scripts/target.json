@@ -106499,6 +106499,7 @@
         }
       },
       "includes": [
+        "variant",
         "SDL3/SDL_properties.h"
       ],
       "localIncludes": [

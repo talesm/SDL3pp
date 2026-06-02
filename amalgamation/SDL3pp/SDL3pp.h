@@ -9877,6 +9877,43 @@ struct Properties : PropertiesBase
    */
   Properties();
 
+  /**
+   * Create a group of properties.
+   *
+   * All properties are automatically destroyed when Quit() is called.
+   *
+   * @param entries the properties to set on this group of properties, as a list
+   *                of name-value pairs.
+   * @post an ID for a new group of properties on success.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyProperties
+   */
+  Properties(
+    std::initializer_list<
+      std::pair<StringParam,
+                std::variant<StringParam, void*, Sint64, float, bool>>> entries)
+    : Properties()
+  {
+    for (auto& [name, value] : entries) {
+      std::visit(
+        [this, &name](auto& arg) {
+          if constexpr (std::is_convertible_v<decltype(arg),
+                                              const StringParam&>) {
+            Set(name.c_str(), arg.c_str());
+          } else {
+            Set(name.c_str(), arg);
+          }
+        },
+        value);
+    }
+  }
+
   /// Destructor
   ~Properties() { SDL_DestroyProperties(get()); }
 

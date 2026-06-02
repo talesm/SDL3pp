@@ -110,4 +110,14 @@ TEST_CASE("PropertiesRef.operator[]")
   CHECK_EQ(Sint64(props["key"]), 10);
 }
 
+TEST_CASE("Properties ctor with initializer list")
+{
+  Properties props{
+    {"key", 10}, {"key2", "value"}, {"key3", 2.25f}, {"key4", true}};
+  CHECK_EQ(Sint64(props["key"]), 10);
+  CHECK_EQ(std::string(props["key2"]), "value");
+  CHECK_EQ(float(props["key3"]), 2.25f);
+  CHECK_EQ(bool(props["key4"]), true);
+}
+
 } // namespace SDL

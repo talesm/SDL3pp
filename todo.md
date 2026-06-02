@@ -5,13 +5,13 @@ Todo for next version
   - [x] Add PropertiesRef.Set();
   - [x] Get*Property are const;
   - [x] Add PropertiesRef.Get();
-  - [ ] Add a constructor to Properties similar to std::map initializer list;
+  - [x] Add a constructor to Properties similar to std::map initializer list;
   - [x] Add operator[] to Properties;
+  - [ ] Add begin and end to Properties;
 
 Backlog
 -------
 
-- [ ] Add begin and end to Properties;
 - [ ] Create ResourceConstBase
   - [ ] When resource has ResourceConstRef, derive from ResourceConstBase
     - It has only the immutable methods from ResourceBase;
