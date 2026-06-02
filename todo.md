@@ -1,13 +1,14 @@
 Todo for next version
 =====================
 
-- [ ] Improvements over Properties:
+- [x] Improvements over Properties:
   - [x] Add PropertiesRef.Set();
   - [x] Get*Property are const;
   - [x] Add PropertiesRef.Get();
   - [x] Add a constructor to Properties similar to std::map initializer list;
   - [x] Add operator[] to Properties;
-  - [ ] Add begin and end to Properties;
+  - [x] Add begin and end to Properties;
+- [ ] Pass StringParam by const reference;
 
 Backlog
 -------

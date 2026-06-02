@@ -102863,6 +102863,10 @@
           "kind": "forward",
           "name": "PropertyMutableProxy"
         },
+        "PropertyIterator-forward": {
+          "kind": "forward",
+          "name": "PropertyIterator"
+        },
         "EnumeratePropertiesCallback": {
           "name": "EnumeratePropertiesCallback",
           "kind": "alias",
@@ -103060,6 +103064,28 @@
               },
               "name": "operator[]",
               "static": false,
+              "proto": true
+            },
+            "begin": {
+              "kind": "function",
+              "type": "PropertyIterator",
+              "immutable": true,
+              "parameters": [],
+              "hints": {
+                "body": "return {*this};"
+              },
+              "name": "begin",
+              "proto": true
+            },
+            "end": {
+              "kind": "function",
+              "type": "std::nullptr_t",
+              "immutable": true,
+              "parameters": [],
+              "hints": {
+                "body": "return nullptr;"
+              },
+              "name": "end",
               "proto": true
             },
             "Copy": {
@@ -104640,6 +104666,36 @@
           },
           "name": "PropertyMutableProxy"
         },
+        "PropertyIterator": {
+          "kind": "struct",
+          "entries": {
+            "PropertyIterator": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {}
+              ],
+              "constexpr": true,
+              "hints": {
+                "changeAccess": "public",
+                "default": true
+              },
+              "name": "PropertyIterator"
+            },
+            "m_keys": {
+              "kind": "var",
+              "type": "std::vector<std::string>",
+              "hints": {
+                "changeAccess": "private"
+              },
+              "name": "m_keys"
+            }
+          },
+          "hints": {
+            "private": true
+          },
+          "name": "PropertyIterator"
+        },
         "PROP_NAME_STRING": {
           "doc": [
             "A generic property for naming things.",
@@ -104949,6 +105005,28 @@
             "body": "return {*this, std::move(name)};"
           },
           "name": "PropertiesBase::operator[]"
+        },
+        "PropertiesBase::begin": {
+          "kind": "function",
+          "type": "PropertyIterator",
+          "immutable": true,
+          "parameters": [],
+          "hints": {
+            "self": "get()",
+            "body": "return {*this};"
+          },
+          "name": "PropertiesBase::begin"
+        },
+        "PropertiesBase::end": {
+          "kind": "function",
+          "type": "std::nullptr_t",
+          "immutable": true,
+          "parameters": [],
+          "hints": {
+            "self": "get()",
+            "body": "return nullptr;"
+          },
+          "name": "PropertiesBase::end"
         },
         "SetProperty": {
           "kind": "function",

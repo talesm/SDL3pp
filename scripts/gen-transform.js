@@ -4234,6 +4234,11 @@ const transform = {
           before: "SDL_PropertiesID",
           name: "PropertyMutableProxy",
         },
+        "PropertyIterator#forward": {
+          kind: "forward",
+          before: "SDL_PropertiesID",
+          name: "PropertyIterator",
+        },
         "SDL_EnumeratePropertiesCallback": {
           kind: "alias",
           before: "SDL_PropertiesID",
@@ -4289,6 +4294,27 @@ const transform = {
             }
           },
         },
+        "PropertyIterator": {
+          kind: "struct",
+          entries: {
+            "PropertyIterator": {
+              kind: "function",
+              type: "",
+              parameters: [{}],
+              constexpr: true,
+              hints: {
+                changeAccess: "public",
+                default: true,
+              },
+            },
+            "m_keys": {
+              kind: "var",
+              type: "std::vector<std::string>",
+              hints: { changeAccess: "private" },
+            },
+          },
+          hints: { private: true },
+        },
         "PropertiesBase::operator[]": {
           before: "SetProperty",
           kind: "function",
@@ -4296,6 +4322,22 @@ const transform = {
           immutable: true,
           parameters: [{ type: "StringParam", name: "name" }],
           hints: { body: "return {*this, std::move(name)};" },
+        },
+        "PropertiesBase::begin": {
+          before: "SetProperty",
+          kind: "function",
+          type: "PropertyIterator",
+          immutable: true,
+          parameters: [],
+          hints: { body: "return {*this};" },
+        },
+        "PropertiesBase::end": {
+          before: "SetProperty",
+          kind: "function",
+          type: "std::nullptr_t",
+          immutable: true,
+          parameters: [],
+          hints: { body: "return nullptr;" },
         },
         "SetProperty": {
           after: "SDL_UnlockProperties",

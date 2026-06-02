@@ -1,6 +1,7 @@
 #include "SDL3pp/SDL3pp_properties.h"
 #include "doctest.h"
 #include <any>
+#include <set>
 
 namespace SDL {
 
@@ -123,6 +124,52 @@ TEST_CASE("Properties ctor with initializer list")
   CHECK_EQ(float(props["key3"]), 2.25f);
   CHECK_EQ(bool(props["key4"]), true);
   CHECK_EQ((void*)(props["key5"]), &aInt);
+}
+
+TEST_CASE("PropertyIterator")
+{
+  using namespace std::literals;
+
+  int aInt = 13;
+  Properties props{{"key", 10},
+                   {"key2", "value"},
+                   {"key3", 2.25f},
+                   {"key4", true},
+                   {"key5", &aInt}};
+
+  SUBCASE("Iterate through properties")
+  {
+    std::set<std::string_view> keysFound;
+    for (auto& prop : props) {
+      std::string_view name = prop.GetName();
+      if (name == "key") {
+        CHECK_EQ(Sint64(prop), 10);
+      } else if (name == "key2") {
+        CHECK_EQ(std::string(prop), "value");
+      } else if (name == "key3") {
+        CHECK_EQ(float(prop), 2.25f);
+      } else if (name == "key4") {
+        CHECK_EQ(bool(prop), true);
+      } else if (name == "key5") {
+        CHECK_EQ((void*)(prop), &aInt);
+      } else {
+        FAIL("Unexpected property name");
+      }
+      if (!keysFound.insert(name).second) FAIL("Duplicate property name");
+    }
+    CHECK_EQ(keysFound.size(), 5);
+  }
+
+  SUBCASE("Iterator comparison")
+  {
+    PropertyIterator it(props);
+    PropertyIterator it2(props);
+    CHECK(it == it2);
+    CHECK_FALSE(it != it2);
+    ++it2;
+    CHECK_FALSE(it == it2);
+    CHECK(it != it2);
+  }
 }
 
 } // namespace SDL

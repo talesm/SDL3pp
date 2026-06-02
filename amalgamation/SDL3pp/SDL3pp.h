@@ -1809,15 +1809,6 @@ public:
   {
   }
 
-  StringParam(const StringParam&) = delete;
-  StringParam& operator=(const StringParam&) = delete;
-
-  /// Move ctor
-  StringParam(StringParam&&) = default;
-
-  /// Move assignment
-  StringParam& operator=(StringParam&&) = default;
-
   /**
    * Converts to a null terminated C string.
    *
@@ -9268,6 +9259,9 @@ struct PropertyProxy;
 // Forward decl
 struct PropertyMutableProxy;
 
+// Forward decl
+struct PropertyIterator;
+
 /// A value assignable to a property.
 template<class T>
 concept PropertyValue =
@@ -9398,6 +9392,20 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @returns A proxy that is convertible to any valid property type.
    */
   PropertyProxy operator[](StringParam name) const;
+
+  /**
+   * Gets an iterator to the first property in a group of properties.
+   *
+   * @return PropertyIterator No particular order is guaranteed.
+   */
+  PropertyIterator begin() const;
+
+  /**
+   * Gets sentinel iterator for a group of properties.
+   *
+   * @return a sentinel, which is always a nullptr.
+   */
+  std::nullptr_t end() const;
 
   /**
    * Access a property from a group of properties.
@@ -10092,6 +10100,8 @@ private:
   PropertiesRef m_props;
 
   StringParam m_name;
+
+  friend class PropertyIterator;
 };
 
 /// Represent a mutable property name from a given Properties
@@ -10105,6 +10115,85 @@ struct PropertyMutableProxy : PropertyProxy
   {
     GetProperties().Set(GetName(), std::forward<V>(value));
     return *this;
+  }
+};
+
+/// Iterator for properties in a Properties set.
+class PropertyIterator
+{
+public:
+  /// Default constructor
+  constexpr PropertyIterator() = default;
+
+  /// Constructor
+  PropertyIterator(PropertiesRef props, size_t index = 0)
+    : m_index(index)
+  {
+    props.Enumerate(
+      [this](auto, const char* key) { m_keys.emplace_back(key); });
+    if (m_index < m_keys.size()) m_proxy = {props, m_keys[m_index]};
+  }
+
+  ~PropertyIterator() = default;
+
+  /// Comparison with nullptr, to check if the iterator is at the end.
+  constexpr bool operator==(std::nullptr_t) const
+  {
+    return m_index >= m_keys.size();
+  }
+
+  /// Comparison operator.
+  constexpr bool operator==(const PropertyIterator& other) const
+  {
+    return m_index == other.m_index;
+  }
+
+  /// Dereference operator to get the current property proxy.
+  const PropertyProxy& operator*() const { return m_proxy; }
+
+  /// Arrow operator to get a pointer to the current property proxy.
+  const PropertyProxy* operator->() const { return &m_proxy; }
+
+  /// Pre-increment operator to move to the next property.
+  PropertyIterator& operator++()
+  {
+    ++m_index;
+    update();
+    return *this;
+  }
+
+  /// Post-increment operator to move to the next property.
+  PropertyIterator operator++(int)
+  {
+    auto copy = *this;
+    ++(*this);
+    return copy;
+  }
+
+  /// Pre-decrement operator to move to the previous property.
+  PropertyIterator& operator--()
+  {
+    --m_index;
+    update();
+    return *this;
+  }
+
+  /// Post-decrement operator to move to the previous property.
+  PropertyIterator operator--(int)
+  {
+    auto copy = *this;
+    --(*this);
+    return copy;
+  }
+
+private:
+  std::vector<std::string> m_keys;
+  PropertyProxy m_proxy{{}, ""};
+  size_t m_index = 0;
+
+  void update()
+  {
+    if (m_index < m_keys.size()) m_proxy.m_name = m_keys[m_index];
   }
 };
 
@@ -10269,6 +10358,10 @@ inline PropertyProxy PropertiesBase::operator[](StringParam name) const
 {
   return {*this, std::move(name)};
 }
+
+inline PropertyIterator PropertiesBase::begin() const { return {*this}; }
+
+inline std::nullptr_t PropertiesBase::end() const { return nullptr; }
 
 inline PropertyMutableProxy PropertiesBase::operator[](StringParam name)
 {

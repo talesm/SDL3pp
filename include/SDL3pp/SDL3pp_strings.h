@@ -100,15 +100,6 @@ public:
   {
   }
 
-  StringParam(const StringParam&) = delete;
-  StringParam& operator=(const StringParam&) = delete;
-
-  /// Move ctor
-  StringParam(StringParam&&) = default;
-
-  /// Move assignment
-  StringParam& operator=(StringParam&&) = default;
-
   /**
    * Converts to a null terminated C string.
    *
