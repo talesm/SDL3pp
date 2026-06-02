@@ -5,6 +5,7 @@
 #include <string>
 #include <string_view>
 #include <variant>
+#include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_stdinc.h>
 #include "SDL3pp_ownPtr.h"
 
@@ -41,7 +42,6 @@ namespace SDL {
  */
 class StringParam
 {
-
 public:
   /**
    * Constructs from a C string.
@@ -52,7 +52,7 @@ public:
    *
    * @param str the string to store. This parameter must outlive this object.
    */
-  StringParam(const char* str = "")
+  constexpr StringParam(const char* str = "")
     : m_data(str)
   {
   }
@@ -73,19 +73,6 @@ public:
   }
 
   /**
-   * Constructs from std::string object.
-   *
-   * This case we assume the ownership for the string and will properly call
-   * destructor automatically.
-   *
-   * @param str the string to store
-   */
-  StringParam(std::string&& str)
-    : m_data(std::move(str))
-  {
-  }
-
-  /**
    * Constructs from std::string_view object
    *
    * String view are very usefull on C++, but they don't have the null
@@ -93,10 +80,14 @@ public:
    * to a stored std::string.
    *
    * @param str the string_view to store
+   *
+   * @deprecated This constructor is deprecated because it can be very expensive
+   * if the string view is large.
    */
   StringParam(std::string_view str)
-    : StringParam(std::string{str})
+    : m_data(str.data())
   {
+    SDL_assert(m_data[str.size()] == 0);
   }
 
   /**
@@ -105,15 +96,7 @@ public:
    * @return the C string representation. We guarantee it to be null terminated
    * unless the objects it was constructed from are corrupted.
    */
-  const char* c_str() const
-  {
-    struct Visitor
-    {
-      const char* operator()(const char* a) const { return a; }
-      const char* operator()(const std::string& s) const { return s.c_str(); }
-    };
-    return std::visit(Visitor{}, m_data);
-  }
+  constexpr const char* c_str() const { return m_data; }
 
   /**
    * Converts to a null terminated C string.
@@ -121,10 +104,10 @@ public:
    * @return the C string representation. We guarantee it to be null terminated
    * unless the objects it was constructed from are corrupted.
    */
-  operator const char*() const { return c_str(); }
+  constexpr operator const char*() const { return m_data; }
 
 private:
-  std::variant<const char*, std::string> m_data;
+  const char* m_data;
 };
 
 #else // SDL3PP_ENABLE_STRING_PARAM
