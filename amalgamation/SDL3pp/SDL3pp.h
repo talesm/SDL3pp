@@ -1750,7 +1750,6 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
  */
 class StringParam
 {
-  std::variant<const char*, std::string> data;
 
 public:
   /**
@@ -1763,7 +1762,7 @@ public:
    * @param str the string to store. This parameter must outlive this object.
    */
   StringParam(const char* str = "")
-    : data(str)
+    : m_data(str)
   {
   }
 
@@ -1791,7 +1790,7 @@ public:
    * @param str the string to store
    */
   StringParam(std::string&& str)
-    : data(std::move(str))
+    : m_data(std::move(str))
   {
   }
 
@@ -1822,7 +1821,7 @@ public:
       const char* operator()(const char* a) const { return a; }
       const char* operator()(const std::string& s) const { return s.c_str(); }
     };
-    return std::visit(Visitor{}, data);
+    return std::visit(Visitor{}, m_data);
   }
 
   /**
@@ -1832,6 +1831,9 @@ public:
    * unless the objects it was constructed from are corrupted.
    */
   operator const char*() const { return c_str(); }
+
+private:
+  std::variant<const char*, std::string> m_data;
 };
 
 #else // SDL3PP_ENABLE_STRING_PARAM
