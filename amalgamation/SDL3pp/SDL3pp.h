@@ -1809,15 +1809,6 @@ public:
   {
   }
 
-  StringParam(const StringParam&) = delete;
-  StringParam& operator=(const StringParam&) = delete;
-
-  /// Move ctor
-  StringParam(StringParam&&) = default;
-
-  /// Move assignment
-  StringParam& operator=(StringParam&&) = default;
-
   /**
    * Converts to a null terminated C string.
    *
@@ -9262,6 +9253,22 @@ constexpr PropertyType PROPERTY_TYPE_FLOAT = SDL_PROPERTY_TYPE_FLOAT; ///< FLOAT
 constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
   SDL_PROPERTY_TYPE_BOOLEAN; ///< BOOLEAN
 
+// Forward decl
+struct PropertyProxy;
+
+// Forward decl
+struct PropertyMutableProxy;
+
+// Forward decl
+struct PropertyIterator;
+
+/// A value assignable to a property.
+template<class T>
+concept PropertyValue =
+  std::convertible_to<T, const PropertyProxy&> ||
+  std::convertible_to<T, void*> || std::convertible_to<T, StringParam> ||
+  std::convertible_to<T, Sint64> || std::convertible_to<T, float>;
+
 /**
  * A callback used to enumerate all the properties in a group of properties.
  *
@@ -9379,6 +9386,36 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
   void Destroy();
 
   /**
+   * Access a property from a group of properties.
+   *
+   * @param name the name of the property to query.
+   * @returns A proxy that is convertible to any valid property type.
+   */
+  PropertyProxy operator[](StringParam name) const;
+
+  /**
+   * Gets an iterator to the first property in a group of properties.
+   *
+   * @return PropertyIterator No particular order is guaranteed.
+   */
+  PropertyIterator begin() const;
+
+  /**
+   * Gets sentinel iterator for a group of properties.
+   *
+   * @return a sentinel, which is always a nullptr.
+   */
+  std::nullptr_t end() const;
+
+  /**
+   * Access a property from a group of properties.
+   *
+   * @param name the name of the property to query.
+   * @returns A proxy that is convertible to any valid property type.
+   */
+  PropertyMutableProxy operator[](StringParam name);
+
+  /**
    * Copy a group of properties.
    *
    * Copy all the properties from one group of properties to another, with the
@@ -9429,6 +9466,17 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa LockProperties
    */
   void Unlock(PropertiesLock&& lock);
+
+  /**
+   * Set a property in a group of properties.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or nullptr to delete the
+   *              property.
+   * @throws Error on failure.
+   */
+  template<PropertyValue V>
+  void Set(StringParam name, V&& value);
 
   /**
    * Set a pointer property in a group of properties with a cleanup function
@@ -9592,7 +9640,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    *
    * @sa GetPropertyType
    */
-  bool HasProperty(StringParam name);
+  bool HasProperty(StringParam name) const;
 
   /**
    * Get the type of a property in a group of properties.
@@ -9607,7 +9655,15 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    *
    * @sa HasProperty
    */
-  PropertyType GetPropertyType(StringParam name);
+  PropertyType GetPropertyType(StringParam name) const;
+
+  /**
+   * Get a property from a group of properties.
+   *
+   * @param name the name of the property to query.
+   * @returns A proxy that is convertible to any valid property type.
+   */
+  PropertyProxy Get(StringParam name) const;
 
   /**
    * Get a pointer property from a group of properties.
@@ -9638,7 +9694,8 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetPointerProperty
    */
-  void* GetPointerProperty(StringParam name, void* default_value);
+  void* GetPointerProperty(StringParam name,
+                           void* default_value = nullptr) const;
 
   /**
    * Get a string property from a group of properties.
@@ -9660,7 +9717,8 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetStringProperty
    */
-  const char* GetStringProperty(StringParam name, StringParam default_value);
+  const char* GetStringProperty(StringParam name,
+                                StringParam default_value = "") const;
 
   /**
    * Get a number property from a group of properties.
@@ -9681,7 +9739,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetNumberProperty
    */
-  Sint64 GetNumberProperty(StringParam name, Sint64 default_value);
+  Sint64 GetNumberProperty(StringParam name, Sint64 default_value = 0) const;
 
   /**
    * Get a floating point property from a group of properties.
@@ -9702,7 +9760,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetFloatProperty
    */
-  float GetFloatProperty(StringParam name, float default_value);
+  float GetFloatProperty(StringParam name, float default_value = 0) const;
 
   /**
    * Get a boolean property from a group of properties.
@@ -9723,7 +9781,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    * @sa HasProperty
    * @sa SetBooleanProperty
    */
-  bool GetBooleanProperty(StringParam name, bool default_value);
+  bool GetBooleanProperty(StringParam name, bool default_value = false) const;
 
   /**
    * Clear a property from a group of properties.
@@ -9751,7 +9809,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Enumerate(EnumeratePropertiesCallback callback, void* userdata);
+  void Enumerate(EnumeratePropertiesCallback callback, void* userdata) const;
 
   /**
    * Enumerate the properties contained in a group of properties.
@@ -9766,7 +9824,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Enumerate(EnumeratePropertiesCB callback);
+  void Enumerate(EnumeratePropertiesCB callback) const;
 
   /**
    * Returns the number of properties this has
@@ -9775,7 +9833,7 @@ struct PropertiesBase : ResourceBaseT<PropertiesID>
    *
    * @return Uint64
    */
-  Uint64 GetCount();
+  Uint64 GetCount() const;
 };
 
 /**
@@ -9826,6 +9884,43 @@ struct Properties : PropertiesBase
    * @sa DestroyProperties
    */
   Properties();
+
+  /**
+   * Create a group of properties.
+   *
+   * All properties are automatically destroyed when Quit() is called.
+   *
+   * @param entries the properties to set on this group of properties, as a list
+   *                of name-value pairs.
+   * @post an ID for a new group of properties on success.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyProperties
+   */
+  Properties(
+    std::initializer_list<
+      std::pair<StringParam,
+                std::variant<StringParam, void*, Sint64, float, bool>>> entries)
+    : Properties()
+  {
+    for (auto& [name, value] : entries) {
+      std::visit(
+        [this, &name](auto& arg) {
+          if constexpr (std::is_convertible_v<decltype(arg),
+                                              const StringParam&>) {
+            Set(name.c_str(), arg.c_str());
+          } else {
+            Set(name.c_str(), arg);
+          }
+        },
+        value);
+    }
+  }
 
   /// Destructor
   ~Properties() { SDL_DestroyProperties(get()); }
@@ -9937,6 +10032,169 @@ public:
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
+};
+
+/// Represent a property name from a given Properties
+class PropertyProxy
+{
+public:
+  /// Constructor
+  PropertyProxy(PropertiesRef props, StringParam name)
+    : m_props(props)
+    , m_name(std::move(name))
+  {
+  }
+
+  /// True if the there is a property with this name.
+  bool IsValid() const { return m_props.HasProperty(m_name.c_str()); }
+
+  /// Get Property type.
+  PropertyType GetType() const
+  {
+    return m_props.GetPropertyType(m_name.c_str());
+  }
+
+  /// Get Property name.
+  const char* GetName() const { return m_name; }
+
+  /// Get the property group this proxy belongs to.
+  PropertiesRef GetProperties() const { return m_props; }
+
+  /// Get property as a void pointer
+  operator void*() const { return m_props.GetPointerProperty(m_name.c_str()); }
+
+  /// Get property as string.
+  operator const char*() const
+  {
+    return m_props.GetStringProperty(m_name.c_str());
+  }
+
+  /// Get property as integral type.
+  template<std::integral T>
+  operator T() const
+  {
+    return T(m_props.GetNumberProperty(m_name.c_str()));
+  }
+
+  /// Get property as float.
+  operator float() const { return m_props.GetFloatProperty(m_name.c_str()); }
+
+  /// Get property as boolean.
+  operator bool() const { return m_props.GetBooleanProperty(m_name.c_str()); }
+
+  /// Call visitor with the correct type based on its GetType().
+  template<class T>
+  auto visit(T visitor) const
+  {
+    switch (GetType()) {
+    case SDL_PROPERTY_TYPE_POINTER: return visitor((void*)(*this));
+    case SDL_PROPERTY_TYPE_STRING: return visitor((const char*)(*this));
+    case SDL_PROPERTY_TYPE_NUMBER: return visitor(Sint64(*this));
+    case SDL_PROPERTY_TYPE_FLOAT: return visitor(float(*this));
+    case SDL_PROPERTY_TYPE_BOOLEAN: return visitor(bool(*this));
+    default: return visitor(std::nullopt);
+    }
+  }
+
+private:
+  PropertiesRef m_props;
+
+  StringParam m_name;
+
+  friend class PropertyIterator;
+};
+
+/// Represent a mutable property name from a given Properties
+struct PropertyMutableProxy : PropertyProxy
+{
+  using PropertyProxy::PropertyProxy;
+
+  /// Change the value of this property.
+  template<PropertyValue V>
+  PropertyMutableProxy& operator=(V&& value)
+  {
+    GetProperties().Set(GetName(), std::forward<V>(value));
+    return *this;
+  }
+};
+
+/// Iterator for properties in a Properties set.
+class PropertyIterator
+{
+public:
+  /// Default constructor
+  constexpr PropertyIterator() = default;
+
+  /// Constructor
+  PropertyIterator(PropertiesRef props, size_t index = 0)
+    : m_index(index)
+  {
+    props.Enumerate(
+      [this](auto, const char* key) { m_keys.emplace_back(key); });
+    if (m_index < m_keys.size()) m_proxy = {props, m_keys[m_index]};
+  }
+
+  ~PropertyIterator() = default;
+
+  /// Comparison with nullptr, to check if the iterator is at the end.
+  constexpr bool operator==(std::nullptr_t) const
+  {
+    return m_index >= m_keys.size();
+  }
+
+  /// Comparison operator.
+  constexpr bool operator==(const PropertyIterator& other) const
+  {
+    return m_index == other.m_index;
+  }
+
+  /// Dereference operator to get the current property proxy.
+  const PropertyProxy& operator*() const { return m_proxy; }
+
+  /// Arrow operator to get a pointer to the current property proxy.
+  const PropertyProxy* operator->() const { return &m_proxy; }
+
+  /// Pre-increment operator to move to the next property.
+  PropertyIterator& operator++()
+  {
+    ++m_index;
+    update();
+    return *this;
+  }
+
+  /// Post-increment operator to move to the next property.
+  PropertyIterator operator++(int)
+  {
+    auto copy = *this;
+    ++(*this);
+    return copy;
+  }
+
+  /// Pre-decrement operator to move to the previous property.
+  PropertyIterator& operator--()
+  {
+    --m_index;
+    update();
+    return *this;
+  }
+
+  /// Post-decrement operator to move to the previous property.
+  PropertyIterator operator--(int)
+  {
+    auto copy = *this;
+    --(*this);
+    return copy;
+  }
+
+private:
+  std::vector<std::string> m_keys;
+  PropertyProxy m_proxy{{}, ""};
+  size_t m_index = 0;
+
+  void update()
+  {
+    if (m_index < m_keys.size()) m_proxy.m_name = m_keys[m_index];
+  }
 };
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -10094,6 +10352,74 @@ inline void PropertiesLock::reset()
   if (!m_lock) return;
   UnlockProperties(m_lock);
   m_lock = {};
+}
+
+inline PropertyProxy PropertiesBase::operator[](StringParam name) const
+{
+  return {*this, std::move(name)};
+}
+
+inline PropertyIterator PropertiesBase::begin() const { return {*this}; }
+
+inline std::nullptr_t PropertiesBase::end() const { return nullptr; }
+
+inline PropertyMutableProxy PropertiesBase::operator[](StringParam name)
+{
+  return {*this, std::move(name)};
+}
+
+/**
+ * Set a property in a group of properties.
+ *
+ * @param props the properties to modify.
+ * @param name the name of the property to modify.
+ * @param value the new value of the property, or nullptr to delete the
+ *              property.
+ * @throws Error on failure.
+ */
+template<PropertyValue V>
+inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
+{
+  if constexpr (std::is_same_v<V, bool>) {
+    props.SetBooleanProperty(std::move(name), std::forward<V>(value));
+  } else if constexpr (std::is_integral_v<V>) {
+    props.SetNumberProperty(std::move(name), std::forward<V>(value));
+  } else {
+    struct Visitor
+    {
+      PropertiesRef props;
+      StringParam name;
+
+      void operator()(std::monostate) { props.ClearProperty(std::move(name)); }
+      void operator()(std::nullopt_t) { props.ClearProperty(std::move(name)); }
+      void operator()(void* v) { props.SetPointerProperty(std::move(name), v); }
+
+      void operator()(StringParam&& v)
+      {
+        props.SetStringProperty(std::move(name), std::move(v));
+      }
+      void operator()(const char* v)
+      {
+        props.SetStringProperty(std::move(name), std::move(v));
+      }
+
+      void operator()(Sint64 v) { props.SetNumberProperty(std::move(name), v); }
+      void operator()(float v) { props.SetFloatProperty(std::move(name), v); }
+      void operator()(bool v) { props.SetBooleanProperty(std::move(name), v); }
+
+      void operator()(const PropertyProxy& prop)
+      {
+        prop.visit([this](auto v) { (*this)(v); });
+      }
+    };
+    Visitor{props, std::move(name)}(std::forward<V>(value));
+  }
+}
+
+template<PropertyValue V>
+inline void PropertiesBase::Set(StringParam name, V&& value)
+{
+  SDL::SetProperty(get(), std::move(name), std::forward<V>(value));
 }
 
 /**
@@ -10353,7 +10679,7 @@ inline bool HasProperty(PropertiesRef props, StringParam name)
   return SDL_HasProperty(props, name);
 }
 
-inline bool PropertiesBase::HasProperty(StringParam name)
+inline bool PropertiesBase::HasProperty(StringParam name) const
 {
   return SDL::HasProperty(get(), std::move(name));
 }
@@ -10376,9 +10702,26 @@ inline PropertyType GetPropertyType(PropertiesRef props, StringParam name)
   return SDL_GetPropertyType(props, name);
 }
 
-inline PropertyType PropertiesBase::GetPropertyType(StringParam name)
+inline PropertyType PropertiesBase::GetPropertyType(StringParam name) const
 {
   return SDL::GetPropertyType(get(), std::move(name));
+}
+
+/**
+ * Get a property from a group of properties.
+ *
+ * @param props the properties to query.
+ * @param name the name of the property to query.
+ * @returns A proxy that is convertible to any valid property type.
+ */
+inline PropertyProxy GetProperty(PropertiesRef props, StringParam name)
+{
+  return {props, std::move(name)};
+}
+
+inline PropertyProxy PropertiesBase::Get(StringParam name) const
+{
+  return SDL::GetProperty(get(), std::move(name));
 }
 
 /**
@@ -10413,13 +10756,13 @@ inline PropertyType PropertiesBase::GetPropertyType(StringParam name)
  */
 inline void* GetPointerProperty(PropertiesRef props,
                                 StringParam name,
-                                void* default_value)
+                                void* default_value = nullptr)
 {
   return SDL_GetPointerProperty(props, name, default_value);
 }
 
 inline void* PropertiesBase::GetPointerProperty(StringParam name,
-                                                void* default_value)
+                                                void* default_value) const
 {
   return SDL::GetPointerProperty(get(), std::move(name), default_value);
 }
@@ -10447,13 +10790,14 @@ inline void* PropertiesBase::GetPointerProperty(StringParam name,
  */
 inline const char* GetStringProperty(PropertiesRef props,
                                      StringParam name,
-                                     StringParam default_value)
+                                     StringParam default_value = "")
 {
   return SDL_GetStringProperty(props, name, default_value);
 }
 
-inline const char* PropertiesBase::GetStringProperty(StringParam name,
-                                                     StringParam default_value)
+inline const char* PropertiesBase::GetStringProperty(
+  StringParam name,
+  StringParam default_value) const
 {
   return SDL::GetStringProperty(
     get(), std::move(name), std::move(default_value));
@@ -10481,13 +10825,13 @@ inline const char* PropertiesBase::GetStringProperty(StringParam name,
  */
 inline Sint64 GetNumberProperty(PropertiesRef props,
                                 StringParam name,
-                                Sint64 default_value)
+                                Sint64 default_value = 0)
 {
   return SDL_GetNumberProperty(props, name, default_value);
 }
 
 inline Sint64 PropertiesBase::GetNumberProperty(StringParam name,
-                                                Sint64 default_value)
+                                                Sint64 default_value) const
 {
   return SDL::GetNumberProperty(get(), std::move(name), default_value);
 }
@@ -10514,13 +10858,13 @@ inline Sint64 PropertiesBase::GetNumberProperty(StringParam name,
  */
 inline float GetFloatProperty(PropertiesRef props,
                               StringParam name,
-                              float default_value)
+                              float default_value = 0)
 {
   return SDL_GetFloatProperty(props, name, default_value);
 }
 
 inline float PropertiesBase::GetFloatProperty(StringParam name,
-                                              float default_value)
+                                              float default_value) const
 {
   return SDL::GetFloatProperty(get(), std::move(name), default_value);
 }
@@ -10547,13 +10891,13 @@ inline float PropertiesBase::GetFloatProperty(StringParam name,
  */
 inline bool GetBooleanProperty(PropertiesRef props,
                                StringParam name,
-                               bool default_value)
+                               bool default_value = false)
 {
   return SDL_GetBooleanProperty(props, name, default_value);
 }
 
 inline bool PropertiesBase::GetBooleanProperty(StringParam name,
-                                               bool default_value)
+                                               bool default_value) const
 {
   return SDL::GetBooleanProperty(get(), std::move(name), default_value);
 }
@@ -10628,12 +10972,12 @@ inline void EnumerateProperties(PropertiesRef props,
 }
 
 inline void PropertiesBase::Enumerate(EnumeratePropertiesCallback callback,
-                                      void* userdata)
+                                      void* userdata) const
 {
   SDL::EnumerateProperties(get(), callback, userdata);
 }
 
-inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback)
+inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
 {
   SDL::EnumerateProperties(get(), std::move(callback));
 }
@@ -10653,7 +10997,10 @@ inline Uint64 CountProperties(PropertiesRef props)
   return count;
 }
 
-inline Uint64 PropertiesBase::GetCount() { return SDL::CountProperties(get()); }
+inline Uint64 PropertiesBase::GetCount() const
+{
+  return SDL::CountProperties(get());
+}
 
 /**
  * Destroy a group of properties.

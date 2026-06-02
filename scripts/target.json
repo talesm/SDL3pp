@@ -102855,6 +102855,18 @@
           ],
           "sourceName": "SDL_PROPERTY_TYPE_BOOLEAN"
         },
+        "PropertyProxy-forward": {
+          "kind": "forward",
+          "name": "PropertyProxy"
+        },
+        "PropertyMutableProxy-forward": {
+          "kind": "forward",
+          "name": "PropertyMutableProxy"
+        },
+        "PropertyIterator-forward": {
+          "kind": "forward",
+          "name": "PropertyIterator"
+        },
         "EnumeratePropertiesCallback": {
           "name": "EnumeratePropertiesCallback",
           "kind": "alias",
@@ -103037,6 +103049,45 @@
               },
               "proto": true
             },
+            "operator[]": {
+              "kind": "function",
+              "type": "PropertyProxy",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "StringParam",
+                  "name": "name"
+                }
+              ],
+              "hints": {
+                "body": "return {*this, std::move(name)};"
+              },
+              "name": "operator[]",
+              "static": false,
+              "proto": true
+            },
+            "begin": {
+              "kind": "function",
+              "type": "PropertyIterator",
+              "immutable": true,
+              "parameters": [],
+              "hints": {
+                "body": "return {*this};"
+              },
+              "name": "begin",
+              "proto": true
+            },
+            "end": {
+              "kind": "function",
+              "type": "std::nullptr_t",
+              "immutable": true,
+              "parameters": [],
+              "hints": {
+                "body": "return nullptr;"
+              },
+              "name": "end",
+              "proto": true
+            },
             "Copy": {
               "doc": [
                 "Copy a group of properties.",
@@ -103142,6 +103193,32 @@
                 "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
                 "delegate": "SDL::UnlockProperties"
               },
+              "proto": true
+            },
+            "Set": {
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "type": "StringParam",
+                  "name": "name"
+                },
+                {
+                  "type": "V &&",
+                  "name": "value"
+                }
+              ],
+              "template": [
+                {
+                  "type": "PropertyValue",
+                  "name": "V"
+                }
+              ],
+              "hints": {
+                "delegate": "SDL::SetProperty"
+              },
+              "name": "Set",
+              "static": false,
               "proto": true
             },
             "SetPointerPropertyWithCleanup": {
@@ -103608,6 +103685,7 @@
                 }
               ],
               "sourceName": "SDL_HasProperty",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::HasProperty"
               },
@@ -103649,9 +103727,27 @@
                 }
               ],
               "sourceName": "SDL_GetPropertyType",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::GetPropertyType"
               },
+              "proto": true
+            },
+            "Get": {
+              "kind": "function",
+              "type": "PropertyProxy",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "StringParam",
+                  "name": "name"
+                }
+              ],
+              "hints": {
+                "delegate": "SDL::GetProperty"
+              },
+              "name": "Get",
+              "static": false,
               "proto": true
             },
             "GetPointerProperty": {
@@ -103721,10 +103817,12 @@
                 },
                 {
                   "name": "default_value",
-                  "type": "void *"
+                  "type": "void *",
+                  "default": "nullptr"
                 }
               ],
               "sourceName": "SDL_GetPointerProperty",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::GetPointerProperty"
               },
@@ -103780,10 +103878,12 @@
                 },
                 {
                   "name": "default_value",
-                  "type": "StringParam"
+                  "type": "StringParam",
+                  "default": "\"\""
                 }
               ],
               "sourceName": "SDL_GetStringProperty",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::GetStringProperty"
               },
@@ -103840,10 +103940,12 @@
                 },
                 {
                   "name": "default_value",
-                  "type": "Sint64"
+                  "type": "Sint64",
+                  "default": "0"
                 }
               ],
               "sourceName": "SDL_GetNumberProperty",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::GetNumberProperty"
               },
@@ -103900,10 +104002,12 @@
                 },
                 {
                   "name": "default_value",
-                  "type": "float"
+                  "type": "float",
+                  "default": "0"
                 }
               ],
               "sourceName": "SDL_GetFloatProperty",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::GetFloatProperty"
               },
@@ -103960,10 +104064,12 @@
                 },
                 {
                   "name": "default_value",
-                  "type": "bool"
+                  "type": "bool",
+                  "default": "false"
                 }
               ],
               "sourceName": "SDL_GetBooleanProperty",
+              "immutable": true,
               "hints": {
                 "delegate": "SDL::GetBooleanProperty"
               },
@@ -104052,9 +104158,11 @@
                 "mayFail": true,
                 "delegate": "SDL::EnumerateProperties"
               },
+              "immutable": true,
               "overload": {
                 "kind": "function",
                 "type": "void",
+                "immutable": true,
                 "parameters": [
                   {
                     "type": "EnumeratePropertiesCB",
@@ -104099,6 +104207,7 @@
             "GetCount": {
               "kind": "function",
               "type": "Uint64",
+              "immutable": true,
               "parameters": [],
               "hints": {
                 "delegate": "SDL::CountProperties"
@@ -104504,6 +104613,89 @@
             }
           ]
         },
+        "PropertyProxy": {
+          "kind": "struct",
+          "entries": {
+            "m_props": {
+              "kind": "var",
+              "type": "PropertiesRef",
+              "hints": {
+                "changeAccess": "private"
+              },
+              "name": "m_props"
+            },
+            "m_name": {
+              "kind": "var",
+              "type": "StringParam",
+              "name": "m_name"
+            }
+          },
+          "hints": {
+            "private": true
+          },
+          "name": "PropertyProxy"
+        },
+        "PropertyMutableProxy": {
+          "kind": "struct",
+          "type": "PropertyProxy",
+          "entries": {
+            "PropertyProxy::PropertyProxy": {
+              "kind": "alias",
+              "name": "PropertyProxy::PropertyProxy"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "PropertyMutableProxy &",
+              "template": [
+                {
+                  "type": "PropertyValue",
+                  "name": "V"
+                }
+              ],
+              "parameters": [
+                {
+                  "type": "V &&",
+                  "name": "value"
+                }
+              ],
+              "hints": {
+                "body": "GetProperties().Set(GetName(), std::forward<V>(value)); return *this;"
+              },
+              "name": "operator="
+            }
+          },
+          "name": "PropertyMutableProxy"
+        },
+        "PropertyIterator": {
+          "kind": "struct",
+          "entries": {
+            "PropertyIterator": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {}
+              ],
+              "constexpr": true,
+              "hints": {
+                "changeAccess": "public",
+                "default": true
+              },
+              "name": "PropertyIterator"
+            },
+            "m_keys": {
+              "kind": "var",
+              "type": "std::vector<std::string>",
+              "hints": {
+                "changeAccess": "private"
+              },
+              "name": "m_keys"
+            }
+          },
+          "hints": {
+            "private": true
+          },
+          "name": "PropertyIterator"
+        },
         "PROP_NAME_STRING": {
           "doc": [
             "A generic property for naming things.",
@@ -104797,6 +104989,97 @@
             "private": true,
             "body": "if (!m_lock) return;\nUnlockProperties(m_lock);\nm_lock = {};"
           }
+        },
+        "PropertiesBase::operator[]": {
+          "kind": "function",
+          "type": "PropertyProxy",
+          "immutable": true,
+          "parameters": [
+            {
+              "type": "StringParam",
+              "name": "name"
+            }
+          ],
+          "hints": {
+            "self": "get()",
+            "body": "return {*this, std::move(name)};"
+          },
+          "name": "PropertiesBase::operator[]"
+        },
+        "PropertiesBase::begin": {
+          "kind": "function",
+          "type": "PropertyIterator",
+          "immutable": true,
+          "parameters": [],
+          "hints": {
+            "self": "get()",
+            "body": "return {*this};"
+          },
+          "name": "PropertiesBase::begin"
+        },
+        "PropertiesBase::end": {
+          "kind": "function",
+          "type": "std::nullptr_t",
+          "immutable": true,
+          "parameters": [],
+          "hints": {
+            "self": "get()",
+            "body": "return nullptr;"
+          },
+          "name": "PropertiesBase::end"
+        },
+        "SetProperty": {
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "type": "PropertiesRef",
+              "name": "props"
+            },
+            {
+              "type": "StringParam",
+              "name": "name"
+            },
+            {
+              "type": "V &&",
+              "name": "value"
+            }
+          ],
+          "template": [
+            {
+              "type": "PropertyValue",
+              "name": "V"
+            }
+          ],
+          "hints": {
+            "methodName": "Set"
+          },
+          "name": "SetProperty"
+        },
+        "PropertiesBase::Set": {
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "type": "StringParam",
+              "name": "name"
+            },
+            {
+              "type": "V &&",
+              "name": "value"
+            }
+          ],
+          "template": [
+            {
+              "type": "PropertyValue",
+              "name": "V"
+            }
+          ],
+          "hints": {
+            "self": "get()",
+            "delegate": "SDL::SetProperty"
+          },
+          "name": "PropertiesBase::Set"
         },
         "SetPointerPropertyWithCleanup": {
           "doc": [
@@ -105479,6 +105762,7 @@
             }
           ],
           "sourceName": "SDL_HasProperty",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::HasProperty"
@@ -105540,10 +105824,45 @@
             }
           ],
           "sourceName": "SDL_GetPropertyType",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::GetPropertyType"
           }
+        },
+        "GetProperty": {
+          "kind": "function",
+          "type": "PropertyProxy",
+          "parameters": [
+            {
+              "type": "PropertiesRef",
+              "name": "props"
+            },
+            {
+              "type": "StringParam",
+              "name": "name"
+            }
+          ],
+          "hints": {
+            "methodName": "Get"
+          },
+          "name": "GetProperty"
+        },
+        "PropertiesBase::Get": {
+          "kind": "function",
+          "type": "PropertyProxy",
+          "immutable": true,
+          "parameters": [
+            {
+              "type": "StringParam",
+              "name": "name"
+            }
+          ],
+          "hints": {
+            "self": "get()",
+            "delegate": "SDL::GetProperty"
+          },
+          "name": "PropertiesBase::Get"
         },
         "GetPointerProperty": {
           "doc": [
@@ -105620,7 +105939,8 @@
             },
             {
               "name": "default_value",
-              "type": "void *"
+              "type": "void *",
+              "default": "nullptr"
             }
           ],
           "sourceName": "SDL_GetPointerProperty"
@@ -105640,6 +105960,7 @@
             }
           ],
           "sourceName": "SDL_GetPointerProperty",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::GetPointerProperty"
@@ -105703,7 +106024,8 @@
             },
             {
               "name": "default_value",
-              "type": "StringParam"
+              "type": "StringParam",
+              "default": "\"\""
             }
           ],
           "sourceName": "SDL_GetStringProperty"
@@ -105723,6 +106045,7 @@
             }
           ],
           "sourceName": "SDL_GetStringProperty",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::GetStringProperty"
@@ -105787,7 +106110,8 @@
             },
             {
               "name": "default_value",
-              "type": "Sint64"
+              "type": "Sint64",
+              "default": "0"
             }
           ],
           "sourceName": "SDL_GetNumberProperty"
@@ -105807,6 +106131,7 @@
             }
           ],
           "sourceName": "SDL_GetNumberProperty",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::GetNumberProperty"
@@ -105871,7 +106196,8 @@
             },
             {
               "name": "default_value",
-              "type": "float"
+              "type": "float",
+              "default": "0"
             }
           ],
           "sourceName": "SDL_GetFloatProperty"
@@ -105891,6 +106217,7 @@
             }
           ],
           "sourceName": "SDL_GetFloatProperty",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::GetFloatProperty"
@@ -105955,7 +106282,8 @@
             },
             {
               "name": "default_value",
-              "type": "bool"
+              "type": "bool",
+              "default": "false"
             }
           ],
           "sourceName": "SDL_GetBooleanProperty"
@@ -105975,6 +106303,7 @@
             }
           ],
           "sourceName": "SDL_GetBooleanProperty",
+          "immutable": true,
           "hints": {
             "self": "get()",
             "delegate": "SDL::GetBooleanProperty"
@@ -106159,9 +106488,11 @@
             "mayFail": true,
             "delegate": "SDL::EnumerateProperties"
           },
+          "immutable": true,
           "overload": {
             "kind": "function",
             "type": "void",
+            "immutable": true,
             "parameters": [
               {
                 "type": "EnumeratePropertiesCB",
@@ -106192,6 +106523,7 @@
         "PropertiesBase::GetCount": {
           "kind": "function",
           "type": "Uint64",
+          "immutable": true,
           "parameters": [],
           "hints": {
             "self": "get()",
@@ -106245,6 +106577,8 @@
         }
       },
       "includes": [
+        "optional",
+        "variant",
         "SDL3/SDL_properties.h"
       ],
       "localIncludes": [

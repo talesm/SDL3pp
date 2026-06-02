@@ -4218,7 +4218,37 @@ const transform = {
     },
     "SDL_properties.h": {
       localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_resource.h", "SDL3pp_strings.h", "SDL3pp_version.h"],
+      includes: ["optional", "variant"],
       transform: {
+        "SDL_PropertyType": {
+          enum: "SDL_PROPERTY_TYPE_",
+          before: "SDL_PropertiesID",
+        },
+        "PropertyProxy#forward": {
+          kind: "forward",
+          before: "SDL_PropertiesID",
+          name: "PropertyProxy",
+        },
+        "PropertyMutableProxy#forward": {
+          kind: "forward",
+          before: "SDL_PropertiesID",
+          name: "PropertyMutableProxy",
+        },
+        "PropertyIterator#forward": {
+          kind: "forward",
+          before: "SDL_PropertiesID",
+          name: "PropertyIterator",
+        },
+        "SDL_EnumeratePropertiesCallback": {
+          kind: "alias",
+          before: "SDL_PropertiesID",
+          callback: "std",
+        },
+        "SDL_CleanupPropertyCallback": {
+          kind: "alias",
+          before: "SDL_PropertiesID",
+          callback: "std",
+        },
         "SDL_PropertiesID": {
           name: "Properties",
           lock: {
@@ -4234,19 +4264,97 @@ const transform = {
           },
         },
         "SDL_PROP_NAME_STRING": { kind: "var" },
-        "SDL_PropertyType": {
-          enum: "SDL_PROPERTY_TYPE_",
-          before: "SDL_PropertiesID",
+        "PropertyProxy": {
+          kind: "struct",
+          after: "PropertiesLock",
+          entries: {
+            "m_props": {
+              kind: "var",
+              type: "PropertiesRef",
+              hints: { changeAccess: "private" },
+            },
+            "m_name": {
+              kind: "var",
+              type: "StringParam",
+            },
+          },
+          hints: { private: true },
         },
-        "SDL_EnumeratePropertiesCallback": {
-          kind: "alias",
-          before: "SDL_PropertiesID",
-          callback: "std",
+        "PropertyMutableProxy": {
+          kind: "struct",
+          type: "PropertyProxy",
+          entries: {
+            "PropertyProxy::PropertyProxy": "alias",
+            "operator=": {
+              kind: "function",
+              type: "PropertyMutableProxy &",
+              template: [{ type: "PropertyValue", name: "V" }],
+              parameters: [{ type: "V &&", name: "value" }],
+              hints: { body: "GetProperties().Set(GetName(), std::forward<V>(value)); return *this;" },
+            }
+          },
         },
-        "SDL_CleanupPropertyCallback": {
-          kind: "alias",
-          before: "SDL_PropertiesID",
-          callback: "std",
+        "PropertyIterator": {
+          kind: "struct",
+          entries: {
+            "PropertyIterator": {
+              kind: "function",
+              type: "",
+              parameters: [{}],
+              constexpr: true,
+              hints: {
+                changeAccess: "public",
+                default: true,
+              },
+            },
+            "m_keys": {
+              kind: "var",
+              type: "std::vector<std::string>",
+              hints: { changeAccess: "private" },
+            },
+          },
+          hints: { private: true },
+        },
+        "PropertiesBase::operator[]": {
+          before: "SetProperty",
+          kind: "function",
+          type: "PropertyProxy",
+          immutable: true,
+          parameters: [{ type: "StringParam", name: "name" }],
+          hints: { body: "return {*this, std::move(name)};" },
+        },
+        "PropertiesBase::begin": {
+          before: "SetProperty",
+          kind: "function",
+          type: "PropertyIterator",
+          immutable: true,
+          parameters: [],
+          hints: { body: "return {*this};" },
+        },
+        "PropertiesBase::end": {
+          before: "SetProperty",
+          kind: "function",
+          type: "std::nullptr_t",
+          immutable: true,
+          parameters: [],
+          hints: { body: "return nullptr;" },
+        },
+        "SetProperty": {
+          after: "SDL_UnlockProperties",
+          kind: "function",
+          type: "void",
+          parameters: [{
+            type: "PropertiesRef",
+            name: "props"
+          }, {
+            type: "StringParam",
+            name: "name"
+          }, {
+            type: "V &&",
+            name: "value"
+          }],
+          template: [{ type: "PropertyValue", name: "V" }],
+          hints: { methodName: "Set" },
         },
         "SetPointerPropertyWithCleanup": {
           kind: "function",
@@ -4269,10 +4377,46 @@ const transform = {
             name: "cleanup"
           }]
         },
+        "SDL_HasProperty": { immutable: true },
+        "SDL_GetPropertyType": { immutable: true },
+        "GetProperty": {
+          kind: "function",
+          type: "PropertyProxy",
+          immutable: true,
+          parameters: [{
+            type: "PropertiesRef",
+            name: "props"
+          }, {
+            type: "StringParam",
+            name: "name"
+          }],
+          hints: { methodName: "Get" },
+        },
+        "SDL_GetPointerProperty": {
+          immutable: true,
+          parameters: [{}, {}, { default: "nullptr" }]
+        },
+        "SDL_GetStringProperty": {
+          immutable: true,
+          parameters: [{}, {}, { default: "\"\"" }]
+        },
+        "SDL_GetNumberProperty": {
+          immutable: true,
+          parameters: [{}, {}, { default: "0" }]
+        },
+        "SDL_GetFloatProperty": {
+          immutable: true,
+          parameters: [{}, {}, { default: "0" }]
+        },
+        "SDL_GetBooleanProperty": {
+          immutable: true,
+          parameters: [{}, {}, { default: "false" }]
+        },
+        "SDL_EnumerateProperties": { immutable: true },
         "EnumerateProperties": {
           kind: "function",
           type: "void",
-          after: "SDL_EnumerateProperties",
+          immutable: true,
           parameters: [{
             type: "PropertiesRef",
             name: "props"
@@ -4284,6 +4428,7 @@ const transform = {
         "CountProperties": {
           kind: "function",
           type: "Uint64",
+          immutable: true,
           parameters: [{
             type: "PropertiesRef",
             name: "props"
