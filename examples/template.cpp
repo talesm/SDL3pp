@@ -1,3 +1,12 @@
+/**
+ * @file template.cpp
+ *
+ * Based on SDL3's template.c
+ *
+ * ((Some description of the example.))
+ *
+ * This code is public domain. Feel free to use it for any purpose!
+ */
 #define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp.h>
 #include <SDL3pp/SDL3pp_main.h>
