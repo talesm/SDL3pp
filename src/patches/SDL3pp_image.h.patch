@@ -544,7 +544,7 @@
  inline Surface LoadPNG(StringParam file)
  {
 -  static_assert(false, "Not implemented");
-+  return LoadPNG_IO(IOFromFile(std::move(file), "rb"));
++  return LoadPNG_IO(IOFromFile(file, "rb"));
  }
  
  /**
@@ -717,15 +717,6 @@
  }
  
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -2206,7 +2248,7 @@
- 
- inline void SurfaceBase::Save(StringParam filename) const
- {
--  Save(get(), std::move(filename));
-+  SDL::Save(*this, std::move(filename));
- }
- 
- /**
 @@ -2221,10 +2263,10 @@
   *
   * @param surface the SDL surface to save.
@@ -739,7 +730,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -2245,14 +2287,14 @@
+@@ -2245,7 +2287,7 @@
                           StringParam type,
                           bool closeio = false)
  {
@@ -748,14 +739,6 @@
  }
  
  inline void SurfaceBase::SaveTyped_IO(IOStreamRef dst,
-                                       StringParam type,
-                                       bool closeio) const
- {
--  SaveTyped_IO(get(), dst, std::move(type), closeio);
-+  SDL::SaveTyped_IO(*this, dst, std::move(type), closeio);
- }
- 
- #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 @@ -2287,10 +2329,10 @@
   *
   * @param surface the SDL surface to save.
@@ -854,7 +837,7 @@
  
 +inline void SurfaceBase::SavePNG(StringParam file) const
 +{
-+  SDL::SavePNG(get(), std::move(file));
++  SDL::SavePNG(get(), file);
 +}
 +
  /**
@@ -1088,7 +1071,7 @@
   * @param file path on the filesystem containing an animated image.
   * @returns a new Animation, or nullptr on error.
   *
-@@ -3090,9 +3110,6 @@
+@@ -3087,9 +3107,6 @@
   * function succeeds or not. SDL_image reads everything it needs from `src`
   * during this call in any case.
   *
@@ -1098,7 +1081,7 @@
   * @param src an IOStream that data will be read from.
   * @param closeio true to close/free the IOStream before returning, false to
   *                leave it open.
-@@ -3128,13 +3145,10 @@
+@@ -3125,13 +3142,10 @@
   * function succeeds or not. SDL_image reads everything it needs from `src`
   * during this call in any case.
   *
@@ -1113,7 +1096,7 @@
   * @returns a new Animation, or nullptr on error.
   *
   * @since This function is available since SDL_image 3.0.0.
-@@ -3153,7 +3167,7 @@
+@@ -3150,7 +3164,7 @@
                                         StringParam type,
                                         bool closeio = false)
  {
@@ -1122,7 +1105,7 @@
  }
  
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -3166,9 +3180,6 @@
+@@ -3163,9 +3177,6 @@
   * better to use the abstract interfaces; also, there is only an IOStream
   * interface available here.
   *
@@ -1132,7 +1115,7 @@
   * @param src an IOStream from which data will be read.
   * @returns a new Animation, or nullptr on error.
   *
-@@ -3186,7 +3197,7 @@
+@@ -3183,7 +3194,7 @@
   */
  inline Animation LoadANIAnimation_IO(IOStreamRef src)
  {
@@ -1141,7 +1124,7 @@
  }
  
  /**
-@@ -3197,9 +3208,6 @@
+@@ -3194,9 +3205,6 @@
   * better to use the abstract interfaces; also, there is only an IOStream
   * interface available here.
   *
@@ -1151,7 +1134,7 @@
   * @param src an IOStream from which data will be read.
   * @returns a new Animation, or nullptr on error.
   *
-@@ -3217,7 +3225,7 @@
+@@ -3214,7 +3222,7 @@
   */
  inline Animation LoadAPNGAnimation_IO(IOStreamRef src)
  {
@@ -1160,7 +1143,7 @@
  }
  
  /**
-@@ -3228,9 +3236,6 @@
+@@ -3225,9 +3233,6 @@
   * Generally it's better to use the abstract interfaces; also, there is only an
   * IOStream interface available here.
   *
@@ -1170,7 +1153,7 @@
   * @param src an IOStream that data will be read from.
   * @returns a new Animation, or nullptr on error.
   *
-@@ -3248,7 +3253,7 @@
+@@ -3245,7 +3250,7 @@
   */
  inline Animation LoadAVIFAnimation_IO(IOStreamRef src)
  {
@@ -1179,7 +1162,7 @@
  }
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -3278,7 +3283,7 @@
+@@ -3275,7 +3280,7 @@
   */
  inline Animation LoadGIFAnimation_IO(IOStreamRef src)
  {
@@ -1188,7 +1171,7 @@
  }
  
  /**
-@@ -3306,7 +3311,7 @@
+@@ -3303,7 +3308,7 @@
   */
  inline Animation LoadWEBPAnimation_IO(IOStreamRef src)
  {
@@ -1197,7 +1180,7 @@
  }
  
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -3370,7 +3375,7 @@
+@@ -3367,7 +3372,7 @@
                                    StringParam type,
                                    bool closeio = false)
  {
@@ -1206,7 +1189,7 @@
  }
  
  inline void AnimationBase::SaveTyped_IO(IOStreamRef dst,
-@@ -3454,10 +3459,10 @@
+@@ -3451,10 +3456,10 @@
   *
   * @param anim the animation to save.
   * @param dst an IOStream from which data will be written to.
@@ -1219,7 +1202,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -3474,7 +3479,7 @@
+@@ -3471,7 +3476,7 @@
                                   int quality,
                                   bool closeio = false)
  {
@@ -1228,7 +1211,7 @@
  }
  
  inline void AnimationBase::SaveAVIF_IO(IOStreamRef dst,
-@@ -3525,12 +3530,12 @@
+@@ -3522,12 +3527,12 @@
   *
   * @param anim the animation to save.
   * @param dst an IOStream from which data will be written to.
@@ -1243,7 +1226,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -3547,7 +3552,7 @@
+@@ -3544,7 +3549,7 @@
                                   int quality,
                                   bool closeio = false)
  {
@@ -1252,7 +1235,7 @@
  }
  
  inline void AnimationBase::SaveWEBP_IO(IOStreamRef dst,
-@@ -3561,8 +3566,7 @@
+@@ -3558,8 +3563,7 @@
   * Create an animated cursor from an animation.
   *
   * @param anim an animation to use to create an animated cursor.
@@ -1262,7 +1245,7 @@
   * @returns the new cursor on success.
   * @throws Error on failure.
   *
-@@ -3574,7 +3578,8 @@
+@@ -3571,7 +3575,8 @@
   */
  inline Cursor CreateAnimatedCursor(AnimationRef anim, const PointRaw& hotspot)
  {
@@ -1272,7 +1255,7 @@
  }
  
  inline Cursor AnimationBase::CreateCursor(const PointRaw& hotspot)
-@@ -3623,8 +3628,7 @@
+@@ -3620,8 +3625,7 @@
     * Calling this function frees the animation encoder, and returns the final
     * status of the encoding process.
     *
@@ -1282,7 +1265,7 @@
     *
     * @since This function is available since SDL_image 3.4.0.
     *
-@@ -3632,7 +3636,7 @@
+@@ -3629,7 +3633,7 @@
     * @sa CreateAnimationEncoder_IO
     * @sa CreateAnimationEncoderWithProperties
     */
@@ -1291,7 +1274,7 @@
  
    /**
     * Add a frame to an animation encoder.
-@@ -3724,9 +3728,9 @@
+@@ -3721,9 +3725,9 @@
     * succeeds.
     *
     * @param dst an IOStream that will be used to save the stream.
@@ -1302,7 +1285,7 @@
     * @post a new AnimationEncoder on success.
     * @throws Error on failure.
     *
-@@ -3838,7 +3842,7 @@
+@@ -3835,7 +3839,7 @@
                                            StringParam type,
                                            bool closeio)
    : AnimationEncoder(
@@ -1311,7 +1294,7 @@
  {
  }
  
-@@ -3863,8 +3867,8 @@
+@@ -3860,8 +3864,8 @@
   * fails, or when the animation encoder is closed if this function succeeds.
   *
   * @param dst an IOStream that will be used to save the stream.
@@ -1321,7 +1304,7 @@
   * @returns a new AnimationEncoder on success.
   * @throws Error on failure.
   *
-@@ -3934,6 +3938,11 @@
+@@ -3931,6 +3935,11 @@
    return AnimationEncoder(props);
  }
  
@@ -1333,7 +1316,7 @@
  namespace prop::AnimationEncoder::Create {
  
  constexpr auto FILENAME_STRING =
-@@ -4030,10 +4039,7 @@
+@@ -4027,10 +4036,7 @@
    CheckError(IMG_CloseAnimationEncoder(encoder));
  }
  
@@ -1345,7 +1328,7 @@
  
  /**
   * An enum representing the status of an animation decoder.
-@@ -4070,8 +4076,7 @@
+@@ -4067,8 +4073,7 @@
     * Calling this function frees the animation decoder, and returns the final
     * status of the decoding process.
     *
@@ -1355,7 +1338,7 @@
     *
     * @since This function is available since SDL_image 3.4.0.
     *
-@@ -4079,7 +4084,7 @@
+@@ -4076,7 +4081,7 @@
     * @sa CreateAnimationDecoder_IO
     * @sa CreateAnimationDecoderWithProperties
     */
@@ -1364,7 +1347,7 @@
  
    /**
     * Get the properties of an animation decoder.
-@@ -4110,18 +4115,11 @@
+@@ -4107,18 +4112,11 @@
     * as an Surface. The returned surface should be freed with SDL_FreeSurface()
     * when no longer needed.
     *
@@ -1385,7 +1368,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -4345,7 +4343,7 @@
+@@ -4342,7 +4340,7 @@
                                            StringParam type,
                                            bool closeio)
    : AnimationDecoder(
@@ -1394,7 +1377,7 @@
  {
  }
  
-@@ -4434,6 +4432,11 @@
+@@ -4431,6 +4429,11 @@
    return AnimationDecoder(props);
  }
  
@@ -1406,7 +1389,7 @@
  namespace prop::AnimationDecoder::Create {
  
  constexpr auto FILENAME_STRING =
-@@ -4521,6 +4524,12 @@
+@@ -4518,6 +4521,12 @@
    return SDL::GetAnimationDecoderProperties(get());
  }
  
@@ -1419,7 +1402,7 @@
  namespace prop::AnimationDecoder::Metadata {
  
  constexpr auto IGNORE_PROPS_BOOLEAN =
-@@ -4553,22 +4562,14 @@
+@@ -4550,22 +4559,14 @@
   * Get the next frame in an animation decoder.
   *
   * This function decodes the next frame in the animation decoder, returning it
@@ -1444,7 +1427,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -4583,7 +4584,9 @@
+@@ -4580,7 +4581,9 @@
  inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
                                          Uint64* duration)
  {
@@ -1455,7 +1438,7 @@
  }
  
  inline Surface AnimationDecoderBase::GetFrame(Uint64* duration)
-@@ -4658,10 +4661,7 @@
+@@ -4655,10 +4658,7 @@
    CheckError(IMG_CloseAnimationDecoder(decoder));
  }
  
@@ -1467,7 +1450,7 @@
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
  
-@@ -4669,4 +4669,32 @@
+@@ -4666,4 +4666,32 @@
  
  } // namespace SDL
  
@@ -1476,22 +1459,22 @@
 +namespace SDL {
 +
 +inline Surface::Surface(StringParam file)
-+  : Surface(LoadBMP(std::move(file)))
++  : Surface(LoadBMP(file))
 +{
 +}
 +
 +inline Surface::Surface(IOStreamRef src, bool closeio)
-+  : Surface(LoadBMP_IO(std::move(src), closeio))
++  : Surface(LoadBMP_IO(src, closeio))
 +{
 +}
 +
 +inline Texture::Texture(RendererRef renderer, StringParam file)
-+  : Texture(std::move(renderer), Surface(std::move(file)))
++  : Texture(renderer, Surface(file))
 +{
 +}
 +
 +inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
-+  : Texture(std::move(renderer), Surface(std::move(src), closeio))
++  : Texture(renderer, Surface(src, closeio))
 +{
 +}
 +

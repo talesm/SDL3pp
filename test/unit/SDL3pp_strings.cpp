@@ -27,6 +27,14 @@ TEST_CASE("StringParam to string")
   CHECK(result == "string view");
   REQUIRE_NOTHROW(test(std::string("string")));
   CHECK(result == "string");
+
+  // Long strings
+  REQUIRE_NOTHROW(
+    test(std::string("the quick brown fox jumps over the lazy dog")));
+  CHECK(result == "the quick brown fox jumps over the lazy dog");
+  REQUIRE_NOTHROW(
+    test(std::string_view("the quick brown fox jumps over the lazy dog")));
+  CHECK(result == "the quick brown fox jumps over the lazy dog");
 }
 
 TEST_CASE("StringParam const string & optimization")

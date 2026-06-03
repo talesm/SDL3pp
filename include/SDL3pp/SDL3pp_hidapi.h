@@ -569,10 +569,7 @@ inline HidDevice::HidDevice(StringParam path)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline HidDevice hid_open_path(StringParam path)
-{
-  return HidDevice(std::move(path));
-}
+inline HidDevice hid_open_path(StringParam path) { return HidDevice(path); }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 

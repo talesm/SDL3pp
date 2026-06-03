@@ -1823,7 +1823,7 @@ struct Font : FontBase
  */
 inline Font OpenFont(StringParam file, float ptsize)
 {
-  return Font(std::move(file), ptsize);
+  return Font(file, ptsize);
 }
 
 inline Font::Font(StringParam file, float ptsize)
@@ -2981,7 +2981,7 @@ inline void SetFontLanguage(FontRef font, StringParam language_bcp47)
 
 inline void FontBase::SetLanguage(StringParam language_bcp47)
 {
-  SDL::SetFontLanguage(get(), std::move(language_bcp47));
+  SDL::SetFontLanguage(get(), language_bcp47);
 }
 
 /**

@@ -674,7 +674,7 @@ struct AsyncIOQueue : AsyncIOQueueBase
  */
 inline AsyncIO AsyncIOFromFile(StringParam file, StringParam mode)
 {
-  return AsyncIO(std::move(file), std::move(mode));
+  return AsyncIO(file, mode);
 }
 
 inline AsyncIO::AsyncIO(StringParam file, StringParam mode)

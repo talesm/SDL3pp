@@ -1173,7 +1173,7 @@ inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
 
 inline const char* EnvironmentBase::GetVariable(StringParam name)
 {
-  return SDL::GetEnvironmentVariable(get(), std::move(name));
+  return SDL::GetEnvironmentVariable(get(), name);
 }
 
 /**
@@ -1237,8 +1237,7 @@ inline void EnvironmentBase::SetVariable(StringParam name,
                                          StringParam value,
                                          bool overwrite)
 {
-  SDL::SetEnvironmentVariable(
-    get(), std::move(name), std::move(value), overwrite);
+  SDL::SetEnvironmentVariable(get(), name, value, overwrite);
 }
 
 /**
@@ -1266,7 +1265,7 @@ inline void UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
 
 inline void EnvironmentBase::UnsetVariable(StringParam name)
 {
-  SDL::UnsetEnvironmentVariable(get(), std::move(name));
+  SDL::UnsetEnvironmentVariable(get(), name);
 }
 
 /**
@@ -5992,7 +5991,7 @@ struct IConv : IConvBase
  */
 inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 {
-  return IConv(std::move(tocode), std::move(fromcode));
+  return IConv(tocode, fromcode);
 }
 
 inline IConv::IConv(StringParam tocode, StringParam fromcode)

@@ -2799,7 +2799,7 @@ inline void SaveBMP(SurfaceConstRef surface, StringParam file)
 
 inline void SurfaceBase::SaveBMP(StringParam file) const
 {
-  SDL::SaveBMP(get(), std::move(file));
+  SDL::SaveBMP(get(), file);
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -2866,10 +2866,7 @@ inline Surface LoadPNG_IO(IOStreamRef src, bool closeio = false)
 }
 
 /// @see LoadTrustedPNG
-inline Surface LoadPNG(StringParam file)
-{
-  return LoadTrustedPNG(std::move(file));
-}
+inline Surface LoadPNG(StringParam file) { return LoadTrustedPNG(file); }
 
 #endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
@@ -2927,7 +2924,7 @@ inline void SaveTrustedPNG(SurfaceConstRef surface, StringParam file)
 #if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 inline void Surface::SavePNG(StringParam file) const
 {
-  SDL::SaveTrustedPNG(get(), std::move(file));
+  SDL::SaveTrustedPNG(get(), file);
 }
 #endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 

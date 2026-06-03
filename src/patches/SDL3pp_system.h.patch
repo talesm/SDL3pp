@@ -112,21 +112,20 @@
   * @returns true if the request was submitted, false if there was an error
   *          submitting. The result of the request is only ever reported through
   *          the callback, not this return value.
-@@ -611,7 +643,12 @@
+@@ -611,7 +643,11 @@
  inline bool RequestAndroidPermission(StringParam permission,
                                       RequestAndroidPermissionCB cb)
  {
 -  static_assert(false, "Not implemented");
 +  using Wrapper = CallbackWrapper<RequestAndroidPermissionCB>;
 +  auto callback = Wrapper::Wrap(std::move(cb));
-+  if (!RequestAndroidPermission(
-+        std::move(permission), &Wrapper::CallOnce, callback)) {
++  if (!RequestAndroidPermission(permission, &Wrapper::CallOnce, callback)) {
 +    Wrapper::release(callback);
 +  }
  }
  
  /**
-@@ -667,6 +704,8 @@
+@@ -667,6 +703,8 @@
    CheckError(SDL_SendAndroidMessage(command, param));
  }
  
@@ -135,7 +134,7 @@
  /**
   * Query if the current device is a tablet.
   *
-@@ -837,6 +876,8 @@
+@@ -837,6 +875,8 @@
    SDL_OnApplicationDidEnterForeground();
  }
  
@@ -144,7 +143,7 @@
  /**
   * Let iOS apps with external event handling report
   * onApplicationDidChangeStatusBarOrientation.
-@@ -857,8 +898,14 @@
+@@ -857,8 +897,14 @@
    SDL_OnApplicationDidChangeStatusBarOrientation();
  }
  
@@ -159,7 +158,7 @@
  using XUserHandle = ::XUserHandle;
  
  /**
-@@ -894,6 +941,7 @@
+@@ -894,6 +940,7 @@
  {
    return SDL_GetGDKDefaultUser(outUserHandle);
  }

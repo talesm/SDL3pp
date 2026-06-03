@@ -645,8 +645,7 @@ inline bool RequestAndroidPermission(StringParam permission,
 {
   using Wrapper = CallbackWrapper<RequestAndroidPermissionCB>;
   auto callback = Wrapper::Wrap(std::move(cb));
-  if (!RequestAndroidPermission(
-        std::move(permission), &Wrapper::CallOnce, callback)) {
+  if (!RequestAndroidPermission(permission, &Wrapper::CallOnce, callback)) {
     Wrapper::release(callback);
   }
 }

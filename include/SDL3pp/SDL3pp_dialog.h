@@ -250,7 +250,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
                      Wrapper::Wrap(std::move(callback)),
                      window,
                      filters,
-                     std::move(default_location),
+                     default_location,
                      allow_many);
 }
 
@@ -368,7 +368,7 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
                      Wrapper::Wrap(std::move(callback)),
                      window,
                      filters,
-                     std::move(default_location));
+                     default_location);
 }
 
 /**
@@ -473,8 +473,8 @@ inline void ShowOpenFolderDialog(DialogFileCB callback,
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowOpenFolderDialog(&Wrapper::CallOnce,
                        Wrapper::Wrap(std::move(callback)),
-                       std::move(window),
-                       std::move(default_location),
+                       window,
+                       default_location,
                        allow_many);
 }
 

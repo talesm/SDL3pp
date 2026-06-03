@@ -220,7 +220,7 @@
 +  /// Constructor
 +  PropertyProxy(PropertiesRef props, StringParam name)
 +    : m_props(props)
-+    , m_name(std::move(name))
++    , m_name(name)
 +  {
 +  }
 +
@@ -394,15 +394,32 @@
  }
  
  /**
-@@ -970,16 +1191,63 @@
+@@ -927,7 +1148,7 @@
+ inline PropertiesLock PropertiesBase::Lock() { return {PropertiesRef(*this)}; }
+ 
+ inline PropertiesLock::PropertiesLock(PropertiesRef resource)
+-  : m_lock(std::move(resource))
++  : m_lock(resource)
+ {
+   LockProperties(m_lock);
+ }
+@@ -963,23 +1184,64 @@
+ 
+ inline PropertyProxy PropertiesBase::operator[](StringParam name) const
+ {
+-  return {*this, std::move(name)};
++  return {*this, name};
++}
++
++inline PropertyMutableProxy PropertiesBase::operator[](StringParam name)
++{
++  return {*this, name};
+ }
+ 
+ inline PropertyIterator PropertiesBase::begin() const { return {*this}; }
  
  inline std::nullptr_t PropertiesBase::end() const { return nullptr; }
  
-+inline PropertyMutableProxy PropertiesBase::operator[](StringParam name)
-+{
-+  return {*this, std::move(name)};
-+}
-+
 +/**
 + * Set a property in a group of properties.
 + *
@@ -417,50 +434,44 @@
  {
 -  static_assert(false, "Not implemented");
 +  if constexpr (std::is_same_v<V, bool>) {
-+    props.SetBooleanProperty(std::move(name), std::forward<V>(value));
++    props.SetBooleanProperty(name, std::forward<V>(value));
 +  } else if constexpr (std::is_integral_v<V>) {
-+    props.SetNumberProperty(std::move(name), std::forward<V>(value));
++    props.SetNumberProperty(name, std::forward<V>(value));
 +  } else {
 +    struct Visitor
 +    {
 +      PropertiesRef props;
 +      StringParam name;
 +
-+      void operator()(std::monostate) { props.ClearProperty(std::move(name)); }
-+      void operator()(std::nullopt_t) { props.ClearProperty(std::move(name)); }
-+      void operator()(void* v) { props.SetPointerProperty(std::move(name), v); }
++      void operator()(std::monostate) { props.ClearProperty(name); }
++      void operator()(std::nullopt_t) { props.ClearProperty(name); }
++      void operator()(void* v) { props.SetPointerProperty(name, v); }
 +
-+      void operator()(StringParam&& v)
-+      {
-+        props.SetStringProperty(std::move(name), std::move(v));
-+      }
-+      void operator()(const char* v)
-+      {
-+        props.SetStringProperty(std::move(name), std::move(v));
-+      }
++      void operator()(StringParam v) { props.SetStringProperty(name, v); }
++      void operator()(const char* v) { props.SetStringProperty(name, v); }
 +
-+      void operator()(Sint64 v) { props.SetNumberProperty(std::move(name), v); }
-+      void operator()(float v) { props.SetFloatProperty(std::move(name), v); }
-+      void operator()(bool v) { props.SetBooleanProperty(std::move(name), v); }
++      void operator()(Sint64 v) { props.SetNumberProperty(name, v); }
++      void operator()(float v) { props.SetFloatProperty(name, v); }
++      void operator()(bool v) { props.SetBooleanProperty(name, v); }
 +
 +      void operator()(const PropertyProxy& prop)
 +      {
 +        prop.visit([this](auto v) { (*this)(v); });
 +      }
 +    };
-+    Visitor{props, std::move(name)}(std::forward<V>(value));
++    Visitor{props, name}(std::forward<V>(value));
 +  }
  }
  
  template<PropertyValue V>
  inline void PropertiesBase::Set(StringParam name, V&& value)
  {
--  SDL::SetProperty(get(), std::move(name), value);
-+  SDL::SetProperty(get(), std::move(name), std::forward<V>(value));
+-  SDL::SetProperty(get(), name, value);
++  SDL::SetProperty(get(), name, std::forward<V>(value));
  }
  
  /**
-@@ -1039,7 +1307,6 @@
+@@ -1039,7 +1301,6 @@
   *              property.
   * @param cleanup the function to call when this property is deleted, or nullptr
   *                if no cleanup is necessary.
@@ -468,32 +479,28 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1055,7 +1322,12 @@
+@@ -1055,7 +1316,9 @@
                                            void* value,
                                            CleanupPropertyCB cleanup)
  {
 -  static_assert(false, "Not implemented");
 +  using Wrapper = CallbackWrapper<CleanupPropertyCB>;
-+  SDL_SetPointerPropertyWithCleanup(props,
-+                                    std::move(name),
-+                                    value,
-+                                    &Wrapper::CallOnce,
-+                                    Wrapper::Wrap(std::move(cleanup)));
++  SDL_SetPointerPropertyWithCleanup(
++    props, name, value, &Wrapper::CallOnce, Wrapper::Wrap(std::move(cleanup)));
  }
  
  inline void PropertiesBase::SetPointerPropertyWithCleanup(
-@@ -1073,7 +1345,8 @@
+@@ -1072,7 +1335,7 @@
    void* value,
    CleanupPropertyCB cleanup)
  {
--  SDL::SetPointerPropertyWithCleanup(get(), std::move(name), value, cleanup);
-+  SDL::SetPointerPropertyWithCleanup(
-+    get(), std::move(name), value, std::move(cleanup));
+-  SDL::SetPointerPropertyWithCleanup(get(), name, value, cleanup);
++  SDL::SetPointerPropertyWithCleanup(get(), name, value, std::move(cleanup));
  }
  
  /**
-@@ -1262,9 +1535,16 @@
-   return SDL::GetPropertyType(get(), std::move(name));
+@@ -1261,9 +1524,16 @@
+   return SDL::GetPropertyType(get(), name);
  }
  
 +/**
@@ -506,11 +513,11 @@
  inline PropertyProxy GetProperty(PropertiesRef props, StringParam name)
  {
 -  static_assert(false, "Not implemented");
-+  return {props, std::move(name)};
++  return {props, name};
  }
  
  inline PropertyProxy PropertiesBase::Get(StringParam name) const
-@@ -1501,7 +1781,6 @@
+@@ -1499,7 +1769,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -518,7 +525,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1511,7 +1790,13 @@
+@@ -1509,7 +1778,13 @@
  inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
@@ -533,7 +540,7 @@
  }
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1522,12 +1807,22 @@
+@@ -1520,12 +1795,22 @@
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
  {
@@ -558,7 +565,7 @@
  }
  
  inline Uint64 PropertiesBase::GetCount() const
-@@ -1560,6 +1855,17 @@
+@@ -1558,6 +1843,17 @@
  
  /// @}
  

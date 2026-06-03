@@ -4264,12 +4264,12 @@ inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
  */
 inline Audio LoadAudio(MixerRef mixer, StringParam path, bool predecode)
 {
-  return Audio(mixer, std::move(path), predecode);
+  return Audio(mixer, path, predecode);
 }
 
 inline Audio MixerBase::LoadAudio(StringParam path, bool predecode)
 {
-  return Audio(get(), std::move(path), predecode);
+  return Audio(get(), path, predecode);
 }
 
 /**
@@ -5155,10 +5155,7 @@ inline void TagTrack(TrackRef track, StringParam tag)
   CheckError(MIX_TagTrack(track, tag));
 }
 
-inline void TrackBase::Tag(StringParam tag)
-{
-  SDL::TagTrack(get(), std::move(tag));
-}
+inline void TrackBase::Tag(StringParam tag) { SDL::TagTrack(get(), tag); }
 
 /**
  * Remove an arbitrary tag from a track.
@@ -5188,10 +5185,7 @@ inline void UntagTrack(TrackRef track, StringParam tag)
   MIX_UntagTrack(track, tag);
 }
 
-inline void TrackBase::Untag(StringParam tag)
-{
-  SDL::UntagTrack(get(), std::move(tag));
-}
+inline void TrackBase::Untag(StringParam tag) { SDL::UntagTrack(get(), tag); }
 
 /**
  * Get the tags currently associated with a track.
@@ -5238,7 +5232,7 @@ inline OwnArray<TrackRef> GetTaggedTracks(MixerRef mixer, StringParam tag)
 
 inline OwnArray<TrackRef> MixerBase::GetTaggedTracks(StringParam tag)
 {
-  return SDL::GetTaggedTracks(get(), std::move(tag));
+  return SDL::GetTaggedTracks(get(), tag);
 }
 
 /**
@@ -5912,7 +5906,7 @@ inline void PlayTag(MixerRef mixer, StringParam tag, PropertiesRef options)
 
 inline void MixerBase::PlayTag(StringParam tag, PropertiesRef options)
 {
-  SDL::PlayTag(get(), std::move(tag), options);
+  SDL::PlayTag(get(), tag, options);
 }
 
 /**
@@ -6077,7 +6071,7 @@ inline void StopTag(MixerRef mixer, StringParam tag, Sint64 fade_out_ms)
 
 inline void MixerBase::StopTag(StringParam tag, Sint64 fade_out_ms)
 {
-  SDL::StopTag(get(), std::move(tag), fade_out_ms);
+  SDL::StopTag(get(), tag, fade_out_ms);
 }
 
 /**
@@ -6164,10 +6158,7 @@ inline void PauseTag(MixerRef mixer, StringParam tag)
   CheckError(MIX_PauseTag(mixer, tag));
 }
 
-inline void MixerBase::PauseTag(StringParam tag)
-{
-  SDL::PauseTag(get(), std::move(tag));
-}
+inline void MixerBase::PauseTag(StringParam tag) { SDL::PauseTag(get(), tag); }
 
 /**
  * Resume a currently-paused track.
@@ -6254,7 +6245,7 @@ inline void ResumeTag(MixerRef mixer, StringParam tag)
 
 inline void MixerBase::ResumeTag(StringParam tag)
 {
-  SDL::ResumeTag(get(), std::move(tag));
+  SDL::ResumeTag(get(), tag);
 }
 
 /**
@@ -6456,7 +6447,7 @@ inline void SetTagGain(MixerRef mixer, StringParam tag, float gain)
 
 inline void MixerBase::SetTagGain(StringParam tag, float gain)
 {
-  SDL::SetTagGain(get(), std::move(tag), gain);
+  SDL::SetTagGain(get(), tag, gain);
 }
 
 /**
@@ -7568,7 +7559,7 @@ struct AudioDecoder : AudioDecoderBase
 inline AudioDecoder CreateAudioDecoder(StringParam path,
                                        PropertiesRef props = nullptr)
 {
-  return AudioDecoder(std::move(path), props);
+  return AudioDecoder(path, props);
 }
 
 inline AudioDecoder::AudioDecoder(StringParam path, PropertiesRef props)

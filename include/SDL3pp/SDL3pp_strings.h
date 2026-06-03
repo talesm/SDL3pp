@@ -5,6 +5,7 @@
 #include <string>
 #include <string_view>
 #include <variant>
+#include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_stdinc.h>
 #include "SDL3pp_ownPtr.h"
 
@@ -21,12 +22,26 @@ namespace SDL {
 #ifndef SDL3PP_ENABLE_STRING_PARAM
 
 #ifndef SDL3PP_DISABLE_STRING_PARAM
+
+/**
+ * Enable StringParam helper class to use C++ strings as parameters on SDL APIs.
+ */
 #define SDL3PP_ENABLE_STRING_PARAM
 #endif // SDL3PP_DISABLE_STRING_PARAM
 
 #endif // SDL3PP_ENABLE_STRING_PARAM
 
 #ifdef SDL3PP_ENABLE_STRING_PARAM
+
+#ifndef SDL3PP_DISABLE_STRING_PARAM_STRING_VIEW_BUFFERING
+
+#ifndef SDL3PP_STRING_PARAM_STRING_VIEW_BUFFERING_COUNT
+
+/// The number of buffers used to store string views on StringParam.
+#define SDL3PP_STRING_PARAM_STRING_VIEW_BUFFERING_COUNT 32
+#endif // SDL3PP_STRING_PARAM_STRING_VIEW_BUFFERING_COUNT
+
+#endif // SDL3PP_DISABLE_STRING_PARAM_STRING_VIEW_BUFFERING
 
 /**
  * @brief Helpers to use C++ strings parameters
@@ -41,8 +56,6 @@ namespace SDL {
  */
 class StringParam
 {
-  std::variant<const char*, std::string> data;
-
 public:
   /**
    * Constructs from a C string.
@@ -53,8 +66,8 @@ public:
    *
    * @param str the string to store. This parameter must outlive this object.
    */
-  StringParam(const char* str = "")
-    : data(str)
+  constexpr StringParam(const char* str = "")
+    : m_data(str)
   {
   }
 
@@ -74,19 +87,6 @@ public:
   }
 
   /**
-   * Constructs from std::string object.
-   *
-   * This case we assume the ownership for the string and will properly call
-   * destructor automatically.
-   *
-   * @param str the string to store
-   */
-  StringParam(std::string&& str)
-    : data(std::move(str))
-  {
-  }
-
-  /**
    * Constructs from std::string_view object
    *
    * String view are very usefull on C++, but they don't have the null
@@ -94,9 +94,12 @@ public:
    * to a stored std::string.
    *
    * @param str the string_view to store
+   *
+   * @deprecated This constructor is deprecated because it can be very expensive
+   * if the string view is large.
    */
   StringParam(std::string_view str)
-    : StringParam(std::string{str})
+    : m_data(wrapStringView(str))
   {
   }
 
@@ -106,15 +109,7 @@ public:
    * @return the C string representation. We guarantee it to be null terminated
    * unless the objects it was constructed from are corrupted.
    */
-  const char* c_str() const
-  {
-    struct Visitor
-    {
-      const char* operator()(const char* a) const { return a; }
-      const char* operator()(const std::string& s) const { return s.c_str(); }
-    };
-    return std::visit(Visitor{}, data);
-  }
+  constexpr const char* c_str() const { return m_data; }
 
   /**
    * Converts to a null terminated C string.
@@ -122,7 +117,33 @@ public:
    * @return the C string representation. We guarantee it to be null terminated
    * unless the objects it was constructed from are corrupted.
    */
-  operator const char*() const { return c_str(); }
+  constexpr operator const char*() const { return m_data; }
+
+private:
+  const char* m_data;
+
+  static const char* wrapStringView(std::string_view str)
+  {
+    if (str.empty()) return "";
+
+#ifdef SDL3PP_DISABLE_STRING_PARAM_STRING_VIEW_BUFFERING
+    SDL_assert(str.data()[str.size()] == 0);
+    return str.data();
+
+#else
+    if (str.data()[str.size()] == 0) return str.data();
+
+    constexpr size_t bufferCount =
+      SDL3PP_STRING_PARAM_STRING_VIEW_BUFFERING_COUNT;
+    static thread_local std::string buffer[bufferCount];
+    static thread_local size_t bufferIndex = 0;
+    buffer[bufferIndex] = str;
+    auto cstr = buffer[bufferIndex].c_str();
+    bufferIndex = (bufferIndex + 1) % bufferCount;
+    return cstr;
+
+#endif // SDL3PP_DISABLE_STRING_PARAM_STRING_VIEW_BUFFERING
+  }
 };
 
 #else // SDL3PP_ENABLE_STRING_PARAM
