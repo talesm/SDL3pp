@@ -2441,8 +2441,10 @@ INCLUDE_FILE_PATTERNS  =
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
 PREDEFINED             = "SDL_VERSION_ATLEAST(x,y,z)=1" \
-                         "SDL_TTF_VERSION_ATLEAST(x,y,z)=1" \
                          "SDL_IMAGE_VERSION_ATLEAST(x,y,z)=1" \
+                         "SDL_MIXER_VERSION_ATLEAST(x,y,z)=1" \
+                         "SDL_NET_VERSION_ATLEAST(x,y,z)=1" \
+                         "SDL_TTF_VERSION_ATLEAST(x,y,z)=1" \
                          "SDL3PP_DOC=1" \
                          "SDL_PLATFORM_AIX=1" \
                          "SDL_PLATFORM_BSDI=1" \

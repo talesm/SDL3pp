@@ -32853,7 +32853,7 @@ inline void GetDateTimeLocalePreferences(DateFormat* dateFormat,
  * Gets the current value of the system realtime clock in nanoseconds since Jan
  * 1, 1970 in Universal Coordinated Time (UTC).
  *
- * @param ticks the Time to hold the returned tick count.
+ * @returns the tick count on success.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -96197,9 +96197,8 @@ struct Audio : AudioBase
    * exposes functionality the other functions don't provide.
    *
    * Properties are discussed in [SDL's
-   * documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .
-   *
-   * These are the supported properties:
+   * documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) . These are
+   * the supported properties:
    *
    * - `prop.Audio.LOAD_IOSTREAM_POINTER`: a pointer to an IOStream to be used
    *   to load audio data. Required. This stream must be able to seek!
@@ -96214,6 +96213,11 @@ struct Audio : AudioBase
    *   metadata tags, like ID3 and APE tags. This can be used to speed up
    *   loading _if the data definitely doesn't have these tags_. Some decoders
    *   will fail if these tags are present when this property is true.
+   * - `prop.Audio.LOAD_IGNORE_LOOPS_BOOLEAN`: true to ignore metadata in the
+   *   audio data specifying loop points. This will make a file decode from
+   *   start to finish without looping, even if the file specified it should
+   *   have. This audio can still be looped at playback time via Track loop
+   *   settings, regardless of this setting. Default false.
    * - `prop.Audio.DECODER_STRING`: the name of the decoder to use for this
    *   data. Optional. If not specified, SDL_mixer will examine the data and
    *   choose the best decoder. These names are the same returned from
@@ -98374,7 +98378,7 @@ inline PropertiesRef MixerBase::GetProperties()
  */
 namespace prop::Mixer {
 
-constexpr auto DEVICE_NUMBER = MIX_PROP_MIXER_DEVICE_NUMBER; /// Device number.
+constexpr auto DEVICE_NUMBER = MIX_PROP_MIXER_DEVICE_NUMBER; ///< Device number.
 
 } // namespace prop::Mixer
 
@@ -98723,9 +98727,8 @@ inline Audio MixerBase::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
  * exposes functionality the other functions don't provide.
  *
  * Properties are discussed in [SDL's
- * documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .
- *
- * These are the supported properties:
+ * documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) . These are
+ * the supported properties:
  *
  * - `prop.Audio.LOAD_IOSTREAM_POINTER`: a pointer to an IOStream to be used to
  *   load audio data. Required. This stream must be able to seek!
@@ -98740,6 +98743,11 @@ inline Audio MixerBase::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
  *   tags, like ID3 and APE tags. This can be used to speed up loading _if the
  *   data definitely doesn't have these tags_. Some decoders will fail if these
  *   tags are present when this property is true.
+ * - `prop.Audio.LOAD_IGNORE_LOOPS_BOOLEAN`: true to ignore metadata in the
+ *   audio data specifying loop points. This will make a file decode from start
+ *   to finish without looping, even if the file specified it should have. This
+ *   audio can still be looped at playback time via Track loop settings,
+ *   regardless of this setting. Default false.
  * - `prop.Audio.DECODER_STRING`: the name of the decoder to use for this data.
  *   Optional. If not specified, SDL_mixer will examine the data and choose the
  *   best decoder. These names are the same returned from GetAudioDecoder().
@@ -98789,6 +98797,13 @@ constexpr auto LOAD_PREFERRED_MIXER_POINTER =
 constexpr auto LOAD_SKIP_METADATA_TAGS_BOOLEAN =
   MIX_PROP_AUDIO_LOAD_SKIP_METADATA_TAGS_BOOLEAN; ///< Enable load skip metadata
                                                   ///< tags.
+
+#if SDL_MIXER_VERSION_ATLEAST(3, 2, 4)
+
+constexpr auto LOAD_IGNORE_LOOPS_BOOLEAN =
+  MIX_PROP_AUDIO_LOAD_IGNORE_LOOPS_BOOLEAN; ///< Load ignore loops enabled.
+
+#endif // SDL_MIXER_VERSION_ATLEAST(3, 2, 4)
 
 constexpr auto DECODER_STRING =
   MIX_PROP_AUDIO_DECODER_STRING; ///< String for decoder.
@@ -101856,8 +101871,9 @@ struct AudioDecoder : AudioDecoderBase
    *
    * This function allows properties to be specified. This is intended to supply
    * file-specific settings, such as where to find SoundFonts for a MIDI file,
-   * etc. In most cases, the caller should pass a nullptr to specify no extra
-   * properties.
+   * etc. Most of the properties available to LoadAudioWithProperties() apply
+   * here, too. In most cases, the caller should pass a nullptr to specify no
+   * extra properties.
    *
    * If `closeio` is true, then `io` will be closed when this decoder is done
    * with it. If this function fails and `closeio` is true, then `io` will be
@@ -101957,8 +101973,9 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  *
  * This function allows properties to be specified. This is intended to supply
  * file-specific settings, such as where to find SoundFonts for a MIDI file,
- * etc. In most cases, the caller should pass a nullptr to specify no extra
- * properties.
+ * etc. Most of the properties available to LoadAudioWithProperties() apply
+ * here, too. In most cases, the caller should pass a nullptr to specify no
+ * extra properties.
  *
  * If `closeio` is true, then `io` will be closed when this decoder is done with
  * it. If this function fails and `closeio` is true, then `io` will be closed

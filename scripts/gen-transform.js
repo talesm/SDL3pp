@@ -9104,6 +9104,7 @@ const transform = {
         "MIX_Init": { name: "MIX.Init" },
         "MIX_Quit": { name: "MIX.Quit" },
         "MIX_PROP_PLAY_START_ORDER_NUMBER": { since: { tag: "SDL_MIXER", major: 3, minor: 2, patch: 2 } },
+        "MIX_PROP_AUDIO_LOAD_IGNORE_LOOPS_BOOLEAN": { since: { tag: "SDL_MIXER", major: 3, minor: 2, patch: 4 } },
       }
     },
     "SDL_net.h": {

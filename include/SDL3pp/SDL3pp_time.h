@@ -352,7 +352,7 @@ inline void GetDateTimeLocalePreferences(DateFormat* dateFormat,
  * Gets the current value of the system realtime clock in nanoseconds since Jan
  * 1, 1970 in Universal Coordinated Time (UTC).
  *
- * @param ticks the Time to hold the returned tick count.
+ * @returns the tick count on success.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.

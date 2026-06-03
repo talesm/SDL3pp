@@ -12,9 +12,9 @@ include(GNUInstallDirs)
 #############################
 option(SDL3PP_FORCE_BUNDLED "Force use of bundled SDL libraries" OFF)
 option(SDL3PP_ENABLE_IMAGE "Enable compilation of SDL_Image" ON)
-option(SDL3PP_ENABLE_MIXER "Enable compilation of SDL_Mixer" ON)
+option(SDL3PP_ENABLE_MIXER "Enable compilation of SDL_Mixer" OFF)
 option(SDL3PP_ENABLE_NET "Enable compilation of SDL_Net" OFF)
-option(SDL3PP_ENABLE_TTF "Enable compilation of SDL_TTF" ON)
+option(SDL3PP_ENABLE_TTF "Enable compilation of SDL_TTF" OFF)
 
 if (SDL3PP_FORCE_BUNDLED)
     set(SDL3PP_DEPENDENCIES SDL3::SDL3)

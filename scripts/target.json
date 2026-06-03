@@ -201219,8 +201219,7 @@
                       "doc": [
                         "Load audio for playback through a collection of properties.",
                         "Please see LoadAudio_IO() for a description of what the various LoadAudio functions do. This function uses properties to dictate how it operates, and exposes functionality the other functions don't provide.",
-                        "Properties are discussed in [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .",
-                        "These are the supported properties:",
+                        "Properties are discussed in [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) . These are the supported properties:",
                         [
                           {
                             "tag": "-",
@@ -201241,6 +201240,10 @@
                           {
                             "tag": "-",
                             "content": "`prop.Audio.LOAD_SKIP_METADATA_TAGS_BOOLEAN`: true to skip parsing metadata tags, like ID3 and APE tags. This can be used to speed up loading _if the data definitely doesn't have these tags_. Some decoders will fail if these tags are present when this property is true."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Audio.LOAD_IGNORE_LOOPS_BOOLEAN`: true to ignore metadata in the audio data specifying loop points. This will make a file decode from start to finish without looping, even if the file specified it should have. This audio can still be looped at playback time via Track loop settings, regardless of this setting. Default false."
                           },
                           {
                             "tag": "-",
@@ -205401,8 +205404,7 @@
           "doc": [
             "Load audio for playback through a collection of properties.",
             "Please see LoadAudio_IO() for a description of what the various LoadAudio functions do. This function uses properties to dictate how it operates, and exposes functionality the other functions don't provide.",
-            "Properties are discussed in [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .",
-            "These are the supported properties:",
+            "Properties are discussed in [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) . These are the supported properties:",
             [
               {
                 "tag": "-",
@@ -205423,6 +205425,10 @@
               {
                 "tag": "-",
                 "content": "`prop.Audio.LOAD_SKIP_METADATA_TAGS_BOOLEAN`: true to skip parsing metadata tags, like ID3 and APE tags. This can be used to speed up loading _if the data definitely doesn't have these tags_. Some decoders will fail if these tags are present when this property is true."
+              },
+              {
+                "tag": "-",
+                "content": "`prop.Audio.LOAD_IGNORE_LOOPS_BOOLEAN`: true to ignore metadata in the audio data specifying loop points. This will make a file decode from start to finish without looping, even if the file specified it should have. This audio can still be looped at playback time via Track loop settings, regardless of this setting. Default false."
               },
               {
                 "tag": "-",
@@ -205543,6 +205549,23 @@
               "constexpr": true,
               "doc": [
                 "Enable load skip metadata tags."
+              ]
+            },
+            "LOAD_IGNORE_LOOPS_BOOLEAN": {
+              "name": "LOAD_IGNORE_LOOPS_BOOLEAN",
+              "kind": "var",
+              "value": "\"SDL_mixer.audio.load.ignore_loops\"",
+              "sourceName": "MIX_PROP_AUDIO_LOAD_IGNORE_LOOPS_BOOLEAN",
+              "since": {
+                "tag": "SDL_MIXER",
+                "major": 3,
+                "minor": 2,
+                "patch": 4
+              },
+              "type": "auto",
+              "constexpr": true,
+              "doc": [
+                "Load ignore loops enabled."
               ]
             },
             "DECODER_STRING": {
@@ -211475,7 +211498,7 @@
                     "doc": [
                       "Create a AudioDecoder from an IOStream.",
                       "Most apps won't need this, as SDL_mixer's usual interfaces will decode audio as needed. However, if one wants to decode an audio file into a memory buffer without playing it, this interface offers that.",
-                      "This function allows properties to be specified. This is intended to supply file-specific settings, such as where to find SoundFonts for a MIDI file, etc. In most cases, the caller should pass a zero to specify no extra properties.",
+                      "This function allows properties to be specified. This is intended to supply file-specific settings, such as where to find SoundFonts for a MIDI file, etc. Most of the properties available to LoadAudioWithProperties() apply here, too. In most cases, the caller should pass a zero to specify no extra properties.",
                       "If `closeio` is true, then `io` will be closed when this decoder is done with it. If this function fails and `closeio` is true, then `io` will be closed before this function returns.",
                       "When done with the audio decoder, it can be destroyed with DestroyAudioDecoder().",
                       "This function requires SDL_mixer to have been initialized with a successful call to MIX.Init(), but does not need an actual Mixer to have been created.",
@@ -211696,7 +211719,7 @@
           "doc": [
             "Create a AudioDecoder from an IOStream.",
             "Most apps won't need this, as SDL_mixer's usual interfaces will decode audio as needed. However, if one wants to decode an audio file into a memory buffer without playing it, this interface offers that.",
-            "This function allows properties to be specified. This is intended to supply file-specific settings, such as where to find SoundFonts for a MIDI file, etc. In most cases, the caller should pass a zero to specify no extra properties.",
+            "This function allows properties to be specified. This is intended to supply file-specific settings, such as where to find SoundFonts for a MIDI file, etc. Most of the properties available to LoadAudioWithProperties() apply here, too. In most cases, the caller should pass a zero to specify no extra properties.",
             "If `closeio` is true, then `io` will be closed when this decoder is done with it. If this function fails and `closeio` is true, then `io` will be closed before this function returns.",
             "When done with the audio decoder, it can be destroyed with DestroyAudioDecoder().",
             "This function requires SDL_mixer to have been initialized with a successful call to MIX.Init(), but does not need an actual Mixer to have been created.",

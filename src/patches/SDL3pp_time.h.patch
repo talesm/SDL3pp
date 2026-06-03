@@ -37,7 +37,15 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -360,19 +359,24 @@
+@@ -353,26 +352,31 @@
+  * Gets the current value of the system realtime clock in nanoseconds since Jan
+  * 1, 1970 in Universal Coordinated Time (UTC).
+  *
+- * @param ticks the Time to hold the returned tick count.
++ * @returns the tick count on success.
+  * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
   *
   * @since This function is available since SDL 3.2.0.
   */
