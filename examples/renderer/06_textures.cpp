@@ -17,19 +17,12 @@ struct Main : SDL::AppInterface
   // Window size
   static constexpr SDL::Point windowSz = {640, 480};
 
-  // Init library
-  static SDL::Window InitAndCreateWindow()
-  {
-    SDL::SetAppMetadata(
-      "Example Renderer Textures", "1.0", "com.example.renderer-textures");
-    SDL::Init(SDL::INIT_VIDEO);
-    return SDL::CreateWindowAndRenderer(
-      "examples/renderer/textures", windowSz, 0, nullptr);
-  }
-
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window{InitAndCreateWindow()};
-  SDL::RendererRef renderer{window.GetRenderer()};
+  SDL::Window window{SDL::CreateWindowAndRenderer("examples/renderer/textures",
+                                                  windowSz,
+                                                  0,
+                                                  nullptr)};
+  SDL::RendererRef renderer = window.GetRenderer();
 
   /* Textures are pixel data that we upload to the video hardware for fast
      drawing. Lots of 2D engines refer to these as "sprites." We'll do a static
@@ -40,7 +33,6 @@ struct Main : SDL::AppInterface
 
   SDL::AppResult Iterate() final
   {
-    SDL::FRect dst_rect;
     const float now = SDL::ToSeconds(SDL::GetTicks());
 
     // we'll have some textures move around over a few seconds.
@@ -51,32 +43,33 @@ struct Main : SDL::AppInterface
     renderer.SetDrawColor(SDL::Color{0, 0, 0}); // black
     renderer.RenderClear();                     // start with a blank canvas.
 
-    int texture_width = texture.GetWidth();
-    int texture_height = texture.GetHeight();
+    SDL::FPoint texture_size = texture.GetSizeFloat();
 
     /* Just draw the static texture a few times. You can think of it like a
        stamp, there isn't a limit to the number of times you can draw with it.
      */
 
+    SDL::FRect dst_rect;
+
     // top left
     dst_rect.x = (100.0f * scale);
     dst_rect.y = 0.0f;
-    dst_rect.w = (float)texture_width;
-    dst_rect.h = (float)texture_height;
+    dst_rect.w = texture_size.x;
+    dst_rect.h = texture_size.y;
     renderer.RenderTexture(texture, std::nullopt, dst_rect);
 
     //  center this one.
-    dst_rect.x = ((float)(windowSz.x - texture_width)) / 2.0f;
-    dst_rect.y = ((float)(windowSz.y - texture_height)) / 2.0f;
-    dst_rect.w = (float)texture_width;
-    dst_rect.h = (float)texture_height;
+    dst_rect.x = (windowSz.x - texture_size.x) / 2.0f;
+    dst_rect.y = (windowSz.y - texture_size.y) / 2.0f;
+    dst_rect.w = texture_size.x;
+    dst_rect.h = texture_size.y;
     renderer.RenderTexture(texture, std::nullopt, dst_rect);
 
     // bottom right
-    dst_rect.x = ((float)(windowSz.x - texture_width)) - (100.0f * scale);
-    dst_rect.y = (float)(windowSz.y - texture_height);
-    dst_rect.w = (float)texture_width;
-    dst_rect.h = (float)texture_height;
+    dst_rect.x = windowSz.x - texture_size.x - (100.0f * scale);
+    dst_rect.y = windowSz.y - texture_size.y;
+    dst_rect.w = texture_size.x;
+    dst_rect.h = texture_size.y;
     renderer.RenderTexture(texture, std::nullopt, dst_rect);
 
     renderer.Present();       // put it all on the screen!
@@ -84,4 +77,8 @@ struct Main : SDL::AppInterface
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Renderer Textures",
+                              "1.0",
+                              "com.example.renderer-textures")
