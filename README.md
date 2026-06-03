@@ -15,14 +15,14 @@ memory management and wrappers for string and callbacks.
 
 - You have 3 options to add SDL3pp to your project:
   1. Download [the single header](./amalgamation/SDL3pp/) (as
-     [zip](https://github.com/talesm/SDL3pp/releases/download/0.11.2/SDL3pp_amalgamated-0.11.2.zip)
+     [zip](https://github.com/talesm/SDL3pp/releases/download/0.11.3/SDL3pp_amalgamated-0.11.3.zip)
      or
-     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.11.2/SDL3pp_amalgamated-0.11.2.tar.gz))
+     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.11.3/SDL3pp_amalgamated-0.11.3.tar.gz))
      and add to your project;
   2. You can also download the
-     [the latest release](https://github.com/talesm/SDL3pp/releases/download/0.11.2/SDL3pp-0.11.2.zip)
+     [the latest release](https://github.com/talesm/SDL3pp/releases/download/0.11.3/SDL3pp-0.11.3.zip)
      (also available as
-     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.11.2/SDL3pp-0.11.2.tar.gz))
+     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.11.3/SDL3pp-0.11.3.tar.gz))
      then [build](#building) and [install](#installing) the project;
   3. If you use CMake, you can also set up
      [FetchContent](#using-cmakes-fetchcontent) to automatically do that for
@@ -140,7 +140,7 @@ command to download from git automatically:
 include(FetchContent)
 # set(SDL3PP_FORCE_BUNDLED ON) # Uncomment this to make CMake to download SDL and SDL_image for you
 FetchContent_Declare(SDL3ppExternal
-  URL https://github.com/talesm/SDL3pp/releases/download/0.11.2/SDL3pp-0.11.2.tar.gz
+  URL https://github.com/talesm/SDL3pp/releases/download/0.11.3/SDL3pp-0.11.3.tar.gz
 )
 FetchContent_MakeAvailable(SDL3ppExternal)
 
@@ -168,3 +168,6 @@ set(SDL3PP_ENABLE_MIXER ON) # Enables SDL_mixer
 set(SDL3PP_ENABLE_NET ON) # Enables SDL_net
 set(SDL3PP_ENABLE_TTF ON) # Enables SDL_ttf
 ```
+
+You can also set this options on the cmake's cache using a tool such as
+cmake-gui.

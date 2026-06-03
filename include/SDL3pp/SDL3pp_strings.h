@@ -94,9 +94,6 @@ public:
    * to a stored std::string.
    *
    * @param str the string_view to store
-   *
-   * @deprecated This constructor is deprecated because it can be very expensive
-   * if the string view is large.
    */
   StringParam(std::string_view str)
     : m_data(wrapStringView(str))

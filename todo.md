@@ -16,6 +16,7 @@ Todo for next version
 Backlog
 -------
 
+- [ ] Ensure Properties follow all applicable conventions of iterator and range;
 - [ ] Create ResourceConstBase
   - [ ] When resource has ResourceConstRef, derive from ResourceConstBase
     - It has only the immutable methods from ResourceBase;

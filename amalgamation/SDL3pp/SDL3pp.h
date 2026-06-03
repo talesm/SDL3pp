@@ -1686,7 +1686,7 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 #define SDL3PP_MINOR_VERSION 11
 
 /// The current patch version of SDL3pp wrapper.
-#define SDL3PP_PATCH_VERSION 2
+#define SDL3PP_PATCH_VERSION 3
 
 /// This is the version number macro for the current SDL3pp wrapper version.
 #define SDL3PP_VERSION                                                         \
@@ -1802,9 +1802,6 @@ public:
    * to a stored std::string.
    *
    * @param str the string_view to store
-   *
-   * @deprecated This constructor is deprecated because it can be very expensive
-   * if the string view is large.
    */
   StringParam(std::string_view str)
     : m_data(wrapStringView(str))

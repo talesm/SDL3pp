@@ -1,5 +1,86 @@
 # Changelog
 
+## Version 0.11.3
+
+General ergonomics improvement over Properties and simplification of
+StringParam.
+
+On Properties this meant adding container-like facilities to it such as
+initializer-list constructor, operator[], generic prop.Set() so you don't need
+choose type if you don't want to and a proxy returned prop.Get() so you can
+convert the result as appropriated. Finally, it has an iterator and can be used
+in iterate-for:
+
+```cpp
+// Initializer-list:
+SDL::Properties props{{"foo", "bar"}, {"baz", 42}, {"another", true}};
+
+// These are equivalent and all result in "bar"
+// The variable's type could also be a std::string or std::string_view
+const char *s1 = props["foo"];
+const char *s2 = props.Get("foo");
+const char *s3 = props.GetStringProperty("foo");
+
+// These are equivalent and all result in 42
+Sint64 int1 = props["bar"];
+Sint64 int2 = props.Get("bar");
+Sint64 int3 = props.GetNumberProperty("bar");
+
+// These are equivalent and all result in "42", SDL handles the conversion.
+const char *intString1 = props["bar"];
+const char *intString2 = props.Get("bar");
+const char *intString3 = props.GetNumberProperty("bar");
+
+// These all set a name to an string
+props["sProp"] = "string!";
+props.Set("sProp", "string!");
+props.SetStringProperty("sProp", "string!");
+
+// These all set a name to an unsigned integer
+props["nProp"] = 1000;
+props.Set("nProp", 1000);
+props.SetNumberProperty("nProp", 1000);
+
+// It is possible to iterate too.
+for (auto proxy: props) {
+  // GetType also works with results of props[] and props.Get()
+  if (proxy.GetType() == SDL::PROPERTY_TYPE_POINTER) {
+    // GetName also works with results of props[] and props.Get()
+    SDL::Log("{} = [pointer]", proxy.GetName());
+  } else {
+    SDL::Log("{} = {}", proxy.GetName(), std::string_view(proxy));
+  }
+}
+// The order is **not** deterministic, but should print something like the following:
+// foo = bar
+// baz = 42
+// another = true
+// sProp = string!
+// nProp = 1000
+
+```
+
+- Update SDL_mixer to 3.2.4;
+- Improvements over Properties:
+  - Add PropertiesRef.Set();
+  - Get*Property are const;
+  - Add PropertiesRef.Get();
+  - Add a constructor to Properties similar to std::map initializer list;
+  - Add operator[] to Properties;
+  - Add begin and end to Properties;
+- Improve and simplify StringParam:
+  - Totally non-owning, no allocations made using it with const char* or
+    std::string;
+  - Now it is copyable and even trivially, so `std::move(strParam)` is no longer
+    necessary;
+  - constexpr constructor for `const char*`;
+  - its `c_str()` is also constexpr now, so basic use should have no extra costs
+    and be easier to optimize;
+  - However string_view might cause allocation, if it does not have a
+    null-terminator. I think better safe than sorry still;
+- Fix defaults on SDL3pp_dialog.h to nullptr when applicable;
+- Disambiguate overloads for ShowSaveFileDialog(), ShowOpenFolderDialog();
+
 ## Version 0.11.2
 
 Upgrade base SDL version to 3.4.10, release SDL3_net bindings (3.2.0) and add a
