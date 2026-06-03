@@ -11,7 +11,7 @@ Todo for next version
 - [x] Make StringParam totally non-owning;
 - [x] Fix defaults on SDL3pp_dialog.h to nullptr when applicable;
 - [x] Disambiguate overloads for ShowSaveFileDialog(), ShowOpenFolderDialog();
-- [ ] Update SDL_mixer to 3.2.4;
+- [x] Update SDL_mixer to 3.2.4;
 
 Backlog
 -------

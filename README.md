@@ -138,7 +138,7 @@ command to download from git automatically:
 
 ```cmake
 include(FetchContent)
-# set(SDL3PP_FORCE_BUNDLED ON) # Enable this to force CMake to download SDL, SDL_image and SDL_ttf
+# set(SDL3PP_FORCE_BUNDLED ON) # Uncomment this to make CMake to download SDL and SDL_image for you
 FetchContent_Declare(SDL3ppExternal
   URL https://github.com/talesm/SDL3pp/releases/download/0.11.2/SDL3pp-0.11.2.tar.gz
 )
@@ -148,4 +148,23 @@ FetchContent_MakeAvailable(SDL3ppExternal)
 target_link_libraries(MyProject
   PRIVATE SDL3pp::SDL3pp
 )
+```
+
+### Using bundled with SDL3PP_FORCE_BUNDLED
+
+The SDL3PP_FORCE_BUNDLED option will bundle the SDL and satellites libraries
+instead of trying to find them on your system. If you have SDL already installed
+or if you are using some sort of package managment tool such conan or vcpkg, you
+probably **don't** need this.
+
+This option actually downloads the libraries from the internet, so you need to
+be connected to use it. Besides SDL itself, it also includes SDL_image by
+default, and you can enable or disable other libraries with the following
+options:
+
+```cmake
+set(SDL3PP_ENABLE_IMAGE ON) # SDL_image; already on by default, set to OFF to disable
+set(SDL3PP_ENABLE_MIXER ON) # Enables SDL_mixer
+set(SDL3PP_ENABLE_NET ON) # Enables SDL_net
+set(SDL3PP_ENABLE_TTF ON) # Enables SDL_ttf
 ```
