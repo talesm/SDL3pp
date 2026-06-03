@@ -20,33 +20,26 @@ struct Main : SDL::AppInterface
   // Window size
   static constexpr SDL::Point windowSz = {640, 480};
 
-  // Init library
-  static SDL::Window InitAndCreateWindow()
-  {
-    SDL::SetAppMetadata(
-      "Example Renderer Clear", "1.0", "com.example.renderer-clear");
-    SDL::Init(SDL::INIT_VIDEO);
-    return SDL::CreateWindowAndRenderer(
-      "examples/renderer/clear", windowSz, 0, nullptr);
-  }
-
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window{InitAndCreateWindow()};
-  SDL::RendererRef renderer{window.GetRenderer()};
+  SDL::Window window = SDL::CreateWindowAndRenderer("examples/renderer/clear",
+                                                    windowSz,
+                                                    0,
+                                                    nullptr);
+  SDL::RendererRef renderer = window.GetRenderer();
 
   SDL::AppResult Iterate() final
   {
     // convert from milliseconds to seconds.
-    const double now = ((double)SDL_GetTicks()) / 1000.0;
+    const double now = SDL::ToSeconds(SDL::GetTicks());
 
     // choose the color for the frame we will draw. The sine wave trick makes it
     // fade between colors smoothly.
-    SDL::FColor color{
+    renderer.SetDrawColorFloat({
       float(0.5f + 0.5f * SDL::sin(now)),
-      float(0.5f + 0.5f * SDL::sin(now + SDL_PI_D * 2 / 3)),
-      float(0.5f + 0.5f * SDL::sin(now + SDL_PI_D * 4 / 3)),
-    };
-    renderer.SetDrawColorFloat(color);
+      float(0.5f + 0.5f * SDL::sin(now + SDL::PI_D * 2 / 3)),
+      float(0.5f + 0.5f * SDL::sin(now + SDL::PI_D * 4 / 3)),
+      SDL::ALPHA_OPAQUE_FLOAT,
+    });
     renderer.RenderClear();
 
     renderer.Present();
@@ -54,4 +47,8 @@ struct Main : SDL::AppInterface
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Renderer Clear",
+                              "1.0",
+                              "com.example.renderer-clear")
