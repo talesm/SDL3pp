@@ -1,6 +1,10 @@
 {
-  "include": ["scripts/**/*.ts"],
-  "exclude": ["build/scripts/"],
+  "include": [
+    "scripts/**/*.ts"
+  ],
+  "exclude": [
+    "build/scripts/"
+  ],
   "compilerOptions": {
     "lib": [
       "ES2024"
@@ -10,7 +14,6 @@
     "module": "commonjs",
     "outDir": "dist/",
     "target": "es2020",
-    "moduleResolution": "node",
     "declaration": false,
     "rootDir": "./scripts/",
     "noEmit": true,
@@ -23,9 +26,7 @@
     // Remove if you want ts-node to do typechecking.
     "transpileOnly": true,
     "compilerHost": true,
-
     "files": true,
-    "compilerOptions": {
-    }
+    "compilerOptions": {}
   }
 }
