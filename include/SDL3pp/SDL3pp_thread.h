@@ -506,7 +506,7 @@ using TLSID = AtomicInt;
  */
 inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
 {
-  return Thread(fn, std::move(name), data);
+  return Thread(fn, name, data);
 }
 
 /**

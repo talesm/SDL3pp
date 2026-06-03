@@ -923,10 +923,7 @@ struct Address : AddressBase
  * @sa RefAddress
  * @sa UnrefAddress
  */
-inline Address ResolveHostname(StringParam host)
-{
-  return Address(std::move(host));
-}
+inline Address ResolveHostname(StringParam host) { return Address(host); }
 
 inline Address::Address(StringParam host)
   : Address(CheckError(NET_ResolveHostname(host)))

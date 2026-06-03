@@ -182,7 +182,7 @@ struct SharedObject : SharedObjectBase
  */
 inline SharedObject LoadObject(StringParam sofile)
 {
-  return SharedObject(std::move(sofile));
+  return SharedObject(sofile);
 }
 
 inline SharedObject::SharedObject(StringParam sofile)
@@ -223,7 +223,7 @@ inline FunctionPointer LoadFunction(SharedObjectRef handle, StringParam name)
 
 inline FunctionPointer SharedObjectBase::LoadFunction(StringParam name)
 {
-  return SDL::LoadFunction(get(), std::move(name));
+  return SDL::LoadFunction(get(), name);
 }
 
 /**

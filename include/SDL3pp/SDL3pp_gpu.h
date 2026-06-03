@@ -4928,7 +4928,7 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
                                  bool debug_mode,
                                  StringParam name)
 {
-  return GPUDevice(format_flags, debug_mode, std::move(name));
+  return GPUDevice(format_flags, debug_mode, name);
 }
 
 inline GPUDevice::GPUDevice(GPUShaderFormat format_flags,
@@ -5978,7 +5978,7 @@ inline void SetGPUBufferName(GPUDeviceRef device,
 
 inline void GPUDeviceBase::SetBufferName(GPUBuffer buffer, StringParam text)
 {
-  SDL::SetGPUBufferName(get(), buffer, std::move(text));
+  SDL::SetGPUBufferName(get(), buffer, text);
 }
 
 /**
@@ -6007,7 +6007,7 @@ inline void SetGPUTextureName(GPUDeviceRef device,
 
 inline void GPUDeviceBase::SetTextureName(GPUTexture texture, StringParam text)
 {
-  SDL::SetGPUTextureName(get(), texture, std::move(text));
+  SDL::SetGPUTextureName(get(), texture, text);
 }
 
 /**
@@ -6033,7 +6033,7 @@ inline void InsertGPUDebugLabel(GPUCommandBuffer command_buffer,
 
 inline void GPUCommandBuffer::InsertDebugLabel(StringParam text)
 {
-  SDL::InsertGPUDebugLabel(m_gPUCommandBuffer, std::move(text));
+  SDL::InsertGPUDebugLabel(m_gPUCommandBuffer, text);
 }
 
 /**
@@ -6069,7 +6069,7 @@ inline void PushGPUDebugGroup(GPUCommandBuffer command_buffer, StringParam name)
 
 inline void GPUCommandBuffer::PushDebugGroup(StringParam name)
 {
-  SDL::PushGPUDebugGroup(m_gPUCommandBuffer, std::move(name));
+  SDL::PushGPUDebugGroup(m_gPUCommandBuffer, name);
 }
 
 /**

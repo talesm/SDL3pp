@@ -795,7 +795,7 @@
   *   performed at the end of the file, protecting the previous content to be
   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
 @@ -1377,6 +1690,20 @@
-   return SDL::IOFromFile(std::move(file), std::move(mode));
+   return SDL::IOFromFile(file, mode);
  }
  
 +/**

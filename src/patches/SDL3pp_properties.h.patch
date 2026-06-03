@@ -455,8 +455,8 @@
  template<PropertyValue V>
  inline void PropertiesBase::Set(StringParam name, V&& value)
  {
--  SDL::SetProperty(get(), std::move(name), value);
-+  SDL::SetProperty(get(), std::move(name), std::forward<V>(value));
+-  SDL::SetProperty(get(), name, value);
++  SDL::SetProperty(get(), name, std::forward<V>(value));
  }
  
  /**
@@ -482,18 +482,17 @@
  }
  
  inline void PropertiesBase::SetPointerPropertyWithCleanup(
-@@ -1073,7 +1345,8 @@
+@@ -1072,7 +1344,7 @@
    void* value,
    CleanupPropertyCB cleanup)
  {
--  SDL::SetPointerPropertyWithCleanup(get(), std::move(name), value, cleanup);
-+  SDL::SetPointerPropertyWithCleanup(
-+    get(), std::move(name), value, std::move(cleanup));
+-  SDL::SetPointerPropertyWithCleanup(get(), name, value, cleanup);
++  SDL::SetPointerPropertyWithCleanup(get(), name, value, std::move(cleanup));
  }
  
  /**
-@@ -1262,9 +1535,16 @@
-   return SDL::GetPropertyType(get(), std::move(name));
+@@ -1261,9 +1533,16 @@
+   return SDL::GetPropertyType(get(), name);
  }
  
 +/**
@@ -510,7 +509,7 @@
  }
  
  inline PropertyProxy PropertiesBase::Get(StringParam name) const
-@@ -1501,7 +1781,6 @@
+@@ -1499,7 +1778,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -518,7 +517,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1511,7 +1790,13 @@
+@@ -1509,7 +1787,13 @@
  inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
@@ -533,7 +532,7 @@
  }
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1522,12 +1807,22 @@
+@@ -1520,12 +1804,22 @@
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
  {
@@ -558,7 +557,7 @@
  }
  
  inline Uint64 PropertiesBase::GetCount() const
-@@ -1560,6 +1855,17 @@
+@@ -1558,6 +1852,17 @@
  
  /// @}
  

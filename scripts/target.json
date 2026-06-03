@@ -152194,7 +152194,7 @@
                 }
               ],
               "hints": {
-                "delegate": "Save"
+                "delegate": "SDL::Save"
               },
               "since": {
                 "tag": "SDL_IMAGE",
@@ -152291,7 +152291,7 @@
                 }
               ],
               "hints": {
-                "delegate": "SaveTyped_IO"
+                "delegate": "SDL::SaveTyped_IO"
               },
               "since": {
                 "tag": "SDL_IMAGE",
@@ -191260,7 +191260,7 @@
           ],
           "hints": {
             "self": "get()",
-            "delegate": "Save"
+            "delegate": "SDL::Save"
           },
           "since": {
             "tag": "SDL_IMAGE",
@@ -191398,7 +191398,7 @@
           ],
           "hints": {
             "self": "get()",
-            "delegate": "SaveTyped_IO"
+            "delegate": "SDL::SaveTyped_IO"
           },
           "since": {
             "tag": "SDL_IMAGE",
@@ -233157,7 +233157,6 @@
     "const PenDeviceType &": "&$"
   },
   "delegatedReplacements": {
-    "StringParam": "std::move($)",
     "SourceBytes": "std::move($)",
     "TargetBytes": "std::move($)"
   }

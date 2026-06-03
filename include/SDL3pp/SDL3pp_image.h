@@ -2248,7 +2248,7 @@ inline void Save(SurfaceConstRef surface, StringParam file)
 
 inline void SurfaceBase::Save(StringParam filename) const
 {
-  SDL::Save(*this, std::move(filename));
+  SDL::Save(get(), filename);
 }
 
 /**
@@ -2294,7 +2294,7 @@ inline void SurfaceBase::SaveTyped_IO(IOStreamRef dst,
                                       StringParam type,
                                       bool closeio) const
 {
-  SDL::SaveTyped_IO(*this, dst, std::move(type), closeio);
+  SDL::SaveTyped_IO(get(), dst, type, closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -3088,10 +3088,7 @@ inline int AnimationBase::GetDelay(int index) const
  * @sa LoadWEBPAnimation_IO
  * @sa FreeAnimation
  */
-inline Animation LoadAnimation(StringParam file)
-{
-  return Animation(std::move(file));
-}
+inline Animation LoadAnimation(StringParam file) { return Animation(file); }
 
 inline Animation::Animation(StringParam file)
   : Animation(IMG_LoadAnimation(file))
@@ -3341,7 +3338,7 @@ inline void SaveAnimation(AnimationRef anim, StringParam file)
 
 inline void AnimationBase::Save(StringParam file)
 {
-  SDL::SaveAnimation(get(), std::move(file));
+  SDL::SaveAnimation(get(), file);
 }
 
 /**
@@ -3382,7 +3379,7 @@ inline void AnimationBase::SaveTyped_IO(IOStreamRef dst,
                                         StringParam type,
                                         bool closeio)
 {
-  SDL::SaveAnimationTyped_IO(get(), dst, std::move(type), closeio);
+  SDL::SaveAnimationTyped_IO(get(), dst, type, closeio);
 }
 
 /**
@@ -3830,7 +3827,7 @@ struct AnimationEncoder : AnimationEncoderBase
  */
 inline AnimationEncoder CreateAnimationEncoder(StringParam file)
 {
-  return AnimationEncoder(std::move(file));
+  return AnimationEncoder(file);
 }
 
 inline AnimationEncoder::AnimationEncoder(StringParam file)
@@ -3883,7 +3880,7 @@ inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamRef dst,
                                                   StringParam type,
                                                   bool closeio = false)
 {
-  return AnimationEncoder(dst, std::move(type), closeio);
+  return AnimationEncoder(dst, type, closeio);
 }
 
 /**
@@ -4331,7 +4328,7 @@ struct AnimationDecoder : AnimationDecoderBase
  */
 inline AnimationDecoder CreateAnimationDecoder(StringParam file)
 {
-  return AnimationDecoder(std::move(file));
+  return AnimationDecoder(file);
 }
 
 inline AnimationDecoder::AnimationDecoder(StringParam file)
@@ -4385,7 +4382,7 @@ inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamRef src,
                                                   StringParam type,
                                                   bool closeio = false)
 {
-  return AnimationDecoder(src, std::move(type), closeio);
+  return AnimationDecoder(src, type, closeio);
 }
 
 /**

@@ -1687,7 +1687,7 @@ inline IOStream IOFromFile(StringParam file, StringParam mode)
 
 inline IOStream IOStream::FromFile(StringParam file, StringParam mode)
 {
-  return SDL::IOFromFile(std::move(file), std::move(mode));
+  return SDL::IOFromFile(file, mode);
 }
 
 /**

@@ -3717,7 +3717,7 @@ inline Window CreateWindowAndRenderer(StringParam title,
  */
 inline Renderer CreateRenderer(WindowRef window, StringParam name = nullptr)
 {
-  return Renderer(window, std::move(name));
+  return Renderer(window, name);
 }
 
 inline Renderer::Renderer(WindowRef window, StringParam name)
@@ -7969,7 +7969,7 @@ inline void RenderDebugText(RendererRef renderer,
 
 inline void RendererBase::RenderDebugText(const FPointRaw& p, StringParam str)
 {
-  SDL::RenderDebugText(get(), p, std::move(str));
+  SDL::RenderDebugText(get(), p, str);
 }
 
 /**

@@ -10439,7 +10439,7 @@ inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
 template<PropertyValue V>
 inline void PropertiesBase::Set(StringParam name, V&& value)
 {
-  SDL::SetProperty(get(), std::move(name), std::forward<V>(value));
+  SDL::SetProperty(get(), name, std::forward<V>(value));
 }
 
 /**
@@ -10528,8 +10528,7 @@ inline void PropertiesBase::SetPointerPropertyWithCleanup(
   CleanupPropertyCallback cleanup,
   void* userdata)
 {
-  SDL::SetPointerPropertyWithCleanup(
-    get(), std::move(name), value, cleanup, userdata);
+  SDL::SetPointerPropertyWithCleanup(get(), name, value, cleanup, userdata);
 }
 
 inline void PropertiesBase::SetPointerPropertyWithCleanup(
@@ -10537,8 +10536,7 @@ inline void PropertiesBase::SetPointerPropertyWithCleanup(
   void* value,
   CleanupPropertyCB cleanup)
 {
-  SDL::SetPointerPropertyWithCleanup(
-    get(), std::move(name), value, std::move(cleanup));
+  SDL::SetPointerPropertyWithCleanup(get(), name, value, std::move(cleanup));
 }
 
 /**
@@ -10571,7 +10569,7 @@ inline void SetPointerProperty(PropertiesRef props,
 
 inline void PropertiesBase::SetPointerProperty(StringParam name, void* value)
 {
-  SDL::SetPointerProperty(get(), std::move(name), value);
+  SDL::SetPointerProperty(get(), name, value);
 }
 
 /**
@@ -10602,7 +10600,7 @@ inline void SetStringProperty(PropertiesRef props,
 inline void PropertiesBase::SetStringProperty(StringParam name,
                                               StringParam value)
 {
-  SDL::SetStringProperty(get(), std::move(name), std::move(value));
+  SDL::SetStringProperty(get(), name, value);
 }
 
 /**
@@ -10628,7 +10626,7 @@ inline void SetNumberProperty(PropertiesRef props,
 
 inline void PropertiesBase::SetNumberProperty(StringParam name, Sint64 value)
 {
-  SDL::SetNumberProperty(get(), std::move(name), value);
+  SDL::SetNumberProperty(get(), name, value);
 }
 
 /**
@@ -10652,7 +10650,7 @@ inline void SetFloatProperty(PropertiesRef props, StringParam name, float value)
 
 inline void PropertiesBase::SetFloatProperty(StringParam name, float value)
 {
-  SDL::SetFloatProperty(get(), std::move(name), value);
+  SDL::SetFloatProperty(get(), name, value);
 }
 
 /**
@@ -10678,7 +10676,7 @@ inline void SetBooleanProperty(PropertiesRef props,
 
 inline void PropertiesBase::SetBooleanProperty(StringParam name, bool value)
 {
-  SDL::SetBooleanProperty(get(), std::move(name), value);
+  SDL::SetBooleanProperty(get(), name, value);
 }
 
 /**
@@ -10701,7 +10699,7 @@ inline bool HasProperty(PropertiesRef props, StringParam name)
 
 inline bool PropertiesBase::HasProperty(StringParam name) const
 {
-  return SDL::HasProperty(get(), std::move(name));
+  return SDL::HasProperty(get(), name);
 }
 
 /**
@@ -10724,7 +10722,7 @@ inline PropertyType GetPropertyType(PropertiesRef props, StringParam name)
 
 inline PropertyType PropertiesBase::GetPropertyType(StringParam name) const
 {
-  return SDL::GetPropertyType(get(), std::move(name));
+  return SDL::GetPropertyType(get(), name);
 }
 
 /**
@@ -10741,7 +10739,7 @@ inline PropertyProxy GetProperty(PropertiesRef props, StringParam name)
 
 inline PropertyProxy PropertiesBase::Get(StringParam name) const
 {
-  return SDL::GetProperty(get(), std::move(name));
+  return SDL::GetProperty(get(), name);
 }
 
 /**
@@ -10784,7 +10782,7 @@ inline void* GetPointerProperty(PropertiesRef props,
 inline void* PropertiesBase::GetPointerProperty(StringParam name,
                                                 void* default_value) const
 {
-  return SDL::GetPointerProperty(get(), std::move(name), default_value);
+  return SDL::GetPointerProperty(get(), name, default_value);
 }
 
 /**
@@ -10819,8 +10817,7 @@ inline const char* PropertiesBase::GetStringProperty(
   StringParam name,
   StringParam default_value) const
 {
-  return SDL::GetStringProperty(
-    get(), std::move(name), std::move(default_value));
+  return SDL::GetStringProperty(get(), name, default_value);
 }
 
 /**
@@ -10853,7 +10850,7 @@ inline Sint64 GetNumberProperty(PropertiesRef props,
 inline Sint64 PropertiesBase::GetNumberProperty(StringParam name,
                                                 Sint64 default_value) const
 {
-  return SDL::GetNumberProperty(get(), std::move(name), default_value);
+  return SDL::GetNumberProperty(get(), name, default_value);
 }
 
 /**
@@ -10886,7 +10883,7 @@ inline float GetFloatProperty(PropertiesRef props,
 inline float PropertiesBase::GetFloatProperty(StringParam name,
                                               float default_value) const
 {
-  return SDL::GetFloatProperty(get(), std::move(name), default_value);
+  return SDL::GetFloatProperty(get(), name, default_value);
 }
 
 /**
@@ -10919,7 +10916,7 @@ inline bool GetBooleanProperty(PropertiesRef props,
 inline bool PropertiesBase::GetBooleanProperty(StringParam name,
                                                bool default_value) const
 {
-  return SDL::GetBooleanProperty(get(), std::move(name), default_value);
+  return SDL::GetBooleanProperty(get(), name, default_value);
 }
 
 /**
@@ -10940,7 +10937,7 @@ inline void ClearProperty(PropertiesRef props, StringParam name)
 
 inline void PropertiesBase::ClearProperty(StringParam name)
 {
-  SDL::ClearProperty(get(), std::move(name));
+  SDL::ClearProperty(get(), name);
 }
 
 /**
@@ -12217,7 +12214,7 @@ inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
 
 inline const char* EnvironmentBase::GetVariable(StringParam name)
 {
-  return SDL::GetEnvironmentVariable(get(), std::move(name));
+  return SDL::GetEnvironmentVariable(get(), name);
 }
 
 /**
@@ -12281,8 +12278,7 @@ inline void EnvironmentBase::SetVariable(StringParam name,
                                          StringParam value,
                                          bool overwrite)
 {
-  SDL::SetEnvironmentVariable(
-    get(), std::move(name), std::move(value), overwrite);
+  SDL::SetEnvironmentVariable(get(), name, value, overwrite);
 }
 
 /**
@@ -12310,7 +12306,7 @@ inline void UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
 
 inline void EnvironmentBase::UnsetVariable(StringParam name)
 {
-  SDL::UnsetEnvironmentVariable(get(), std::move(name));
+  SDL::UnsetEnvironmentVariable(get(), name);
 }
 
 /**
@@ -17036,7 +17032,7 @@ struct IConv : IConvBase
  */
 inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 {
-  return IConv(std::move(tocode), std::move(fromcode));
+  return IConv(tocode, fromcode);
 }
 
 inline IConv::IConv(StringParam tocode, StringParam fromcode)
@@ -17990,7 +17986,7 @@ struct AsyncIOQueue : AsyncIOQueueBase
  */
 inline AsyncIO AsyncIOFromFile(StringParam file, StringParam mode)
 {
-  return AsyncIO(std::move(file), std::move(mode));
+  return AsyncIO(file, mode);
 }
 
 inline AsyncIO::AsyncIO(StringParam file, StringParam mode)
@@ -21158,10 +21154,7 @@ inline std::string GUID::ToString() const { return SDL::GUIDToString(*this); }
  *
  * @sa GUIDToString
  */
-inline GUID StringToGUID(StringParam pchGUID)
-{
-  return GUID(std::move(pchGUID));
-}
+inline GUID StringToGUID(StringParam pchGUID) { return GUID(pchGUID); }
 
 inline GUID::GUID(StringParam pchGUID)
   : GUIDRaw(SDL_StringToGUID(pchGUID))
@@ -21731,10 +21724,7 @@ inline HidDevice::HidDevice(StringParam path)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline HidDevice hid_open_path(StringParam path)
-{
-  return HidDevice(std::move(path));
-}
+inline HidDevice hid_open_path(StringParam path) { return HidDevice(path); }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -23827,7 +23817,7 @@ inline IOStream IOFromFile(StringParam file, StringParam mode)
 
 inline IOStream IOStream::FromFile(StringParam file, StringParam mode)
 {
-  return SDL::IOFromFile(std::move(file), std::move(mode));
+  return SDL::IOFromFile(file, mode);
 }
 
 /**
@@ -25417,7 +25407,7 @@ struct SharedObject : SharedObjectBase
  */
 inline SharedObject LoadObject(StringParam sofile)
 {
-  return SharedObject(std::move(sofile));
+  return SharedObject(sofile);
 }
 
 inline SharedObject::SharedObject(StringParam sofile)
@@ -25458,7 +25448,7 @@ inline FunctionPointer LoadFunction(SharedObjectRef handle, StringParam name)
 
 inline FunctionPointer SharedObjectBase::LoadFunction(StringParam name)
 {
-  return SDL::LoadFunction(get(), std::move(name));
+  return SDL::LoadFunction(get(), name);
 }
 
 /**
@@ -41590,7 +41580,7 @@ struct Storage : StorageBase
  */
 inline Storage OpenTitleStorage(StringParam override, PropertiesRef props)
 {
-  return Storage(std::move(override), props);
+  return Storage(override, props);
 }
 
 inline Storage::Storage(StringParam override, PropertiesRef props)
@@ -41641,7 +41631,7 @@ inline Storage OpenUserStorage(StringParam org,
                                StringParam app,
                                PropertiesRef props)
 {
-  return Storage(std::move(org), std::move(app), props);
+  return Storage(org, app, props);
 }
 
 /**
@@ -41666,10 +41656,7 @@ inline Storage OpenUserStorage(StringParam org,
  * @sa ReadStorageFile
  * @sa WriteStorageFile
  */
-inline Storage OpenFileStorage(StringParam path)
-{
-  return Storage(std::move(path));
-}
+inline Storage OpenFileStorage(StringParam path) { return Storage(path); }
 
 /**
  * Opens up a container using a client-provided storage interface.
@@ -41770,7 +41757,7 @@ inline std::optional<Uint64> GetStorageFileSize(StorageRef storage,
 
 inline std::optional<Uint64> StorageBase::GetFileSize(StringParam path)
 {
-  return SDL::GetStorageFileSize(get(), std::move(path));
+  return SDL::GetStorageFileSize(get(), path);
 }
 
 /**
@@ -41827,12 +41814,12 @@ inline std::string ReadStorageFile(StorageRef storage, StringParam path)
 
 inline bool StorageBase::ReadFile(StringParam path, TargetBytes destination)
 {
-  return SDL::ReadStorageFile(get(), std::move(path), std::move(destination));
+  return SDL::ReadStorageFile(get(), path, std::move(destination));
 }
 
 inline std::string StorageBase::ReadFile(StringParam path)
 {
-  return SDL::ReadStorageFile(get(), std::move(path));
+  return SDL::ReadStorageFile(get(), path);
 }
 
 /**
@@ -41863,7 +41850,7 @@ inline std::vector<T> ReadStorageFileAs(StorageRef storage, StringParam path)
 template<class T>
 inline std::vector<T> StorageBase::ReadFileAs(StringParam path)
 {
-  return SDL::ReadStorageFileAs<T>(get(), std::move(path));
+  return SDL::ReadStorageFileAs<T>(get(), path);
 }
 
 /**
@@ -41890,7 +41877,7 @@ inline void WriteStorageFile(StorageRef storage,
 
 inline void StorageBase::WriteFile(StringParam path, SourceBytes source)
 {
-  SDL::WriteStorageFile(get(), std::move(path), std::move(source));
+  SDL::WriteStorageFile(get(), path, std::move(source));
 }
 
 /**
@@ -41911,7 +41898,7 @@ inline void CreateStorageDirectory(StorageRef storage, StringParam path)
 
 inline void StorageBase::CreateDirectory(StringParam path)
 {
-  SDL::CreateStorageDirectory(get(), std::move(path));
+  SDL::CreateStorageDirectory(get(), path);
 }
 
 /**
@@ -42022,18 +42009,18 @@ inline void StorageBase::EnumerateDirectory(StringParam path,
                                             EnumerateDirectoryCallback callback,
                                             void* userdata)
 {
-  SDL::EnumerateStorageDirectory(get(), std::move(path), callback, userdata);
+  SDL::EnumerateStorageDirectory(get(), path, callback, userdata);
 }
 
 inline std::vector<Path> StorageBase::EnumerateDirectory(StringParam path)
 {
-  return SDL::EnumerateStorageDirectory(get(), std::move(path));
+  return SDL::EnumerateStorageDirectory(get(), path);
 }
 
 inline void StorageBase::EnumerateDirectory(StringParam path,
                                             EnumerateDirectoryCB callback)
 {
-  SDL::EnumerateStorageDirectory(get(), std::move(path), callback);
+  SDL::EnumerateStorageDirectory(get(), path, callback);
 }
 
 /**
@@ -42054,7 +42041,7 @@ inline void RemoveStoragePath(StorageRef storage, StringParam path)
 
 inline void StorageBase::RemovePath(StringParam path)
 {
-  SDL::RemoveStoragePath(get(), std::move(path));
+  SDL::RemoveStoragePath(get(), path);
 }
 
 /**
@@ -42078,7 +42065,7 @@ inline void RenameStoragePath(StorageRef storage,
 
 inline void StorageBase::RenamePath(StringParam oldpath, StringParam newpath)
 {
-  SDL::RenameStoragePath(get(), std::move(oldpath), std::move(newpath));
+  SDL::RenameStoragePath(get(), oldpath, newpath);
 }
 
 /**
@@ -42102,7 +42089,7 @@ inline void CopyStorageFile(StorageRef storage,
 
 inline void StorageBase::CopyFile(StringParam oldpath, StringParam newpath)
 {
-  SDL::CopyStorageFile(get(), std::move(oldpath), std::move(newpath));
+  SDL::CopyStorageFile(get(), oldpath, newpath);
 }
 
 /**
@@ -42127,7 +42114,7 @@ inline PathInfo GetStoragePathInfo(StorageRef storage, StringParam path)
 
 inline PathInfo StorageBase::GetPathInfo(StringParam path)
 {
-  return SDL::GetStoragePathInfo(get(), std::move(path));
+  return SDL::GetStoragePathInfo(get(), path);
 }
 
 /**
@@ -42199,8 +42186,7 @@ inline OwnArray<char*> StorageBase::GlobDirectory(StringParam path,
                                                   StringParam pattern,
                                                   GlobFlags flags)
 {
-  return SDL::GlobStorageDirectory(
-    get(), std::move(path), std::move(pattern), flags);
+  return SDL::GlobStorageDirectory(get(), path, pattern, flags);
 }
 
 /// @}
@@ -44989,7 +44975,7 @@ inline void SaveBMP(SurfaceConstRef surface, StringParam file)
 
 inline void SurfaceBase::SaveBMP(StringParam file) const
 {
-  SDL::SaveBMP(get(), std::move(file));
+  SDL::SaveBMP(get(), file);
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -45117,7 +45103,7 @@ inline void SaveTrustedPNG(SurfaceConstRef surface, StringParam file)
 #if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 inline void Surface::SavePNG(StringParam file) const
 {
-  SDL::SaveTrustedPNG(get(), std::move(file));
+  SDL::SaveTrustedPNG(get(), file);
 }
 #endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
@@ -47553,7 +47539,7 @@ using TLSID = AtomicInt;
  */
 inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
 {
-  return Thread(fn, std::move(name), data);
+  return Thread(fn, name, data);
 }
 
 /**
@@ -51489,7 +51475,7 @@ struct TrayEntryScoped : TrayEntry
  */
 inline Tray CreateTray(SurfaceRef icon, StringParam tooltip)
 {
-  return Tray(icon, std::move(tooltip));
+  return Tray(icon, tooltip);
 }
 
 inline Tray::Tray(SurfaceRef icon, StringParam tooltip)
@@ -51540,7 +51526,7 @@ inline void SetTrayTooltip(TrayRef tray, StringParam tooltip)
 
 inline void TrayBase::SetTooltip(StringParam tooltip)
 {
-  SDL::SetTrayTooltip(get(), std::move(tooltip));
+  SDL::SetTrayTooltip(get(), tooltip);
 }
 
 /**
@@ -51736,14 +51722,14 @@ inline TrayEntry InsertTrayEntryAt(TrayMenu menu,
                                    StringParam label,
                                    TrayEntryFlags flags)
 {
-  return TrayEntry(menu, pos, std::move(label), flags);
+  return TrayEntry(menu, pos, label, flags);
 }
 
 inline TrayEntry TrayMenu::InsertEntry(int pos,
                                        StringParam label,
                                        TrayEntryFlags flags)
 {
-  return TrayEntry(m_trayMenu, pos, std::move(label), flags);
+  return TrayEntry(m_trayMenu, pos, label, flags);
 }
 
 inline TrayEntry::TrayEntry(TrayMenu menu,
@@ -51790,12 +51776,12 @@ inline TrayEntry AppendTrayEntry(TrayMenuRaw menu,
                                  StringParam label,
                                  TrayEntryFlags flags)
 {
-  return TrayEntry(menu, std::move(label), flags);
+  return TrayEntry(menu, label, flags);
 }
 
 inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 {
-  return SDL::AppendTrayEntry(m_trayMenu, std::move(label), flags);
+  return SDL::AppendTrayEntry(m_trayMenu, label, flags);
 }
 
 /**
@@ -51825,7 +51811,7 @@ inline void SetTrayEntryLabel(TrayEntry entry, StringParam label)
 
 inline void TrayEntry::SetLabel(StringParam label)
 {
-  SDL::SetTrayEntryLabel(get(), std::move(label));
+  SDL::SetTrayEntryLabel(get(), label);
 }
 
 /**
@@ -56532,7 +56518,7 @@ inline Window CreateWindow(StringParam title,
                            const PointRaw& size,
                            WindowFlags flags)
 {
-  return Window(std::move(title), size, flags);
+  return Window(title, size, flags);
 }
 
 inline Window::Window(StringParam title,
@@ -57342,7 +57328,7 @@ inline void SetWindowTitle(WindowRef window, StringParam title)
 
 inline void WindowBase::SetTitle(StringParam title)
 {
-  SDL::SetWindowTitle(get(), std::move(title));
+  SDL::SetWindowTitle(get(), title);
 }
 
 /**
@@ -67082,7 +67068,7 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
                                  bool debug_mode,
                                  StringParam name)
 {
-  return GPUDevice(format_flags, debug_mode, std::move(name));
+  return GPUDevice(format_flags, debug_mode, name);
 }
 
 inline GPUDevice::GPUDevice(GPUShaderFormat format_flags,
@@ -68132,7 +68118,7 @@ inline void SetGPUBufferName(GPUDeviceRef device,
 
 inline void GPUDeviceBase::SetBufferName(GPUBuffer buffer, StringParam text)
 {
-  SDL::SetGPUBufferName(get(), buffer, std::move(text));
+  SDL::SetGPUBufferName(get(), buffer, text);
 }
 
 /**
@@ -68161,7 +68147,7 @@ inline void SetGPUTextureName(GPUDeviceRef device,
 
 inline void GPUDeviceBase::SetTextureName(GPUTexture texture, StringParam text)
 {
-  SDL::SetGPUTextureName(get(), texture, std::move(text));
+  SDL::SetGPUTextureName(get(), texture, text);
 }
 
 /**
@@ -68187,7 +68173,7 @@ inline void InsertGPUDebugLabel(GPUCommandBuffer command_buffer,
 
 inline void GPUCommandBuffer::InsertDebugLabel(StringParam text)
 {
-  SDL::InsertGPUDebugLabel(m_gPUCommandBuffer, std::move(text));
+  SDL::InsertGPUDebugLabel(m_gPUCommandBuffer, text);
 }
 
 /**
@@ -68223,7 +68209,7 @@ inline void PushGPUDebugGroup(GPUCommandBuffer command_buffer, StringParam name)
 
 inline void GPUCommandBuffer::PushDebugGroup(StringParam name)
 {
-  SDL::PushGPUDebugGroup(m_gPUCommandBuffer, std::move(name));
+  SDL::PushGPUDebugGroup(m_gPUCommandBuffer, name);
 }
 
 /**
@@ -84780,7 +84766,7 @@ inline Window CreateWindowAndRenderer(StringParam title,
  */
 inline Renderer CreateRenderer(WindowRef window, StringParam name = nullptr)
 {
-  return Renderer(window, std::move(name));
+  return Renderer(window, name);
 }
 
 inline Renderer::Renderer(WindowRef window, StringParam name)
@@ -89032,7 +89018,7 @@ inline void RenderDebugText(RendererRef renderer,
 
 inline void RendererBase::RenderDebugText(const FPointRaw& p, StringParam str)
 {
-  SDL::RenderDebugText(get(), p, std::move(str));
+  SDL::RenderDebugText(get(), p, str);
 }
 
 /**
@@ -91693,10 +91679,7 @@ struct Address : AddressBase
  * @sa RefAddress
  * @sa UnrefAddress
  */
-inline Address ResolveHostname(StringParam host)
-{
-  return Address(std::move(host));
-}
+inline Address ResolveHostname(StringParam host) { return Address(host); }
 
 inline Address::Address(StringParam host)
   : Address(CheckError(NET_ResolveHostname(host)))
@@ -98670,12 +98653,12 @@ inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
  */
 inline Audio LoadAudio(MixerRef mixer, StringParam path, bool predecode)
 {
-  return Audio(mixer, std::move(path), predecode);
+  return Audio(mixer, path, predecode);
 }
 
 inline Audio MixerBase::LoadAudio(StringParam path, bool predecode)
 {
-  return Audio(get(), std::move(path), predecode);
+  return Audio(get(), path, predecode);
 }
 
 /**
@@ -99561,10 +99544,7 @@ inline void TagTrack(TrackRef track, StringParam tag)
   CheckError(MIX_TagTrack(track, tag));
 }
 
-inline void TrackBase::Tag(StringParam tag)
-{
-  SDL::TagTrack(get(), std::move(tag));
-}
+inline void TrackBase::Tag(StringParam tag) { SDL::TagTrack(get(), tag); }
 
 /**
  * Remove an arbitrary tag from a track.
@@ -99594,10 +99574,7 @@ inline void UntagTrack(TrackRef track, StringParam tag)
   MIX_UntagTrack(track, tag);
 }
 
-inline void TrackBase::Untag(StringParam tag)
-{
-  SDL::UntagTrack(get(), std::move(tag));
-}
+inline void TrackBase::Untag(StringParam tag) { SDL::UntagTrack(get(), tag); }
 
 /**
  * Get the tags currently associated with a track.
@@ -99644,7 +99621,7 @@ inline OwnArray<TrackRef> GetTaggedTracks(MixerRef mixer, StringParam tag)
 
 inline OwnArray<TrackRef> MixerBase::GetTaggedTracks(StringParam tag)
 {
-  return SDL::GetTaggedTracks(get(), std::move(tag));
+  return SDL::GetTaggedTracks(get(), tag);
 }
 
 /**
@@ -100318,7 +100295,7 @@ inline void PlayTag(MixerRef mixer, StringParam tag, PropertiesRef options)
 
 inline void MixerBase::PlayTag(StringParam tag, PropertiesRef options)
 {
-  SDL::PlayTag(get(), std::move(tag), options);
+  SDL::PlayTag(get(), tag, options);
 }
 
 /**
@@ -100483,7 +100460,7 @@ inline void StopTag(MixerRef mixer, StringParam tag, Sint64 fade_out_ms)
 
 inline void MixerBase::StopTag(StringParam tag, Sint64 fade_out_ms)
 {
-  SDL::StopTag(get(), std::move(tag), fade_out_ms);
+  SDL::StopTag(get(), tag, fade_out_ms);
 }
 
 /**
@@ -100570,10 +100547,7 @@ inline void PauseTag(MixerRef mixer, StringParam tag)
   CheckError(MIX_PauseTag(mixer, tag));
 }
 
-inline void MixerBase::PauseTag(StringParam tag)
-{
-  SDL::PauseTag(get(), std::move(tag));
-}
+inline void MixerBase::PauseTag(StringParam tag) { SDL::PauseTag(get(), tag); }
 
 /**
  * Resume a currently-paused track.
@@ -100660,7 +100634,7 @@ inline void ResumeTag(MixerRef mixer, StringParam tag)
 
 inline void MixerBase::ResumeTag(StringParam tag)
 {
-  SDL::ResumeTag(get(), std::move(tag));
+  SDL::ResumeTag(get(), tag);
 }
 
 /**
@@ -100862,7 +100836,7 @@ inline void SetTagGain(MixerRef mixer, StringParam tag, float gain)
 
 inline void MixerBase::SetTagGain(StringParam tag, float gain)
 {
-  SDL::SetTagGain(get(), std::move(tag), gain);
+  SDL::SetTagGain(get(), tag, gain);
 }
 
 /**
@@ -101974,7 +101948,7 @@ struct AudioDecoder : AudioDecoderBase
 inline AudioDecoder CreateAudioDecoder(StringParam path,
                                        PropertiesRef props = nullptr)
 {
-  return AudioDecoder(std::move(path), props);
+  return AudioDecoder(path, props);
 }
 
 inline AudioDecoder::AudioDecoder(StringParam path, PropertiesRef props)
@@ -104389,7 +104363,7 @@ inline void Save(SurfaceConstRef surface, StringParam file)
 
 inline void SurfaceBase::Save(StringParam filename) const
 {
-  SDL::Save(*this, std::move(filename));
+  SDL::Save(get(), filename);
 }
 
 /**
@@ -104435,7 +104409,7 @@ inline void SurfaceBase::SaveTyped_IO(IOStreamRef dst,
                                       StringParam type,
                                       bool closeio) const
 {
-  SDL::SaveTyped_IO(*this, dst, std::move(type), closeio);
+  SDL::SaveTyped_IO(get(), dst, type, closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -105229,10 +105203,7 @@ inline int AnimationBase::GetDelay(int index) const
  * @sa LoadWEBPAnimation_IO
  * @sa FreeAnimation
  */
-inline Animation LoadAnimation(StringParam file)
-{
-  return Animation(std::move(file));
-}
+inline Animation LoadAnimation(StringParam file) { return Animation(file); }
 
 inline Animation::Animation(StringParam file)
   : Animation(IMG_LoadAnimation(file))
@@ -105482,7 +105453,7 @@ inline void SaveAnimation(AnimationRef anim, StringParam file)
 
 inline void AnimationBase::Save(StringParam file)
 {
-  SDL::SaveAnimation(get(), std::move(file));
+  SDL::SaveAnimation(get(), file);
 }
 
 /**
@@ -105523,7 +105494,7 @@ inline void AnimationBase::SaveTyped_IO(IOStreamRef dst,
                                         StringParam type,
                                         bool closeio)
 {
-  SDL::SaveAnimationTyped_IO(get(), dst, std::move(type), closeio);
+  SDL::SaveAnimationTyped_IO(get(), dst, type, closeio);
 }
 
 /**
@@ -105971,7 +105942,7 @@ struct AnimationEncoder : AnimationEncoderBase
  */
 inline AnimationEncoder CreateAnimationEncoder(StringParam file)
 {
-  return AnimationEncoder(std::move(file));
+  return AnimationEncoder(file);
 }
 
 inline AnimationEncoder::AnimationEncoder(StringParam file)
@@ -106024,7 +105995,7 @@ inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamRef dst,
                                                   StringParam type,
                                                   bool closeio = false)
 {
-  return AnimationEncoder(dst, std::move(type), closeio);
+  return AnimationEncoder(dst, type, closeio);
 }
 
 /**
@@ -106472,7 +106443,7 @@ struct AnimationDecoder : AnimationDecoderBase
  */
 inline AnimationDecoder CreateAnimationDecoder(StringParam file)
 {
-  return AnimationDecoder(std::move(file));
+  return AnimationDecoder(file);
 }
 
 inline AnimationDecoder::AnimationDecoder(StringParam file)
@@ -106526,7 +106497,7 @@ inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamRef src,
                                                   StringParam type,
                                                   bool closeio = false)
 {
-  return AnimationDecoder(src, std::move(type), closeio);
+  return AnimationDecoder(src, type, closeio);
 }
 
 /**
@@ -108654,7 +108625,7 @@ struct Font : FontBase
  */
 inline Font OpenFont(StringParam file, float ptsize)
 {
-  return Font(std::move(file), ptsize);
+  return Font(file, ptsize);
 }
 
 inline Font::Font(StringParam file, float ptsize)
@@ -109812,7 +109783,7 @@ inline void SetFontLanguage(FontRef font, StringParam language_bcp47)
 
 inline void FontBase::SetLanguage(StringParam language_bcp47)
 {
-  SDL::SetFontLanguage(get(), std::move(language_bcp47));
+  SDL::SetFontLanguage(get(), language_bcp47);
 }
 
 /**

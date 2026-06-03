@@ -749,7 +749,7 @@ struct TrayEntryScoped : TrayEntry
  */
 inline Tray CreateTray(SurfaceRef icon, StringParam tooltip)
 {
-  return Tray(icon, std::move(tooltip));
+  return Tray(icon, tooltip);
 }
 
 inline Tray::Tray(SurfaceRef icon, StringParam tooltip)
@@ -800,7 +800,7 @@ inline void SetTrayTooltip(TrayRef tray, StringParam tooltip)
 
 inline void TrayBase::SetTooltip(StringParam tooltip)
 {
-  SDL::SetTrayTooltip(get(), std::move(tooltip));
+  SDL::SetTrayTooltip(get(), tooltip);
 }
 
 /**
@@ -996,14 +996,14 @@ inline TrayEntry InsertTrayEntryAt(TrayMenu menu,
                                    StringParam label,
                                    TrayEntryFlags flags)
 {
-  return TrayEntry(menu, pos, std::move(label), flags);
+  return TrayEntry(menu, pos, label, flags);
 }
 
 inline TrayEntry TrayMenu::InsertEntry(int pos,
                                        StringParam label,
                                        TrayEntryFlags flags)
 {
-  return TrayEntry(m_trayMenu, pos, std::move(label), flags);
+  return TrayEntry(m_trayMenu, pos, label, flags);
 }
 
 inline TrayEntry::TrayEntry(TrayMenu menu,
@@ -1050,12 +1050,12 @@ inline TrayEntry AppendTrayEntry(TrayMenuRaw menu,
                                  StringParam label,
                                  TrayEntryFlags flags)
 {
-  return TrayEntry(menu, std::move(label), flags);
+  return TrayEntry(menu, label, flags);
 }
 
 inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 {
-  return SDL::AppendTrayEntry(m_trayMenu, std::move(label), flags);
+  return SDL::AppendTrayEntry(m_trayMenu, label, flags);
 }
 
 /**
@@ -1085,7 +1085,7 @@ inline void SetTrayEntryLabel(TrayEntry entry, StringParam label)
 
 inline void TrayEntry::SetLabel(StringParam label)
 {
-  SDL::SetTrayEntryLabel(get(), std::move(label));
+  SDL::SetTrayEntryLabel(get(), label);
 }
 
 /**

@@ -88,7 +88,6 @@ const transform = {
     "TargetBytes": "$.data(), $.size_bytes()",
   },
   delegatedReplacements: {
-    "StringParam": "std::move($)",
     "SourceBytes": "std::move($)",
     "TargetBytes": "std::move($)",
   },
@@ -8735,7 +8734,7 @@ const transform = {
           immutable: true,
           parameters: [{ name: "filename", type: "StringParam" }],
           hints: {
-            delegate: "Save",
+            delegate: "SDL::Save",
             copyDoc: "IMG_Save",
           },
           since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 }
@@ -8768,7 +8767,7 @@ const transform = {
             default: "false"
           }],
           hints: {
-            delegate: "SaveTyped_IO",
+            delegate: "SDL::SaveTyped_IO",
             copyDoc: "IMG_SaveTyped_IO",
           },
           since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 }

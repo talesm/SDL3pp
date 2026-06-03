@@ -1140,7 +1140,7 @@
 +#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 +inline void Surface::SavePNG(StringParam file) const
  {
-   SDL::SaveTrustedPNG(get(), std::move(file));
+   SDL::SaveTrustedPNG(get(), file);
  }
 +#endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
  

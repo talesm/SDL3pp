@@ -121,10 +121,7 @@ inline std::string GUID::ToString() const { return SDL::GUIDToString(*this); }
  *
  * @sa GUIDToString
  */
-inline GUID StringToGUID(StringParam pchGUID)
-{
-  return GUID(std::move(pchGUID));
-}
+inline GUID StringToGUID(StringParam pchGUID) { return GUID(pchGUID); }
 
 inline GUID::GUID(StringParam pchGUID)
   : GUIDRaw(SDL_StringToGUID(pchGUID))
