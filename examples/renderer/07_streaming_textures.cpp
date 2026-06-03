@@ -44,7 +44,7 @@ struct Main : SDL::AppInterface
      *
      */
     if (auto surface = texture.LockToSurface()) {
-      surface.Fill(0);
+      surface.Fill(surface.MapRGBA({0, 0, 0, 255}));
       SDL::Rect r{0,
                   int((textureSz.y * 0.9f) * ((scale + 1.0f) / 2.0f)),
                   textureSz.x,
