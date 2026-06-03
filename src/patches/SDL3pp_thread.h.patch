@@ -47,7 +47,7 @@
  inline Thread CreateThread(ThreadCB fn, StringParam name)
  {
 -  static_assert(false, "Not implemented");
-+  return Thread(std::move(fn), std::move(name));
++  return Thread(std::move(fn), name);
  }
  
  inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
@@ -58,7 +58,7 @@
 -inline Thread::Thread(ThreadCB fn, StringParam name) {}
 +inline Thread::Thread(ThreadCB fn, StringParam name)
 +  : Thread(&CallbackWrapper<ThreadCB>::CallOnce,
-+           std::move(name),
++           name,
 +           CallbackWrapper<ThreadCB>::Wrap(std::move(fn)))
 +{
 +}

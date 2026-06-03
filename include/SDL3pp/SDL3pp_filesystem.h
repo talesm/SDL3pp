@@ -536,7 +536,7 @@ inline void EnumerateDirectory(StringParam path,
 inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
 {
   return EnumerateDirectory(
-    std::move(path),
+    path,
     [](void* userdata, const char* dirname, const char* fname) {
       auto& cb = *static_cast<const EnumerateDirectoryCB*>(userdata);
       return cb(dirname, fname);
@@ -557,7 +557,7 @@ inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
 inline std::vector<Path> EnumerateDirectory(StringParam path)
 {
   std::vector<Path> r;
-  EnumerateDirectory(std::move(path), [&r](const char*, const char* fname) {
+  EnumerateDirectory(path, [&r](const char*, const char* fname) {
     r.emplace_back(fname);
     return ENUM_CONTINUE;
   });

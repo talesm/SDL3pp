@@ -975,13 +975,13 @@ inline std::string ReadStorageFile(StorageRef storage, StringParam path)
   auto sz = GetStorageFileSize(storage, path.c_str());
   if (!sz || *sz == 0) return {};
   std::string buffer(*sz, 0);
-  CheckError(ReadStorageFile(storage, std::move(path), buffer));
+  CheckError(ReadStorageFile(storage, path, buffer));
   return buffer;
 }
 
 inline bool StorageBase::ReadFile(StringParam path, TargetBytes destination)
 {
-  return SDL::ReadStorageFile(get(), path, std::move(destination));
+  return SDL::ReadStorageFile(get(), path, destination);
 }
 
 inline std::string StorageBase::ReadFile(StringParam path)
@@ -1010,7 +1010,7 @@ inline std::vector<T> ReadStorageFileAs(StorageRef storage, StringParam path)
   auto sz = GetStorageFileSize(storage, path.c_str());
   if (!sz || *sz == 0) return {};
   std::vector<T> buffer(*sz / sizeof(T) + (*sz % sizeof(T) ? 1 : 0), 0);
-  CheckError(ReadFile(std::move(path), {buffer.data(), *sz}));
+  CheckError(ReadFile(path, {buffer.data(), *sz}));
   return buffer;
 }
 
@@ -1044,7 +1044,7 @@ inline void WriteStorageFile(StorageRef storage,
 
 inline void StorageBase::WriteFile(StringParam path, SourceBytes source)
 {
-  SDL::WriteStorageFile(get(), path, std::move(source));
+  SDL::WriteStorageFile(get(), path, source);
 }
 
 /**
@@ -1129,7 +1129,7 @@ inline void EnumerateStorageDirectory(StorageRef storage,
 {
   EnumerateStorageDirectory(
     storage,
-    std::move(path),
+    path,
     [](void* userdata, const char* dirname, const char* fname) {
       auto& cb = *static_cast<EnumerateDirectoryCB*>(userdata);
       return cb(dirname, fname);
@@ -1164,11 +1164,10 @@ inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
                                                    StringParam path)
 {
   std::vector<Path> r;
-  EnumerateStorageDirectory(
-    storage, std::move(path), [&](const char*, const char* fname) {
-      r.emplace_back(fname);
-      return ENUM_CONTINUE;
-    });
+  EnumerateStorageDirectory(storage, path, [&](const char*, const char* fname) {
+    r.emplace_back(fname);
+    return ENUM_CONTINUE;
+  });
   return r;
 }
 

@@ -3649,7 +3649,7 @@ inline void CreateWindowAndRenderer(StringParam title,
   SDL_Window* windowRaw = nullptr;
   SDL_Renderer* rendererRaw = nullptr;
   CreateWindowAndRendererRaw(
-    std::move(title), size, window_flags, &windowRaw, &rendererRaw);
+    title, size, window_flags, &windowRaw, &rendererRaw);
   if (window) *window = Window{windowRaw};
   if (renderer) *renderer = Renderer{rendererRaw};
 }
@@ -3677,8 +3677,7 @@ inline Window CreateWindowAndRenderer(StringParam title,
                                       Renderer* renderer = nullptr)
 {
   Window window;
-  CreateWindowAndRenderer(
-    std::move(title), size, window_flags, &window, renderer);
+  CreateWindowAndRenderer(title, size, window_flags, &window, renderer);
   return window;
 }
 
@@ -5750,7 +5749,7 @@ inline TextureLock::TextureLock(TextureRef resource,
                                 OptionalRef<const RectRaw> rect,
                                 void** pixels,
                                 int* pitch)
-  : m_lock(std::move(resource))
+  : m_lock(resource)
 {
   LockTexture(m_lock, rect, pixels, pitch);
 }
@@ -5804,7 +5803,7 @@ inline TextureSurfaceLock TextureBase::LockToSurface(
 inline TextureSurfaceLock::TextureSurfaceLock(TextureRef resource,
                                               OptionalRef<const RectRaw> rect)
   : Surface(LockTextureToSurface(resource, rect))
-  , m_lock(std::move(resource))
+  , m_lock(resource)
 {
 }
 

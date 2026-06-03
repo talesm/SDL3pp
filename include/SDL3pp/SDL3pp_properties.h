@@ -869,7 +869,7 @@ public:
   /// Constructor
   PropertyProxy(PropertiesRef props, StringParam name)
     : m_props(props)
-    , m_name(std::move(name))
+    , m_name(name)
   {
   }
 
@@ -1148,7 +1148,7 @@ inline void LockProperties(PropertiesRef props)
 inline PropertiesLock PropertiesBase::Lock() { return {PropertiesRef(*this)}; }
 
 inline PropertiesLock::PropertiesLock(PropertiesRef resource)
-  : m_lock(std::move(resource))
+  : m_lock(resource)
 {
   LockProperties(m_lock);
 }
@@ -1184,17 +1184,17 @@ inline void PropertiesLock::reset()
 
 inline PropertyProxy PropertiesBase::operator[](StringParam name) const
 {
-  return {*this, std::move(name)};
+  return {*this, name};
+}
+
+inline PropertyMutableProxy PropertiesBase::operator[](StringParam name)
+{
+  return {*this, name};
 }
 
 inline PropertyIterator PropertiesBase::begin() const { return {*this}; }
 
 inline std::nullptr_t PropertiesBase::end() const { return nullptr; }
-
-inline PropertyMutableProxy PropertiesBase::operator[](StringParam name)
-{
-  return {*this, std::move(name)};
-}
 
 /**
  * Set a property in a group of properties.
@@ -1209,38 +1209,32 @@ template<PropertyValue V>
 inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
 {
   if constexpr (std::is_same_v<V, bool>) {
-    props.SetBooleanProperty(std::move(name), std::forward<V>(value));
+    props.SetBooleanProperty(name, std::forward<V>(value));
   } else if constexpr (std::is_integral_v<V>) {
-    props.SetNumberProperty(std::move(name), std::forward<V>(value));
+    props.SetNumberProperty(name, std::forward<V>(value));
   } else {
     struct Visitor
     {
       PropertiesRef props;
       StringParam name;
 
-      void operator()(std::monostate) { props.ClearProperty(std::move(name)); }
-      void operator()(std::nullopt_t) { props.ClearProperty(std::move(name)); }
-      void operator()(void* v) { props.SetPointerProperty(std::move(name), v); }
+      void operator()(std::monostate) { props.ClearProperty(name); }
+      void operator()(std::nullopt_t) { props.ClearProperty(name); }
+      void operator()(void* v) { props.SetPointerProperty(name, v); }
 
-      void operator()(StringParam&& v)
-      {
-        props.SetStringProperty(std::move(name), std::move(v));
-      }
-      void operator()(const char* v)
-      {
-        props.SetStringProperty(std::move(name), std::move(v));
-      }
+      void operator()(StringParam v) { props.SetStringProperty(name, v); }
+      void operator()(const char* v) { props.SetStringProperty(name, v); }
 
-      void operator()(Sint64 v) { props.SetNumberProperty(std::move(name), v); }
-      void operator()(float v) { props.SetFloatProperty(std::move(name), v); }
-      void operator()(bool v) { props.SetBooleanProperty(std::move(name), v); }
+      void operator()(Sint64 v) { props.SetNumberProperty(name, v); }
+      void operator()(float v) { props.SetFloatProperty(name, v); }
+      void operator()(bool v) { props.SetBooleanProperty(name, v); }
 
       void operator()(const PropertyProxy& prop)
       {
         prop.visit([this](auto v) { (*this)(v); });
       }
     };
-    Visitor{props, std::move(name)}(std::forward<V>(value));
+    Visitor{props, name}(std::forward<V>(value));
   }
 }
 
@@ -1323,11 +1317,8 @@ inline void SetPointerPropertyWithCleanup(PropertiesRef props,
                                           CleanupPropertyCB cleanup)
 {
   using Wrapper = CallbackWrapper<CleanupPropertyCB>;
-  SDL_SetPointerPropertyWithCleanup(props,
-                                    std::move(name),
-                                    value,
-                                    &Wrapper::CallOnce,
-                                    Wrapper::Wrap(std::move(cleanup)));
+  SDL_SetPointerPropertyWithCleanup(
+    props, name, value, &Wrapper::CallOnce, Wrapper::Wrap(std::move(cleanup)));
 }
 
 inline void PropertiesBase::SetPointerPropertyWithCleanup(
@@ -1542,7 +1533,7 @@ inline PropertyType PropertiesBase::GetPropertyType(StringParam name) const
  */
 inline PropertyProxy GetProperty(PropertiesRef props, StringParam name)
 {
-  return {props, std::move(name)};
+  return {props, name};
 }
 
 inline PropertyProxy PropertiesBase::Get(StringParam name) const

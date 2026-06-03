@@ -542,7 +542,7 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
  */
 inline Thread CreateThread(ThreadCB fn, StringParam name)
 {
-  return Thread(std::move(fn), std::move(name));
+  return Thread(std::move(fn), name);
 }
 
 inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
@@ -552,7 +552,7 @@ inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
 
 inline Thread::Thread(ThreadCB fn, StringParam name)
   : Thread(&CallbackWrapper<ThreadCB>::CallOnce,
-           std::move(name),
+           name,
            CallbackWrapper<ThreadCB>::Wrap(std::move(fn)))
 {
 }

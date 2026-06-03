@@ -5081,7 +5081,7 @@ inline void AddHintCallback(StringParam name,
  */
 inline void AddHintCallback(StringParam name, HintCB callback)
 {
-  AddHintCallback(std::move(name), callback.wrapper, callback.data);
+  AddHintCallback(name, callback.wrapper, callback.data);
 }
 
 /**

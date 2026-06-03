@@ -1819,7 +1819,7 @@ inline Surface LoadPNG_IO(IOStreamRef src, bool closeio)
  */
 inline Surface LoadPNG(StringParam file)
 {
-  return LoadPNG_IO(IOFromFile(std::move(file), "rb"));
+  return LoadPNG_IO(IOFromFile(file, "rb"));
 }
 
 /**
@@ -2548,7 +2548,7 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
 
 inline void SurfaceBase::SavePNG(StringParam file) const
 {
-  SDL::SavePNG(get(), std::move(file));
+  SDL::SavePNG(get(), file);
 }
 
 /**
@@ -4671,22 +4671,22 @@ inline void AnimationDecoderBase::Close() { CloseAnimationDecoder(release()); }
 namespace SDL {
 
 inline Surface::Surface(StringParam file)
-  : Surface(LoadBMP(std::move(file)))
+  : Surface(LoadBMP(file))
 {
 }
 
 inline Surface::Surface(IOStreamRef src, bool closeio)
-  : Surface(LoadBMP_IO(std::move(src), closeio))
+  : Surface(LoadBMP_IO(src, closeio))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, StringParam file)
-  : Texture(std::move(renderer), Surface(std::move(file)))
+  : Texture(renderer, Surface(file))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
-  : Texture(std::move(renderer), Surface(std::move(src), closeio))
+  : Texture(renderer, Surface(src, closeio))
 {
 }
 

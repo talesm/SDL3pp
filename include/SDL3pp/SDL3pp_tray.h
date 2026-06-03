@@ -1017,7 +1017,7 @@ inline TrayEntry::TrayEntry(TrayMenu menu,
 inline TrayEntry::TrayEntry(TrayMenuRaw menu,
                             StringParam label,
                             TrayEntryFlags flags)
-  : TrayEntry(menu, -1, std::move(label), flags)
+  : TrayEntry(menu, -1, label, flags)
 {
 }
 

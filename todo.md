@@ -13,6 +13,7 @@ Todo for next version
 Backlog
 -------
 
+- [ ] Fix defaults on SDL3pp_dialog to nullptr
 - [ ] Fix base.json for most recent inclusions;
 - [ ] Fix tsconfig.json
 - [ ] Create ResourceConstBase

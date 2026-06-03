@@ -49,7 +49,7 @@
  inline void AddHintCallback(StringParam name, HintCB callback)
  {
 -  static_assert(false, "Not implemented");
-+  AddHintCallback(std::move(name), callback.wrapper, callback.data);
++  AddHintCallback(name, callback.wrapper, callback.data);
  }
  
  /**

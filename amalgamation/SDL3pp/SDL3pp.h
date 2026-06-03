@@ -8101,7 +8101,7 @@ inline void AddHintCallback(StringParam name,
  */
 inline void AddHintCallback(StringParam name, HintCB callback)
 {
-  AddHintCallback(std::move(name), callback.wrapper, callback.data);
+  AddHintCallback(name, callback.wrapper, callback.data);
 }
 
 /**
@@ -10061,7 +10061,7 @@ public:
   /// Constructor
   PropertyProxy(PropertiesRef props, StringParam name)
     : m_props(props)
-    , m_name(std::move(name))
+    , m_name(name)
   {
   }
 
@@ -10340,7 +10340,7 @@ inline void LockProperties(PropertiesRef props)
 inline PropertiesLock PropertiesBase::Lock() { return {PropertiesRef(*this)}; }
 
 inline PropertiesLock::PropertiesLock(PropertiesRef resource)
-  : m_lock(std::move(resource))
+  : m_lock(resource)
 {
   LockProperties(m_lock);
 }
@@ -10376,17 +10376,17 @@ inline void PropertiesLock::reset()
 
 inline PropertyProxy PropertiesBase::operator[](StringParam name) const
 {
-  return {*this, std::move(name)};
+  return {*this, name};
+}
+
+inline PropertyMutableProxy PropertiesBase::operator[](StringParam name)
+{
+  return {*this, name};
 }
 
 inline PropertyIterator PropertiesBase::begin() const { return {*this}; }
 
 inline std::nullptr_t PropertiesBase::end() const { return nullptr; }
-
-inline PropertyMutableProxy PropertiesBase::operator[](StringParam name)
-{
-  return {*this, std::move(name)};
-}
 
 /**
  * Set a property in a group of properties.
@@ -10401,38 +10401,32 @@ template<PropertyValue V>
 inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
 {
   if constexpr (std::is_same_v<V, bool>) {
-    props.SetBooleanProperty(std::move(name), std::forward<V>(value));
+    props.SetBooleanProperty(name, std::forward<V>(value));
   } else if constexpr (std::is_integral_v<V>) {
-    props.SetNumberProperty(std::move(name), std::forward<V>(value));
+    props.SetNumberProperty(name, std::forward<V>(value));
   } else {
     struct Visitor
     {
       PropertiesRef props;
       StringParam name;
 
-      void operator()(std::monostate) { props.ClearProperty(std::move(name)); }
-      void operator()(std::nullopt_t) { props.ClearProperty(std::move(name)); }
-      void operator()(void* v) { props.SetPointerProperty(std::move(name), v); }
+      void operator()(std::monostate) { props.ClearProperty(name); }
+      void operator()(std::nullopt_t) { props.ClearProperty(name); }
+      void operator()(void* v) { props.SetPointerProperty(name, v); }
 
-      void operator()(StringParam&& v)
-      {
-        props.SetStringProperty(std::move(name), std::move(v));
-      }
-      void operator()(const char* v)
-      {
-        props.SetStringProperty(std::move(name), std::move(v));
-      }
+      void operator()(StringParam v) { props.SetStringProperty(name, v); }
+      void operator()(const char* v) { props.SetStringProperty(name, v); }
 
-      void operator()(Sint64 v) { props.SetNumberProperty(std::move(name), v); }
-      void operator()(float v) { props.SetFloatProperty(std::move(name), v); }
-      void operator()(bool v) { props.SetBooleanProperty(std::move(name), v); }
+      void operator()(Sint64 v) { props.SetNumberProperty(name, v); }
+      void operator()(float v) { props.SetFloatProperty(name, v); }
+      void operator()(bool v) { props.SetBooleanProperty(name, v); }
 
       void operator()(const PropertyProxy& prop)
       {
         prop.visit([this](auto v) { (*this)(v); });
       }
     };
-    Visitor{props, std::move(name)}(std::forward<V>(value));
+    Visitor{props, name}(std::forward<V>(value));
   }
 }
 
@@ -10515,11 +10509,8 @@ inline void SetPointerPropertyWithCleanup(PropertiesRef props,
                                           CleanupPropertyCB cleanup)
 {
   using Wrapper = CallbackWrapper<CleanupPropertyCB>;
-  SDL_SetPointerPropertyWithCleanup(props,
-                                    std::move(name),
-                                    value,
-                                    &Wrapper::CallOnce,
-                                    Wrapper::Wrap(std::move(cleanup)));
+  SDL_SetPointerPropertyWithCleanup(
+    props, name, value, &Wrapper::CallOnce, Wrapper::Wrap(std::move(cleanup)));
 }
 
 inline void PropertiesBase::SetPointerPropertyWithCleanup(
@@ -10734,7 +10725,7 @@ inline PropertyType PropertiesBase::GetPropertyType(StringParam name) const
  */
 inline PropertyProxy GetProperty(PropertiesRef props, StringParam name)
 {
-  return {props, std::move(name)};
+  return {props, name};
 }
 
 inline PropertyProxy PropertiesBase::Get(StringParam name) const
@@ -20840,7 +20831,7 @@ inline void EnumerateDirectory(StringParam path,
 inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
 {
   return EnumerateDirectory(
-    std::move(path),
+    path,
     [](void* userdata, const char* dirname, const char* fname) {
       auto& cb = *static_cast<const EnumerateDirectoryCB*>(userdata);
       return cb(dirname, fname);
@@ -20861,7 +20852,7 @@ inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
 inline std::vector<Path> EnumerateDirectory(StringParam path)
 {
   std::vector<Path> r;
-  EnumerateDirectory(std::move(path), [&r](const char*, const char* fname) {
+  EnumerateDirectory(path, [&r](const char*, const char* fname) {
     r.emplace_back(fname);
     return ENUM_CONTINUE;
   });
@@ -41808,13 +41799,13 @@ inline std::string ReadStorageFile(StorageRef storage, StringParam path)
   auto sz = GetStorageFileSize(storage, path.c_str());
   if (!sz || *sz == 0) return {};
   std::string buffer(*sz, 0);
-  CheckError(ReadStorageFile(storage, std::move(path), buffer));
+  CheckError(ReadStorageFile(storage, path, buffer));
   return buffer;
 }
 
 inline bool StorageBase::ReadFile(StringParam path, TargetBytes destination)
 {
-  return SDL::ReadStorageFile(get(), path, std::move(destination));
+  return SDL::ReadStorageFile(get(), path, destination);
 }
 
 inline std::string StorageBase::ReadFile(StringParam path)
@@ -41843,7 +41834,7 @@ inline std::vector<T> ReadStorageFileAs(StorageRef storage, StringParam path)
   auto sz = GetStorageFileSize(storage, path.c_str());
   if (!sz || *sz == 0) return {};
   std::vector<T> buffer(*sz / sizeof(T) + (*sz % sizeof(T) ? 1 : 0), 0);
-  CheckError(ReadFile(std::move(path), {buffer.data(), *sz}));
+  CheckError(ReadFile(path, {buffer.data(), *sz}));
   return buffer;
 }
 
@@ -41877,7 +41868,7 @@ inline void WriteStorageFile(StorageRef storage,
 
 inline void StorageBase::WriteFile(StringParam path, SourceBytes source)
 {
-  SDL::WriteStorageFile(get(), path, std::move(source));
+  SDL::WriteStorageFile(get(), path, source);
 }
 
 /**
@@ -41962,7 +41953,7 @@ inline void EnumerateStorageDirectory(StorageRef storage,
 {
   EnumerateStorageDirectory(
     storage,
-    std::move(path),
+    path,
     [](void* userdata, const char* dirname, const char* fname) {
       auto& cb = *static_cast<EnumerateDirectoryCB*>(userdata);
       return cb(dirname, fname);
@@ -41997,11 +41988,10 @@ inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
                                                    StringParam path)
 {
   std::vector<Path> r;
-  EnumerateStorageDirectory(
-    storage, std::move(path), [&](const char*, const char* fname) {
-      r.emplace_back(fname);
-      return ENUM_CONTINUE;
-    });
+  EnumerateStorageDirectory(storage, path, [&](const char*, const char* fname) {
+    r.emplace_back(fname);
+    return ENUM_CONTINUE;
+  });
   return r;
 }
 
@@ -45042,10 +45032,7 @@ inline Surface LoadPNG_IO(IOStreamRef src, bool closeio = false)
 }
 
 /// @see LoadTrustedPNG
-inline Surface LoadPNG(StringParam file)
-{
-  return LoadTrustedPNG(std::move(file));
-}
+inline Surface LoadPNG(StringParam file) { return LoadTrustedPNG(file); }
 
 #endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
@@ -47575,7 +47562,7 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
  */
 inline Thread CreateThread(ThreadCB fn, StringParam name)
 {
-  return Thread(std::move(fn), std::move(name));
+  return Thread(std::move(fn), name);
 }
 
 inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
@@ -47585,7 +47572,7 @@ inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
 
 inline Thread::Thread(ThreadCB fn, StringParam name)
   : Thread(&CallbackWrapper<ThreadCB>::CallOnce,
-           std::move(name),
+           name,
            CallbackWrapper<ThreadCB>::Wrap(std::move(fn)))
 {
 }
@@ -51743,7 +51730,7 @@ inline TrayEntry::TrayEntry(TrayMenu menu,
 inline TrayEntry::TrayEntry(TrayMenuRaw menu,
                             StringParam label,
                             TrayEntryFlags flags)
-  : TrayEntry(menu, -1, std::move(label), flags)
+  : TrayEntry(menu, -1, label, flags)
 {
 }
 
@@ -59915,7 +59902,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
                      Wrapper::Wrap(std::move(callback)),
                      window,
                      filters,
-                     std::move(default_location),
+                     default_location,
                      allow_many);
 }
 
@@ -60033,7 +60020,7 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
                      Wrapper::Wrap(std::move(callback)),
                      window,
                      filters,
-                     std::move(default_location));
+                     default_location);
 }
 
 /**
@@ -60138,8 +60125,8 @@ inline void ShowOpenFolderDialog(DialogFileCB callback,
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowOpenFolderDialog(&Wrapper::CallOnce,
                        Wrapper::Wrap(std::move(callback)),
-                       std::move(window),
-                       std::move(default_location),
+                       window,
+                       default_location,
                        allow_many);
 }
 
@@ -84698,7 +84685,7 @@ inline void CreateWindowAndRenderer(StringParam title,
   SDL_Window* windowRaw = nullptr;
   SDL_Renderer* rendererRaw = nullptr;
   CreateWindowAndRendererRaw(
-    std::move(title), size, window_flags, &windowRaw, &rendererRaw);
+    title, size, window_flags, &windowRaw, &rendererRaw);
   if (window) *window = Window{windowRaw};
   if (renderer) *renderer = Renderer{rendererRaw};
 }
@@ -84726,8 +84713,7 @@ inline Window CreateWindowAndRenderer(StringParam title,
                                       Renderer* renderer = nullptr)
 {
   Window window;
-  CreateWindowAndRenderer(
-    std::move(title), size, window_flags, &window, renderer);
+  CreateWindowAndRenderer(title, size, window_flags, &window, renderer);
   return window;
 }
 
@@ -86799,7 +86785,7 @@ inline TextureLock::TextureLock(TextureRef resource,
                                 OptionalRef<const RectRaw> rect,
                                 void** pixels,
                                 int* pitch)
-  : m_lock(std::move(resource))
+  : m_lock(resource)
 {
   LockTexture(m_lock, rect, pixels, pitch);
 }
@@ -86853,7 +86839,7 @@ inline TextureSurfaceLock TextureBase::LockToSurface(
 inline TextureSurfaceLock::TextureSurfaceLock(TextureRef resource,
                                               OptionalRef<const RectRaw> rect)
   : Surface(LockTextureToSurface(resource, rect))
-  , m_lock(std::move(resource))
+  , m_lock(resource)
 {
 }
 
@@ -89977,8 +89963,7 @@ inline bool RequestAndroidPermission(StringParam permission,
 {
   using Wrapper = CallbackWrapper<RequestAndroidPermissionCB>;
   auto callback = Wrapper::Wrap(std::move(cb));
-  if (!RequestAndroidPermission(
-        std::move(permission), &Wrapper::CallOnce, callback)) {
+  if (!RequestAndroidPermission(permission, &Wrapper::CallOnce, callback)) {
     Wrapper::release(callback);
   }
 }
@@ -103934,7 +103919,7 @@ inline Surface LoadPNG_IO(IOStreamRef src, bool closeio)
  */
 inline Surface LoadPNG(StringParam file)
 {
-  return LoadPNG_IO(IOFromFile(std::move(file), "rb"));
+  return LoadPNG_IO(IOFromFile(file, "rb"));
 }
 
 /**
@@ -104663,7 +104648,7 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
 
 inline void SurfaceBase::SavePNG(StringParam file) const
 {
-  SDL::SavePNG(get(), std::move(file));
+  SDL::SavePNG(get(), file);
 }
 
 /**
@@ -106786,22 +106771,22 @@ inline void AnimationDecoderBase::Close() { CloseAnimationDecoder(release()); }
 namespace SDL {
 
 inline Surface::Surface(StringParam file)
-  : Surface(LoadBMP(std::move(file)))
+  : Surface(LoadBMP(file))
 {
 }
 
 inline Surface::Surface(IOStreamRef src, bool closeio)
-  : Surface(LoadBMP_IO(std::move(src), closeio))
+  : Surface(LoadBMP_IO(src, closeio))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, StringParam file)
-  : Texture(std::move(renderer), Surface(std::move(file)))
+  : Texture(renderer, Surface(file))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
-  : Texture(std::move(renderer), Surface(std::move(src), closeio))
+  : Texture(renderer, Surface(src, closeio))
 {
 }
 
