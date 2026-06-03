@@ -1025,177 +1025,152 @@ const transform = {
       },
       transform: {
         "SDL_DialogFileCallback": { callback: "std" },
+        "SDL_ShowOpenFileDialog": {
+          parameters: [{
+            name: "callback",
+            type: "DialogFileCallback",
+          }, {
+            name: "userdata",
+            type: "void *",
+          }, {
+            name: "window",
+            type: "WindowRef"
+          }, {
+            name: "filters",
+            type: "std::span<const DialogFileFilter>",
+            default: "{}",
+          }, {
+            name: "default_location",
+            type: "StringParam",
+            default: "nullptr",
+          }, {
+            name: "allow_many",
+            type: "bool",
+            default: "false",
+          }]
+        },
         "ShowOpenFileDialog": {
-          "after": "SDL_ShowOpenFileDialog",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "type": "DialogFileCB",
-              "name": "callback"
-            },
-            {
-              "name": "window",
-              "type": "WindowRef"
-            },
-            {
-              "name": "filters",
-              "type": "std::span<const DialogFileFilter>"
-            },
-            {
-              "name": "default_location",
-              "type": "StringParam"
-            },
-            {
-              "name": "allow_many",
-              "type": "bool"
-            }
-          ]
+          kind: "function",
+          type: "void",
+          parameters: [{
+            type: "DialogFileCB",
+            name: "callback",
+          }, {
+            name: "window",
+            type: "WindowRef",
+            default: "nullptr",
+          }, {
+            name: "filters",
+            type: "std::span<const DialogFileFilter>",
+            default: "{}",
+          }, {
+            name: "default_location",
+            type: "StringParam",
+            default: "nullptr",
+          }, {
+            name: "allow_many",
+            type: "bool",
+            default: "false",
+          }]
+        },
+        "SDL_ShowSaveFileDialog": {
+          parameters: [{
+            name: "callback",
+            type: "DialogFileCallback",
+          }, {
+            name: "userdata",
+            type: "void *",
+          }, {
+            name: "window",
+            type: "WindowRef",
+          }, {
+            name: "filters",
+            type: "std::span<const DialogFileFilter>",
+            default: "{}",
+          }, {
+            name: "default_location",
+            type: "StringParam",
+            default: "nullptr",
+          }]
         },
         "ShowSaveFileDialog": {
-          "after": "SDL_ShowSaveFileDialog",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "callback",
-              "type": "DialogFileCB"
-            },
-            {
-              "name": "window",
-              "type": "WindowRef"
-            },
-            {
-              "name": "filters",
-              "type": "std::span<const DialogFileFilter>"
-            },
-            {
-              "name": "default_location",
-              "type": "StringParam"
-            }
-          ]
+          kind: "function",
+          type: "void",
+          parameters: [{
+            name: "callback",
+            type: "DialogFileCB",
+          }, {
+            name: "window",
+            type: "WindowRef",
+            default: "nullptr",
+          }, {
+            name: "filters",
+            type: "std::span<const DialogFileFilter>",
+            default: "{}",
+          }, {
+            name: "default_location",
+            type: "StringParam",
+            default: "nullptr",
+          }]
+        },
+        "SDL_ShowOpenFolderDialog": {
+          parameters: [{
+            name: "callback",
+            type: "DialogFileCallback",
+          }, {
+            name: "userdata",
+            type: "void *",
+          }, {
+            name: "window",
+            type: "WindowRef",
+          }, {
+            name: "default_location",
+            type: "StringParam",
+            default: "nullptr",
+          }, {
+            name: "allow_many",
+            type: "bool",
+            default: "false",
+          }]
         },
         "ShowOpenFolderDialog": {
-          "after": "SDL_ShowOpenFolderDialog",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "callback",
-              "type": "DialogFileCB"
-            },
-            {
-              "name": "window",
-              "type": "WindowRef"
-            },
-            {
-              "name": "default_location",
-              "type": "StringParam"
-            },
-            {
-              "name": "allow_many",
-              "type": "bool"
-            }
-          ]
+          kind: "function",
+          type: "void",
+          parameters: [{
+            name: "callback",
+            type: "DialogFileCB",
+          }, {
+            name: "window",
+            type: "WindowRef",
+            default: "nullptr",
+          }, {
+            name: "default_location",
+            type: "StringParam",
+            default: "nullptr",
+          }, {
+            name: "allow_many",
+            type: "bool",
+            default: "false",
+          }]
         },
         "ShowFileDialogWithProperties": {
-          "after": "SDL_ShowFileDialogWithProperties",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "type",
-              "type": "FileDialogType"
-            },
-            {
-              "name": "callback",
-              "type": "DialogFileCB"
-            },
-            {
-              "name": "props",
-              "type": "PropertiesID"
-            }
-          ]
+          after: "SDL_ShowFileDialogWithProperties",
+          kind: "function",
+          type: "void",
+          parameters: [{
+            name: "type",
+            type: "FileDialogType"
+          }, {
+            name: "callback",
+            type: "DialogFileCB"
+          }, {
+            name: "props",
+            type: "PropertiesRef"
+          }]
         },
         "SDL_FileDialogType": {
           enum: "SDL_FILEDIALOG_"
         },
-        "SDL_ShowOpenFileDialog": {
-          "parameters": [
-            {
-              "name": "callback",
-              "type": "DialogFileCallback"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "window",
-              "type": "WindowRef"
-            },
-            {
-              "name": "filters",
-              "type": "std::span<const DialogFileFilter>"
-            },
-            {
-              "name": "default_location",
-              "type": "StringParam"
-            },
-            {
-              "name": "allow_many",
-              "type": "bool"
-            }
-          ]
-        },
-        "SDL_ShowSaveFileDialog": {
-          "parameters": [
-            {
-              "name": "callback",
-              "type": "DialogFileCallback"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "window",
-              "type": "WindowRef"
-            },
-            {
-              "name": "filters",
-              "type": "std::span<const DialogFileFilter>"
-            },
-            {
-              "name": "default_location",
-              "type": "StringParam"
-            }
-          ]
-        },
-        "SDL_ShowOpenFolderDialog": {
-          parameters: [
-            {
-              "name": "callback",
-              "type": "DialogFileCallback"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "window",
-              "type": "WindowRef"
-            },
-            {
-              "name": "default_location",
-              "type": "StringParam"
-            },
-            {
-              "name": "allow_many",
-              "type": "bool"
-            }
-          ]
-        }
       }
     },
     "SDL_error.h": {

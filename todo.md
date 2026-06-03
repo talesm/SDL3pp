@@ -9,11 +9,13 @@ Todo for next version
   - [x] Add operator[] to Properties;
   - [x] Add begin and end to Properties;
 - [x] Make StringParam totally non-owning;
+- [x] Fix defaults on SDL3pp_dialog.h to nullptr when applicable;
+- [x] Disambiguate overloads for ShowSaveFileDialog(), ShowOpenFolderDialog();
+- [ ] Update SDL_mixer to 3.2.4;
 
 Backlog
 -------
 
-- [ ] Fix defaults on SDL3pp_dialog to nullptr
 - [ ] Create ResourceConstBase
   - [ ] When resource has ResourceConstRef, derive from ResourceConstBase
     - It has only the immutable methods from ResourceBase;

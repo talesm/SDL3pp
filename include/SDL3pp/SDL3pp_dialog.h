@@ -179,7 +179,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
                                void* userdata,
                                WindowRef window,
                                std::span<const DialogFileFilter> filters = {},
-                               StringParam default_location = {},
+                               StringParam default_location = nullptr,
                                bool allow_many = false)
 {
   SDL_ShowOpenFileDialog(callback,
@@ -240,9 +240,9 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFileDialog(DialogFileCB callback,
-                               WindowRef window,
+                               WindowRef window = nullptr,
                                std::span<const DialogFileFilter> filters = {},
-                               StringParam default_location = {},
+                               StringParam default_location = nullptr,
                                bool allow_many = false)
 {
   using Wrapper = CallbackWrapper<DialogFileCB>;
@@ -302,9 +302,9 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  */
 inline void ShowSaveFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowRef window = {},
+                               WindowRef window,
                                std::span<const DialogFileFilter> filters = {},
-                               StringParam default_location = {})
+                               StringParam default_location = nullptr)
 {
   SDL_ShowSaveFileDialog(callback,
                          userdata,
@@ -359,9 +359,9 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowSaveFileDialog(DialogFileCB callback,
-                               WindowRef window = {},
+                               WindowRef window = nullptr,
                                std::span<const DialogFileFilter> filters = {},
-                               StringParam default_location = {})
+                               StringParam default_location = nullptr)
 {
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowSaveFileDialog(&Wrapper::CallOnce,
@@ -416,8 +416,8 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
  */
 inline void ShowOpenFolderDialog(DialogFileCallback callback,
                                  void* userdata,
-                                 WindowRef window = {},
-                                 StringParam default_location = {},
+                                 WindowRef window,
+                                 StringParam default_location = nullptr,
                                  bool allow_many = false)
 {
   SDL_ShowOpenFolderDialog(
@@ -466,8 +466,8 @@ inline void ShowOpenFolderDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFolderDialog(DialogFileCB callback,
-                                 WindowRef window = {},
-                                 StringParam default_location = {},
+                                 WindowRef window = nullptr,
+                                 StringParam default_location = nullptr,
                                  bool allow_many = false)
 {
   using Wrapper = CallbackWrapper<DialogFileCB>;
@@ -597,7 +597,7 @@ inline void ShowFileDialogWithProperties(FileDialogType type,
  */
 inline void ShowFileDialogWithProperties(FileDialogType type,
                                          DialogFileCB callback,
-                                         PropertiesID props)
+                                         PropertiesRef props)
 {
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowFileDialogWithProperties(

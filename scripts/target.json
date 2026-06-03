@@ -17670,15 +17670,18 @@
             },
             {
               "name": "filters",
-              "type": "std::span<const DialogFileFilter>"
+              "type": "std::span<const DialogFileFilter>",
+              "default": "{}"
             },
             {
               "name": "default_location",
-              "type": "StringParam"
+              "type": "StringParam",
+              "default": "nullptr"
             },
             {
               "name": "allow_many",
-              "type": "bool"
+              "type": "bool",
+              "default": "false"
             }
           ],
           "sourceName": "SDL_ShowOpenFileDialog",
@@ -17692,19 +17695,23 @@
               },
               {
                 "name": "window",
-                "type": "WindowRef"
+                "type": "WindowRef",
+                "default": "nullptr"
               },
               {
                 "name": "filters",
-                "type": "std::span<const DialogFileFilter>"
+                "type": "std::span<const DialogFileFilter>",
+                "default": "{}"
               },
               {
                 "name": "default_location",
-                "type": "StringParam"
+                "type": "StringParam",
+                "default": "nullptr"
               },
               {
                 "name": "allow_many",
-                "type": "bool"
+                "type": "bool",
+                "default": "false"
               }
             ],
             "name": "ShowOpenFileDialog",
@@ -17861,11 +17868,13 @@
             },
             {
               "name": "filters",
-              "type": "std::span<const DialogFileFilter>"
+              "type": "std::span<const DialogFileFilter>",
+              "default": "{}"
             },
             {
               "name": "default_location",
-              "type": "StringParam"
+              "type": "StringParam",
+              "default": "nullptr"
             }
           ],
           "sourceName": "SDL_ShowSaveFileDialog",
@@ -17879,15 +17888,18 @@
               },
               {
                 "name": "window",
-                "type": "WindowRef"
+                "type": "WindowRef",
+                "default": "nullptr"
               },
               {
                 "name": "filters",
-                "type": "std::span<const DialogFileFilter>"
+                "type": "std::span<const DialogFileFilter>",
+                "default": "{}"
               },
               {
                 "name": "default_location",
-                "type": "StringParam"
+                "type": "StringParam",
+                "default": "nullptr"
               }
             ],
             "name": "ShowSaveFileDialog",
@@ -18032,11 +18044,13 @@
             },
             {
               "name": "default_location",
-              "type": "StringParam"
+              "type": "StringParam",
+              "default": "nullptr"
             },
             {
               "name": "allow_many",
-              "type": "bool"
+              "type": "bool",
+              "default": "false"
             }
           ],
           "sourceName": "SDL_ShowOpenFolderDialog",
@@ -18050,15 +18064,18 @@
               },
               {
                 "name": "window",
-                "type": "WindowRef"
+                "type": "WindowRef",
+                "default": "nullptr"
               },
               {
                 "name": "default_location",
-                "type": "StringParam"
+                "type": "StringParam",
+                "default": "nullptr"
               },
               {
                 "name": "allow_many",
-                "type": "bool"
+                "type": "bool",
+                "default": "false"
               }
             ],
             "name": "ShowOpenFolderDialog",
@@ -18296,7 +18313,7 @@
               },
               {
                 "name": "props",
-                "type": "PropertiesID"
+                "type": "PropertiesRef"
               }
             ],
             "name": "ShowFileDialogWithProperties",

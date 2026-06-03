@@ -19,16 +19,9 @@
   * @param default_location the default folder or file to start the dialog at,
   *                         may be nullptr. Not all platforms support this
   *                         option.
-@@ -181,12 +178,17 @@
- inline void ShowOpenFileDialog(DialogFileCallback callback,
-                                void* userdata,
-                                WindowRef window,
--                               std::span<const DialogFileFilter> filters,
--                               StringParam default_location,
--                               bool allow_many)
-+                               std::span<const DialogFileFilter> filters = {},
-+                               StringParam default_location = {},
-+                               bool allow_many = false)
+@@ -185,8 +182,13 @@
+                                StringParam default_location = nullptr,
+                                bool allow_many = false)
  {
 -  SDL_ShowOpenFileDialog(
 -    callback, userdata, window, filters, default_location, allow_many);
@@ -59,16 +52,9 @@
   * @param default_location the default folder or file to start the dialog at,
   *                         may be nullptr. Not all platforms support this
   *                         option.
-@@ -242,11 +241,17 @@
-  */
- inline void ShowOpenFileDialog(DialogFileCB callback,
-                                WindowRef window,
--                               std::span<const DialogFileFilter> filters,
--                               StringParam default_location,
--                               bool allow_many)
-+                               std::span<const DialogFileFilter> filters = {},
-+                               StringParam default_location = {},
-+                               bool allow_many = false)
+@@ -246,7 +245,13 @@
+                                StringParam default_location = nullptr,
+                                bool allow_many = false)
  {
 -  static_assert(false, "Not implemented");
 +  using Wrapper = CallbackWrapper<DialogFileCB>;
@@ -89,16 +75,9 @@
   * @param default_location the default folder or file to start the dialog at,
   *                         may be nullptr. Not all platforms support this
   *                         option.
-@@ -298,11 +302,16 @@
-  */
- inline void ShowSaveFileDialog(DialogFileCallback callback,
-                                void* userdata,
--                               WindowRef window,
--                               std::span<const DialogFileFilter> filters,
--                               StringParam default_location)
-+                               WindowRef window = {},
-+                               std::span<const DialogFileFilter> filters = {},
-+                               StringParam default_location = {})
+@@ -302,7 +306,12 @@
+                                std::span<const DialogFileFilter> filters = {},
+                                StringParam default_location = nullptr)
  {
 -  SDL_ShowSaveFileDialog(callback, userdata, window, filters, default_location);
 +  SDL_ShowSaveFileDialog(callback,
@@ -126,16 +105,9 @@
   * @param default_location the default folder or file to start the dialog at,
   *                         may be nullptr. Not all platforms support this
   *                         option.
-@@ -353,11 +359,16 @@
-  * @sa ShowFileDialogWithProperties
-  */
- inline void ShowSaveFileDialog(DialogFileCB callback,
--                               WindowRef window,
--                               std::span<const DialogFileFilter> filters,
--                               StringParam default_location)
-+                               WindowRef window = {},
-+                               std::span<const DialogFileFilter> filters = {},
-+                               StringParam default_location = {})
+@@ -357,7 +363,12 @@
+                                std::span<const DialogFileFilter> filters = {},
+                                StringParam default_location = nullptr)
  {
 -  static_assert(false, "Not implemented");
 +  using Wrapper = CallbackWrapper<DialogFileCB>;
@@ -147,19 +119,6 @@
  }
  
  /**
-@@ -405,9 +416,9 @@
-  */
- inline void ShowOpenFolderDialog(DialogFileCallback callback,
-                                  void* userdata,
--                                 WindowRef window,
--                                 StringParam default_location,
--                                 bool allow_many)
-+                                 WindowRef window = {},
-+                                 StringParam default_location = {},
-+                                 bool allow_many = false)
- {
-   SDL_ShowOpenFolderDialog(
-     callback, userdata, window, default_location, allow_many);
 @@ -435,8 +446,6 @@
   *
   * @param callback a function pointer to be invoked when the user selects a file
@@ -169,16 +128,9 @@
   * @param window the window that the dialog should be modal for, may be nullptr.
   *               Not all platforms support this option.
   * @param default_location the default folder or file to start the dialog at,
-@@ -457,11 +466,16 @@
-  * @sa ShowFileDialogWithProperties
-  */
- inline void ShowOpenFolderDialog(DialogFileCB callback,
--                                 WindowRef window,
--                                 StringParam default_location,
--                                 bool allow_many)
-+                                 WindowRef window = {},
-+                                 StringParam default_location = {},
-+                                 bool allow_many = false)
+@@ -461,7 +470,12 @@
+                                  StringParam default_location = nullptr,
+                                  bool allow_many = false)
  {
 -  static_assert(false, "Not implemented");
 +  using Wrapper = CallbackWrapper<DialogFileCB>;
@@ -201,7 +153,7 @@
   * @threadsafety This function should be called only from the main thread. The
 @@ -587,9 +599,19 @@
                                           DialogFileCB callback,
-                                          PropertiesID props)
+                                          PropertiesRef props)
  {
 -  static_assert(false, "Not implemented");
 +  using Wrapper = CallbackWrapper<DialogFileCB>;
