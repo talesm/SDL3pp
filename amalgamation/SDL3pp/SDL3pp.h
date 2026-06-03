@@ -1730,12 +1730,26 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 #ifndef SDL3PP_ENABLE_STRING_PARAM
 
 #ifndef SDL3PP_DISABLE_STRING_PARAM
+
+/**
+ * Enable StringParam helper class to use C++ strings as parameters on SDL APIs.
+ */
 #define SDL3PP_ENABLE_STRING_PARAM
 #endif // SDL3PP_DISABLE_STRING_PARAM
 
 #endif // SDL3PP_ENABLE_STRING_PARAM
 
 #ifdef SDL3PP_ENABLE_STRING_PARAM
+
+#ifndef SDL3PP_DISABLE_STRING_PARAM_STRING_VIEW_BUFFERING
+
+#ifndef SDL3PP_STRING_PARAM_STRING_VIEW_BUFFERING_COUNT
+
+/// The number of buffers used to store string views on StringParam.
+#define SDL3PP_STRING_PARAM_STRING_VIEW_BUFFERING_COUNT 32
+#endif // SDL3PP_STRING_PARAM_STRING_VIEW_BUFFERING_COUNT
+
+#endif // SDL3PP_DISABLE_STRING_PARAM_STRING_VIEW_BUFFERING
 
 /**
  * @brief Helpers to use C++ strings parameters
@@ -1793,9 +1807,8 @@ public:
    * if the string view is large.
    */
   StringParam(std::string_view str)
-    : m_data(str.data())
+    : m_data(wrapStringView(str))
   {
-    SDL_assert(m_data[str.size()] == 0);
   }
 
   /**
@@ -1816,6 +1829,29 @@ public:
 
 private:
   const char* m_data;
+
+  static const char* wrapStringView(std::string_view str)
+  {
+    if (str.empty()) return "";
+
+#ifdef SDL3PP_DISABLE_STRING_PARAM_STRING_VIEW_BUFFERING
+    SDL_assert(str.data()[str.size()] == 0);
+    return str.data();
+
+#else
+    if (str.data()[str.size()] == 0) return str.data();
+
+    constexpr size_t bufferCount =
+      SDL3PP_STRING_PARAM_STRING_VIEW_BUFFERING_COUNT;
+    static thread_local std::string buffer[bufferCount];
+    static thread_local size_t bufferIndex = 0;
+    buffer[bufferIndex] = str;
+    auto cstr = buffer[bufferIndex].c_str();
+    bufferIndex = (bufferIndex + 1) % bufferCount;
+    return cstr;
+
+#endif // SDL3PP_DISABLE_STRING_PARAM_STRING_VIEW_BUFFERING
+  }
 };
 
 #else // SDL3PP_ENABLE_STRING_PARAM
