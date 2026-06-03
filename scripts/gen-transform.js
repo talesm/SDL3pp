@@ -19,8 +19,10 @@ const transform = {
   }],
   minVersions: {
     SDL: { tag: "SDL", major: 3, minor: 2, patch: 0 },
-    SDL_TTF: { tag: "SDL_TTF", major: 3, minor: 2, patch: 0 },
     SDL_IMAGE: { tag: "SDL_IMAGE", major: 3, minor: 2, patch: 0 },
+    SDL_MIXER: { tag: "SDL_MIXER", major: 3, minor: 2, patch: 0 },
+    SDL_NET: { tag: "SDL_NET", major: 3, minor: 2, patch: 0 },
+    SDL_TTF: { tag: "SDL_TTF", major: 3, minor: 2, patch: 0 },
   },
   baseVersions,
   paramTypeMap: {

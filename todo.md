@@ -14,7 +14,6 @@ Backlog
 -------
 
 - [ ] Fix defaults on SDL3pp_dialog to nullptr
-- [ ] Fix base.json for most recent inclusions;
 - [ ] Create ResourceConstBase
   - [ ] When resource has ResourceConstRef, derive from ResourceConstBase
     - It has only the immutable methods from ResourceBase;
