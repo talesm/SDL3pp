@@ -1,9 +1,9 @@
 Todo for next version
 =====================
 
-- [ ] Improvements over Properties:
+- [x] Improvements over Properties:
   - [x] Create PropertyProxy.As to be explicit over casting;
-  - [ ] Create prop_cast<> to be explicit over casting;
+  - [x] Create prop_cast<> to be explicit over casting;
 
 Backlog
 -------

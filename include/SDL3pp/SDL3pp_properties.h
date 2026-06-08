@@ -1724,44 +1724,72 @@ inline bool PropertiesBase::GetBooleanProperty(StringParam name,
   return SDL::GetBooleanProperty(get(), name, default_value);
 }
 
-/// Convert to given type.
+/// Cast property to given PropertyType
 template<PropertyType T>
-auto PropertyProxy::As() const
+auto prop_cast(PropertiesRef props, StringParam name)
 {
   if constexpr (T == PROPERTY_TYPE_POINTER) {
-    return m_props.GetPointerProperty(m_name);
+    return GetPointerProperty(props, name);
   } else if constexpr (T == PROPERTY_TYPE_STRING) {
-    return m_props.GetStringProperty(m_name);
+    return GetStringProperty(props, name);
   } else if constexpr (T == PROPERTY_TYPE_NUMBER) {
-    return m_props.GetNumberProperty(m_name);
+    return GetNumberProperty(props, name);
   } else if constexpr (T == PROPERTY_TYPE_FLOAT) {
-    return m_props.GetFloatProperty(m_name);
-  } else if constexpr (T == PROPERTY_TYPE_BOOLEAN) {
-    return m_props.GetBooleanProperty(m_name);
+    return GetFloatProperty(props, name);
   } else {
-    throw std::invalid_argument("Invalid property type");
+    static_assert(T == PROPERTY_TYPE_BOOLEAN, "Invalid Property type");
+    return GetBooleanProperty(props, name);
   }
 }
 
-/// Convert to given type.
+/// Cast property to given typename
+template<PropertyValue T>
+auto prop_cast(PropertiesRef props, StringParam name)
+{
+  if constexpr (std::is_same_v<T, bool>) {
+    return GetBooleanProperty(props, name);
+  } else if constexpr (std::integral<T>) {
+    return static_cast<T>(GetNumberProperty(props, name));
+  } else if constexpr (std::floating_point<T>) {
+    return static_cast<T>(GetFloatProperty(props, name));
+  } else if constexpr (std::is_same_v<T, char*>) {
+    return GetStringProperty(props, name);
+  } else if constexpr (std::convertible_to<T, StringParam>) {
+    return static_cast<T>(GetStringProperty(props, name));
+  } else if constexpr (std::convertible_to<T, void*>) {
+    return static_cast<T>(GetPointerProperty(props, name));
+  } else {
+    static_assert(std::convertible_to<PropertyProxy, T>, "invalid type");
+    return static_cast<T>(PropertyProxy(props, name));
+  }
+}
+
+/// Cast property to given PropertyType
+template<PropertyType T>
+auto prop_cast(PropertyProxy prop)
+{
+  return prop_cast<T>(prop.GetProperties(), prop.GetName());
+}
+
+/// Cast property to given typename
+template<PropertyValue T>
+auto prop_cast(PropertyProxy prop)
+{
+  return prop_cast<T>(prop.GetProperties(), prop.GetName());
+}
+
+/// Cast property to given PropertyType
+template<PropertyType T>
+auto PropertyProxy::As() const
+{
+  return prop_cast<T>(m_props, m_name);
+}
+
+/// Cast property to given typename
 template<PropertyValue T>
 auto PropertyProxy::As() const
 {
-  if constexpr (std::is_same_v<T, bool>) {
-    return m_props.GetBooleanProperty(m_name);
-  } else if constexpr (std::integral<T>) {
-    return static_cast<T>(m_props.GetNumberProperty(m_name));
-  } else if constexpr (std::floating_point<T>) {
-    return static_cast<T>(m_props.GetFloatProperty(m_name));
-  } else if constexpr (std::is_same_v<T, char*>) {
-    return m_props.GetStringProperty(m_name);
-  } else if constexpr (std::convertible_to<T, StringParam>) {
-    return static_cast<T>(m_props.GetStringProperty(m_name));
-  } else if constexpr (std::convertible_to<void*, T>) {
-    return static_cast<T>(m_props.GetPointerProperty(m_name));
-  } else {
-    return *this;
-  }
+  return prop_cast<T>(m_props, m_name);
 }
 
 /**
