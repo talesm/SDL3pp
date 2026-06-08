@@ -1226,37 +1226,32 @@ inline std::nullptr_t PropertiesBase::end() const { return nullptr; }
  * @throws Error on failure.
  */
 template<PropertyValue V>
-inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
+inline void SetProperty(PropertiesRef props, StringParam name, V value)
 {
+  struct
+  {
+    PropertiesRef props;
+    StringParam name;
+
+    void operator()(std::nullopt_t) { props.ClearProperty(name); }
+    void operator()(void* v) { props.SetPointerProperty(name, v); }
+    void operator()(const char* v) { props.SetStringProperty(name, v); }
+    void operator()(Sint64 v) { props.SetNumberProperty(name, v); }
+    void operator()(float v) { props.SetFloatProperty(name, v); }
+    void operator()(bool v) { props.SetBooleanProperty(name, v); }
+    void operator()(const PropertyProxy& prop) { prop.visit(*this); }
+
+  } visitor(props, name);
   if constexpr (std::is_same_v<V, bool>) {
-    props.SetBooleanProperty(name, std::forward<V>(value));
+    visitor(value);
   } else if constexpr (std::integral<V>) {
-    props.SetNumberProperty(name, std::forward<V>(value));
+    visitor(Sint64(value));
   } else if constexpr (std::floating_point<V>) {
-    props.SetFloatProperty(name, std::forward<V>(value));
+    visitor(float(value));
+  } else if constexpr (std::convertible_to<V, StringParam>) {
+    visitor(StringParam(value));
   } else {
-    struct Visitor
-    {
-      PropertiesRef props;
-      StringParam name;
-
-      void operator()(std::monostate) { props.ClearProperty(name); }
-      void operator()(std::nullopt_t) { props.ClearProperty(name); }
-      void operator()(void* v) { props.SetPointerProperty(name, v); }
-
-      void operator()(StringParam v) { props.SetStringProperty(name, v); }
-      void operator()(const char* v) { props.SetStringProperty(name, v); }
-
-      void operator()(Sint64 v) { props.SetNumberProperty(name, v); }
-      void operator()(float v) { props.SetFloatProperty(name, v); }
-      void operator()(bool v) { props.SetBooleanProperty(name, v); }
-
-      void operator()(const PropertyProxy& prop)
-      {
-        prop.visit([this](auto v) { (*this)(v); });
-      }
-    };
-    Visitor{props, name}(std::forward<V>(value));
+    visitor(value);
   }
 }
 
