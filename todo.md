@@ -1,17 +1,9 @@
 Todo for next version
 =====================
 
-- [x] Improvements over Properties:
-  - [x] Add PropertiesRef.Set();
-  - [x] Get*Property are const;
-  - [x] Add PropertiesRef.Get();
-  - [x] Add a constructor to Properties similar to std::map initializer list;
-  - [x] Add operator[] to Properties;
-  - [x] Add begin and end to Properties;
-- [x] Make StringParam totally non-owning;
-- [x] Fix defaults on SDL3pp_dialog.h to nullptr when applicable;
-- [x] Disambiguate overloads for ShowSaveFileDialog(), ShowOpenFolderDialog();
-- [x] Update SDL_mixer to 3.2.4;
+- [ ] Improvements over Properties:
+  - [x] Create PropertyProxy.As to be explicit over casting;
+  - [ ] Create prop_cast<> to be explicit over casting;
 
 Backlog
 -------
