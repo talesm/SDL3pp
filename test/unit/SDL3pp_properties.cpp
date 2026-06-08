@@ -92,6 +92,47 @@ TEST_CASE("Property .Get")
   CHECK_EQ(std::any_cast<float>(r), 10.5f);
 }
 
+using namespace std::literals;
+
+TEST_CASE("Property .Get().as()")
+{
+  Properties props;
+  PropertyProxy pp = props.Get("key");
+  CHECK_EQ(pp.IsValid(), false);
+
+  props.Set("key", "value");
+  CHECK_EQ(pp.IsValid(), true);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_BOOLEAN>(), true);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_STRING>(), "value"sv);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_NUMBER>(), 0);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_FLOAT>(), 0.0f);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_POINTER>(), nullptr);
+
+  props.Set("key", true);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_BOOLEAN>(), true);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_STRING>(), "true"sv);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_NUMBER>(), 1);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_FLOAT>(), 1.0f);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_POINTER>(), nullptr);
+
+  props.Set("key", 10);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_BOOLEAN>(), true);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_STRING>(), "10"sv);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_NUMBER>(), 10);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_FLOAT>(), 10.0f);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_POINTER>(), nullptr);
+
+  props.Set("key", 10.5f);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_BOOLEAN>(), true);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_STRING>(), "10.500000"sv);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_NUMBER>(), 11);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_FLOAT>(), 10.5f);
+  CHECK_EQ(pp.as<PROPERTY_TYPE_POINTER>(), nullptr);
+
+  auto r = pp.visit([](auto v) { return std::any(v); });
+  CHECK_EQ(std::any_cast<float>(r), 10.5f);
+}
+
 TEST_CASE("Property.Set(PropertyProxy) ")
 {
   Properties props;

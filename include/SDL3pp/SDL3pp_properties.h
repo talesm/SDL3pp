@@ -888,27 +888,47 @@ public:
   /// Get the property group this proxy belongs to.
   PropertiesRef GetProperties() const { return m_props; }
 
+  /// Convert to given type.
+  template<PropertyType T>
+  auto as() const
+  {
+    if constexpr (T == PROPERTY_TYPE_POINTER) {
+      return m_props.GetPointerProperty(m_name);
+    } else if constexpr (T == PROPERTY_TYPE_STRING) {
+      return m_props.GetStringProperty(m_name);
+    } else if constexpr (T == PROPERTY_TYPE_NUMBER) {
+      return m_props.GetNumberProperty(m_name);
+    } else if constexpr (T == PROPERTY_TYPE_FLOAT) {
+      return m_props.GetFloatProperty(m_name);
+    } else if constexpr (T == PROPERTY_TYPE_BOOLEAN) {
+      return m_props.GetBooleanProperty(m_name);
+    } else {
+      throw std::invalid_argument("Invalid property type");
+    }
+  }
+
   /// Get property as a void pointer
-  operator void*() const { return m_props.GetPointerProperty(m_name.c_str()); }
+  operator void*() const { return m_props.GetPointerProperty(m_name); }
 
   /// Get property as string.
-  operator const char*() const
-  {
-    return m_props.GetStringProperty(m_name.c_str());
-  }
+  operator const char*() const { return m_props.GetStringProperty(m_name); }
 
   /// Get property as integral type.
   template<std::integral T>
   operator T() const
   {
-    return T(m_props.GetNumberProperty(m_name.c_str()));
+    return T(m_props.GetNumberProperty(m_name));
   }
 
-  /// Get property as float.
-  operator float() const { return m_props.GetFloatProperty(m_name.c_str()); }
+  /// Get property as floating point type.
+  template<std::floating_point T>
+  operator T() const
+  {
+    return T(m_props.GetFloatProperty(m_name));
+  }
 
   /// Get property as boolean.
-  operator bool() const { return m_props.GetBooleanProperty(m_name.c_str()); }
+  operator bool() const { return m_props.GetBooleanProperty(m_name); }
 
   /// Call visitor with the correct type based on its GetType().
   template<class T>
@@ -1210,8 +1230,10 @@ inline void SetProperty(PropertiesRef props, StringParam name, V&& value)
 {
   if constexpr (std::is_same_v<V, bool>) {
     props.SetBooleanProperty(name, std::forward<V>(value));
-  } else if constexpr (std::is_integral_v<V>) {
+  } else if constexpr (std::integral<V>) {
     props.SetNumberProperty(name, std::forward<V>(value));
+  } else if constexpr (std::floating_point<V>) {
+    props.SetFloatProperty(name, std::forward<V>(value));
   } else {
     struct Visitor
     {

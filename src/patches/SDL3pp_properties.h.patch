@@ -209,7 +209,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -775,18 +862,82 @@
+@@ -775,18 +862,102 @@
    void release() { m_lock.release(); }
  };
  
@@ -239,27 +239,47 @@
 +  /// Get the property group this proxy belongs to.
 +  PropertiesRef GetProperties() const { return m_props; }
 +
++  /// Convert to given type.
++  template<PropertyType T>
++  auto as() const
++  {
++    if constexpr (T == PROPERTY_TYPE_POINTER) {
++      return m_props.GetPointerProperty(m_name);
++    } else if constexpr (T == PROPERTY_TYPE_STRING) {
++      return m_props.GetStringProperty(m_name);
++    } else if constexpr (T == PROPERTY_TYPE_NUMBER) {
++      return m_props.GetNumberProperty(m_name);
++    } else if constexpr (T == PROPERTY_TYPE_FLOAT) {
++      return m_props.GetFloatProperty(m_name);
++    } else if constexpr (T == PROPERTY_TYPE_BOOLEAN) {
++      return m_props.GetBooleanProperty(m_name);
++    } else {
++      throw std::invalid_argument("Invalid property type");
++    }
++  }
++
 +  /// Get property as a void pointer
-+  operator void*() const { return m_props.GetPointerProperty(m_name.c_str()); }
++  operator void*() const { return m_props.GetPointerProperty(m_name); }
 +
 +  /// Get property as string.
-+  operator const char*() const
-+  {
-+    return m_props.GetStringProperty(m_name.c_str());
-+  }
++  operator const char*() const { return m_props.GetStringProperty(m_name); }
 +
 +  /// Get property as integral type.
 +  template<std::integral T>
 +  operator T() const
 +  {
-+    return T(m_props.GetNumberProperty(m_name.c_str()));
++    return T(m_props.GetNumberProperty(m_name));
 +  }
 +
-+  /// Get property as float.
-+  operator float() const { return m_props.GetFloatProperty(m_name.c_str()); }
++  /// Get property as floating point type.
++  template<std::floating_point T>
++  operator T() const
++  {
++    return T(m_props.GetFloatProperty(m_name));
++  }
 +
 +  /// Get property as boolean.
-+  operator bool() const { return m_props.GetBooleanProperty(m_name.c_str()); }
++  operator bool() const { return m_props.GetBooleanProperty(m_name); }
 +
 +  /// Call visitor with the correct type based on its GetType().
 +  template<class T>
@@ -292,7 +312,7 @@
    template<PropertyValue V>
    PropertyMutableProxy& operator=(V&& value)
    {
-@@ -795,13 +946,83 @@
+@@ -795,13 +966,83 @@
    }
  };
  
@@ -376,7 +396,7 @@
  };
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -828,7 +1049,7 @@
+@@ -828,7 +1069,7 @@
   *
   * @since This constant is available since SDL 3.4.0.
   */
@@ -385,7 +405,7 @@
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
-@@ -845,7 +1066,7 @@
+@@ -845,7 +1086,7 @@
   */
  inline PropertiesRef GetGlobalProperties()
  {
@@ -394,7 +414,7 @@
  }
  
  /**
-@@ -927,7 +1148,7 @@
+@@ -927,7 +1168,7 @@
  inline PropertiesLock PropertiesBase::Lock() { return {PropertiesRef(*this)}; }
  
  inline PropertiesLock::PropertiesLock(PropertiesRef resource)
@@ -403,7 +423,7 @@
  {
    LockProperties(m_lock);
  }
-@@ -963,23 +1184,64 @@
+@@ -963,23 +1204,66 @@
  
  inline PropertyProxy PropertiesBase::operator[](StringParam name) const
  {
@@ -435,8 +455,10 @@
 -  static_assert(false, "Not implemented");
 +  if constexpr (std::is_same_v<V, bool>) {
 +    props.SetBooleanProperty(name, std::forward<V>(value));
-+  } else if constexpr (std::is_integral_v<V>) {
++  } else if constexpr (std::integral<V>) {
 +    props.SetNumberProperty(name, std::forward<V>(value));
++  } else if constexpr (std::floating_point<V>) {
++    props.SetFloatProperty(name, std::forward<V>(value));
 +  } else {
 +    struct Visitor
 +    {
@@ -471,7 +493,7 @@
  }
  
  /**
-@@ -1039,7 +1301,6 @@
+@@ -1039,7 +1323,6 @@
   *              property.
   * @param cleanup the function to call when this property is deleted, or nullptr
   *                if no cleanup is necessary.
@@ -479,7 +501,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1055,7 +1316,9 @@
+@@ -1055,7 +1338,9 @@
                                            void* value,
                                            CleanupPropertyCB cleanup)
  {
@@ -490,7 +512,7 @@
  }
  
  inline void PropertiesBase::SetPointerPropertyWithCleanup(
-@@ -1072,7 +1335,7 @@
+@@ -1072,7 +1357,7 @@
    void* value,
    CleanupPropertyCB cleanup)
  {
@@ -499,7 +521,7 @@
  }
  
  /**
-@@ -1261,9 +1524,16 @@
+@@ -1261,9 +1546,16 @@
    return SDL::GetPropertyType(get(), name);
  }
  
@@ -517,7 +539,7 @@
  }
  
  inline PropertyProxy PropertiesBase::Get(StringParam name) const
-@@ -1499,7 +1769,6 @@
+@@ -1499,7 +1791,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -525,7 +547,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1509,7 +1778,13 @@
+@@ -1509,7 +1800,13 @@
  inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
@@ -540,7 +562,7 @@
  }
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1520,12 +1795,22 @@
+@@ -1520,12 +1817,22 @@
  
  inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
  {
@@ -565,7 +587,7 @@
  }
  
  inline Uint64 PropertiesBase::GetCount() const
-@@ -1558,6 +1843,17 @@
+@@ -1558,6 +1865,17 @@
  
  /// @}
  
