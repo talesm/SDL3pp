@@ -2,6 +2,7 @@
 #include "doctest.h"
 #include <any>
 #include <set>
+#include <sstream>
 
 namespace SDL {
 
