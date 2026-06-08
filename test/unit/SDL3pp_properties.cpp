@@ -94,7 +94,7 @@ TEST_CASE("Property .Get")
 
 using namespace std::literals;
 
-TEST_CASE("Property .Get().as()")
+TEST_CASE("Property .Get().As<PropertyType>()")
 {
   Properties props;
   PropertyProxy pp = props.Get("key");
@@ -102,35 +102,86 @@ TEST_CASE("Property .Get().as()")
 
   props.Set("key", "value");
   CHECK_EQ(pp.IsValid(), true);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_BOOLEAN>(), true);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_STRING>(), "value"sv);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_NUMBER>(), 0);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_FLOAT>(), 0.0f);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_POINTER>(), nullptr);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_BOOLEAN>(), true);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_STRING>(), "value"sv);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_NUMBER>(), 0);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_FLOAT>(), 0.0f);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_POINTER>(), nullptr);
 
   props.Set("key", true);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_BOOLEAN>(), true);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_STRING>(), "true"sv);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_NUMBER>(), 1);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_FLOAT>(), 1.0f);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_POINTER>(), nullptr);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_BOOLEAN>(), true);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_STRING>(), "true"sv);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_NUMBER>(), 1);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_FLOAT>(), 1.0f);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_POINTER>(), nullptr);
 
   props.Set("key", 10);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_BOOLEAN>(), true);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_STRING>(), "10"sv);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_NUMBER>(), 10);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_FLOAT>(), 10.0f);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_POINTER>(), nullptr);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_BOOLEAN>(), true);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_STRING>(), "10"sv);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_NUMBER>(), 10);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_FLOAT>(), 10.0f);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_POINTER>(), nullptr);
 
   props.Set("key", 10.5f);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_BOOLEAN>(), true);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_STRING>(), "10.500000"sv);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_NUMBER>(), 11);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_FLOAT>(), 10.5f);
-  CHECK_EQ(pp.as<PROPERTY_TYPE_POINTER>(), nullptr);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_BOOLEAN>(), true);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_STRING>(), "10.500000"sv);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_NUMBER>(), 11);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_FLOAT>(), 10.5f);
+  CHECK_EQ(pp.As<PROPERTY_TYPE_POINTER>(), nullptr);
 
   auto r = pp.visit([](auto v) { return std::any(v); });
   CHECK_EQ(std::any_cast<float>(r), 10.5f);
+}
+
+TEST_CASE("Property .Get().As<type>()")
+{
+  Properties props;
+  PropertyProxy pp = props.Get("key");
+  CHECK_EQ(pp.IsValid(), false);
+
+  props.Set("key", "value");
+  CHECK_EQ(pp.IsValid(), true);
+  CHECK_EQ(pp.As<bool>(), true);
+  CHECK_EQ(pp.As<const char*>(), "value"sv);
+  CHECK_EQ(pp.As<char*>(), "value"sv);
+  CHECK_EQ(pp.As<std::string_view>(), "value");
+  CHECK_EQ(pp.As<std::string>(), "value"sv);
+  CHECK_EQ(pp.As<Sint64>(), 0);
+  CHECK_EQ(pp.As<float>(), 0.0f);
+  CHECK_EQ(pp.As<void*>(), nullptr);
+
+  props.Set("key", true);
+  CHECK_EQ(pp.As<bool>(), true);
+  CHECK_EQ(pp.As<const char*>(), "true"sv);
+  CHECK_EQ(pp.As<Sint64>(), 1);
+  CHECK_EQ(pp.As<int>(), 1);
+  CHECK_EQ(pp.As<char>(), 1);
+  CHECK_EQ(pp.As<float>(), 1.0f);
+  CHECK_EQ(pp.As<void*>(), nullptr);
+
+  props.Set("key", 10);
+  CHECK_EQ(pp.As<bool>(), true);
+  CHECK_EQ(pp.As<const char*>(), "10"sv);
+  CHECK_EQ(pp.As<Sint64>(), 10);
+  CHECK_EQ(pp.As<float>(), 10.0f);
+  CHECK_EQ(pp.As<void*>(), nullptr);
+
+  props.Set("key", 10.5f);
+  CHECK_EQ(pp.As<bool>(), true);
+  CHECK_EQ(pp.As<const char*>(), "10.500000"sv);
+  CHECK_EQ(pp.As<Sint64>(), 11);
+  CHECK_EQ(pp.As<float>(), 10.5f);
+  CHECK_EQ(pp.As<double>(), 10.5);
+  CHECK_EQ(pp.As<void*>(), nullptr);
+
+  int aValue = 42;
+  props.Set("key", &aValue);
+  CHECK_EQ(pp.As<bool>(), false);
+  CHECK_EQ(pp.As<const char*>(), ""sv);
+  CHECK_EQ(pp.As<Sint64>(), 0);
+  CHECK_EQ(pp.As<float>(), 0);
+  CHECK_EQ(pp.As<void*>(), &aValue);
+  CHECK_EQ(pp.As<int*>(), &aValue);
 }
 
 TEST_CASE("Property.Set(PropertyProxy) ")

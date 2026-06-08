@@ -10079,7 +10079,7 @@ public:
 
   /// Convert to given type.
   template<PropertyType T>
-  auto as() const
+  auto As() const
   {
     if constexpr (T == PROPERTY_TYPE_POINTER) {
       return m_props.GetPointerProperty(m_name);
@@ -10093,6 +10093,27 @@ public:
       return m_props.GetBooleanProperty(m_name);
     } else {
       throw std::invalid_argument("Invalid property type");
+    }
+  }
+
+  /// Convert to given type.
+  template<PropertyValue T>
+  auto As() const
+  {
+    if constexpr (std::is_same_v<T, bool>) {
+      return m_props.GetBooleanProperty(m_name);
+    } else if constexpr (std::integral<T>) {
+      return static_cast<T>(m_props.GetNumberProperty(m_name));
+    } else if constexpr (std::floating_point<T>) {
+      return static_cast<T>(m_props.GetFloatProperty(m_name));
+    } else if constexpr (std::is_same_v<T, char*>) {
+      return m_props.GetStringProperty(m_name);
+    } else if constexpr (std::convertible_to<T, StringParam>) {
+      return static_cast<T>(m_props.GetStringProperty(m_name));
+    } else if constexpr (std::convertible_to<void*, T>) {
+      return static_cast<T>(m_props.GetPointerProperty(m_name));
+    } else {
+      return *this;
     }
   }
 
