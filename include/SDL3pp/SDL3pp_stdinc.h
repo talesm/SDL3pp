@@ -6278,6 +6278,10 @@ Uint32 narrowU32(T value)
   return static_cast<Uint32>(value);
 }
 
+/// Either integral or floating point
+template<typename T>
+concept Number = std::integral<T> || std::floating_point<T>;
+
 } // namespace SDL
 
 #endif /* SDL3PP_STDINC_H_ */

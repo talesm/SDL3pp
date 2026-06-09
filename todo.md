@@ -4,6 +4,18 @@ Todo for next version
 - [x] Improvements over Properties:
   - [x] Create PropertyProxy.As to be explicit over casting;
   - [x] Create prop_cast<> to be explicit over casting;
+- [x] Wrap SDL_timer conversion macros:
+  - [x] SDL_MS_PER_SECOND is constexpr constant;
+  - [x] SDL_US_PER_SECOND is constexpr constant;
+  - [x] SDL_NS_PER_SECOND is constexpr constant;
+  - [x] SDL_NS_PER_MS is constexpr constant;
+  - [x] SDL_NS_PER_US is constexpr constant;
+  - [x] SDL_SECONDS_TO_NS has int resulting version SecondsToNs;
+  - [x] SDL_NS_TO_SECONDS has int resulting version MsToSeconds;
+  - [x] SDL_MS_TO_NS is constexpr function
+  - [x] SDL_NS_TO_MS is constexpr function
+  - [x] SDL_US_TO_NS is constexpr function
+  - [x] SDL_NS_TO_US is constexpr function
 
 Backlog
 -------

@@ -24,7 +24,7 @@
   * TimeFromPosix() and such.
   *
   * @{
-@@ -31,46 +31,56 @@
+@@ -90,16 +90,22 @@
   *
   * This only converts whole numbers, not fractional seconds.
   *
@@ -40,15 +40,18 @@
 -constexpr Time TimeFromPosix(Sint64 time) { return SDL_SECONDS_TO_NS(time); }
 +constexpr Time TimeFromPosix(Sint64 time)
 +{
-+  return Time::FromNS(SDL_SECONDS_TO_NS(time));
++  return Time::FromNS(SecondsToNs(time));
 +}
  
 -constexpr Time Time::FromPosix(Sint64 time) { return SDL_SECONDS_TO_NS(time); }
 +constexpr Time Time::FromPosix(Sint64 time)
 +{
-+  return Time::FromNS(SDL_SECONDS_TO_NS(time));
++  return Time::FromNS(SecondsToNs(time));
 +}
  
+ /**
+  * Convert nanoseconds to seconds.
+@@ -119,19 +125,18 @@
  /**
   * Convert nanoseconds to seconds.
   *
@@ -66,16 +69,15 @@
   * @since This function is available since SDL 3.2.0.
   */
 -constexpr Sint64 TimeToPosix(Time time) { return SDL_NS_TO_SECONDS(time); }
-+constexpr Sint64 TimeToPosix(Time time)
-+{
-+  return SDL_NS_TO_SECONDS(time.ToPosix());
-+}
++constexpr Sint64 TimeToPosix(Time time) { return NsToSeconds(time.ToPosix()); }
  
 -constexpr Sint64 Time::ToPosix() const { return SDL_NS_TO_SECONDS(m_time); }
-+constexpr Sint64 Time::ToPosix() const
-+{
-+  return SDL_NS_TO_SECONDS(m_time.count());
-+}
++constexpr Sint64 Time::ToPosix() const { return NsToSeconds(m_time.count()); }
+ 
+ /**
+  * Convert milliseconds to nanoseconds.
+@@ -192,17 +197,16 @@
+ constexpr auto NsToUs(Number auto NS) { return SDL_NS_TO_US(NS); }
  
  /**
 - * Get the number of milliseconds that have elapsed since the SDL library
@@ -96,7 +98,7 @@
   * @sa GetTicksNS
   */
  inline Nanoseconds GetTicks() { return Nanoseconds(SDL_GetTicksNS()); }
-@@ -149,25 +159,26 @@
+@@ -281,25 +285,26 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
@@ -127,7 +129,7 @@
   */
  inline void Delay(Nanoseconds duration) { SDL_DelayNS(duration.count()); }
  
-@@ -184,7 +195,7 @@
+@@ -316,7 +321,7 @@
   * @since This function is available since SDL 3.2.0.
   *
   * @sa Delay
@@ -136,7 +138,7 @@
   */
  inline void DelayNS(Uint64 ns) { SDL_DelayNS(ns); }
  
-@@ -203,28 +214,31 @@
+@@ -335,28 +340,31 @@
   *
   * @sa Delay
   * @sa DelayNS
@@ -173,7 +175,7 @@
  }
  
  /**
-@@ -310,6 +324,8 @@
+@@ -442,6 +450,8 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -182,7 +184,7 @@
   * @sa AddTimer
   *
   * @sa NSTimerCallback
-@@ -327,7 +343,7 @@
+@@ -459,7 +469,7 @@
    template<std::invocable<TimerID, Nanoseconds> F>
    static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
    {
@@ -191,7 +193,7 @@
    }
  };
  
-@@ -350,8 +366,9 @@
+@@ -482,8 +492,9 @@
   * with GetTicksNS() or GetPerformanceCounter() in case your callback needs to
   * adjust for variances.
   *
@@ -203,7 +205,7 @@
   *                 `interval` elapses.
   * @param userdata a pointer that is passed to `callback`.
   * @returns a timer ID or 0 on failure; call GetError() for more information.
-@@ -360,14 +377,15 @@
+@@ -492,14 +503,15 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
@@ -221,7 +223,7 @@
  }
  
  /**
-@@ -389,24 +407,27 @@
+@@ -521,24 +533,27 @@
   * with GetTicksNS() or GetPerformanceCounter() in case your callback needs to
   * adjust for variances.
   *
@@ -254,7 +256,7 @@
  }
  
  /**
-@@ -421,29 +442,34 @@
+@@ -553,29 +568,34 @@
   * potentially be called before this function returns.
   *
   * Timers take into account the amount of time it took to execute the callback.

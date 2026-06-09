@@ -384,11 +384,11 @@
 -constexpr Time MAX_TIME = SDL_MAX_TIME;
 +/// Max allowed time representation
 +constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
- 
--constexpr Time MIN_TIME = SDL_MIN_TIME;
++
 +/// Min allowed time representation
 +constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
-+
+ 
+-constexpr Time MIN_TIME = SDL_MIN_TIME;
 +#ifndef FLT_EPSILON
  
  /**
@@ -1114,7 +1114,7 @@
  {
    return SDL_size_add_check_overflow(a, b, ret);
  }
-@@ -6063,6 +6255,29 @@
+@@ -6063,6 +6255,33 @@
  
  /// @}
  
@@ -1140,6 +1140,10 @@
 +  SDL_assert_paranoid(value <= std::numeric_limits<Uint32>::max());
 +  return static_cast<Uint32>(value);
 +}
++
++/// Either integral or floating point
++template<typename T>
++concept Number = std::integral<T> || std::floating_point<T>;
 +
  } // namespace SDL
  

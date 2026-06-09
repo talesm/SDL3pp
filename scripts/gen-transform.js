@@ -7866,36 +7866,32 @@ const transform = {
     },
     "SDL_timer.h": {
       localIncludes: ["SDL3pp_stdinc.h"],
-      ignoreEntries: [
-        "SDL_MS_PER_SECOND",
-        "SDL_US_PER_SECOND",
-        "SDL_NS_PER_SECOND",
-        "SDL_NS_PER_MS",
-        "SDL_NS_PER_US",
-        "SDL_MS_TO_NS",
-        "SDL_NS_TO_MS",
-        "SDL_US_TO_NS",
-        "SDL_NS_TO_US"
-      ],
       transform: {
+        "SDL_MS_PER_SECOND": { kind: "var", constexpr: true, type: "Uint32" },
+        "SDL_US_PER_SECOND": { kind: "var", constexpr: true, type: "Uint32" },
+        "SDL_NS_PER_SECOND": { kind: "var", constexpr: true, type: "Uint64" },
+        "SDL_NS_PER_MS": { kind: "var", constexpr: true, type: "Uint32" },
+        "SDL_NS_PER_US": { kind: "var", constexpr: true, type: "Uint32" },
         "SDL_SECONDS_TO_NS": {
-          "name": "Time::FromPosix",
-          "kind": "function",
-          "type": "Time",
-          "constexpr": true,
-          "static": true,
-          "parameters": [
-            {
-              "type": "Sint64",
-              "name": "time"
-            }
-          ],
+          name: "Time::FromPosix",
+          kind: "function",
+          type: "Time",
+          constexpr: true,
+          static: true,
+          parameters: [{ type: "Sint64", name: "time" }],
           link: {
             name: "TimeFromPosix",
             kind: "function",
             type: "Time",
             constexpr: true,
             parameters: [{ type: "Sint64", name: "time" }],
+            link: {
+              name: "SecondsToNs",
+              kind: "function",
+              type: "Uint64",
+              constexpr: true,
+              parameters: [{ type: "Number auto", name: "S" }],
+            },
           },
         },
         "SDL_NS_TO_SECONDS": {
@@ -7911,7 +7907,42 @@ const transform = {
             type: "Sint64",
             constexpr: true,
             parameters: [{ type: "Time", name: "time" }],
+            link: {
+              name: "NsToSeconds",
+              kind: "function",
+              type: "auto",
+              constexpr: true,
+              parameters: [{ type: "Number auto", name: "NS" }],
+            },
           },
+        },
+        "SDL_MS_TO_NS": {
+          kind: "function",
+          type: "Uint64",
+          constexpr: true,
+          name: "MsToNs",
+          parameters: [{ type: "Number auto", name: "MS" }],
+        },
+        "SDL_NS_TO_MS": {
+          kind: "function",
+          type: "auto",
+          constexpr: true,
+          name: "NsToMs",
+          parameters: [{ type: "Number auto", name: "NS" }],
+        },
+        "SDL_US_TO_NS": {
+          kind: "function",
+          type: "Uint64",
+          constexpr: true,
+          name: "UsToNs",
+          parameters: [{ type: "Number auto", name: "US" }],
+        },
+        "SDL_NS_TO_US": {
+          kind: "function",
+          type: "auto",
+          constexpr: true,
+          name: "NsToUs",
+          parameters: [{ type: "Number auto", name: "NS" }],
         },
         "SDL_GetTicks": {
           type: "Nanoseconds",

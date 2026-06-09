@@ -27,6 +27,65 @@ namespace SDL {
  */
 
 /**
+ * Number of milliseconds in a second.
+ *
+ * This is always 1000.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ */
+constexpr Uint32 MS_PER_SECOND = SDL_MS_PER_SECOND;
+
+/**
+ * Number of microseconds in a second.
+ *
+ * This is always 1000000.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ */
+constexpr Uint32 US_PER_SECOND = SDL_US_PER_SECOND;
+
+/**
+ * Number of nanoseconds in a second.
+ *
+ * This is always 1000000000.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ */
+constexpr Uint64 NS_PER_SECOND = SDL_NS_PER_SECOND;
+
+/**
+ * Number of nanoseconds in a millisecond.
+ *
+ * This is always 1000000.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ */
+constexpr Uint32 NS_PER_MS = SDL_NS_PER_MS;
+
+/**
+ * Number of nanoseconds in a microsecond.
+ *
+ * This is always 1000.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ */
+constexpr Uint32 NS_PER_US = SDL_NS_PER_US;
+
+/**
+ * Convert seconds to nanoseconds.
+ *
+ * This only converts whole numbers, not fractional seconds.
+ *
+ * @param S the number of seconds to convert.
+ * @returns S, expressed in nanoseconds.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Uint64 SecondsToNs(Number auto S) { return SDL_SECONDS_TO_NS(S); }
+
+/**
  * Convert seconds to nanoseconds.
  *
  * This only converts whole numbers, not fractional seconds.
@@ -40,13 +99,28 @@ namespace SDL {
  */
 constexpr Time TimeFromPosix(Sint64 time)
 {
-  return Time::FromNS(SDL_SECONDS_TO_NS(time));
+  return Time::FromNS(SecondsToNs(time));
 }
 
 constexpr Time Time::FromPosix(Sint64 time)
 {
-  return Time::FromNS(SDL_SECONDS_TO_NS(time));
+  return Time::FromNS(SecondsToNs(time));
 }
+
+/**
+ * Convert nanoseconds to seconds.
+ *
+ * This performs a division, so the results can be dramatically different if
+ * `NS` is an integer or floating point value.
+ *
+ * @param NS the number of nanoseconds to convert.
+ * @returns NS, expressed in seconds.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr auto NsToSeconds(Number auto NS) { return SDL_NS_TO_SECONDS(NS); }
 
 /**
  * Convert nanoseconds to seconds.
@@ -60,15 +134,67 @@ constexpr Time Time::FromPosix(Sint64 time)
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr Sint64 TimeToPosix(Time time)
-{
-  return SDL_NS_TO_SECONDS(time.ToPosix());
-}
+constexpr Sint64 TimeToPosix(Time time) { return NsToSeconds(time.ToPosix()); }
 
-constexpr Sint64 Time::ToPosix() const
-{
-  return SDL_NS_TO_SECONDS(m_time.count());
-}
+constexpr Sint64 Time::ToPosix() const { return NsToSeconds(m_time.count()); }
+
+/**
+ * Convert milliseconds to nanoseconds.
+ *
+ * This only converts whole numbers, not fractional milliseconds.
+ *
+ * @param MS the number of milliseconds to convert.
+ * @returns MS, expressed in nanoseconds.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Uint64 MsToNs(Number auto MS) { return SDL_MS_TO_NS(MS); }
+
+/**
+ * Convert nanoseconds to milliseconds.
+ *
+ * This performs a division, so the results can be dramatically different if
+ * `NS` is an integer or floating point value.
+ *
+ * @param NS the number of nanoseconds to convert.
+ * @returns NS, expressed in milliseconds.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr auto NsToMs(Number auto NS) { return SDL_NS_TO_MS(NS); }
+
+/**
+ * Convert microseconds to nanoseconds.
+ *
+ * This only converts whole numbers, not fractional microseconds.
+ *
+ * @param US the number of microseconds to convert.
+ * @returns US, expressed in nanoseconds.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Uint64 UsToNs(Number auto US) { return SDL_US_TO_NS(US); }
+
+/**
+ * Convert nanoseconds to microseconds.
+ *
+ * This performs a division, so the results can be dramatically different if
+ * `NS` is an integer or floating point value.
+ *
+ * @param NS the number of nanoseconds to convert.
+ * @returns NS, expressed in microseconds.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr auto NsToUs(Number auto NS) { return SDL_NS_TO_US(NS); }
 
 /**
  * Get the time elapsed since SDL library initialization.

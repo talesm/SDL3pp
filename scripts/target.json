@@ -162625,6 +162625,122 @@
         "There are also useful macros to convert between time units, like TimeFromPosix() and such."
       ],
       "entries": {
+        "MS_PER_SECOND": {
+          "doc": [
+            "Number of milliseconds in a second.",
+            "This is always 1000.",
+            {
+              "tag": "@since",
+              "content": "This constant is available since SDL 3.2.0."
+            }
+          ],
+          "name": "MS_PER_SECOND",
+          "kind": "var",
+          "value": "1000",
+          "sourceName": "SDL_MS_PER_SECOND",
+          "constexpr": true,
+          "type": "Uint32"
+        },
+        "US_PER_SECOND": {
+          "doc": [
+            "Number of microseconds in a second.",
+            "This is always 1000000.",
+            {
+              "tag": "@since",
+              "content": "This constant is available since SDL 3.2.0."
+            }
+          ],
+          "name": "US_PER_SECOND",
+          "kind": "var",
+          "value": "1000000",
+          "sourceName": "SDL_US_PER_SECOND",
+          "constexpr": true,
+          "type": "Uint32"
+        },
+        "NS_PER_SECOND": {
+          "doc": [
+            "Number of nanoseconds in a second.",
+            "This is always 1000000000.",
+            {
+              "tag": "@since",
+              "content": "This constant is available since SDL 3.2.0."
+            }
+          ],
+          "name": "NS_PER_SECOND",
+          "kind": "var",
+          "value": "1000000000LL",
+          "sourceName": "SDL_NS_PER_SECOND",
+          "constexpr": true,
+          "type": "Uint64"
+        },
+        "NS_PER_MS": {
+          "doc": [
+            "Number of nanoseconds in a millisecond.",
+            "This is always 1000000.",
+            {
+              "tag": "@since",
+              "content": "This constant is available since SDL 3.2.0."
+            }
+          ],
+          "name": "NS_PER_MS",
+          "kind": "var",
+          "value": "1000000",
+          "sourceName": "SDL_NS_PER_MS",
+          "constexpr": true,
+          "type": "Uint32"
+        },
+        "NS_PER_US": {
+          "doc": [
+            "Number of nanoseconds in a microsecond.",
+            "This is always 1000.",
+            {
+              "tag": "@since",
+              "content": "This constant is available since SDL 3.2.0."
+            }
+          ],
+          "name": "NS_PER_US",
+          "kind": "var",
+          "value": "1000",
+          "sourceName": "SDL_NS_PER_US",
+          "constexpr": true,
+          "type": "Uint32"
+        },
+        "SecondsToNs": {
+          "doc": [
+            "Convert seconds to nanoseconds.",
+            "This only converts whole numbers, not fractional seconds.",
+            [
+              {
+                "tag": "@param S",
+                "content": "the number of seconds to convert."
+              },
+              {
+                "tag": "@returns",
+                "content": "S, expressed in nanoseconds."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SecondsToNs",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "S",
+              "type": "Number auto"
+            }
+          ],
+          "value": "(((Uint64)(S)) * SDL_NS_PER_SECOND)",
+          "sourceName": "SDL_SECONDS_TO_NS",
+          "type": "Uint64",
+          "constexpr": true
+        },
         "TimeFromPosix": {
           "doc": [
             "Convert seconds to nanoseconds.",
@@ -162680,6 +162796,42 @@
             "static": true
           }
         },
+        "NsToSeconds": {
+          "doc": [
+            "Convert nanoseconds to seconds.",
+            "This performs a division, so the results can be dramatically different if `NS` is an integer or floating point value.",
+            [
+              {
+                "tag": "@param NS",
+                "content": "the number of nanoseconds to convert."
+              },
+              {
+                "tag": "@returns",
+                "content": "NS, expressed in seconds."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
+          "name": "NsToSeconds",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "NS",
+              "type": "Number auto"
+            }
+          ],
+          "value": "((NS) / SDL_NS_PER_SECOND)",
+          "sourceName": "SDL_NS_TO_SECONDS",
+          "type": "auto",
+          "constexpr": true
+        },
         "TimeToPosix": {
           "doc": [
             "Convert nanoseconds to seconds.",
@@ -162729,6 +162881,150 @@
             "self": "m_time",
             "private": true
           }
+        },
+        "MsToNs": {
+          "doc": [
+            "Convert milliseconds to nanoseconds.",
+            "This only converts whole numbers, not fractional milliseconds.",
+            [
+              {
+                "tag": "@param MS",
+                "content": "the number of milliseconds to convert."
+              },
+              {
+                "tag": "@returns",
+                "content": "MS, expressed in nanoseconds."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
+          "name": "MsToNs",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "MS",
+              "type": "Number auto"
+            }
+          ],
+          "value": "(((Uint64)(MS)) * SDL_NS_PER_MS)",
+          "sourceName": "SDL_MS_TO_NS",
+          "type": "Uint64",
+          "constexpr": true
+        },
+        "NsToMs": {
+          "doc": [
+            "Convert nanoseconds to milliseconds.",
+            "This performs a division, so the results can be dramatically different if `NS` is an integer or floating point value.",
+            [
+              {
+                "tag": "@param NS",
+                "content": "the number of nanoseconds to convert."
+              },
+              {
+                "tag": "@returns",
+                "content": "NS, expressed in milliseconds."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
+          "name": "NsToMs",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "NS",
+              "type": "Number auto"
+            }
+          ],
+          "value": "((NS) / SDL_NS_PER_MS)",
+          "sourceName": "SDL_NS_TO_MS",
+          "type": "auto",
+          "constexpr": true
+        },
+        "UsToNs": {
+          "doc": [
+            "Convert microseconds to nanoseconds.",
+            "This only converts whole numbers, not fractional microseconds.",
+            [
+              {
+                "tag": "@param US",
+                "content": "the number of microseconds to convert."
+              },
+              {
+                "tag": "@returns",
+                "content": "US, expressed in nanoseconds."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
+          "name": "UsToNs",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "US",
+              "type": "Number auto"
+            }
+          ],
+          "value": "(((Uint64)(US)) * SDL_NS_PER_US)",
+          "sourceName": "SDL_US_TO_NS",
+          "type": "Uint64",
+          "constexpr": true
+        },
+        "NsToUs": {
+          "doc": [
+            "Convert nanoseconds to microseconds.",
+            "This performs a division, so the results can be dramatically different if `NS` is an integer or floating point value.",
+            [
+              {
+                "tag": "@param NS",
+                "content": "the number of nanoseconds to convert."
+              },
+              {
+                "tag": "@returns",
+                "content": "NS, expressed in microseconds."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
+          "name": "NsToUs",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "NS",
+              "type": "Number auto"
+            }
+          ],
+          "value": "((NS) / SDL_NS_PER_US)",
+          "sourceName": "SDL_NS_TO_US",
+          "type": "auto",
+          "constexpr": true
         },
         "GetTicks": {
           "doc": [
