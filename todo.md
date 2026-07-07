@@ -1,6 +1,7 @@
 Todo for next version
 =====================
 
+- [x] Upgrade SDL to 3.4.12;
 - [x] Improvements over Properties:
   - [x] Create PropertyProxy.As to be explicit over casting;
   - [x] Create prop_cast<> to be explicit over casting;
@@ -16,6 +17,7 @@ Todo for next version
   - [x] SDL_NS_TO_MS is constexpr function
   - [x] SDL_US_TO_NS is constexpr function
   - [x] SDL_NS_TO_US is constexpr function
+- [ ] Fix compatibility break when multiplying float by Point
 
 Backlog
 -------

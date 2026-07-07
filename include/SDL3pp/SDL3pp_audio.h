@@ -730,6 +730,8 @@ using AudioPostmixCB =
  * appropriate, but the system goes on with the data currently available to it
  * if this callback does nothing.
  *
+ * Do not call DestroyAudioStream() on `stream` during this callback.
+ *
  * @param stream the SDL audio stream associated with this callback.
  * @param additional_amount the amount of data, in bytes, that is needed right
  *                          now.
@@ -773,6 +775,8 @@ using AudioStreamCallback = void(SDLCALL*)(void* userdata,
  * adding/reading data on demand, and the app will often put/get data as
  * appropriate, but the system goes on with the data currently available to it
  * if this callback does nothing.
+ *
+ * Do not call DestroyAudioStream() on `stream` during this callback.
  *
  * @param stream the SDL audio stream associated with this callback.
  * @param additional_amount the amount of data, in bytes, that is needed right

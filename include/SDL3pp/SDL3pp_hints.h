@@ -795,6 +795,29 @@ namespace SDL {
  */
 #define SDL_HINT_ENABLE_SCREEN_KEYBOARD "SDL_ENABLE_SCREEN_KEYBOARD"
 
+#if SDL_VERSION_ATLEAST(3, 4, 12)
+
+/**
+ * A variable that controls whether the Steam on-screen keyboard should be shown
+ * when text input is active.
+ *
+ * Steam will set this hint via environment variable for games launched in Big
+ * Picture mode. To override this you should call SetHintWithPriority() with
+ * priority `HINT_OVERRIDE`.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Do not show the Steam on-screen keyboard.
+ * - "1": Show the Steam on-screen keyboard.
+ *
+ * This hint should be set before SDL is initialized.
+ *
+ * @since This hint is available since SDL 3.4.12.
+ */
+#define SDL_HINT_ENABLE_STEAM_SCREEN_KEYBOARD "SDL_ENABLE_STEAM_SCREEN_KEYBOARD"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 12)
+
 /**
  * A variable containing a list of evdev devices to use if udev is not
  * available.

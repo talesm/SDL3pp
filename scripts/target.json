@@ -6003,6 +6003,7 @@
             "Two values are offered here: one is the amount of additional data needed to satisfy the immediate request (which might be zero if the stream already has enough data queued) and the other is the total amount being requested. In a Get call triggering a Put callback, these values can be different. In a Put call triggering a Get callback, these values are always the same.",
             "Byte counts might be slightly overestimated due to buffering or resampling, and may change from call to call.",
             "This callback is not required to do anything. Generally this is useful for adding/reading data on demand, and the app will often put/get data as appropriate, but the system goes on with the data currently available to it if this callback does nothing.",
+            "Do not call DestroyAudioStream() on `stream` during this callback.",
             [
               {
                 "tag": "@param stream",
@@ -6053,6 +6054,7 @@
             "Two values are offered here: one is the amount of additional data needed to satisfy the immediate request (which might be zero if the stream already has enough data queued) and the other is the total amount being requested. In a Get call triggering a Put callback, these values can be different. In a Put call triggering a Get callback, these values are always the same.",
             "Byte counts might be slightly overestimated due to buffering or resampling, and may change from call to call.",
             "This callback is not required to do anything. Generally this is useful for adding/reading data on demand, and the app will often put/get data as appropriate, but the system goes on with the data currently available to it if this callback does nothing.",
+            "Do not call DestroyAudioStream() on `stream` during this callback.",
             [
               {
                 "tag": "@param stream",
@@ -56718,6 +56720,38 @@
           "kind": "def",
           "value": "\"SDL_ENABLE_SCREEN_KEYBOARD\"",
           "sourceName": "SDL_HINT_ENABLE_SCREEN_KEYBOARD"
+        },
+        "SDL_HINT_ENABLE_STEAM_SCREEN_KEYBOARD": {
+          "doc": [
+            "A variable that controls whether the Steam on-screen keyboard should be shown when text input is active.",
+            "Steam will set this hint via environment variable for games launched in Big Picture mode. To override this you should call SetHintWithPriority() with priority `HINT_OVERRIDE`.",
+            "The variable can be set to the following values:",
+            [
+              {
+                "tag": "-",
+                "content": "\"0\": Do not show the Steam on-screen keyboard."
+              },
+              {
+                "tag": "-",
+                "content": "\"1\": Show the Steam on-screen keyboard."
+              }
+            ],
+            "This hint should be set before SDL is initialized.",
+            {
+              "tag": "@since",
+              "content": "This hint is available since SDL 3.4.12."
+            }
+          ],
+          "name": "SDL_HINT_ENABLE_STEAM_SCREEN_KEYBOARD",
+          "kind": "def",
+          "value": "\"SDL_ENABLE_STEAM_SCREEN_KEYBOARD\"",
+          "sourceName": "SDL_HINT_ENABLE_STEAM_SCREEN_KEYBOARD",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 12
+          }
         },
         "SDL_HINT_EVDEV_DEVICES": {
           "doc": [
