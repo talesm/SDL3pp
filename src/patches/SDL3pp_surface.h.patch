@@ -1119,9 +1119,8 @@
    CheckError(SDL_SavePNG_IO(surface, dst, closeio));
  }
  
--inline void SurfaceBase::SavePNG_IO(IOStreamRef dst, bool closeio) const
 +#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
-+inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
+ inline void SurfaceBase::SavePNG_IO(IOStreamRef dst, bool closeio) const
  {
    SDL::SaveTrustedPNG_IO(get(), dst, closeio);
  }
@@ -1133,9 +1132,8 @@
    CheckError(SDL_SavePNG(surface, file));
  }
  
--inline void SurfaceBase::SavePNG(StringParam file) const
 +#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
-+inline void Surface::SavePNG(StringParam file) const
+ inline void SurfaceBase::SavePNG(StringParam file) const
  {
    SDL::SaveTrustedPNG(get(), file);
  }
