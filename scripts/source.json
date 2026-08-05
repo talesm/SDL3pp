@@ -187,7 +187,7 @@
           "doc": [
             "The macro used when an assertion is disabled.",
             "This isn't for direct use by apps, but this is the code that is inserted when an SDL_assert is disabled (perhaps in a release build).",
-            "The code does nothing, but wraps `condition` in a sizeof operator, which generates no code and has no side effects, but avoid compiler warnings about unused variables.",
+            "The code does nothing, but wraps `condition` in a sizeof operator, which generates no code and has no side effects, but avoid compiler warnings about unused variables, and still checks syntax even when disabled.",
             {
               "tag": "\\param condition",
               "content": "the condition to assert (but not actually run here)."
@@ -205,7 +205,7 @@
               "type": ""
             }
           ],
-          "value": "\\\n    do { (void) sizeof ((condition)); } while (SDL_NULL_WHILE_LOOP_CONDITION)"
+          "value": "\\\n    do { (void) sizeof ((condition) ? 1 : 0); } while (SDL_NULL_WHILE_LOOP_CONDITION)"
         },
         "SDL_AssertState": {
           "doc": [
@@ -21087,7 +21087,7 @@
         "SDL_GPUTextureUsageFlags": {
           "doc": [
             "Specifies how a texture is intended to be used by the client.",
-            "A texture must have at least one usage flag. Note that some usage flag combinations are invalid.",
+            "A texture must have at least one usage flag. Note that combining SAMPLER with STORAGE_READ flags is invalid.",
             "With regards to compute storage usage, READ | WRITE means that you can have shader A that only writes into the texture and shader B that only reads from the texture and bind the same texture to either shader respectively. SIMULTANEOUS means that you can do reads and writes within the same shader or compute pass. It also implies that atomic ops can be used, since those are read-modify-write operations. If you use SIMULTANEOUS, you are responsible for avoiding data races, as there is no data synchronization within a compute pass. Note that SIMULTANEOUS usage is only supported by a limited number of texture formats.",
             {
               "tag": "\\since",
@@ -21318,7 +21318,8 @@
         "SDL_GPUBufferUsageFlags": {
           "doc": [
             "Specifies how a buffer is intended to be used by the client.",
-            "A buffer must have at least one usage flag. Note that some usage flag combinations are invalid.",
+            "A buffer must have at least one usage flag.",
+            "If a buffer has multiple read usages, this may lead to a performance penalty due to more conservative memory barriers, but it also may not necessarily affect the performance.",
             "Unlike textures, READ | WRITE can be used for simultaneous read-write usage. The same data synchronization concerns as textures apply.",
             "If you use a STORAGE flag, the data in the buffer must respect std140 layout conventions. In practical terms this means you must ensure that vec3 and vec4 fields are 16-byte aligned.",
             {
@@ -36783,7 +36784,7 @@
                 "content": "\"1\": Reset the controller to get metadata."
               }
             ],
-            "By default the controller is not reset.",
+            "By default the controller is reset. This is so we can properly detect the controller type.",
             "This hint should be set before initializing joysticks and gamepads.",
             {
               "tag": "\\since",
@@ -94949,7 +94950,7 @@
           ],
           "name": "SDL_MICRO_VERSION",
           "kind": "def",
-          "value": "12"
+          "value": "14"
         },
         "SDL_VERSIONNUM": {
           "doc": [

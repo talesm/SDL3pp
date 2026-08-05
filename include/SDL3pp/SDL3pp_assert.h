@@ -163,7 +163,7 @@ namespace SDL {
  *
  * The code does nothing, but wraps `condition` in a sizeof operator, which
  * generates no code and has no side effects, but avoid compiler warnings about
- * unused variables.
+ * unused variables, and still checks syntax even when disabled.
  *
  * @param condition the condition to assert (but not actually run here).
  *
@@ -171,7 +171,7 @@ namespace SDL {
  */
 #define SDL_disabled_assert(condition)                                         \
   do {                                                                         \
-    (void)sizeof((condition));                                                 \
+    (void)sizeof((condition) ? 1 : 0);                                         \
   } while (SDL_NULL_WHILE_LOOP_CONDITION)
 
 #endif // SDL3PP_DOC

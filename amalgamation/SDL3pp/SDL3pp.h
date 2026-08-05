@@ -2291,7 +2291,7 @@ public:
  *
  * The code does nothing, but wraps `condition` in a sizeof operator, which
  * generates no code and has no side effects, but avoid compiler warnings about
- * unused variables.
+ * unused variables, and still checks syntax even when disabled.
  *
  * @param condition the condition to assert (but not actually run here).
  *
@@ -2299,7 +2299,7 @@ public:
  */
 #define SDL_disabled_assert(condition)                                         \
   do {                                                                         \
-    (void)sizeof((condition));                                                 \
+    (void)sizeof((condition) ? 1 : 0);                                         \
   } while (SDL_NULL_WHILE_LOOP_CONDITION)
 
 #endif // SDL3PP_DOC
@@ -5203,7 +5203,8 @@ inline bool ClearError() { return SDL_ClearError(); }
  * - "0": Assume this is a generic controller.
  * - "1": Reset the controller to get metadata.
  *
- * By default the controller is not reset.
+ * By default the controller is reset. This is so we can properly detect the
+ * controller type.
  *
  * This hint should be set before initializing joysticks and gamepads.
  *
@@ -65323,8 +65324,8 @@ constexpr GPUTextureType GPU_TEXTURETYPE_CUBE_ARRAY =
 /**
  * Specifies how a texture is intended to be used by the client.
  *
- * A texture must have at least one usage flag. Note that some usage flag
- * combinations are invalid.
+ * A texture must have at least one usage flag. Note that combining SAMPLER with
+ * STORAGE_READ flags is invalid.
  *
  * With regards to compute storage usage, READ | WRITE means that you can have
  * shader A that only writes into the texture and shader B that only reads from
@@ -66562,8 +66563,11 @@ constexpr GPUCubeMapFace GPU_CUBEMAPFACE_NEGATIVEZ =
 /**
  * Specifies how a buffer is intended to be used by the client.
  *
- * A buffer must have at least one usage flag. Note that some usage flag
- * combinations are invalid.
+ * A buffer must have at least one usage flag.
+ *
+ * If a buffer has multiple read usages, this may lead to a performance penalty
+ * due to more conservative memory barriers, but it also may not necessarily
+ * affect the performance.
  *
  * Unlike textures, READ | WRITE can be used for simultaneous read-write usage.
  * The same data synchronization concerns as textures apply.

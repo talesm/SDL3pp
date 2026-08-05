@@ -28,7 +28,7 @@
   *
   * @since This macro is available since SDL 3.2.0.
 @@ -172,6 +174,8 @@
-     (void)sizeof((condition));                                                 \
+     (void)sizeof((condition) ? 1 : 0);                                         \
    } while (SDL_NULL_WHILE_LOOP_CONDITION)
  
 +#endif // SDL3PP_DOC

@@ -27,7 +27,7 @@
   * will be loaded and interpreted as the value of the variable.
   *
   * This hint can be set anytime.
-@@ -4874,6 +4876,8 @@
+@@ -4875,6 +4877,8 @@
   */
  #define SDL_HINT_PEN_TOUCH_EVENTS "SDL_PEN_TOUCH_EVENTS"
  
@@ -36,7 +36,7 @@
  /**
   * An enumeration of hint priorities.
   *
-@@ -5090,7 +5094,6 @@
+@@ -5091,7 +5095,6 @@
   * @param name the hint to watch.
   * @param callback An HintCallback function that will be called when the hint
   *                 value changes.
@@ -44,7 +44,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -5101,7 +5104,7 @@
+@@ -5102,7 +5105,7 @@
   */
  inline void AddHintCallback(StringParam name, HintCB callback)
  {
