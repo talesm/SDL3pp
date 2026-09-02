@@ -1667,6 +1667,7 @@ using GPUBufferRegion = SDL_GPUBufferRegion;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa CopyGPUTextureToTexture
+ * @sa GPUTexture
  */
 using GPUTextureLocation = SDL_GPUTextureLocation;
 
@@ -1691,6 +1692,7 @@ using GPUBufferLocation = SDL_GPUBufferLocation;
  * @sa UploadToGPUTexture
  * @sa DownloadFromGPUTexture
  * @sa CreateGPUTexture
+ * @sa GPUTexture
  */
 using GPUTextureRegion = SDL_GPUTextureRegion;
 
@@ -1714,6 +1716,7 @@ using GPUTextureRegion = SDL_GPUTextureRegion;
  *
  * @sa UploadToGPUTexture
  * @sa DownloadFromGPUTexture
+ * @sa GPUTransferBuffer
  */
 using GPUTextureTransferInfo = SDL_GPUTextureTransferInfo;
 
@@ -1726,6 +1729,7 @@ using GPUTextureTransferInfo = SDL_GPUTextureTransferInfo;
  *
  * @sa UploadToGPUBuffer
  * @sa DownloadFromGPUBuffer
+ * @sa GPUTransferBuffer
  */
 using GPUTransferBufferLocation = SDL_GPUTransferBufferLocation;
 
@@ -1995,6 +1999,11 @@ using GPUStorageBufferReadWriteBinding = SDL_GPUStorageBufferReadWriteBinding;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa BlitGPUTexture
+ * @sa GPUBlitRegion
+ * @sa GPULoadOp
+ * @sa FColor
+ * @sa FlipMode
+ * @sa GPUFilter
  */
 using GPUBlitInfo = SDL_GPUBlitInfo;
 
@@ -4696,6 +4705,7 @@ constexpr GPUSamplerAddressMode GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE =
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa BlitGPUTexture
+ * @sa GPUTexture
  */
 using GPUBlitRegion = SDL_GPUBlitRegion;
 
@@ -4800,6 +4810,7 @@ using GPUStencilOpState = SDL_GPUStencilOpState;
  *
  * @since This struct is available since SDL 3.2.0.
  *
+ * @sa SetGPUBlendConstants
  * @sa GPUColorTargetDescription
  * @sa GPUBlendFactor
  * @sa GPUBlendOp

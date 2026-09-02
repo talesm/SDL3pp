@@ -1256,7 +1256,9 @@ struct RendererBase : ResourceBaseT<RendererRaw>
   float GetColorScale() const;
 
   /**
-   * Set the blend mode used for drawing operations (Fill and Line).
+   * Set the blend mode used for drawing operations.
+   *
+   * This blend mode is used for any drawing that doesn't involve textures.
    *
    * If the blend mode is not supported, the closest supported mode is chosen.
    *
@@ -1268,6 +1270,7 @@ struct RendererBase : ResourceBaseT<RendererRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetRenderDrawBlendMode
+   * @sa SetTextureBlendMode
    */
   void SetDrawBlendMode(BlendMode blendMode);
 
@@ -2205,7 +2208,7 @@ struct Renderer : RendererBase
   /**
    * Create a 2D software rendering context for a surface.
    *
-   * Two other API which can be used to create Renderer: CreateRenderer() and
+   * Two other APIs which can be used to create Renderer: CreateRenderer() and
    * CreateWindowAndRenderer(). These can _also_ create a software renderer, but
    * they are intended to be used with an Window as the final destination and
    * not an Surface.
@@ -2688,6 +2691,8 @@ struct TextureBase : ResourceBaseT<TextureRaw, TextureRawConst>
   /**
    * Set the blend mode for a texture, used by RenderTexture().
    *
+   * This blend mode is used for any drawing that involves this texture.
+   *
    * If the blend mode is not supported, the closest supported mode is chosen
    * and this function returns false.
    *
@@ -2699,6 +2704,7 @@ struct TextureBase : ResourceBaseT<TextureRaw, TextureRawConst>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetTextureBlendMode
+   * @sa SetRenderDrawBlendMode
    */
   void SetBlendMode(BlendMode blendMode);
 
@@ -3940,7 +3946,7 @@ inline GPUDeviceRef RendererBase::GetGPUDevice()
 /**
  * Create a 2D software rendering context for a surface.
  *
- * Two other API which can be used to create Renderer: CreateRenderer() and
+ * Two other APIs which can be used to create Renderer: CreateRenderer() and
  * CreateWindowAndRenderer(). These can _also_ create a software renderer, but
  * they are intended to be used with an Window as the final destination and not
  * an Surface.
@@ -5420,6 +5426,8 @@ inline FColor TextureBase::GetModFloat() const
 /**
  * Set the blend mode for a texture, used by RenderTexture().
  *
+ * This blend mode is used for any drawing that involves this texture.
+ *
  * If the blend mode is not supported, the closest supported mode is chosen and
  * this function returns false.
  *
@@ -5432,6 +5440,7 @@ inline FColor TextureBase::GetModFloat() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetTextureBlendMode
+ * @sa SetRenderDrawBlendMode
  */
 inline void SetTextureBlendMode(TextureRef texture, BlendMode blendMode)
 {
@@ -6801,7 +6810,9 @@ inline float RendererBase::GetColorScale() const
 }
 
 /**
- * Set the blend mode used for drawing operations (Fill and Line).
+ * Set the blend mode used for drawing operations.
+ *
+ * This blend mode is used for any drawing that doesn't involve textures.
  *
  * If the blend mode is not supported, the closest supported mode is chosen.
  *
@@ -6814,6 +6825,7 @@ inline float RendererBase::GetColorScale() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetRenderDrawBlendMode
+ * @sa SetTextureBlendMode
  */
 inline void SetRenderDrawBlendMode(RendererRef renderer, BlendMode blendMode)
 {

@@ -13148,6 +13148,14 @@
               "name": "which",
               "kind": "var",
               "type": "SDL_PenID"
+            },
+            "pen_state": {
+              "doc": [
+                "Complete pen input state at time of event (added in 3.4.16)."
+              ],
+              "name": "pen_state",
+              "kind": "var",
+              "type": "SDL_PenInputFlags"
             }
           }
         },
@@ -22544,6 +22552,10 @@
               {
                 "tag": "\\sa",
                 "content": "SDL_DownloadFromGPUTexture"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GPUTransferBuffer"
               }
             ]
           ],
@@ -22600,6 +22612,10 @@
               {
                 "tag": "\\sa",
                 "content": "SDL_DownloadFromGPUBuffer"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GPUTransferBuffer"
               }
             ]
           ],
@@ -22632,10 +22648,16 @@
               "tag": "\\since",
               "content": "This struct is available since SDL 3.2.0."
             },
-            {
-              "tag": "\\sa",
-              "content": "SDL_CopyGPUTextureToTexture"
-            }
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_CopyGPUTextureToTexture"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GPUTexture"
+              }
+            ]
           ],
           "name": "SDL_GPUTextureLocation",
           "kind": "struct",
@@ -22710,6 +22732,10 @@
               {
                 "tag": "\\sa",
                 "content": "SDL_CreateGPUTexture"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GPUTexture"
               }
             ]
           ],
@@ -22797,10 +22823,16 @@
               "tag": "\\since",
               "content": "This struct is available since SDL 3.2.0."
             },
-            {
-              "tag": "\\sa",
-              "content": "SDL_BlitGPUTexture"
-            }
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_BlitGPUTexture"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GPUTexture"
+              }
+            ]
           ],
           "name": "SDL_GPUBlitRegion",
           "kind": "struct",
@@ -23485,6 +23517,10 @@
               "content": "This struct is available since SDL 3.2.0."
             },
             [
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetGPUBlendConstants"
+              },
               {
                 "tag": "\\sa",
                 "content": "SDL_GPUColorTargetDescription"
@@ -24816,10 +24852,32 @@
               "tag": "\\since",
               "content": "This struct is available since SDL 3.2.0."
             },
-            {
-              "tag": "\\sa",
-              "content": "SDL_BlitGPUTexture"
-            }
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_BlitGPUTexture"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GPUBlitRegion"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GPULoadOp"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_FColor"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_FlipMode"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GPUFilter"
+              }
+            ]
           ],
           "name": "SDL_GPUBlitInfo",
           "kind": "struct",
@@ -34149,6 +34207,23 @@
           "name": "SDL_HINT_ANDROID_LOW_LATENCY_AUDIO",
           "kind": "def",
           "value": "\"SDL_ANDROID_LOW_LATENCY_AUDIO\""
+        },
+        "SDL_HINT_ANDROID_AAUDIO_INPUT_PRESET": {
+          "doc": [
+            "A variable to control Android's AAudio input preset.",
+            "This hint only applies to SDL's \"aaudio\" backend on Android 9+ devices.",
+            "Some devices choose the wrong microphone by default (between the one meant to be spoken in when the phone is held to the user's ear for a phone call, or an external microphone that's meant to be used when recording video), or have DSP effects applied to the recorded audio, and changing the input preset can help control this.",
+            "This can be any number that maps to an `AAUDIO_INPUT_PRESET_*` enum from the Android NDK headers. The most reasonable choices are 5 (\"camcorder\", for external microphones) and 7 (\"voice communication\", for speaking directly into the device like a mobile phone). 6 (\"voice recognition\") might also be a useful choice.",
+            "If unset (the default), SDL will not specify an input preset at all, which lets the system choose. This is usually the correct thing to do unless your app is having problems.",
+            "This hint should be set before a recording audio device is opened.",
+            {
+              "tag": "\\since",
+              "content": "This hint is available since SDL 3.4.16."
+            }
+          ],
+          "name": "SDL_HINT_ANDROID_AAUDIO_INPUT_PRESET",
+          "kind": "def",
+          "value": "\"SDL_ANDROID_AAUDIO_INPUT_PRESET\""
         },
         "SDL_HINT_ANDROID_TRAP_BACK_BUTTON": {
           "doc": [
@@ -65236,7 +65311,7 @@
         "SDL_CreateSoftwareRenderer": {
           "doc": [
             "Create a 2D software rendering context for a surface.",
-            "Two other API which can be used to create SDL_Renderer: SDL_CreateRenderer() and SDL_CreateWindowAndRenderer(). These can _also_ create a software renderer, but they are intended to be used with an SDL_Window as the final destination and not an SDL_Surface.",
+            "Two other APIs which can be used to create SDL_Renderer: SDL_CreateRenderer() and SDL_CreateWindowAndRenderer(). These can _also_ create a software renderer, but they are intended to be used with an SDL_Window as the final destination and not an SDL_Surface.",
             [
               {
                 "tag": "\\param surface",
@@ -67248,6 +67323,7 @@
         "SDL_SetTextureBlendMode": {
           "doc": [
             "Set the blend mode for a texture, used by SDL_RenderTexture().",
+            "This blend mode is used for any drawing that involves this texture.",
             "If the blend mode is not supported, the closest supported mode is chosen and this function returns false.",
             [
               {
@@ -67271,10 +67347,16 @@
               "tag": "\\since",
               "content": "This function is available since SDL 3.2.0."
             },
-            {
-              "tag": "\\sa",
-              "content": "SDL_GetTextureBlendMode"
-            }
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetTextureBlendMode"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetRenderDrawBlendMode"
+              }
+            ]
           ],
           "name": "SDL_SetTextureBlendMode",
           "kind": "function",
@@ -69200,7 +69282,8 @@
         },
         "SDL_SetRenderDrawBlendMode": {
           "doc": [
-            "Set the blend mode used for drawing operations (Fill and Line).",
+            "Set the blend mode used for drawing operations.",
+            "This blend mode is used for any drawing that doesn't involve textures.",
             "If the blend mode is not supported, the closest supported mode is chosen.",
             [
               {
@@ -69224,10 +69307,16 @@
               "tag": "\\since",
               "content": "This function is available since SDL 3.2.0."
             },
-            {
-              "tag": "\\sa",
-              "content": "SDL_GetRenderDrawBlendMode"
-            }
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetRenderDrawBlendMode"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetTextureBlendMode"
+              }
+            ]
           ],
           "name": "SDL_SetRenderDrawBlendMode",
           "kind": "function",
@@ -94950,7 +95039,7 @@
           ],
           "name": "SDL_MICRO_VERSION",
           "kind": "def",
-          "value": "14"
+          "value": "16"
         },
         "SDL_VERSIONNUM": {
           "doc": [
@@ -103020,7 +103109,7 @@
         "SDL_IMAGE_MICRO_VERSION": {
           "name": "SDL_IMAGE_MICRO_VERSION",
           "kind": "def",
-          "value": "4"
+          "value": "6"
         },
         "SDL_IMAGE_VERSION": {
           "doc": [

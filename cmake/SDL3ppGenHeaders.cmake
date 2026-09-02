@@ -2,14 +2,14 @@ include(ExternalProject)
 
 ExternalProject_Add(SDL3Base
   PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/base/
-  URL               https://github.com/libsdl-org/SDL/releases/download/release-3.4.14/SDL3-3.4.14.tar.gz
+  URL               https://github.com/libsdl-org/SDL/releases/download/release-3.4.16/SDL3-3.4.16.tar.gz
   CONFIGURE_COMMAND ""
   BUILD_COMMAND     ""
   INSTALL_COMMAND   ""
 )
 ExternalProject_Add(SDL3ImageBase
   PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/base/
-  URL               https://github.com/libsdl-org/SDL_image/releases/download/release-3.4.4/SDL3_image-3.4.4.tar.gz
+  URL               https://github.com/libsdl-org/SDL_image/releases/download/release-3.4.6/SDL3_image-3.4.6.tar.gz
   CONFIGURE_COMMAND ""
   BUILD_COMMAND     ""
   INSTALL_COMMAND   ""

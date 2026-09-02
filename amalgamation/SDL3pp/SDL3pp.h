@@ -3116,6 +3116,37 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_ANDROID_LOW_LATENCY_AUDIO "SDL_ANDROID_LOW_LATENCY_AUDIO"
 
+#if SDL_VERSION_ATLEAST(3, 4, 16)
+
+/**
+ * A variable to control Android's AAudio input preset.
+ *
+ * This hint only applies to SDL's "aaudio" backend on Android 9+ devices.
+ *
+ * Some devices choose the wrong microphone by default (between the one meant to
+ * be spoken in when the phone is held to the user's ear for a phone call, or an
+ * external microphone that's meant to be used when recording video), or have
+ * DSP effects applied to the recorded audio, and changing the input preset can
+ * help control this.
+ *
+ * This can be any number that maps to an `AAUDIO_INPUT_PRESET_*` enum from the
+ * Android NDK headers. The most reasonable choices are 5 ("camcorder", for
+ * external microphones) and 7 ("voice communication", for speaking directly
+ * into the device like a mobile phone). 6 ("voice recognition") might also be a
+ * useful choice.
+ *
+ * If unset (the default), SDL will not specify an input preset at all, which
+ * lets the system choose. This is usually the correct thing to do unless your
+ * app is having problems.
+ *
+ * This hint should be set before a recording audio device is opened.
+ *
+ * @since This hint is available since SDL 3.4.16.
+ */
+#define SDL_HINT_ANDROID_AAUDIO_INPUT_PRESET "SDL_ANDROID_AAUDIO_INPUT_PRESET"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 16)
+
 /**
  * A variable to control whether we trap the Android back button to handle it
  * manually.
@@ -64023,6 +64054,7 @@ using GPUBufferRegion = SDL_GPUBufferRegion;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa CopyGPUTextureToTexture
+ * @sa GPUTexture
  */
 using GPUTextureLocation = SDL_GPUTextureLocation;
 
@@ -64047,6 +64079,7 @@ using GPUBufferLocation = SDL_GPUBufferLocation;
  * @sa UploadToGPUTexture
  * @sa DownloadFromGPUTexture
  * @sa CreateGPUTexture
+ * @sa GPUTexture
  */
 using GPUTextureRegion = SDL_GPUTextureRegion;
 
@@ -64070,6 +64103,7 @@ using GPUTextureRegion = SDL_GPUTextureRegion;
  *
  * @sa UploadToGPUTexture
  * @sa DownloadFromGPUTexture
+ * @sa GPUTransferBuffer
  */
 using GPUTextureTransferInfo = SDL_GPUTextureTransferInfo;
 
@@ -64082,6 +64116,7 @@ using GPUTextureTransferInfo = SDL_GPUTextureTransferInfo;
  *
  * @sa UploadToGPUBuffer
  * @sa DownloadFromGPUBuffer
+ * @sa GPUTransferBuffer
  */
 using GPUTransferBufferLocation = SDL_GPUTransferBufferLocation;
 
@@ -64351,6 +64386,11 @@ using GPUStorageBufferReadWriteBinding = SDL_GPUStorageBufferReadWriteBinding;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa BlitGPUTexture
+ * @sa GPUBlitRegion
+ * @sa GPULoadOp
+ * @sa FColor
+ * @sa FlipMode
+ * @sa GPUFilter
  */
 using GPUBlitInfo = SDL_GPUBlitInfo;
 
@@ -67052,6 +67092,7 @@ constexpr GPUSamplerAddressMode GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE =
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa BlitGPUTexture
+ * @sa GPUTexture
  */
 using GPUBlitRegion = SDL_GPUBlitRegion;
 
@@ -67156,6 +67197,7 @@ using GPUStencilOpState = SDL_GPUStencilOpState;
  *
  * @since This struct is available since SDL 3.2.0.
  *
+ * @sa SetGPUBlendConstants
  * @sa GPUColorTargetDescription
  * @sa GPUBlendFactor
  * @sa GPUBlendOp
@@ -82524,7 +82566,9 @@ struct RendererBase : ResourceBaseT<RendererRaw>
   float GetColorScale() const;
 
   /**
-   * Set the blend mode used for drawing operations (Fill and Line).
+   * Set the blend mode used for drawing operations.
+   *
+   * This blend mode is used for any drawing that doesn't involve textures.
    *
    * If the blend mode is not supported, the closest supported mode is chosen.
    *
@@ -82536,6 +82580,7 @@ struct RendererBase : ResourceBaseT<RendererRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetRenderDrawBlendMode
+   * @sa SetTextureBlendMode
    */
   void SetDrawBlendMode(BlendMode blendMode);
 
@@ -83473,7 +83518,7 @@ struct Renderer : RendererBase
   /**
    * Create a 2D software rendering context for a surface.
    *
-   * Two other API which can be used to create Renderer: CreateRenderer() and
+   * Two other APIs which can be used to create Renderer: CreateRenderer() and
    * CreateWindowAndRenderer(). These can _also_ create a software renderer, but
    * they are intended to be used with an Window as the final destination and
    * not an Surface.
@@ -83956,6 +84001,8 @@ struct TextureBase : ResourceBaseT<TextureRaw, TextureRawConst>
   /**
    * Set the blend mode for a texture, used by RenderTexture().
    *
+   * This blend mode is used for any drawing that involves this texture.
+   *
    * If the blend mode is not supported, the closest supported mode is chosen
    * and this function returns false.
    *
@@ -83967,6 +84014,7 @@ struct TextureBase : ResourceBaseT<TextureRaw, TextureRawConst>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetTextureBlendMode
+   * @sa SetRenderDrawBlendMode
    */
   void SetBlendMode(BlendMode blendMode);
 
@@ -85208,7 +85256,7 @@ inline GPUDeviceRef RendererBase::GetGPUDevice()
 /**
  * Create a 2D software rendering context for a surface.
  *
- * Two other API which can be used to create Renderer: CreateRenderer() and
+ * Two other APIs which can be used to create Renderer: CreateRenderer() and
  * CreateWindowAndRenderer(). These can _also_ create a software renderer, but
  * they are intended to be used with an Window as the final destination and not
  * an Surface.
@@ -86688,6 +86736,8 @@ inline FColor TextureBase::GetModFloat() const
 /**
  * Set the blend mode for a texture, used by RenderTexture().
  *
+ * This blend mode is used for any drawing that involves this texture.
+ *
  * If the blend mode is not supported, the closest supported mode is chosen and
  * this function returns false.
  *
@@ -86700,6 +86750,7 @@ inline FColor TextureBase::GetModFloat() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetTextureBlendMode
+ * @sa SetRenderDrawBlendMode
  */
 inline void SetTextureBlendMode(TextureRef texture, BlendMode blendMode)
 {
@@ -88069,7 +88120,9 @@ inline float RendererBase::GetColorScale() const
 }
 
 /**
- * Set the blend mode used for drawing operations (Fill and Line).
+ * Set the blend mode used for drawing operations.
+ *
+ * This blend mode is used for any drawing that doesn't involve textures.
  *
  * If the blend mode is not supported, the closest supported mode is chosen.
  *
@@ -88082,6 +88135,7 @@ inline float RendererBase::GetColorScale() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetRenderDrawBlendMode
+ * @sa SetTextureBlendMode
  */
 inline void SetRenderDrawBlendMode(RendererRef renderer, BlendMode blendMode)
 {

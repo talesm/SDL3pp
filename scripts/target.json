@@ -34082,10 +34082,16 @@
               "tag": "@since",
               "content": "This struct is available since SDL 3.2.0."
             },
-            {
-              "tag": "@sa",
-              "content": "CopyGPUTextureToTexture"
-            }
+            [
+              {
+                "tag": "@sa",
+                "content": "CopyGPUTextureToTexture"
+              },
+              {
+                "tag": "@sa",
+                "content": "GPUTexture"
+              }
+            ]
           ],
           "sourceName": "SDL_GPUTextureLocation",
           "type": "SDL_GPUTextureLocation"
@@ -34130,6 +34136,10 @@
               {
                 "tag": "@sa",
                 "content": "CreateGPUTexture"
+              },
+              {
+                "tag": "@sa",
+                "content": "GPUTexture"
               }
             ]
           ],
@@ -34155,6 +34165,10 @@
               {
                 "tag": "@sa",
                 "content": "DownloadFromGPUTexture"
+              },
+              {
+                "tag": "@sa",
+                "content": "GPUTransferBuffer"
               }
             ]
           ],
@@ -34179,6 +34193,10 @@
               {
                 "tag": "@sa",
                 "content": "DownloadFromGPUBuffer"
+              },
+              {
+                "tag": "@sa",
+                "content": "GPUTransferBuffer"
               }
             ]
           ],
@@ -34755,10 +34773,32 @@
               "tag": "@since",
               "content": "This struct is available since SDL 3.2.0."
             },
-            {
-              "tag": "@sa",
-              "content": "BlitGPUTexture"
-            }
+            [
+              {
+                "tag": "@sa",
+                "content": "BlitGPUTexture"
+              },
+              {
+                "tag": "@sa",
+                "content": "GPUBlitRegion"
+              },
+              {
+                "tag": "@sa",
+                "content": "GPULoadOp"
+              },
+              {
+                "tag": "@sa",
+                "content": "FColor"
+              },
+              {
+                "tag": "@sa",
+                "content": "FlipMode"
+              },
+              {
+                "tag": "@sa",
+                "content": "GPUFilter"
+              }
+            ]
           ],
           "sourceName": "SDL_GPUBlitInfo",
           "type": "SDL_GPUBlitInfo"
@@ -41312,10 +41352,16 @@
               "tag": "@since",
               "content": "This struct is available since SDL 3.2.0."
             },
-            {
-              "tag": "@sa",
-              "content": "BlitGPUTexture"
-            }
+            [
+              {
+                "tag": "@sa",
+                "content": "BlitGPUTexture"
+              },
+              {
+                "tag": "@sa",
+                "content": "GPUTexture"
+              }
+            ]
           ],
           "name": "GPUBlitRegion",
           "kind": "alias",
@@ -41480,6 +41526,10 @@
               "content": "This struct is available since SDL 3.2.0."
             },
             [
+              {
+                "tag": "@sa",
+                "content": "SetGPUBlendConstants"
+              },
               {
                 "tag": "@sa",
                 "content": "GPUColorTargetDescription"
@@ -55798,6 +55848,30 @@
           "kind": "def",
           "value": "\"SDL_ANDROID_LOW_LATENCY_AUDIO\"",
           "sourceName": "SDL_HINT_ANDROID_LOW_LATENCY_AUDIO"
+        },
+        "SDL_HINT_ANDROID_AAUDIO_INPUT_PRESET": {
+          "doc": [
+            "A variable to control Android's AAudio input preset.",
+            "This hint only applies to SDL's \"aaudio\" backend on Android 9+ devices.",
+            "Some devices choose the wrong microphone by default (between the one meant to be spoken in when the phone is held to the user's ear for a phone call, or an external microphone that's meant to be used when recording video), or have DSP effects applied to the recorded audio, and changing the input preset can help control this.",
+            "This can be any number that maps to an `AAUDIO_INPUT_PRESET_*` enum from the Android NDK headers. The most reasonable choices are 5 (\"camcorder\", for external microphones) and 7 (\"voice communication\", for speaking directly into the device like a mobile phone). 6 (\"voice recognition\") might also be a useful choice.",
+            "If unset (the default), SDL will not specify an input preset at all, which lets the system choose. This is usually the correct thing to do unless your app is having problems.",
+            "This hint should be set before a recording audio device is opened.",
+            {
+              "tag": "@since",
+              "content": "This hint is available since SDL 3.4.16."
+            }
+          ],
+          "name": "SDL_HINT_ANDROID_AAUDIO_INPUT_PRESET",
+          "kind": "def",
+          "value": "\"SDL_ANDROID_AAUDIO_INPUT_PRESET\"",
+          "sourceName": "SDL_HINT_ANDROID_AAUDIO_INPUT_PRESET",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 16
+          }
         },
         "SDL_HINT_ANDROID_TRAP_BACK_BUTTON": {
           "doc": [
@@ -113120,7 +113194,8 @@
             },
             "SetDrawBlendMode": {
               "doc": [
-                "Set the blend mode used for drawing operations (Fill and Line).",
+                "Set the blend mode used for drawing operations.",
+                "This blend mode is used for any drawing that doesn't involve textures.",
                 "If the blend mode is not supported, the closest supported mode is chosen.",
                 [
                   {
@@ -113140,10 +113215,16 @@
                   "tag": "@since",
                   "content": "This function is available since SDL 3.2.0."
                 },
-                {
-                  "tag": "@sa",
-                  "content": "GetRenderDrawBlendMode"
-                }
+                [
+                  {
+                    "tag": "@sa",
+                    "content": "GetRenderDrawBlendMode"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "SetTextureBlendMode"
+                  }
+                ]
               ],
               "name": "SetDrawBlendMode",
               "kind": "function",
@@ -115436,7 +115517,7 @@
                     "overload": {
                       "doc": [
                         "Create a 2D software rendering context for a surface.",
-                        "Two other API which can be used to create Renderer: CreateRenderer() and CreateWindowAndRenderer(). These can _also_ create a software renderer, but they are intended to be used with an Window as the final destination and not an Surface.",
+                        "Two other APIs which can be used to create Renderer: CreateRenderer() and CreateWindowAndRenderer(). These can _also_ create a software renderer, but they are intended to be used with an Window as the final destination and not an Surface.",
                         [
                           {
                             "tag": "@param surface",
@@ -116559,6 +116640,7 @@
             "SetBlendMode": {
               "doc": [
                 "Set the blend mode for a texture, used by RenderTexture().",
+                "This blend mode is used for any drawing that involves this texture.",
                 "If the blend mode is not supported, the closest supported mode is chosen and this function returns false.",
                 [
                   {
@@ -116578,10 +116660,16 @@
                   "tag": "@since",
                   "content": "This function is available since SDL 3.2.0."
                 },
-                {
-                  "tag": "@sa",
-                  "content": "GetTextureBlendMode"
-                }
+                [
+                  {
+                    "tag": "@sa",
+                    "content": "GetTextureBlendMode"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "SetRenderDrawBlendMode"
+                  }
+                ]
               ],
               "name": "SetBlendMode",
               "kind": "function",
@@ -119313,7 +119401,7 @@
         "CreateSoftwareRenderer": {
           "doc": [
             "Create a 2D software rendering context for a surface.",
-            "Two other API which can be used to create Renderer: CreateRenderer() and CreateWindowAndRenderer(). These can _also_ create a software renderer, but they are intended to be used with an Window as the final destination and not an Surface.",
+            "Two other APIs which can be used to create Renderer: CreateRenderer() and CreateWindowAndRenderer(). These can _also_ create a software renderer, but they are intended to be used with an Window as the final destination and not an Surface.",
             [
               {
                 "tag": "@param surface",
@@ -122868,6 +122956,7 @@
         "SetTextureBlendMode": {
           "doc": [
             "Set the blend mode for a texture, used by RenderTexture().",
+            "This blend mode is used for any drawing that involves this texture.",
             "If the blend mode is not supported, the closest supported mode is chosen and this function returns false.",
             [
               {
@@ -122891,10 +122980,16 @@
               "tag": "@since",
               "content": "This function is available since SDL 3.2.0."
             },
-            {
-              "tag": "@sa",
-              "content": "GetTextureBlendMode"
-            }
+            [
+              {
+                "tag": "@sa",
+                "content": "GetTextureBlendMode"
+              },
+              {
+                "tag": "@sa",
+                "content": "SetRenderDrawBlendMode"
+              }
+            ]
           ],
           "name": "SetTextureBlendMode",
           "kind": "function",
@@ -126040,7 +126135,8 @@
         },
         "SetRenderDrawBlendMode": {
           "doc": [
-            "Set the blend mode used for drawing operations (Fill and Line).",
+            "Set the blend mode used for drawing operations.",
+            "This blend mode is used for any drawing that doesn't involve textures.",
             "If the blend mode is not supported, the closest supported mode is chosen.",
             [
               {
@@ -126064,10 +126160,16 @@
               "tag": "@since",
               "content": "This function is available since SDL 3.2.0."
             },
-            {
-              "tag": "@sa",
-              "content": "GetRenderDrawBlendMode"
-            }
+            [
+              {
+                "tag": "@sa",
+                "content": "GetRenderDrawBlendMode"
+              },
+              {
+                "tag": "@sa",
+                "content": "SetTextureBlendMode"
+              }
+            ]
           ],
           "name": "SetRenderDrawBlendMode",
           "kind": "function",

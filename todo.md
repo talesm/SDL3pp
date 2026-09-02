@@ -1,7 +1,8 @@
 Todo for next version
 =====================
 
-- [x] Upgrade SDL to 3.4.14;
+- [x] Upgrade SDL to 3.4.16;
+- [x] Upgrade SDL_image to 3.4.6;
 - [x] Fix fallback definitions for SavePNG and SavePNG_IO reachable only when
   SDL3_image is not found;
 - [x] Improvements over Properties:
