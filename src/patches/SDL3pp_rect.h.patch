@@ -816,7 +816,8 @@
 +   *
 +   */
 +  constexpr int GetX2() const { return x + w - 1; }
-+
+ 
+-  auto SetX2() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Set X coordinate of the rect second corner
 +   *
@@ -833,7 +834,7 @@
 +    return *this;
 +  }
  
--  auto SetX2() { static_assert(false, "Not implemented"); }
+-  auto GetY2() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get Y coordinate of the rect second corner
 +   *
@@ -842,7 +843,7 @@
 +   */
 +  constexpr int GetY2() const { return y + h - 1; }
  
--  auto GetY2() { static_assert(false, "Not implemented"); }
+-  auto SetY2() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Set Y coordinate of the rect second corner
 +   *
@@ -859,7 +860,7 @@
 +    return *this;
 +  }
  
--  auto SetY2() { static_assert(false, "Not implemented"); }
+-  auto GetTopLeft() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get top left corner of the rect
 +   *
@@ -868,7 +869,7 @@
 +   */
 +  constexpr Point GetTopLeft() const { return Point(x, y); }
  
--  auto GetTopLeft() { static_assert(false, "Not implemented"); }
+-  auto GetTopRight() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get top right corner of the rect
 +   *
@@ -877,7 +878,7 @@
 +   */
 +  constexpr Point GetTopRight() const { return Point(GetX2(), y); }
  
--  auto GetTopRight() { static_assert(false, "Not implemented"); }
+-  auto GetBottomLeft() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get bottom left corner of the rect
 +   *
@@ -886,7 +887,7 @@
 +   */
 +  constexpr Point GetBottomLeft() const { return Point(x, GetY2()); }
  
--  auto GetBottomLeft() { static_assert(false, "Not implemented"); }
+-  auto GetBottomRight() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get bottom right corner of the rect
 +   *
@@ -895,7 +896,7 @@
 +   */
 +  constexpr Point GetBottomRight() const { return Point(GetX2(), GetY2()); }
  
--  auto GetBottomRight() { static_assert(false, "Not implemented"); }
+-  auto GetSize() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get the Position of the rect, which is the same as its top left corner
 +   *
@@ -903,7 +904,7 @@
 +   */
 +  constexpr Point GetPosition() const { return GetTopLeft(); }
  
--  auto GetSize() { static_assert(false, "Not implemented"); }
+-  auto GetCentroid() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Set the Position object
 +   *
@@ -917,8 +918,7 @@
 +    y = position.y;
 +    return *this;
 +  }
- 
--  auto GetCentroid() { static_assert(false, "Not implemented"); }
++
 +  /**
 +   * Get size of the rect
 +   *
@@ -1438,8 +1438,9 @@
    {
 -    static_assert(false, "Not implemented");
 +    return FRect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
-+  }
-+
+   }
+ 
+-  static constexpr FRect FromCorners(const FPointRaw& p1, const FPointRaw& p2)
 +  /**
 +   * Construct the rect from given centers coordinates
 +   *
@@ -1448,11 +1449,12 @@
 +   *
 +   */
 +  static constexpr FRect FromCorners(FPoint p1, FPoint p2)
-+  {
+   {
+-    static_assert(false, "Not implemented");
 +    return FRect(p1, p2 - p1 + FPoint(1, 1));
    }
  
--  static constexpr FRect FromCorners(const FPointRaw& p1, const FPointRaw& p2)
+-  auto GetX2() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get X coordinate of the rect second corner
 +   *
@@ -1460,7 +1462,8 @@
 +   *
 +   */
 +  constexpr float GetX2() const { return x + w - 1; }
-+
+ 
+-  auto SetX2() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Set X coordinate of the rect second corner
 +   *
@@ -1472,13 +1475,12 @@
 +   *
 +   */
 +  constexpr FRect& SetX2(float x2)
-   {
--    static_assert(false, "Not implemented");
++  {
 +    w = x2 - x + 1;
 +    return *this;
-   }
++  }
  
--  auto GetX2() { static_assert(false, "Not implemented"); }
+-  auto GetY2() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get Y coordinate of the rect second corner
 +   *
@@ -1486,7 +1488,8 @@
 +   *
 +   */
 +  constexpr float GetY2() const { return y + h - 1; }
-+
+ 
+-  auto SetY2() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Set Y coordinate of the rect second corner
 +   *
@@ -1503,7 +1506,7 @@
 +    return *this;
 +  }
  
--  auto SetX2() { static_assert(false, "Not implemented"); }
+-  auto GetTopLeft() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get top left corner of the rect
 +   *
@@ -1512,7 +1515,7 @@
 +   */
 +  constexpr FPoint GetTopLeft() const { return FPoint(x, y); }
  
--  auto GetY2() { static_assert(false, "Not implemented"); }
+-  auto GetTopRight() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get top right corner of the rect
 +   *
@@ -1521,7 +1524,7 @@
 +   */
 +  constexpr FPoint GetTopRight() const { return FPoint(GetX2(), y); }
  
--  auto SetY2() { static_assert(false, "Not implemented"); }
+-  auto GetBottomLeft() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get bottom left corner of the rect
 +   *
@@ -1530,7 +1533,7 @@
 +   */
 +  constexpr FPoint GetBottomLeft() const { return FPoint(x, GetY2()); }
  
--  auto GetTopLeft() { static_assert(false, "Not implemented"); }
+-  auto GetBottomRight() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get bottom right corner of the rect
 +   *
@@ -1539,7 +1542,7 @@
 +   */
 +  constexpr FPoint GetBottomRight() const { return FPoint(GetX2(), GetY2()); }
  
--  auto GetTopRight() { static_assert(false, "Not implemented"); }
+-  auto GetSize() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Get the Position of the rect, which is the same as its top left corner
 +   *
@@ -1547,7 +1550,7 @@
 +   */
 +  constexpr FPoint GetPosition() const { return GetTopLeft(); }
  
--  auto GetBottomLeft() { static_assert(false, "Not implemented"); }
+-  auto GetCentroid() { static_assert(false, "Not implemented"); }
 +  /**
 +   * Set the Position object
 +   *
@@ -1561,8 +1564,7 @@
 +    y = position.y;
 +    return *this;
 +  }
- 
--  auto GetBottomRight() { static_assert(false, "Not implemented"); }
++
 +  /**
 +   * Get size of the rect
 +   *
@@ -1570,8 +1572,7 @@
 +   *
 +   */
 +  constexpr FPoint GetSize() const { return FPoint(w, h); }
- 
--  auto GetSize() { static_assert(false, "Not implemented"); }
++
 +  /**
 +   * Set the size of the rect
 +   *
@@ -1584,8 +1585,7 @@
 +    h = size.y;
 +    return *this;
 +  }
- 
--  auto GetCentroid() { static_assert(false, "Not implemented"); }
++
 +  /**
 +   * Get centroid of the rect
 +   *
@@ -2294,7 +2294,7 @@
  }
  
  inline bool FRect::GetLineIntersection(float* X1,
-@@ -1485,11 +2498,94 @@
+@@ -1485,11 +2498,206 @@
                                         float* X2,
                                         float* Y2) const
  {
@@ -2385,6 +2385,118 @@
 +constexpr Rect::operator FRect() const
 +{
 +  return {float(x), float(y), float(w), float(h)};
++}
++
++/**
++ * Get point's scalar multiplication with
++ *
++ * @param lhs Left-hand side scalar
++ * @param rhs Right-hand side point
++ *
++ * @return New FPoint representing scalar multiplication of point by another
++ * point
++ */
++constexpr Point operator*(const Point& lhs, int rhs)
++{
++  return lhs * Point(rhs);
++}
++
++/**
++ * Get point's scalar multiplication with another point
++ *
++ * @param lhs Left-hand side point
++ * @param rhs Right-hand side scalar
++ *
++ * @return New FPoint representing scalar multiplication of point by another
++ * point
++ */
++constexpr Point operator*(int lhs, const Point& rhs)
++{
++  return Point(lhs) * rhs;
++}
++
++/**
++ * Get point's scalar multiplication with another point
++ *
++ * @param lhs Left-hand side point
++ * @param rhs Right-hand side scalar
++ *
++ * @return New FPoint representing scalar multiplication of point by another
++ * point
++ */
++constexpr FPoint operator*(const Point& lhs, float rhs)
++{
++  return lhs * FPoint(rhs);
++}
++
++/**
++ * Get point's scalar multiplication with another point
++ *
++ * @param lhs Left-hand side scalar
++ * @param rhs Right-hand side point
++ *
++ * @return New FPoint representing scalar multiplication of point by another
++ * point
++ */
++constexpr FPoint operator*(float lhs, const Point& rhs)
++{
++  return FPoint(lhs) * rhs;
++}
++
++/**
++ * Get point's scalar division with
++ *
++ * @param lhs Left-hand side scalar
++ * @param rhs Right-hand side point
++ *
++ * @return New FPoint representing scalar division of point by another
++ * point
++ */
++constexpr Point operator/(const Point& lhs, int rhs)
++{
++  return lhs / Point(rhs);
++}
++
++/**
++ * Get point's scalar division with another point
++ *
++ * @param lhs Left-hand side point
++ * @param rhs Right-hand side scalar
++ *
++ * @return New FPoint representing scalar division of point by another
++ * point
++ */
++constexpr Point operator/(int lhs, const Point& rhs)
++{
++  return Point(lhs) / rhs;
++}
++
++/**
++ * Get point's scalar division with another point
++ *
++ * @param lhs Left-hand side point
++ * @param rhs Right-hand side scalar
++ *
++ * @return New FPoint representing scalar division of point by another
++ * point
++ */
++constexpr FPoint operator/(const Point& lhs, float rhs)
++{
++  return lhs / FPoint(rhs);
++}
++
++/**
++ * Get point's scalar division with another point
++ *
++ * @param lhs Left-hand side scalar
++ * @param rhs Right-hand side point
++ *
++ * @return New FPoint representing scalar division of point by another
++ * point
++ */
++constexpr FPoint operator/(float lhs, const Point& rhs)
++{
++  return FPoint(lhs) / rhs;
 +}
 +
  } // namespace SDL
