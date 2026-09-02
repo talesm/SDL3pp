@@ -31414,6 +31414,118 @@ constexpr Rect::operator FRect() const
 }
 
 /**
+ * Get point's scalar multiplication with
+ *
+ * @param lhs Left-hand side scalar
+ * @param rhs Right-hand side point
+ *
+ * @return New FPoint representing scalar multiplication of point by another
+ * point
+ */
+constexpr Point operator*(const Point& lhs, int rhs)
+{
+  return lhs * Point(rhs);
+}
+
+/**
+ * Get point's scalar multiplication with another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side scalar
+ *
+ * @return New FPoint representing scalar multiplication of point by another
+ * point
+ */
+constexpr Point operator*(int lhs, const Point& rhs)
+{
+  return Point(lhs) * rhs;
+}
+
+/**
+ * Get point's scalar multiplication with another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side scalar
+ *
+ * @return New FPoint representing scalar multiplication of point by another
+ * point
+ */
+constexpr FPoint operator*(const Point& lhs, float rhs)
+{
+  return lhs * FPoint(rhs);
+}
+
+/**
+ * Get point's scalar multiplication with another point
+ *
+ * @param lhs Left-hand side scalar
+ * @param rhs Right-hand side point
+ *
+ * @return New FPoint representing scalar multiplication of point by another
+ * point
+ */
+constexpr FPoint operator*(float lhs, const Point& rhs)
+{
+  return FPoint(lhs) * rhs;
+}
+
+/**
+ * Get point's scalar division with
+ *
+ * @param lhs Left-hand side scalar
+ * @param rhs Right-hand side point
+ *
+ * @return New FPoint representing scalar division of point by another
+ * point
+ */
+constexpr Point operator/(const Point& lhs, int rhs)
+{
+  return lhs / Point(rhs);
+}
+
+/**
+ * Get point's scalar division with another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side scalar
+ *
+ * @return New FPoint representing scalar division of point by another
+ * point
+ */
+constexpr Point operator/(int lhs, const Point& rhs)
+{
+  return Point(lhs) / rhs;
+}
+
+/**
+ * Get point's scalar division with another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side scalar
+ *
+ * @return New FPoint representing scalar division of point by another
+ * point
+ */
+constexpr FPoint operator/(const Point& lhs, float rhs)
+{
+  return lhs / FPoint(rhs);
+}
+
+/**
+ * Get point's scalar division with another point
+ *
+ * @param lhs Left-hand side scalar
+ * @param rhs Right-hand side point
+ *
+ * @return New FPoint representing scalar division of point by another
+ * point
+ */
+constexpr FPoint operator/(float lhs, const Point& rhs)
+{
+  return FPoint(lhs) / rhs;
+}
+
+/**
  * @defgroup CategoryScancode Keyboard Scancodes
  *
  * Defines keyboard scancodes.
