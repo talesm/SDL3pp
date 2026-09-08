@@ -1,5 +1,32 @@
 # Changelog
 
+## Version 0.11.4
+
+Improvements over Properties, constexpr wrappers around SDL_time macros and fix
+regression when multiplying Point by float.
+
+- Upgrade SDL to 3.4.16;
+- Upgrade SDL_image to 3.4.6;
+- Fix fallback definitions for SavePNG and SavePNG_IO reachable only when
+  SDL3_image is not found;
+- Improvements over Properties:
+  - Create PropertyProxy.As to be explicit over casting;
+  - Create prop_cast<> to be explicit over casting;
+- Wrap SDL_timer conversion macros:
+  - SDL_MS_PER_SECOND is constexpr constant;
+  - SDL_US_PER_SECOND is constexpr constant;
+  - SDL_NS_PER_SECOND is constexpr constant;
+  - SDL_NS_PER_MS is constexpr constant;
+  - SDL_NS_PER_US is constexpr constant;
+  - SDL_SECONDS_TO_NS has int resulting version SecondsToNs;
+  - SDL_NS_TO_SECONDS has int resulting version MsToSeconds;
+  - SDL_MS_TO_NS is constexpr function;
+  - SDL_NS_TO_MS is constexpr function;
+  - SDL_US_TO_NS is constexpr function;
+  - SDL_NS_TO_US is constexpr function;
+- Fix compatibility break when multiplying float by Point and now correctly
+  convert them to FPoint.
+
 ## Version 0.11.3
 
 General ergonomics improvement over Properties and simplification of
