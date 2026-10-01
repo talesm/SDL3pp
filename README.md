@@ -14,11 +14,11 @@ memory management and wrappers for string and callbacks.
 ## Quick start / TLDR
 
 - You have 3 options to add SDL3pp to your project:
-  1. Download [the single header](./amalgamation/SDL3pp/) (as
+  1. Download [just the headers](./include/SDL3pp/) (as
      [zip](https://github.com/talesm/SDL3pp/releases/download/0.11.4/SDL3pp_amalgamated-0.11.4.zip)
      or
      [tarball](https://github.com/talesm/SDL3pp/releases/download/0.11.4/SDL3pp_amalgamated-0.11.4.tar.gz))
-     and add to your project;
+     and add the files directly to your project;
   2. You can also download the
      [the latest release](https://github.com/talesm/SDL3pp/releases/download/0.11.4/SDL3pp-0.11.4.zip)
      (also available as
@@ -113,12 +113,11 @@ cmake -DSDL3_ttf_DIR=path-to-SDL3_ttf-dir build
 ## Installing
 
 If you have SDL3 already set up on your project, you can just copy the contents
-of [amalgamation/](./amalgamation/SDL3pp/) or [include](./include/SDL3pp/)
-directly to your project.
+of the [include directory](./include/SDL3pp/) directly to your project.
 
 ### System installation
 
-If you like to have a whole system intallation, you can checkout the project
+If you like to have a whole system installation, you can checkout the project
 [build](#building), and then you can install on you system with cmake:
 
 ```sh
