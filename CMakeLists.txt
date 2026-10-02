@@ -181,15 +181,15 @@ install(FILES
 ## Dist files  ##
 #################
 
-# Create zip for amalgamated files
-set(SDL3PP_AMALGAMATION_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp_amalgamated-${PROJECT_VERSION}")
-add_custom_target(SDL3pp_zip_amalgamation
-    COMMAND rm -f ${SDL3PP_AMALGAMATION_FILEBASE}.zip ${SDL3PP_AMALGAMATION_FILEBASE}.tar.gz
-    COMMAND tar -czvf ${SDL3PP_AMALGAMATION_FILEBASE}.tar.gz SDL3pp/ ../LICENSE.txt ../README.md ../changelog.md
-    COMMAND zip -r ${SDL3PP_AMALGAMATION_FILEBASE}.zip SDL3pp/
-    COMMAND zip -ju ${SDL3PP_AMALGAMATION_FILEBASE}.zip ../LICENSE.txt ../README.md ../changelog.md
-    DEPENDS SDL3pp_amalgamated
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/amalgamation/
+# Create zip for headers only
+set(SDL3PP_HEADERS_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp_headers-${PROJECT_VERSION}")
+add_custom_target(SDL3pp_zip_headers
+    COMMAND rm -f ${SDL3PP_HEADERS_FILEBASE}.zip ${SDL3PP_HEADERS_FILEBASE}.tar.gz
+    COMMAND tar -czvf ${SDL3PP_HEADERS_FILEBASE}.tar.gz SDL3pp/ ../LICENSE.txt ../README.md ../changelog.md
+    COMMAND zip -r ${SDL3PP_HEADERS_FILEBASE}.zip SDL3pp/
+    COMMAND zip -ju ${SDL3PP_HEADERS_FILEBASE}.zip ../LICENSE.txt ../README.md ../changelog.md
+    DEPENDS ${SDL3PP_WRAPPED_HEADERS}
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/include/
 )
 
 # Create zip for headers only
