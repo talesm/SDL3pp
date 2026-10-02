@@ -110,13 +110,7 @@ add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_VULKAN}
 
 # Examples
 option(SDL3PP_BUILD_EXAMPLES "Build the examples" OFF)
-option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" OFF)
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/examples AND SDL3PP_BUILD_EXAMPLES)
-    if (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
-        add_library(SDL3pp_ExampleBase ALIAS SDL3pp_amalgamated)
-    else ()
-        add_library(SDL3pp_ExampleBase ALIAS SDL3pp)
-    endif()
     add_subdirectory(examples)
 endif ()
 
