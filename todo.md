@@ -2,6 +2,7 @@ Todo for next version
 =====================
 
 - [ ] Remove amalgamation targets from build and from README;
+- [x] Default zips includes examples and tests;
 - [ ] Make string based ctors for Scancode && Keycode explicit;
 - [ ] All SDL_*ID representing devices must have uniform interface:
   - [ ] AudioDeviceID;
