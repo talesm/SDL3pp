@@ -76,38 +76,6 @@ target_include_directories(SDL3pp INTERFACE
     $<INSTALL_INTERFACE:include>
 )
 
-# The amalgamation header
-set(SDL3PP_AMALGAMATION_DIR "${PROJECT_SOURCE_DIR}/amalgamation")
-set(SDL3PP_AMALGAMATION_FILENAME "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp.h")
-set(SDL3PP_AMALGAMATION_MAIN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_main.h")
-set(SDL3PP_AMALGAMATION_VULKAN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_vulkan.h")
-file(GLOB SDL3PP_WRAPPED_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include/SDL3pp/*.h)
-
-add_library(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_MAIN} ${SDL3PP_AMALGAMATION_VULKAN})
-target_compile_features(SDL3pp_amalgamated INTERFACE ${SDL3PP_COMPILE_FEATURES})
-target_include_directories(SDL3pp_amalgamated INTERFACE
-    $<BUILD_INTERFACE:${SDL3PP_AMALGAMATION_DIR}>
-    $<INSTALL_INTERFACE:include>
-)
-target_link_libraries(SDL3pp_amalgamated INTERFACE ${SDL3PP_DEPENDENCIES})
-set_target_properties(SDL3pp_amalgamated PROPERTIES EXCLUDE_FROM_ALL TRUE)
-
-add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_FILENAME}
-    COMMAND npx ts-node scripts/amalgamate --base-dir include/SDL3pp/ ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
-    DEPENDS ${SDL3PP_WRAPPED_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/amalgamate.ts
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
-add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_MAIN}
-    COMMAND cp include/SDL3pp/SDL3pp_main.h ${SDL3PP_AMALGAMATION_MAIN}
-    DEPENDS "include/SDL3pp/SDL3pp_main.h"
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
-add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_VULKAN}
-    COMMAND cp include/SDL3pp/SDL3pp_vulkan.h ${SDL3PP_AMALGAMATION_VULKAN}
-    DEPENDS "include/SDL3pp/SDL3pp_vulkan.h"
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
 # Examples
 option(SDL3PP_BUILD_EXAMPLES "Build the examples" OFF)
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/examples AND SDL3PP_BUILD_EXAMPLES)
@@ -177,9 +145,9 @@ install(FILES
     DESTINATION lib/cmake/SDL3pp
 )
 
-############################
-## Zip amalgamated files  ##
-############################
+################
+## Zip files  ##
+################
 
 # Create zip for headers only
 set(SDL3PP_HEADERS_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp_headers-${PROJECT_VERSION}")
