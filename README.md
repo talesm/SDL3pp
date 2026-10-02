@@ -15,9 +15,9 @@ memory management and wrappers for string and callbacks.
 
 - You have 3 options to add SDL3pp to your project:
   1. Download [just the headers](./include/SDL3pp/) (as
-     [zip](https://github.com/talesm/SDL3pp/releases/download/0.11.4/SDL3pp_amalgamated-0.11.4.zip)
+     [zip](https://github.com/talesm/SDL3pp/releases/download/0.11.4/SDL3pp_headers-0.11.4.zip)
      or
-     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.11.4/SDL3pp_amalgamated-0.11.4.tar.gz))
+     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.11.4/SDL3pp_headers-0.11.4.tar.gz))
      and add the files directly to your project;
   2. You can also download the
      [the latest release](https://github.com/talesm/SDL3pp/releases/download/0.11.4/SDL3pp-0.11.4.zip)
