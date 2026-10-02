@@ -1,9 +1,24 @@
 Todo for next version
 =====================
 
-- [x] Upgrade SDL to 3.4.18;
-- [x] Upgrade SDL_image to 3.4.8;
-- [x] Add new headers only distribution.
+- [x] Remove amalgamation targets from build and from README;
+- [x] Make string based ctors for Scancode && Keycode explicit;
+- [ ] All SDL_*ID representing devices must have uniform interface:
+  - [ ] AudioDeviceID;
+  - [ ] CameraID;
+  - [ ] DisplayID;
+  - [ ] HapticID;
+  - [ ] HapticEffectID;
+  - [ ] JoystickID;
+  - [ ] KeyboardID;
+  - [ ] MouseID;
+  - [ ] PenID;
+  - [ ] PropertiesID;
+  - [ ] SensorID;
+  - [ ] ThreadID;
+  - [ ] TimerID;
+  - [ ] TouchID;
+  - [ ] WindowID;
 
 Backlog
 -------
