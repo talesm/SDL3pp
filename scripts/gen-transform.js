@@ -2612,6 +2612,7 @@ const transform = {
           after: "SDL_GetScancodeFromName",
           kind: "function",
           type: "",
+          explicit: true,
           parameters: [{ name: "name", type: "StringParam" }],
           hints: {
             init: ['m_scancode(SDL_GetScancodeFromName(name))'],
@@ -2627,6 +2628,7 @@ const transform = {
           before: "SDL_GetKeyFromName",
           kind: "function",
           name: "Keycode::Keycode",
+          explicit: true,
           type: "",
           parameters: [{
             name: "name",

@@ -170,7 +170,7 @@ public:
    * @sa GetKeyName
    * @sa GetScancodeFromName
    */
-  Keycode(StringParam name);
+  explicit Keycode(StringParam name);
 
   /**
    * Unwraps to the underlying Keycode.

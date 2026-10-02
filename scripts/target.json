@@ -78771,6 +78771,7 @@
                 "overload": {
                   "kind": "function",
                   "name": "Keycode",
+                  "explicit": true,
                   "type": "",
                   "parameters": [
                     {
@@ -129923,6 +129924,7 @@
               "overload": {
                 "kind": "function",
                 "type": "",
+                "explicit": true,
                 "parameters": [
                   {
                     "name": "name",
