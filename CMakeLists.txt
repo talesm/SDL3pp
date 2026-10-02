@@ -192,11 +192,12 @@ add_custom_target(SDL3pp_zip_amalgamation
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/amalgamation/
 )
 
-set(SDL3PP_HEADERS_ONLY_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp-${PROJECT_VERSION}")
-add_custom_target(SDL3pp_zip_headers
-    COMMAND rm -f ${SDL3PP_HEADERS_ONLY_FILEBASE}.zip ${SDL3PP_HEADERS_ONLY_FILEBASE}.tar.gz
-    COMMAND tar -czvf ${SDL3PP_HEADERS_ONLY_FILEBASE}.tar.gz include/ cmake/ LICENSE.txt README.md changelog.md CMakeLists.txt
-    COMMAND zip -r ${SDL3PP_HEADERS_ONLY_FILEBASE}.zip include/ cmake/ LICENSE.txt README.md changelog.md CMakeLists.txt
+# Create zip for distribution files including headers, tests, examples and cmake files.
+set(SDL3PP_DIST_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp-${PROJECT_VERSION}")
+add_custom_target(SDL3pp_zip_dist
+    COMMAND rm -f ${SDL3PP_DIST_FILEBASE}.zip ${SDL3PP_DIST_FILEBASE}.tar.gz
+    COMMAND tar -czvf ${SDL3PP_DIST_FILEBASE}.tar.gz include/ cmake/ LICENSE.txt README.md changelog.md CMakeLists.txt
+    COMMAND zip -r ${SDL3PP_DIST_FILEBASE}.zip include/ cmake/ LICENSE.txt README.md changelog.md CMakeLists.txt
     DEPENDS ${SDL3PP_WRAPPED_HEADERS}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/
 )
