@@ -73,7 +73,7 @@ public:
    * @sa GetScancodeFromKey
    * @sa GetScancodeName
    */
-  Scancode(StringParam name);
+  explicit Scancode(StringParam name);
 
   /**
    * Unwraps to the underlying Scancode.
