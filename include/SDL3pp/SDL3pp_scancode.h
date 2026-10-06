@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL_scancode.h>
 #include "SDL3pp_stdinc.h"
+#include "SDL3pp_version.h"
 
 namespace SDL {
 
@@ -503,6 +504,13 @@ constexpr Scancode SCANCODE_CLEARAGAIN =
 constexpr Scancode SCANCODE_CRSEL = SDL_SCANCODE_CRSEL; ///< CRSEL
 
 constexpr Scancode SCANCODE_EXSEL = SDL_SCANCODE_EXSEL; ///< EXSEL
+
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+
+constexpr Scancode SCANCODE_FRONT =
+  SDL_SCANCODE_FRONT; ///< Front (Sun keyboards)
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 18)
 
 constexpr Scancode SCANCODE_KP_00 = SDL_SCANCODE_KP_00; ///< KP_00
 

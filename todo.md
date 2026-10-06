@@ -1,8 +1,8 @@
 Todo for next version
 =====================
 
-- [ ] Upgrade SDL to 3.4.18;
-- [ ] Upgrade SDL_image to 3.4.8;
+- [x] Upgrade SDL to 3.4.18;
+- [x] Upgrade SDL_image to 3.4.8;
 - [x] Add new headers only distribution.
 
 Backlog

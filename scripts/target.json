@@ -24324,6 +24324,22 @@
           ],
           "sourceName": "SDL_GAMEPAD_TYPE_GAMECUBE"
         },
+        "GAMEPAD_TYPE_STEAM": {
+          "kind": "var",
+          "name": "GAMEPAD_TYPE_STEAM",
+          "constexpr": true,
+          "type": "GamepadType",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 18
+          },
+          "doc": [
+            "GAMEPAD_TYPE_STEAM"
+          ],
+          "sourceName": "SDL_GAMEPAD_TYPE_STEAM"
+        },
         "GAMEPAD_TYPE_COUNT": {
           "kind": "var",
           "name": "GAMEPAD_TYPE_COUNT",
@@ -33143,6 +33159,7 @@
               "doc": [
                 "Binds texture-sampler pairs for use on the vertex shader.",
                 "The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.",
+                "The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.",
                 "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
                 [
                   {
@@ -33191,6 +33208,7 @@
               "doc": [
                 "Binds storage textures for use on the vertex shader.",
                 "These textures must have been created with GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.",
+                "The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)",
                 "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
                 [
                   {
@@ -33287,6 +33305,7 @@
               "doc": [
                 "Binds texture-sampler pairs for use on the fragment shader.",
                 "The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.",
+                "The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.",
                 "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
                 [
                   {
@@ -33335,6 +33354,7 @@
               "doc": [
                 "Binds storage textures for use on the fragment shader.",
                 "These textures must have been created with GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.",
+                "The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)",
                 "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
                 [
                   {
@@ -33775,6 +33795,7 @@
               "doc": [
                 "Binds texture-sampler pairs for use on the compute shader.",
                 "The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.",
+                "The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.",
                 "Be sure your shader is set up according to the requirements documented in CreateGPUComputePipeline().",
                 [
                   {
@@ -33823,6 +33844,7 @@
               "doc": [
                 "Binds storage textures as readonly for use on the compute pipeline.",
                 "These textures must have been created with GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.",
+                "The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)",
                 "Be sure your shader is set up according to the requirements documented in CreateGPUComputePipeline().",
                 [
                   {
@@ -45410,6 +45432,7 @@
           "doc": [
             "Binds texture-sampler pairs for use on the vertex shader.",
             "The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.",
+            "The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.",
             "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
             [
               {
@@ -45486,6 +45509,7 @@
           "doc": [
             "Binds storage textures for use on the vertex shader.",
             "These textures must have been created with GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.",
+            "The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)",
             "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
             [
               {
@@ -45638,6 +45662,7 @@
           "doc": [
             "Binds texture-sampler pairs for use on the fragment shader.",
             "The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.",
+            "The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.",
             "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
             [
               {
@@ -45714,6 +45739,7 @@
           "doc": [
             "Binds storage textures for use on the fragment shader.",
             "These textures must have been created with GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.",
+            "The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)",
             "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
             [
               {
@@ -46394,6 +46420,7 @@
           "doc": [
             "Binds texture-sampler pairs for use on the compute shader.",
             "The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.",
+            "The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.",
             "Be sure your shader is set up according to the requirements documented in CreateGPUComputePipeline().",
             [
               {
@@ -46470,6 +46497,7 @@
           "doc": [
             "Binds storage textures as readonly for use on the compute pipeline.",
             "These textures must have been created with GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.",
+            "The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)",
             "Be sure your shader is set up according to the requirements documented in CreateGPUComputePipeline().",
             [
               {
@@ -63761,7 +63789,7 @@
             [
               {
                 "tag": "-",
-                "content": "`prop.appMetaData.NAME_STRING`: The human-readable name of the application, like \"My Game 2: Bad Guy's Revenge!\". This will show up anywhere the OS shows the name of the application separately from window titles, such as volume control applets, etc. This defaults to \"SDL Application\"."
+                "content": "`prop.appMetaData.NAME_STRING`: The human-readable name of the application, like \"My Game 2: Bad Guy's Revenge!\". This will show up anywhere the OS shows the name of the application separately from window titles, such as volume control applets, etc. If not provided by the app, SDL will attempt to pick a reasonable default (the app's binary's name if the platform can provide it, or \"SDL Application\" if all else fails)."
               },
               {
                 "tag": "-",
@@ -80736,6 +80764,23 @@
           "constexpr": true,
           "type": "Keycode"
         },
+        "KEYCODE_FRONT": {
+          "name": "KEYCODE_FRONT",
+          "kind": "var",
+          "doc": [
+            "ScancodeToKeycode(SCANCODE_FRONT)"
+          ],
+          "value": "0x400000a5u",
+          "sourceName": "SDLK_FRONT",
+          "constexpr": true,
+          "type": "Keycode",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 18
+          }
+        },
         "KEYCODE_KP_00": {
           "name": "KEYCODE_KP_00",
           "kind": "var",
@@ -81849,7 +81894,8 @@
       ],
       "localIncludes": [
         "SDL3pp_scancode.h",
-        "SDL3pp_stdinc.h"
+        "SDL3pp_stdinc.h",
+        "SDL3pp_version.h"
       ]
     },
     "SDL3pp_loadso.h": {
@@ -131671,6 +131717,22 @@
           ],
           "sourceName": "SDL_SCANCODE_EXSEL"
         },
+        "SCANCODE_FRONT": {
+          "kind": "var",
+          "name": "SCANCODE_FRONT",
+          "constexpr": true,
+          "type": "Scancode",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 18
+          },
+          "doc": [
+            "Front (Sun keyboards)"
+          ],
+          "sourceName": "SDL_SCANCODE_FRONT"
+        },
         "SCANCODE_KP_00": {
           "kind": "var",
           "name": "SCANCODE_KP_00",
@@ -132576,7 +132638,8 @@
         "SDL3/SDL_scancode.h"
       ],
       "localIncludes": [
-        "SDL3pp_stdinc.h"
+        "SDL3pp_stdinc.h",
+        "SDL3pp_version.h"
       ]
     },
     "SDL3pp_sensor.h": {

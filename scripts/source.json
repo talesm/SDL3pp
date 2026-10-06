@@ -13156,6 +13156,14 @@
               "name": "pen_state",
               "kind": "var",
               "type": "SDL_PenInputFlags"
+            },
+            "device_type": {
+              "doc": [
+                "the device type of the pen, if known (added in 3.4.18)."
+              ],
+              "name": "device_type",
+              "kind": "var",
+              "type": "SDL_PenDeviceType"
             }
           }
         },
@@ -13231,6 +13239,14 @@
               "name": "y",
               "kind": "var",
               "type": "float"
+            },
+            "device_type": {
+              "doc": [
+                "the device type of the pen, if known (added in 3.4.18)."
+              ],
+              "name": "device_type",
+              "kind": "var",
+              "type": "SDL_PenDeviceType"
             }
           }
         },
@@ -13322,6 +13338,14 @@
               "name": "down",
               "kind": "var",
               "type": "bool"
+            },
+            "device_type": {
+              "doc": [
+                "the device type of the pen, if known (added in 3.4.18)."
+              ],
+              "name": "device_type",
+              "kind": "var",
+              "type": "SDL_PenDeviceType"
             }
           }
         },
@@ -13413,6 +13437,14 @@
               "name": "down",
               "kind": "var",
               "type": "bool"
+            },
+            "device_type": {
+              "doc": [
+                "the device type of the pen, if known (added in 3.4.18)."
+              ],
+              "name": "device_type",
+              "kind": "var",
+              "type": "SDL_PenDeviceType"
             }
           }
         },
@@ -13504,6 +13536,14 @@
               "name": "value",
               "kind": "var",
               "type": "float"
+            },
+            "device_type": {
+              "doc": [
+                "the device type of the pen, if known (added in 3.4.18)."
+              ],
+              "name": "device_type",
+              "kind": "var",
+              "type": "SDL_PenDeviceType"
             }
           }
         },
@@ -15830,6 +15870,11 @@
             },
             "SDL_GAMEPAD_TYPE_GAMECUBE": {
               "name": "SDL_GAMEPAD_TYPE_GAMECUBE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GAMEPAD_TYPE_STEAM": {
+              "name": "SDL_GAMEPAD_TYPE_STEAM",
               "kind": "var",
               "type": ""
             },
@@ -27571,6 +27616,7 @@
           "doc": [
             "Binds texture-sampler pairs for use on the vertex shader.",
             "The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.",
+            "The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.",
             "Be sure your shader is set up according to the requirements documented in SDL_CreateGPUShader().",
             [
               {
@@ -27625,6 +27671,7 @@
           "doc": [
             "Binds storage textures for use on the vertex shader.",
             "These textures must have been created with SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.",
+            "The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)",
             "Be sure your shader is set up according to the requirements documented in SDL_CreateGPUShader().",
             [
               {
@@ -27733,6 +27780,7 @@
           "doc": [
             "Binds texture-sampler pairs for use on the fragment shader.",
             "The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.",
+            "The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.",
             "Be sure your shader is set up according to the requirements documented in SDL_CreateGPUShader().",
             [
               {
@@ -27787,6 +27835,7 @@
           "doc": [
             "Binds storage textures for use on the fragment shader.",
             "These textures must have been created with SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.",
+            "The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)",
             "Be sure your shader is set up according to the requirements documented in SDL_CreateGPUShader().",
             [
               {
@@ -28238,6 +28287,7 @@
           "doc": [
             "Binds texture-sampler pairs for use on the compute shader.",
             "The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.",
+            "The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.",
             "Be sure your shader is set up according to the requirements documented in SDL_CreateGPUComputePipeline().",
             [
               {
@@ -28292,6 +28342,7 @@
           "doc": [
             "Binds storage textures as readonly for use on the compute pipeline.",
             "These textures must have been created with SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.",
+            "The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)",
             "Be sure your shader is set up according to the requirements documented in SDL_CreateGPUComputePipeline().",
             [
               {
@@ -41478,7 +41529,7 @@
             [
               {
                 "tag": "-",
-                "content": "`SDL_PROP_APP_METADATA_NAME_STRING`: The human-readable name of the application, like \"My Game 2: Bad Guy's Revenge!\". This will show up anywhere the OS shows the name of the application separately from window titles, such as volume control applets, etc. This defaults to \"SDL Application\"."
+                "content": "`SDL_PROP_APP_METADATA_NAME_STRING`: The human-readable name of the application, like \"My Game 2: Bad Guy's Revenge!\". This will show up anywhere the OS shows the name of the application separately from window titles, such as volume control applets, etc. If not provided by the app, SDL will attempt to pick a reasonable default (the app's binary's name if the platform can provide it, or \"SDL Application\" if all else fails)."
               },
               {
                 "tag": "-",
@@ -50346,6 +50397,14 @@
           "name": "SDLK_EXSEL",
           "kind": "def",
           "value": "0x400000a4u"
+        },
+        "SDLK_FRONT": {
+          "doc": [
+            "SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_FRONT)"
+          ],
+          "name": "SDLK_FRONT",
+          "kind": "def",
+          "value": "0x400000a5u"
         },
         "SDLK_KP_00": {
           "doc": [
@@ -72613,6 +72672,14 @@
             },
             "SDL_SCANCODE_EXSEL": {
               "name": "SDL_SCANCODE_EXSEL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SCANCODE_FRONT": {
+              "doc": [
+                "Front (Sun keyboards)"
+              ],
+              "name": "SDL_SCANCODE_FRONT",
               "kind": "var",
               "type": ""
             },
@@ -95039,7 +95106,7 @@
           ],
           "name": "SDL_MICRO_VERSION",
           "kind": "def",
-          "value": "16"
+          "value": "18"
         },
         "SDL_VERSIONNUM": {
           "doc": [

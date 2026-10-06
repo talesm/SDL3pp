@@ -1672,6 +1672,7 @@ const transform = {
           parameters: [{}],
         },
         "SDL_GAMEPAD_TYPE_GAMECUBE": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } },
+        "SDL_GAMEPAD_TYPE_STEAM": { since: { tag: "SDL", major: 3, minor: 4, patch: 18 }, },
       },
     },
     "SDL_gpu.h": {
@@ -2739,7 +2740,11 @@ const transform = {
       }
     },
     "SDL_keycode.h": {
-      localIncludes: ['SDL3pp_scancode.h', 'SDL3pp_stdinc.h'],
+      localIncludes: [
+        "SDL3pp_scancode.h",
+        "SDL3pp_stdinc.h",
+        "SDL3pp_version.h",
+      ],
       transform: {
         "SDL_Keymod": {
           enum: {
@@ -2783,7 +2788,8 @@ const transform = {
               name: "x"
             }
           ]
-        }
+        },
+        "SDLK_FRONT": { since: { tag: "SDL", major: 3, minor: 4, patch: 18 }, },
       }
     },
     "SDL_loadso.h": {
@@ -5837,12 +5843,16 @@ const transform = {
       }
     },
     "SDL_scancode.h": {
-      localIncludes: ['SDL3pp_stdinc.h'],
+      localIncludes: [
+        "SDL3pp_stdinc.h",
+        "SDL3pp_version.h",
+      ],
       transform: {
         "Keycode": { kind: "forward" },
         "SDL_Scancode": {
           wrapper: { ordered: true }
         },
+        "SDL_SCANCODE_FRONT": { since: { tag: "SDL", major: 3, minor: 4, patch: 18 }, },
       }
     },
     "SDL_stdinc.h": {

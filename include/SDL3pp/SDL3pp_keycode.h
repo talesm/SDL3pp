@@ -4,6 +4,7 @@
 #include <SDL3/SDL_keycode.h>
 #include "SDL3pp_scancode.h"
 #include "SDL3pp_stdinc.h"
+#include "SDL3pp_version.h"
 
 namespace SDL {
 
@@ -603,6 +604,13 @@ constexpr Keycode KEYCODE_CRSEL =
 
 constexpr Keycode KEYCODE_EXSEL =
   SDLK_EXSEL; ///< ScancodeToKeycode(SCANCODE_EXSEL)
+
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+
+constexpr Keycode KEYCODE_FRONT =
+  SDLK_FRONT; ///< ScancodeToKeycode(SCANCODE_FRONT)
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 18)
 
 constexpr Keycode KEYCODE_KP_00 =
   SDLK_KP_00; ///< ScancodeToKeycode(SCANCODE_KP_00)

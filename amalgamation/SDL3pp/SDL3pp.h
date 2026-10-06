@@ -32023,6 +32023,13 @@ constexpr Scancode SCANCODE_CRSEL = SDL_SCANCODE_CRSEL; ///< CRSEL
 
 constexpr Scancode SCANCODE_EXSEL = SDL_SCANCODE_EXSEL; ///< EXSEL
 
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+
+constexpr Scancode SCANCODE_FRONT =
+  SDL_SCANCODE_FRONT; ///< Front (Sun keyboards)
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 18)
+
 constexpr Scancode SCANCODE_KP_00 = SDL_SCANCODE_KP_00; ///< KP_00
 
 constexpr Scancode SCANCODE_KP_000 = SDL_SCANCODE_KP_000; ///< KP_000
@@ -39983,6 +39990,13 @@ constexpr Keycode KEYCODE_CRSEL =
 
 constexpr Keycode KEYCODE_EXSEL =
   SDLK_EXSEL; ///< ScancodeToKeycode(SCANCODE_EXSEL)
+
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+
+constexpr Keycode KEYCODE_FRONT =
+  SDLK_FRONT; ///< ScancodeToKeycode(SCANCODE_FRONT)
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 18)
 
 constexpr Keycode KEYCODE_KP_00 =
   SDLK_KP_00; ///< ScancodeToKeycode(SCANCODE_KP_00)
@@ -63780,6 +63794,9 @@ public:
    *
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
+   * The textures being bound must have a matching type declared in the shader
+   * (2D, 3D, etc.). Multisample textures are not allowed.
+   *
    * Be sure your shader is set up according to the requirements documented in
    * CreateGPUShader().
    *
@@ -63800,6 +63817,9 @@ public:
    *
    * These textures must have been created with
    * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+   *
+   * The textures being bound must have a matching type declared in the shader
+   * (2D, 3D, 2DMS, etc.)
    *
    * Be sure your shader is set up according to the requirements documented in
    * CreateGPUShader().
@@ -63838,6 +63858,9 @@ public:
    *
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
+   * The textures being bound must have a matching type declared in the shader
+   * (2D, 3D, etc.). Multisample textures are not allowed.
+   *
    * Be sure your shader is set up according to the requirements documented in
    * CreateGPUShader().
    *
@@ -63858,6 +63881,9 @@ public:
    *
    * These textures must have been created with
    * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+   *
+   * The textures being bound must have a matching type declared in the shader
+   * (2D, 3D, 2DMS, etc.)
    *
    * Be sure your shader is set up according to the requirements documented in
    * CreateGPUShader().
@@ -64043,6 +64069,9 @@ public:
    *
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
+   * The textures being bound must have a matching type declared in the shader
+   * (2D, 3D, etc.). Multisample textures are not allowed.
+   *
    * Be sure your shader is set up according to the requirements documented in
    * CreateGPUComputePipeline().
    *
@@ -64063,6 +64092,9 @@ public:
    *
    * These textures must have been created with
    * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
+   *
+   * The textures being bound must have a matching type declared in the shader
+   * (2D, 3D, 2DMS, etc.)
    *
    * Be sure your shader is set up according to the requirements documented in
    * CreateGPUComputePipeline().
@@ -69084,6 +69116,9 @@ inline void GPURenderPass::BindIndexBuffer(
  *
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
+ * The textures being bound must have a matching type declared in the shader
+ * (2D, 3D, etc.). Multisample textures are not allowed.
+ *
  * Be sure your shader is set up according to the requirements documented in
  * CreateGPUShader().
  *
@@ -69119,6 +69154,9 @@ inline void GPURenderPass::BindVertexSamplers(
  *
  * These textures must have been created with
  * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+ *
+ * The textures being bound must have a matching type declared in the shader
+ * (2D, 3D, 2DMS, etc.)
  *
  * Be sure your shader is set up according to the requirements documented in
  * CreateGPUShader().
@@ -69191,6 +69229,9 @@ inline void GPURenderPass::BindVertexStorageBuffers(
  *
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
+ * The textures being bound must have a matching type declared in the shader
+ * (2D, 3D, etc.). Multisample textures are not allowed.
+ *
  * Be sure your shader is set up according to the requirements documented in
  * CreateGPUShader().
  *
@@ -69226,6 +69267,9 @@ inline void GPURenderPass::BindFragmentSamplers(
  *
  * These textures must have been created with
  * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+ *
+ * The textures being bound must have a matching type declared in the shader
+ * (2D, 3D, 2DMS, etc.)
  *
  * Be sure your shader is set up according to the requirements documented in
  * CreateGPUShader().
@@ -69541,6 +69585,9 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  *
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
+ * The textures being bound must have a matching type declared in the shader
+ * (2D, 3D, etc.). Multisample textures are not allowed.
+ *
  * Be sure your shader is set up according to the requirements documented in
  * CreateGPUComputePipeline().
  *
@@ -69576,6 +69623,9 @@ inline void GPUComputePass::BindSamplers(
  *
  * These textures must have been created with
  * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
+ *
+ * The textures being bound must have a matching type declared in the shader
+ * (2D, 3D, 2DMS, etc.)
  *
  * Be sure your shader is set up according to the requirements documented in
  * CreateGPUComputePipeline().
@@ -76225,6 +76275,13 @@ constexpr GamepadType GAMEPAD_TYPE_GAMECUBE =
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+
+constexpr GamepadType GAMEPAD_TYPE_STEAM =
+  SDL_GAMEPAD_TYPE_STEAM; ///< GAMEPAD_TYPE_STEAM
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 18)
+
 constexpr GamepadType GAMEPAD_TYPE_COUNT =
   SDL_GAMEPAD_TYPE_COUNT; ///< GAMEPAD_TYPE_COUNT
 
@@ -81325,7 +81382,9 @@ inline void SetAppMetadata(StringParam appname,
  * - `prop.appMetaData.NAME_STRING`: The human-readable name of the application,
  *   like "My Game 2: Bad Guy's Revenge!". This will show up anywhere the OS
  *   shows the name of the application separately from window titles, such as
- *   volume control applets, etc. This defaults to "SDL Application".
+ *   volume control applets, etc. If not provided by the app, SDL will attempt
+ *   to pick a reasonable default (the app's binary's name if the platform can
+ *   provide it, or "SDL Application" if all else fails).
  * - `prop.appMetaData.VERSION_STRING`: The version of the app that is running;
  *   there are no rules on format, so "1.0.3beta2" and "April 22nd, 2024" and a
  *   git hash are all valid options. This has no default.

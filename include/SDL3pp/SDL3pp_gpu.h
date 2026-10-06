@@ -1281,6 +1281,9 @@ public:
    *
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
+   * The textures being bound must have a matching type declared in the shader
+   * (2D, 3D, etc.). Multisample textures are not allowed.
+   *
    * Be sure your shader is set up according to the requirements documented in
    * CreateGPUShader().
    *
@@ -1301,6 +1304,9 @@ public:
    *
    * These textures must have been created with
    * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+   *
+   * The textures being bound must have a matching type declared in the shader
+   * (2D, 3D, 2DMS, etc.)
    *
    * Be sure your shader is set up according to the requirements documented in
    * CreateGPUShader().
@@ -1339,6 +1345,9 @@ public:
    *
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
+   * The textures being bound must have a matching type declared in the shader
+   * (2D, 3D, etc.). Multisample textures are not allowed.
+   *
    * Be sure your shader is set up according to the requirements documented in
    * CreateGPUShader().
    *
@@ -1359,6 +1368,9 @@ public:
    *
    * These textures must have been created with
    * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+   *
+   * The textures being bound must have a matching type declared in the shader
+   * (2D, 3D, 2DMS, etc.)
    *
    * Be sure your shader is set up according to the requirements documented in
    * CreateGPUShader().
@@ -1544,6 +1556,9 @@ public:
    *
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
+   * The textures being bound must have a matching type declared in the shader
+   * (2D, 3D, etc.). Multisample textures are not allowed.
+   *
    * Be sure your shader is set up according to the requirements documented in
    * CreateGPUComputePipeline().
    *
@@ -1564,6 +1579,9 @@ public:
    *
    * These textures must have been created with
    * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
+   *
+   * The textures being bound must have a matching type declared in the shader
+   * (2D, 3D, 2DMS, etc.)
    *
    * Be sure your shader is set up according to the requirements documented in
    * CreateGPUComputePipeline().
@@ -6585,6 +6603,9 @@ inline void GPURenderPass::BindIndexBuffer(
  *
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
+ * The textures being bound must have a matching type declared in the shader
+ * (2D, 3D, etc.). Multisample textures are not allowed.
+ *
  * Be sure your shader is set up according to the requirements documented in
  * CreateGPUShader().
  *
@@ -6620,6 +6641,9 @@ inline void GPURenderPass::BindVertexSamplers(
  *
  * These textures must have been created with
  * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+ *
+ * The textures being bound must have a matching type declared in the shader
+ * (2D, 3D, 2DMS, etc.)
  *
  * Be sure your shader is set up according to the requirements documented in
  * CreateGPUShader().
@@ -6692,6 +6716,9 @@ inline void GPURenderPass::BindVertexStorageBuffers(
  *
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
+ * The textures being bound must have a matching type declared in the shader
+ * (2D, 3D, etc.). Multisample textures are not allowed.
+ *
  * Be sure your shader is set up according to the requirements documented in
  * CreateGPUShader().
  *
@@ -6727,6 +6754,9 @@ inline void GPURenderPass::BindFragmentSamplers(
  *
  * These textures must have been created with
  * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+ *
+ * The textures being bound must have a matching type declared in the shader
+ * (2D, 3D, 2DMS, etc.)
  *
  * Be sure your shader is set up according to the requirements documented in
  * CreateGPUShader().
@@ -7042,6 +7072,9 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  *
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
+ * The textures being bound must have a matching type declared in the shader
+ * (2D, 3D, etc.). Multisample textures are not allowed.
+ *
  * Be sure your shader is set up according to the requirements documented in
  * CreateGPUComputePipeline().
  *
@@ -7077,6 +7110,9 @@ inline void GPUComputePass::BindSamplers(
  *
  * These textures must have been created with
  * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
+ *
+ * The textures being bound must have a matching type declared in the shader
+ * (2D, 3D, 2DMS, etc.)
  *
  * Be sure your shader is set up according to the requirements documented in
  * CreateGPUComputePipeline().

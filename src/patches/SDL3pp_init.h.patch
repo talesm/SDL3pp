@@ -113,7 +113,7 @@
  }
  
  /**
-@@ -506,6 +544,12 @@
+@@ -508,6 +546,12 @@
    CheckError(SDL_SetAppMetadataProperty(name, value));
  }
  
@@ -126,7 +126,7 @@
  namespace prop::appMetaData {
  
  constexpr auto NAME_STRING =
-@@ -557,6 +601,13 @@
+@@ -559,6 +603,13 @@
    return SDL_GetAppMetadataProperty(name);
  }
  
