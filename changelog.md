@@ -1,5 +1,19 @@
 # Changelog
 
+## Version 0.11.5
+
+Upgrade base libraries and include new headers only distribution.
+
+From now on the headers only distribution will replace the old and amalgamation,
+since we could never actually amalgamate into a single file anyway (we currently
+have 3!). This version already replaces the mentions of amalgamation from the
+README by the headers only, but still provides it an amalgamation version in the
+downloads.
+
+- Upgrade SDL to 3.4.18;
+- Upgrade SDL_image to 3.4.8;
+- Add new headers only distribution.
+
 ## Version 0.11.4
 
 Improvements over Properties, constexpr wrappers around SDL_time macros and fix
