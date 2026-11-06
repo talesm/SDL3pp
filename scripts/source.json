@@ -3313,6 +3313,7 @@
           "doc": [
             "Calculate the size of each audio frame (in bytes) from an SDL_AudioSpec.",
             "This reports on the size of an audio sample frame: stereo Sint16 data (2 channels of 2 bytes each) would be 4 bytes per frame, for example.",
+            "This casts the value to unsigned int to avoid implicit sign conversion.",
             [
               {
                 "tag": "\\param x",
@@ -3340,7 +3341,7 @@
               "type": ""
             }
           ],
-          "value": "(SDL_AUDIO_BYTESIZE((x).format) * (x).channels)"
+          "value": "(((unsigned int)SDL_AUDIO_BYTESIZE((x).format)) * ((unsigned int)((x).channels)))"
         },
         "SDL_AudioStream": {
           "doc": [
@@ -5598,6 +5599,7 @@
             "Each SDL_AudioStream has an internal mutex it uses to protect its data structures from threading conflicts. This function allows an app to lock that mutex, which could be useful if registering callbacks on this stream.",
             "One does not need to lock a stream to use in it most cases, as the stream manages this lock internally. However, this lock is held during callbacks, which may run from arbitrary threads at any time, so if an app needs to protect shared data during those callbacks, locking the stream guarantees that the callback is not running while the lock is held.",
             "As this is just a wrapper over SDL_LockMutex for an internal lock; it has all the same attributes (recursive locks are allowed, etc).",
+            "Note that when the stream's callback runs, SDL is holding both an internal mutex for the audio device and the stream's lock, in that order. Which is to say: while this function can protect arbitrary data, calling into some SDL audio functions while holding this lock may cause a deadlock--the app holds this lock, and then calls into something that wants to obtain the device lock, in the opposite order that SDL's audio thread obtained them. Therefore, best practice is to use this function to protect simple app data against the audio callback, and be careful about what SDL functions one calls while locked outside of the callback.",
             [
               {
                 "tag": "\\param stream",
@@ -38545,6 +38547,33 @@
           "kind": "def",
           "value": "\"SDL_PS2_GS_MODE\""
         },
+        "SDL_HINT_PS2_GS_COLOR_DEPTH": {
+          "doc": [
+            "A variable controlling the pixel storage mode of the PS2's framebuffer.",
+            "The variable can be set to the following values:",
+            [
+              {
+                "tag": "-",
+                "content": "\"32\""
+              },
+              {
+                "tag": "-",
+                "content": "\"24\" (default)"
+              },
+              {
+                "tag": "-",
+                "content": "\"16\""
+              }
+            ],
+            {
+              "tag": "\\since",
+              "content": "This hint is available since SDL 3.4.20."
+            }
+          ],
+          "name": "SDL_HINT_PS2_GS_COLOR_DEPTH",
+          "kind": "def",
+          "value": "\"SDL_PS2_GS_COLOR_DEPTH\""
+        },
         "SDL_HINT_RPI_VIDEO_LAYER": {
           "doc": [
             "A variable controlling which Dispmanx layer to use on a Raspberry PI.",
@@ -47993,6 +48022,7 @@
             "Use SDL_PumpEvents() to update the state array.",
             "This function gives you the current state after all events have been processed, so if a key or button has been pressed and released before you process events, then the pressed state will never show up in the SDL_GetKeyboardState() calls.",
             "Note: This function doesn't take into account whether shift has been pressed or not.",
+            "Note that this function is \"thread safe,\" in that calling it from two threads at once will return the same array and that it won't be reallocated or free'd without warning, as more events arrive, the contents of this array may change without warning or any sort of thread synchronization. For apps that need precision, it is better to use the key events in the SDL event queue.",
             [
               {
                 "tag": "\\param numkeys",
@@ -95106,7 +95136,7 @@
           ],
           "name": "SDL_MICRO_VERSION",
           "kind": "def",
-          "value": "18"
+          "value": "20"
         },
         "SDL_VERSIONNUM": {
           "doc": [

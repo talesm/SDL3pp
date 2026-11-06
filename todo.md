@@ -1,8 +1,13 @@
 Todo for next version
 =====================
 
+- [x] Upgrade SDL to 3.4.20;
 - [x] Remove amalgamation targets from build and from README;
 - [x] Make string based ctors for Scancode && Keycode explicit;
+
+Backlog
+-------
+
 - [ ] All SDL_*ID representing devices must have uniform interface:
   - [ ] AudioDeviceID;
   - [ ] CameraID;
@@ -19,10 +24,6 @@ Todo for next version
   - [ ] TimerID;
   - [ ] TouchID;
   - [ ] WindowID;
-
-Backlog
--------
-
 - [ ] Ensure Properties follow all applicable conventions of iterator and range;
 - [ ] Create ResourceConstBase
   - [ ] When resource has ResourceConstRef, derive from ResourceConstBase
