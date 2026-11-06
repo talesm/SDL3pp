@@ -6554,6 +6554,23 @@ inline bool ClearError() { return SDL_ClearError(); }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
+#if SDL_VERSION_ATLEAST(3, 4, 20)
+
+/**
+ * A variable controlling the pixel storage mode of the PS2's framebuffer.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "32"
+ * - "24" (default)
+ * - "16"
+ *
+ * @since This hint is available since SDL 3.4.20.
+ */
+#define SDL_HINT_PS2_GS_COLOR_DEPTH "SDL_PS2_GS_COLOR_DEPTH"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 20)
+
 /**
  * A variable controlling which Dispmanx layer to use on a Raspberry PI.
  *
@@ -35362,6 +35379,8 @@ constexpr AudioDeviceID AUDIO_DEVICE_DEFAULT_RECORDING =
  * This reports on the size of an audio sample frame: stereo Sint16 data (2
  * channels of 2 bytes each) would be 4 bytes per frame, for example.
  *
+ * This casts the value to unsigned int to avoid implicit sign conversion.
+ *
  * @param x an AudioSpec to query.
  * @returns the number of bytes used per sample frame.
  *
@@ -36208,6 +36227,16 @@ struct AudioStreamBase : ResourceBaseT<AudioStreamRaw>
    * As this is just a wrapper over LockMutex for an internal lock; it has all
    * the same attributes (recursive locks are allowed, etc).
    *
+   * Note that when the stream's callback runs, SDL is holding both an internal
+   * mutex for the audio device and the stream's lock, in that order. Which is
+   * to say: while this function can protect arbitrary data, calling into some
+   * SDL audio functions while holding this lock may cause a deadlock--the app
+   * holds this lock, and then calls into something that wants to obtain the
+   * device lock, in the opposite order that SDL's audio thread obtained them.
+   * Therefore, best practice is to use this function to protect simple app data
+   * against the audio callback, and be careful about what SDL functions one
+   * calls while locked outside of the callback.
+   *
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -36728,6 +36757,17 @@ struct AudioStream : AudioStreamBase
  * As this is just a wrapper over LockMutex for an internal lock; it has all the
  * same attributes (recursive locks are allowed, etc).
  *
+ * Note that when the stream's callback runs, SDL is holding both an internal
+ * mutex for the audio device and the stream's lock, in that order. Which is to
+ * say: while this function can protect arbitrary data, calling into some SDL
+ * audio functions while holding this lock may cause a deadlock--the app holds
+ * this lock, and then calls into something that wants to obtain the device
+ * lock, in the opposite order that SDL's audio thread obtained them. Therefore,
+ * best practice is to use this function to protect simple app data against the
+ * audio callback, and be careful about what SDL functions one calls while
+ * locked outside of the callback.
+ *
+ * @sa UnlockAudioStream
  * @sa AudioStream.Lock
  */
 class AudioStreamLock
@@ -36750,6 +36790,16 @@ public:
    *
    * As this is just a wrapper over LockMutex for an internal lock; it has all
    * the same attributes (recursive locks are allowed, etc).
+   *
+   * Note that when the stream's callback runs, SDL is holding both an internal
+   * mutex for the audio device and the stream's lock, in that order. Which is
+   * to say: while this function can protect arbitrary data, calling into some
+   * SDL audio functions while holding this lock may cause a deadlock--the app
+   * holds this lock, and then calls into something that wants to obtain the
+   * device lock, in the opposite order that SDL's audio thread obtained them.
+   * Therefore, best practice is to use this function to protect simple app data
+   * against the audio callback, and be careful about what SDL functions one
+   * calls while locked outside of the callback.
    *
    * @param resource the audio stream to lock.
    * @post true on success or false on failure; call GetError() for more
@@ -38552,6 +38602,16 @@ inline bool AudioStreamBase::DevicePaused() const
  *
  * As this is just a wrapper over LockMutex for an internal lock; it has all the
  * same attributes (recursive locks are allowed, etc).
+ *
+ * Note that when the stream's callback runs, SDL is holding both an internal
+ * mutex for the audio device and the stream's lock, in that order. Which is to
+ * say: while this function can protect arbitrary data, calling into some SDL
+ * audio functions while holding this lock may cause a deadlock--the app holds
+ * this lock, and then calls into something that wants to obtain the device
+ * lock, in the opposite order that SDL's audio thread obtained them. Therefore,
+ * best practice is to use this function to protect simple app data against the
+ * audio callback, and be careful about what SDL functions one calls while
+ * locked outside of the callback.
  *
  * @param stream the audio stream to lock.
  * @throws Error on failure.
@@ -73736,6 +73796,12 @@ inline WindowRef GetKeyboardFocus() { return {SDL_GetKeyboardFocus()}; }
  *
  * Note: This function doesn't take into account whether shift has been pressed
  * or not.
+ *
+ * Note that this function is "thread safe," in that calling it from two threads
+ * at once will return the same array and that it won't be reallocated or free'd
+ * without warning, as more events arrive, the contents of this array may change
+ * without warning or any sort of thread synchronization. For apps that need
+ * precision, it is better to use the key events in the SDL event queue.
  *
  * @returns a pointer to an array of key states.
  *

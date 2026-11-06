@@ -47,15 +47,15 @@
  
  /**
   * Get a snapshot of the current state of the keyboard.
-@@ -122,7 +125,6 @@
-  * Note: This function doesn't take into account whether shift has been pressed
-  * or not.
+@@ -128,7 +131,6 @@
+  * without warning or any sort of thread synchronization. For apps that need
+  * precision, it is better to use the key events in the SDL event queue.
   *
 - * @param numkeys if non-nullptr, receives the length of the returned array.
   * @returns a pointer to an array of key states.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -134,7 +136,9 @@
+@@ -140,7 +142,9 @@
   */
  inline std::span<const bool> GetKeyboardState()
  {
@@ -66,7 +66,7 @@
  }
  
  /**
-@@ -539,13 +543,26 @@
+@@ -545,13 +549,26 @@
    SDL::StartTextInputWithProperties(get(), props);
  }
  
@@ -97,7 +97,7 @@
  
  constexpr auto AUTOCORRECT_BOOLEAN =
    SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN; ///< Autocorrect enabled.
-@@ -594,6 +611,7 @@
+@@ -600,6 +617,7 @@
   * @since This function is available since SDL 3.2.0.
   *
   * @sa StartTextInput
@@ -105,7 +105,7 @@
   */
  inline void StopTextInput(WindowRef window)
  {
-@@ -644,7 +662,7 @@
+@@ -650,7 +668,7 @@
   */
  inline void SetTextInputArea(WindowRef window, const RectRaw& rect, int cursor)
  {

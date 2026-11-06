@@ -3537,6 +3537,23 @@ namespace SDL {
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
+#if SDL_VERSION_ATLEAST(3, 4, 20)
+
+/**
+ * A variable controlling the pixel storage mode of the PS2's framebuffer.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "32"
+ * - "24" (default)
+ * - "16"
+ *
+ * @since This hint is available since SDL 3.4.20.
+ */
+#define SDL_HINT_PS2_GS_COLOR_DEPTH "SDL_PS2_GS_COLOR_DEPTH"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 20)
+
 /**
  * A variable controlling which Dispmanx layer to use on a Raspberry PI.
  *
