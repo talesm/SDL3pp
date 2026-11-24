@@ -4,7 +4,10 @@ Todo for next version
 - [x] Upgrade SDL to 3.4.20;
 - [x] Remove amalgamation targets from build and from README;
 - [x] Make string based ctors for Scancode && Keycode explicit;
-- [ ] Remove misleading autoclose parameters:
+- [x] Fix dependency include for std::vector  
+  ([Issue](https://github.com/talesm/SDL3pp/issues/81))
+- [x] Remove misleading autoclose parameters
+  ([Issue](https://github.com/talesm/SDL3pp/issues/79)):
   - [x] LoadFile_IO
   - [x] SaveFile_IO
   - [x] LoadBMP_IO;
