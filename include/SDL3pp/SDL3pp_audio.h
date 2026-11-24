@@ -5339,8 +5339,6 @@ inline void AudioDeviceBase::SetPostmixCallback(AudioPostmixCB callback)
  * @param src the data source for the WAVE data.
  * @param spec a pointer to an AudioSpec that will be set to the WAVE data's
  *             format details on successful return.
- * @param closeio if true, calls CloseIO() on `src` before returning,
- *                even in the case of an error.
  * @returns an allocated buffer containing the audio data on success, or nullptr
  * on failure.
  *
@@ -5353,13 +5351,11 @@ inline void AudioDeviceBase::SetPostmixCallback(AudioPostmixCB callback)
  *
  * @sa LoadWAV
  */
-inline OwnArray<Uint8> LoadWAV_IO(IOStreamRef src,
-                                  AudioSpec* spec,
-                                  bool closeio = false)
+inline OwnArray<Uint8> LoadWAV_IO(IOStreamParam src, AudioSpec* spec)
 {
   Uint8* buf;
   Uint32 len;
-  if (!SDL_LoadWAV_IO(src, closeio, spec, &buf, &len)) return {};
+  if (!SDL_LoadWAV_IO(src.stream, src.closeio, spec, &buf, &len)) return {};
   return OwnArray<Uint8>{buf, size_t(len)};
 }
 

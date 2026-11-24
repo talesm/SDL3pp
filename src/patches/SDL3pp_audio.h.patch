@@ -1007,7 +1007,7 @@
  }
  
  inline void AudioDeviceBase::SetPostmixCallback(AudioPostmixCallback callback,
-@@ -5222,48 +5325,42 @@
+@@ -5222,46 +5325,38 @@
   *
   * Example:
   *
@@ -1041,8 +1041,6 @@
 - *
 - * This function returns false if the .WAV file cannot be opened, uses an
 - * unknown data format, or is corrupt; call GetError() for more information.
-+ * @param closeio if true, calls CloseIO() on `src` before returning,
-+ *                even in the case of an error.
 + * @returns an allocated buffer containing the audio data on success, or nullptr
 + * on failure.
   *
@@ -1058,19 +1056,17 @@
 - * @sa free
   * @sa LoadWAV
   */
- inline OwnArray<Uint8> LoadWAV_IO(IOStreamRef src,
-                                   AudioSpec* spec,
-                                   bool closeio = false)
+ inline OwnArray<Uint8> LoadWAV_IO(IOStreamParam src, AudioSpec* spec)
  {
--  return SDL_LoadWAV_IO(src, spec, closeio);
+-  return SDL_LoadWAV_IO(src, spec);
 +  Uint8* buf;
 +  Uint32 len;
-+  if (!SDL_LoadWAV_IO(src, closeio, spec, &buf, &len)) return {};
++  if (!SDL_LoadWAV_IO(src.stream, src.closeio, spec, &buf, &len)) return {};
 +  return OwnArray<Uint8>{buf, size_t(len)};
  }
  
  /**
-@@ -5271,37 +5368,31 @@
+@@ -5269,37 +5364,31 @@
   *
   * This is a convenience function that is effectively the same as:
   *
@@ -1118,7 +1114,7 @@
  }
  
  /**
-@@ -5327,7 +5418,6 @@
+@@ -5325,7 +5414,6 @@
   * @param src the source audio buffer to be mixed.
   * @param format the AudioFormat structure representing the desired audio
   *               format.
@@ -1126,7 +1122,7 @@
   * @param volume ranges from 0.0 - 1.0, and should be set to 1.0 for full audio
   *               volume.
   * @throws Error on failure.
-@@ -5341,7 +5431,8 @@
+@@ -5339,7 +5427,8 @@
                       AudioFormat format,
                       float volume)
  {
@@ -1136,7 +1132,7 @@
  }
  
  /**
-@@ -5367,7 +5458,6 @@
+@@ -5365,7 +5454,6 @@
   * @param src the source audio buffer to be mixed.
   * @param format the AudioFormat structure representing the desired audio
   *               format.
@@ -1144,7 +1140,7 @@
   * @param volume ranges from 0.0 - 1.0, and should be set to 1.0 for full audio
   *               volume.
   * @throws Error on failure.
-@@ -5381,7 +5471,13 @@
+@@ -5379,7 +5467,13 @@
                       AudioFormat format,
                       float volume)
  {
@@ -1159,7 +1155,7 @@
  }
  
  /**
-@@ -5399,11 +5495,7 @@
+@@ -5397,11 +5491,7 @@
   *
   * @param src_spec the format details of the input audio.
   * @param src_data the audio data to be converted.
@@ -1171,7 +1167,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -5414,8 +5506,15 @@
+@@ -5412,8 +5502,15 @@
                                             SourceBytes src_data,
                                             const AudioSpec& dst_spec)
  {

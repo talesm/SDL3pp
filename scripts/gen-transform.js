@@ -802,9 +802,8 @@ const transform = {
         "SDL_LoadWAV_IO": {
           type: "OwnArray<Uint8>",
           parameters: [
-            {},
+            { type: "IOStreamParam" },
             { name: "spec", type: "AudioSpec *" },
-            { name: "closeio", type: "bool", default: "false" },
           ]
         },
         "SDL_LoadWAV": {
@@ -2525,7 +2524,7 @@ const transform = {
         },
         "SDL_LoadFile_IO": {
           type: "StringResult",
-          parameters: [{}, { name: "closeio", type: "bool", default: "true" }]
+          parameters: [{ type: "IOStreamParam" }]
         },
         "LoadFileAs": {
           kind: "function",
@@ -2543,9 +2542,8 @@ const transform = {
         "SDL_SaveFile_IO": {
           type: "void",
           parameters: [
-            {},
+            { type: "IOStreamParam" },
             { type: "SourceBytes", name: "data" },
-            { name: "closeio", type: "bool", default: "true" }
           ]
         },
         "SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } },

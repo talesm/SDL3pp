@@ -5,6 +5,8 @@ Todo for next version
 - [x] Remove amalgamation targets from build and from README;
 - [x] Make string based ctors for Scancode && Keycode explicit;
 - [ ] Remove misleading autoclose parameters:
+  - [x] LoadFile_IO
+  - [x] SaveFile_IO
   - [ ] LoadBMP_IO;
   - [ ] LoadTrustedPNG_IO;
   - [ ] SaveBMP_IO;
@@ -35,7 +37,7 @@ Todo for next version
   - [ ] SaveWEBPAnimation_IO;
   - [ ] CreateAnimationEncoder_IO;
   - [ ] CreateAnimationDecoder_IO;
-  - [ ] LoadWAV_IO;
+  - [x] LoadWAV_IO;
   - [ ] LoadAudio_IO;
   - [ ] LoadRawAudio_IO;
   - [ ] LoadRawAudioNoCopy (just remove free_when_done);

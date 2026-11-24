@@ -78,7 +78,7 @@
  
  /**
   * A type representing an atomic integer value.
-@@ -216,6 +216,11 @@
+@@ -216,8 +216,13 @@
   */
  struct AtomicInt : AtomicIntRaw
  {
@@ -88,8 +88,11 @@
 +   * @param value the value for value.
 +   */
    constexpr AtomicInt(int value)
-     : AtomicIntRaw(value)
+-    : AtomicIntRaw(value)
++    : AtomicIntRaw{value}
    {
+   }
+ 
 @@ -302,9 +307,9 @@
    /**
     * Increment an atomic variable used as a reference count.
@@ -146,7 +149,7 @@
 +   */
    constexpr AtomicU32(Uint32 value)
 -    : m_value(value)
-+    : AtomicU32Raw(value)
++    : AtomicU32Raw{value}
    {
    }
  

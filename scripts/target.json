@@ -13487,16 +13487,11 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "spec",
               "type": "AudioSpec *"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "SDL_LoadWAV_IO"
@@ -68412,12 +68407,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "true"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "SDL_LoadFile_IO"
@@ -68549,16 +68539,11 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "data",
               "type": "SourceBytes"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "true"
             }
           ],
           "sourceName": "SDL_SaveFile_IO",
