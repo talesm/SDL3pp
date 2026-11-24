@@ -4,6 +4,45 @@ Todo for next version
 - [x] Upgrade SDL to 3.4.20;
 - [x] Remove amalgamation targets from build and from README;
 - [x] Make string based ctors for Scancode && Keycode explicit;
+- [ ] Remove misleading autoclose parameters:
+  - [ ] LoadBMP_IO;
+  - [ ] LoadTrustedPNG_IO;
+  - [ ] SaveBMP_IO;
+  - [ ] SaveTrustedPNG_IO;
+  - [ ] LoadSurface_IO;
+  - [ ] LoadSurfaceTyped_IO;
+  - [ ] LoadTexture_IO;
+  - [ ] LoadTextureTyped_IO;
+  - [ ] LoadGPUTexture_IO;
+  - [ ] LoadGPUTextureTyped_IO;
+  - [ ] LoadPNG_IO;
+  - [ ] SaveTyped_IO;
+  - [ ] SaveAVIF_IO;
+  - [ ] SaveCUR_IO;
+  - [ ] SaveGIF_IO;
+  - [ ] SaveICO_IO;
+  - [ ] SaveJPG_IO;
+  - [ ] SavePNG_IO;
+  - [ ] SaveTGA_IO;
+  - [ ] SaveWEBP_IO;
+  - [ ] LoadAnimation_IO;
+  - [ ] LoadAnimationTyped_IO;
+  - [ ] SaveAnimationTyped_IO;
+  - [ ] SaveANIAnimation_IO;
+  - [ ] SaveAPNGAnimation_IO;
+  - [ ] SaveAVIFAnimation_IO;
+  - [ ] SaveGIFAnimation_IO;
+  - [ ] SaveWEBPAnimation_IO;
+  - [ ] CreateAnimationEncoder_IO;
+  - [ ] CreateAnimationDecoder_IO;
+  - [ ] LoadWAV_IO;
+  - [ ] LoadAudio_IO;
+  - [ ] LoadRawAudio_IO;
+  - [ ] LoadRawAudioNoCopy (just remove free_when_done);
+  - [ ] SetTrackIOStream;
+  - [ ] SetTrackRawIOStream;
+  - [ ] CreateAudioDecoder_IO;
+  - [ ] OpenFontIO;
 
 Backlog
 -------
