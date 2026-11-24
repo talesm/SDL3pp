@@ -2,10 +2,73 @@ Todo for next version
 =====================
 
 - [x] Upgrade SDL to 3.4.20;
+- [x] Remove amalgamation targets from build and from README;
+- [x] Make string based ctors for Scancode && Keycode explicit;
+- [x] Fix dependency include for std::vector  
+  ([Issue](https://github.com/talesm/SDL3pp/issues/81))
+- [x] Remove misleading autoclose parameters
+  ([Issue](https://github.com/talesm/SDL3pp/issues/79)):
+  - [x] LoadFile_IO
+  - [x] SaveFile_IO
+  - [x] LoadBMP_IO;
+  - [x] LoadTrustedPNG_IO;
+  - [x] SaveBMP_IO;
+  - [x] SaveTrustedPNG_IO;
+  - [x] LoadSurface_IO;
+  - [x] LoadSurfaceTyped_IO;
+  - [x] LoadTexture_IO;
+  - [x] LoadTextureTyped_IO;
+  - [x] LoadGPUTexture_IO;
+  - [x] LoadGPUTextureTyped_IO;
+  - [x] LoadPNG_IO;
+  - [x] SaveTyped_IO;
+  - [x] SaveAVIF_IO;
+  - [x] SaveCUR_IO;
+  - [x] SaveGIF_IO;
+  - [x] SaveICO_IO;
+  - [x] SaveJPG_IO;
+  - [x] SavePNG_IO;
+  - [x] SaveTGA_IO;
+  - [x] SaveWEBP_IO;
+  - [x] LoadAnimation_IO;
+  - [x] LoadAnimationTyped_IO;
+  - [x] SaveAnimationTyped_IO;
+  - [x] SaveANIAnimation_IO;
+  - [x] SaveAPNGAnimation_IO;
+  - [x] SaveAVIFAnimation_IO;
+  - [x] SaveGIFAnimation_IO;
+  - [x] SaveWEBPAnimation_IO;
+  - [x] CreateAnimationEncoder_IO;
+  - [x] CreateAnimationDecoder_IO;
+  - [x] LoadWAV_IO;
+  - [x] LoadAudio_IO;
+  - [x] LoadRawAudio_IO;
+  - [x] LoadRawAudioNoCopy (make remove free_when_done defaults to false);
+  - [x] SetTrackIOStream;
+  - [x] SetTrackRawIOStream;
+  - [x] CreateAudioDecoder_IO;
+  - [x] OpenFontIO;
+  - [x] AddGamepadMappingsFromIO;
 
 Backlog
 -------
 
+- [ ] All SDL_*ID representing devices must have uniform interface:
+  - [ ] AudioDeviceID;
+  - [ ] CameraID;
+  - [ ] DisplayID;
+  - [ ] HapticID;
+  - [ ] HapticEffectID;
+  - [ ] JoystickID;
+  - [ ] KeyboardID;
+  - [ ] MouseID;
+  - [ ] PenID;
+  - [ ] PropertiesID;
+  - [ ] SensorID;
+  - [ ] ThreadID;
+  - [ ] TimerID;
+  - [ ] TouchID;
+  - [ ] WindowID;
 - [ ] Ensure Properties follow all applicable conventions of iterator and range;
 - [ ] Create ResourceConstBase
   - [ ] When resource has ResourceConstRef, derive from ResourceConstBase

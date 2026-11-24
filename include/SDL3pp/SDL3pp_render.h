@@ -3261,8 +3261,6 @@ struct Texture : TextureBase
    *
    * @param renderer the Renderer to use to create the texture.
    * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
    * @post a new texture, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
@@ -3270,7 +3268,7 @@ struct Texture : TextureBase
    * @sa LoadTexture
    * @sa LoadTextureTyped_IO
    */
-  Texture(RendererRef renderer, IOStreamRef src, bool closeio = false);
+  Texture(RendererRef renderer, IOStreamParam src);
 
   /**
    * Safely borrows the from TextureRaw.

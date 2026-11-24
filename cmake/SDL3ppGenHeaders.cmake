@@ -104,6 +104,6 @@ add_custom_command(OUTPUT include/SDL3pp/SDL3pp_init.h ${SDL3PP_WRAPPED_HEADERS}
 # Apply patches
 add_custom_target(SDL3pp_check_all
   COMMAND echo "Everything ran!"
-  DEPENDS SDL3pp_amalgamated SDL3pp_doxygen SDL3pp
+  DEPENDS SDL3pp_doxygen SDL3pp
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )

@@ -1728,13 +1728,8 @@ struct Font : FontBase
    * size becomes the index of choosing which size. If the value is too high,
    * the last indexed size will be the default.
    *
-   * If `closeio` is true, `src` will be automatically closed once the font is
-   * closed. Otherwise you should keep `src` open until the font is closed.
-   *
    * @param src an IOStream to provide a font file's data.
    * @param ptsize point size to use for the newly-opened font.
-   * @param closeio true to close `src` when the font is closed, false to leave
-   *                it open.
    * @post a valid Font on success.
    * @throws Error on failure.
    *
@@ -1744,7 +1739,7 @@ struct Font : FontBase
    *
    * @sa CloseFont
    */
-  Font(IOStreamRef src, float ptsize, bool closeio = false);
+  Font(IOStreamParam src, float ptsize);
 
   /**
    * Create a font with the specified properties.
@@ -1831,8 +1826,8 @@ inline Font::Font(StringParam file, float ptsize)
 {
 }
 
-inline Font::Font(IOStreamRef src, float ptsize, bool closeio)
-  : Font(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
+inline Font::Font(IOStreamParam src, float ptsize)
+  : Font(CheckError(TTF_OpenFontIO(src.stream, src.closeio, ptsize)))
 {
 }
 
@@ -1848,15 +1843,10 @@ inline Font::Font(PropertiesRef props)
  * size becomes the index of choosing which size. If the value is too high, the
  * last indexed size will be the default.
  *
- * If `closeio` is true, `src` will be automatically closed once the font is
- * closed. Otherwise you should keep `src` open until the font is closed.
- *
  * When done with the returned Font, use CloseFont() to dispose of it.
  *
  * @param src an IOStream to provide a font file's data.
  * @param ptsize point size to use for the newly-opened font.
- * @param closeio true to close `src` when the font is closed, false to leave it
- *                open.
  * @returns a valid Font on success.
  * @throws Error on failure.
  *
@@ -1866,9 +1856,9 @@ inline Font::Font(PropertiesRef props)
  *
  * @sa CloseFont
  */
-inline Font OpenFontIO(IOStreamRef src, float ptsize, bool closeio = false)
+inline Font OpenFontIO(IOStreamParam src, float ptsize)
 {
-  return Font(src, ptsize, closeio);
+  return Font(src, ptsize);
 }
 
 /**

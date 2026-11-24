@@ -916,7 +916,41 @@
  }
  
  /**
-@@ -1908,14 +2241,12 @@
+@@ -1904,20 +2237,46 @@
+ 
+ inline void IOStreamBase::Flush() { SDL::FlushIO(get()); }
+ 
++/// Wrapper to be used as parameter to LoadFile_IO() and SaveFile_IO() and
++/// similar
++struct IOStreamParam
++{
++  IOStreamRef stream; ///< The IOStream to read from or write to
++  bool closeio;       ///< Whether to close the IOStream after the operation
++
++  /// Constructs from an IOStreamRef, does not take ownership
++  IOStreamParam(IOStreamRef stream)
++    : stream(stream)
++    , closeio(false)
++  {
++  }
++
++  /// Constructs from an IOStream, takes ownership.
++  IOStreamParam(IOStream&& stream)
++    : stream(std::move(stream).release())
++    , closeio(true)
++  {
++  }
++
++  /// Constructs from an IOStreamRaw, does not take ownership by default, but
++  /// can be set to take ownership
++  IOStreamParam(IOStreamRaw stream, bool closeio = false)
++    : stream(stream)
++    , closeio(closeio)
++  {
++  }
++};
++
+ /**
   * Load all the data from an SDL data stream.
   *
   * The data is allocated with a zero byte at the end (null terminated) for
@@ -930,16 +964,19 @@
   * @param src the IOStream to read all available data from.
 - * @param datasize a pointer filled in with the number of bytes read, may be
 - *                 nullptr.
-  * @param closeio if true, calls CloseIO() on `src` before returning, even in
-  *                the case of an error.
+- * @param closeio if true, calls CloseIO() on `src` before returning, even in
+- *                the case of an error.
   * @returns the data or nullptr on failure; call GetError() for more
-@@ -1930,30 +2261,49 @@
+  *          information.
+  *
+@@ -1930,30 +2289,50 @@
   */
- inline StringResult LoadFile_IO(IOStreamRef src, bool closeio = true)
+ inline StringResult LoadFile_IO(IOStreamParam src)
  {
--  return SDL_LoadFile_IO(src, closeio);
+-  return SDL_LoadFile_IO(src);
 +  size_t datasize = 0;
-+  auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, closeio));
++  auto data =
++    static_cast<char*>(SDL_LoadFile_IO(src.stream, &datasize, src.closeio));
 +  return StringResult{CheckError(data), datasize};
  }
  
@@ -992,7 +1029,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1962,7 +2312,12 @@
+@@ -1962,7 +2341,12 @@
   * @sa LoadFile_IO
   * @sa SaveFile
   */
@@ -1006,15 +1043,27 @@
  
  /**
   * Save all the data into an SDL data stream.
-@@ -1970,7 +2325,6 @@
+@@ -1970,9 +2354,6 @@
   * @param src the IOStream to write all data to.
   * @param data the data to be written. If datasize is 0, may be nullptr or a
   *             invalid pointer.
 - * @param datasize the number of bytes to be written.
-  * @param closeio if true, calls CloseIO() on `src` before returning, even in
-  *                the case of an error.
+- * @param closeio if true, calls CloseIO() on `src` before returning, even in
+- *                the case of an error.
   * @throws Error on failure.
-@@ -1996,9 +2350,7 @@
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -1984,7 +2365,8 @@
+  */
+ inline void SaveFile_IO(IOStreamParam src, SourceBytes data)
+ {
+-  CheckError(SDL_SaveFile_IO(src, data.data(), data.size_bytes()));
++  CheckError(
++    SDL_SaveFile_IO(src.stream, data.data(), data.size_bytes(), src.closeio));
+ }
+ 
+ inline void IOStreamBase::SaveFile(SourceBytes data)
+@@ -1996,9 +2378,7 @@
   * Save all the data into a file path.
   *
   * @param file the path to write all available data into.
@@ -1025,7 +1074,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -2022,14 +2374,19 @@
+@@ -2022,14 +2402,19 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the IOStream to read from.
@@ -1047,7 +1096,7 @@
  
  inline Uint8 IOStreamBase::ReadU8() { return SDL::ReadU8(get()); }
  
-@@ -2042,14 +2399,19 @@
+@@ -2042,14 +2427,19 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the IOStream to read from.
@@ -1069,7 +1118,7 @@
  
  inline Sint8 IOStreamBase::ReadS8() { return SDL::ReadS8(get()); }
  
-@@ -2066,7 +2428,7 @@
+@@ -2066,7 +2456,7 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1078,7 +1127,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2075,7 +2437,9 @@
+@@ -2075,7 +2465,9 @@
   */
  inline Uint16 ReadU16LE(IOStreamRef src)
  {
@@ -1089,7 +1138,7 @@
  }
  
  inline Uint16 IOStreamBase::ReadU16LE() { return SDL::ReadU16LE(get()); }
-@@ -2093,7 +2457,7 @@
+@@ -2093,7 +2485,7 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1098,7 +1147,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2102,7 +2466,9 @@
+@@ -2102,7 +2494,9 @@
   */
  inline Sint16 ReadS16LE(IOStreamRef src)
  {
@@ -1109,7 +1158,7 @@
  }
  
  inline Sint16 IOStreamBase::ReadS16LE() { return SDL::ReadS16LE(get()); }
-@@ -2120,7 +2486,7 @@
+@@ -2120,7 +2514,7 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1118,7 +1167,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2129,7 +2495,9 @@
+@@ -2129,7 +2523,9 @@
   */
  inline Uint16 ReadU16BE(IOStreamRef src)
  {
@@ -1129,7 +1178,7 @@
  }
  
  inline Uint16 IOStreamBase::ReadU16BE() { return SDL::ReadU16BE(get()); }
-@@ -2147,7 +2515,7 @@
+@@ -2147,7 +2543,7 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1138,7 +1187,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2156,7 +2524,9 @@
+@@ -2156,7 +2552,9 @@
   */
  inline Sint16 ReadS16BE(IOStreamRef src)
  {
@@ -1149,7 +1198,7 @@
  }
  
  inline Sint16 IOStreamBase::ReadS16BE() { return SDL::ReadS16BE(get()); }
-@@ -2174,7 +2544,7 @@
+@@ -2174,7 +2572,7 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1158,7 +1207,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2183,7 +2553,9 @@
+@@ -2183,7 +2581,9 @@
   */
  inline Uint32 ReadU32LE(IOStreamRef src)
  {
@@ -1169,7 +1218,7 @@
  }
  
  inline Uint32 IOStreamBase::ReadU32LE() { return SDL::ReadU32LE(get()); }
-@@ -2201,7 +2573,7 @@
+@@ -2201,7 +2601,7 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1178,7 +1227,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2210,7 +2582,9 @@
+@@ -2210,7 +2610,9 @@
   */
  inline Sint32 ReadS32LE(IOStreamRef src)
  {
@@ -1189,7 +1238,7 @@
  }
  
  inline Sint32 IOStreamBase::ReadS32LE() { return SDL::ReadS32LE(get()); }
-@@ -2228,7 +2602,7 @@
+@@ -2228,7 +2630,7 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1198,7 +1247,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2237,7 +2611,9 @@
+@@ -2237,7 +2639,9 @@
   */
  inline Uint32 ReadU32BE(IOStreamRef src)
  {
@@ -1209,7 +1258,7 @@
  }
  
  inline Uint32 IOStreamBase::ReadU32BE() { return SDL::ReadU32BE(get()); }
-@@ -2255,7 +2631,7 @@
+@@ -2255,7 +2659,7 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1218,7 +1267,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2264,7 +2640,9 @@
+@@ -2264,7 +2668,9 @@
   */
  inline Sint32 ReadS32BE(IOStreamRef src)
  {
@@ -1229,7 +1278,7 @@
  }
  
  inline Sint32 IOStreamBase::ReadS32BE() { return SDL::ReadS32BE(get()); }
-@@ -2282,7 +2660,7 @@
+@@ -2282,7 +2688,7 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1238,7 +1287,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2291,7 +2669,9 @@
+@@ -2291,7 +2697,9 @@
   */
  inline Uint64 ReadU64LE(IOStreamRef src)
  {
@@ -1249,7 +1298,7 @@
  }
  
  inline Uint64 IOStreamBase::ReadU64LE() { return SDL::ReadU64LE(get()); }
-@@ -2309,7 +2689,7 @@
+@@ -2309,7 +2717,7 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1258,7 +1307,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2318,7 +2698,9 @@
+@@ -2318,7 +2726,9 @@
   */
  inline Sint64 ReadS64LE(IOStreamRef src)
  {
@@ -1269,7 +1318,7 @@
  }
  
  inline Sint64 IOStreamBase::ReadS64LE() { return SDL::ReadS64LE(get()); }
-@@ -2336,7 +2718,7 @@
+@@ -2336,7 +2746,7 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1278,7 +1327,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2345,7 +2727,9 @@
+@@ -2345,7 +2755,9 @@
   */
  inline Uint64 ReadU64BE(IOStreamRef src)
  {
@@ -1289,7 +1338,7 @@
  }
  
  inline Uint64 IOStreamBase::ReadU64BE() { return SDL::ReadU64BE(get()); }
-@@ -2363,7 +2747,7 @@
+@@ -2363,7 +2775,7 @@
   * GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1298,7 +1347,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2372,7 +2756,9 @@
+@@ -2372,7 +2784,9 @@
   */
  inline Sint64 ReadS64BE(IOStreamRef src)
  {

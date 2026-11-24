@@ -168,8 +168,8 @@ inline Surface::Surface(StringParam file)
 {
 }
 
-inline Surface::Surface(IOStreamRef src, bool closeio)
-  : Surface(IMG_Load_IO(src, closeio))
+inline Surface::Surface(IOStreamParam src)
+  : Surface(IMG_Load_IO(src.stream, src.closeio))
 {
 }
 
@@ -190,10 +190,6 @@ inline Surface::Surface(IOStreamRef src, bool closeio)
  * If the image format supports a transparent pixel, SDL will set the colorkey
  * for the surface. You can enable RLE acceleration on the surface afterwards by
  * calling: SetSurfaceColorKey(image, SDL_RLEACCEL, image->format->colorkey);
- *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
  *
  * There is a separate function to read files from disk without having to deal
  * with IOStream: `LoadSurface("filename.jpg")` will call this function and
@@ -209,8 +205,6 @@ inline Surface::Surface(IOStreamRef src, bool closeio)
  * surface: call LoadTexture_IO() instead.
  *
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -218,9 +212,9 @@ inline Surface::Surface(IOStreamRef src, bool closeio)
  * @sa LoadSurface
  * @sa LoadSurfaceTyped_IO
  */
-inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
+inline Surface LoadSurface_IO(IOStreamParam src)
 {
-  return Surface{IMG_Load_IO(src, closeio)};
+  return Surface{IMG_Load_IO(src.stream, src.closeio)};
 }
 
 /**
@@ -240,10 +234,6 @@ inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
  * If the image format supports a transparent pixel, SDL will set the colorkey
  * for the surface. You can enable RLE acceleration on the surface afterwards by
  * calling: SetSurfaceColorKey(image, SDL_RLEACCEL, image->format->colorkey);
- *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
  *
  * Even though this function accepts a file type, SDL_image may still try other
  * decoders that are capable of detecting file type from the contents of the
@@ -267,8 +257,6 @@ inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
  * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -276,11 +264,9 @@ inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
  * @sa LoadSurface
  * @sa LoadSurface_IO
  */
-inline Surface LoadSurfaceTyped_IO(IOStreamRef src,
-                                   StringParam type,
-                                   bool closeio = false)
+inline Surface LoadSurfaceTyped_IO(IOStreamParam src, StringParam type)
 {
-  return Surface(IMG_LoadTyped_IO(src, closeio, type));
+  return Surface(IMG_LoadTyped_IO(src.stream, src.closeio, type));
 }
 
 /**
@@ -321,8 +307,8 @@ inline Texture::Texture(RendererRef renderer, StringParam file)
 {
 }
 
-inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
-  : Texture(IMG_LoadTexture_IO(renderer, src, closeio))
+inline Texture::Texture(RendererRef renderer, IOStreamParam src)
+  : Texture(IMG_LoadTexture_IO(renderer, src.stream, src.closeio))
 {
 }
 
@@ -337,10 +323,6 @@ inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
  * channel will be created. Otherwise, SDL_image will attempt to create an
  * Texture in the most format that most reasonably represents the image data
  * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
- *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
  *
  * There is a separate function to read files from disk without having to deal
  * with IOStream: `LoadTexture(renderer, "filename.jpg")` will call this
@@ -356,8 +338,6 @@ inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
  *
  * @param renderer the Renderer to use to create the texture.
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -365,11 +345,9 @@ inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
  * @sa LoadTexture
  * @sa LoadTextureTyped_IO
  */
-inline Texture LoadTexture_IO(RendererRef renderer,
-                              IOStreamRef src,
-                              bool closeio = false)
+inline Texture LoadTexture_IO(RendererRef renderer, IOStreamParam src)
 {
-  return Texture(IMG_LoadTexture_IO(renderer, src, closeio));
+  return Texture(IMG_LoadTexture_IO(renderer, src.stream, src.closeio));
 }
 
 /**
@@ -383,10 +361,6 @@ inline Texture LoadTexture_IO(RendererRef renderer,
  * channel will be created. Otherwise, SDL_image will attempt to create an
  * Texture in the most format that most reasonably represents the image data
  * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
- *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
  *
  * Even though this function accepts a file type, SDL_image may still try other
  * decoders that are capable of detecting file type from the contents of the
@@ -410,8 +384,6 @@ inline Texture LoadTexture_IO(RendererRef renderer,
  * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -420,11 +392,11 @@ inline Texture LoadTexture_IO(RendererRef renderer,
  * @sa LoadTexture_IO
  */
 inline Texture LoadTextureTyped_IO(RendererRef renderer,
-                                   IOStreamRef src,
-                                   StringParam type,
-                                   bool closeio = false)
+                                   IOStreamParam src,
+                                   StringParam type)
 {
-  return Texture(IMG_LoadTextureTyped_IO(renderer, src, closeio, type));
+  return Texture(
+    IMG_LoadTextureTyped_IO(renderer, src.stream, src.closeio, type));
 }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -478,14 +450,10 @@ inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
  * It can be bound as a sampled texture from a graphics or compute pipeline and
  * as a a readonly storage texture in a compute pipeline.
  *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
  * There is a separate function to read files from disk without having to deal
  * with IOStream: `LoadGPUTexture(device, copy_pass, "filename.jpg", width,
- * height) will call this function and manage those details for you, determining
- * the file type from the filename's extension.
+ * height)` will call this function and manage those details for you,
+ * determining the file type from the filename's extension.
  *
  * There is also LoadGPUTextureTyped_IO(), which is equivalent to this function
  * except a file extension (like "BMP", "JPG", etc) can be specified, in case
@@ -498,8 +466,6 @@ inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
  * @param copy_pass the GPUCopyPass to use to upload the loaded image to the GPU
  *                  texture.
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @param width a pointer filled in with the width of the GPU texture. may be
  *              nullptr.
  * @param height a pointer filled in with the width of the GPU texture. may be
@@ -513,12 +479,12 @@ inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
  */
 inline GPUTexture LoadGPUTexture_IO(GPUDeviceRef device,
                                     GPUCopyPass copy_pass,
-                                    IOStreamRef src,
-                                    bool closeio = false,
+                                    IOStreamParam src,
                                     int* width = nullptr,
                                     int* height = nullptr)
 {
-  return IMG_LoadGPUTexture_IO(device, copy_pass, src, closeio, width, height);
+  return IMG_LoadGPUTexture_IO(
+    device, copy_pass, src.stream, src.closeio, width, height);
 }
 
 /**
@@ -530,10 +496,6 @@ inline GPUTexture LoadGPUTexture_IO(GPUDeviceRef device,
  * It can be bound as a sampled texture from a graphics or compute pipeline and
  * as a a readonly storage texture in a compute pipeline.
  *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
  * Even though this function accepts a file type, SDL_image may still try other
  * decoders that are capable of detecting file type from the contents of the
  * image data, but may rely on the caller-provided type string for formats that
@@ -542,8 +504,8 @@ inline GPUTexture LoadGPUTexture_IO(GPUDeviceRef device,
  *
  * There is a separate function to read files from disk without having to deal
  * with IOStream: `LoadGPUTexture(device, copy_pass, "filename.jpg", width,
- * height) will call this function and manage those details for you, determining
- * the file type from the filename's extension.
+ * height)` will call this function and manage those details for you,
+ * determining the file type from the filename's extension.
  *
  * There is also LoadGPUTexture_IO(), which is equivalent to this function
  * except that it will rely on SDL_image to determine what type of data it is
@@ -558,8 +520,6 @@ inline GPUTexture LoadGPUTexture_IO(GPUDeviceRef device,
  * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @param width a pointer filled in with the width of the GPU texture. may be
  *              nullptr.
  * @param height a pointer filled in with the width of the GPU texture. may be
@@ -573,14 +533,13 @@ inline GPUTexture LoadGPUTexture_IO(GPUDeviceRef device,
  */
 inline GPUTexture LoadGPUTextureTyped_IO(GPUDeviceRef device,
                                          GPUCopyPass copy_pass,
-                                         IOStreamRef src,
+                                         IOStreamParam src,
                                          StringParam type,
-                                         bool closeio = false,
                                          int* width = nullptr,
                                          int* height = nullptr)
 {
   return IMG_LoadGPUTextureTyped_IO(
-    device, copy_pass, src, closeio, type, width, height);
+    device, copy_pass, src.stream, src.closeio, type, width, height);
 }
 
 /**
@@ -1739,51 +1698,11 @@ inline Surface LoadPCX_IO(IOStreamRef src)
  * @sa LoadXPM_IO
  * @sa LoadXV_IO
  */
-inline Surface LoadPNG_IO(IOStreamRef src)
+inline Surface LoadPNG_IO(IOStreamParam src)
 {
-  return Surface{IMG_LoadPNG_IO(src)};
-}
-
-/**
- * Load a PNG image directly.
- *
- * If you know you definitely have a PNG image, you can call this function,
- * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStream
- * interface available here.
- *
- * @param src an IOStream to load image data from.
- * @param closeio if true, calls IOStream.Close() on `src` before returning,
- *                even in the case of an error.
- * @returns SDL surface, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa LoadAVIF_IO
- * @sa LoadBMP_IO
- * @sa LoadCUR_IO
- * @sa LoadGIF_IO
- * @sa LoadICO_IO
- * @sa LoadJPG_IO
- * @sa LoadJXL_IO
- * @sa LoadLBM_IO
- * @sa LoadPCX_IO
- * @sa LoadPNM_IO
- * @sa LoadQOI_IO
- * @sa LoadSVG_IO
- * @sa LoadTGA_IO
- * @sa LoadTIF_IO
- * @sa LoadWEBP_IO
- * @sa LoadXCF_IO
- * @sa LoadXPM_IO
- * @sa LoadXV_IO
- */
-inline Surface LoadPNG_IO(IOStreamRef src, bool closeio)
-{
-  if (!closeio) return Surface{LoadPNG_IO(src)};
-  Surface temp{LoadPNG_IO(src)};
-  src.Close();
-  return temp;
+  Surface s{IMG_LoadPNG_IO(src.stream)};
+  if (src.closeio) src.stream.Close();
+  return s;
 }
 
 /**
@@ -2256,17 +2175,12 @@ inline void SurfaceBase::Save(StringParam filename) const
  *
  * If you just want to save to a filename, you can use Save() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * For formats that accept a quality, a default quality of 90 will be used.
  *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
@@ -2283,18 +2197,15 @@ inline void SurfaceBase::Save(StringParam filename) const
  * @sa SaveWEBP_IO
  */
 inline void SaveTyped_IO(SurfaceConstRef surface,
-                         IOStreamRef dst,
-                         StringParam type,
-                         bool closeio = false)
+                         IOStreamParam dst,
+                         StringParam type)
 {
-  CheckError(IMG_SaveTyped_IO(surface, dst, closeio, type));
+  CheckError(IMG_SaveTyped_IO(surface, dst.stream, dst.closeio, type));
 }
 
-inline void SurfaceBase::SaveTyped_IO(IOStreamRef dst,
-                                      StringParam type,
-                                      bool closeio) const
+inline void SurfaceBase::SaveTyped_IO(IOStreamParam dst, StringParam type) const
 {
-  SDL::SaveTyped_IO(get(), dst, type, closeio);
+  SDL::SaveTyped_IO(get(), dst, type);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -2324,27 +2235,19 @@ inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
  *
  * If you just want to save to a filename, you can use SaveAVIF() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa SaveAVIF
  */
-inline void SaveAVIF_IO(SurfaceRef surface,
-                        IOStreamRef dst,
-                        int quality,
-                        bool closeio = false)
+inline void SaveAVIF_IO(SurfaceRef surface, IOStreamParam dst, int quality)
 {
-  CheckError(IMG_SaveAVIF_IO(surface, dst, closeio, quality));
+  CheckError(IMG_SaveAVIF_IO(surface, dst.stream, dst.closeio, quality));
 }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -2372,24 +2275,17 @@ inline void SaveCUR(SurfaceRef surface, StringParam file)
  *
  * If you just want to save to a filename, you can use SaveCUR() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa SaveCUR
  */
-inline void SaveCUR_IO(SurfaceRef surface,
-                       IOStreamRef dst,
-                       bool closeio = false)
+inline void SaveCUR_IO(SurfaceRef surface, IOStreamParam dst)
 {
-  CheckError(IMG_SaveCUR_IO(surface, dst, closeio));
+  CheckError(IMG_SaveCUR_IO(surface, dst.stream, dst.closeio));
 }
 
 /**
@@ -2415,24 +2311,17 @@ inline void SaveGIF(SurfaceRef surface, StringParam file)
  *
  * If you just want to save to a filename, you can use SaveGIF() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa SaveGIF
  */
-inline void SaveGIF_IO(SurfaceRef surface,
-                       IOStreamRef dst,
-                       bool closeio = false)
+inline void SaveGIF_IO(SurfaceRef surface, IOStreamParam dst)
 {
-  CheckError(IMG_SaveGIF_IO(surface, dst, closeio));
+  CheckError(IMG_SaveGIF_IO(surface, dst.stream, dst.closeio));
 }
 
 /**
@@ -2458,24 +2347,17 @@ inline void SaveICO(SurfaceRef surface, StringParam file)
  *
  * If you just want to save to a filename, you can use SaveICO() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa SaveICO
  */
-inline void SaveICO_IO(SurfaceRef surface,
-                       IOStreamRef dst,
-                       bool closeio = false)
+inline void SaveICO_IO(SurfaceRef surface, IOStreamParam dst)
 {
-  CheckError(IMG_SaveICO_IO(surface, dst, closeio));
+  CheckError(IMG_SaveICO_IO(surface, dst.stream, dst.closeio));
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -2505,27 +2387,19 @@ inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
  *
  * If you just want to save to a filename, you can use SaveJPG() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa SaveJPG
  */
-inline void SaveJPG_IO(SurfaceRef surface,
-                       IOStreamRef dst,
-                       int quality,
-                       bool closeio = false)
+inline void SaveJPG_IO(SurfaceRef surface, IOStreamParam dst, int quality)
 {
-  CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
+  CheckError(IMG_SaveJPG_IO(surface, dst.stream, dst.closeio, quality));
 }
 
 /**
@@ -2556,29 +2430,22 @@ inline void SurfaceBase::SavePNG(StringParam file) const
  *
  * If you just want to save to a filename, you can use SavePNG() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa SavePNG
  */
-inline void SavePNG_IO(SurfaceRef surface,
-                       IOStreamRef dst,
-                       bool closeio = false)
+inline void SavePNG_IO(SurfaceRef surface, IOStreamParam dst)
 {
-  CheckError(IMG_SavePNG_IO(surface, dst, closeio));
+  CheckError(IMG_SavePNG_IO(surface, dst.stream, dst.closeio));
 }
 
-inline void SurfaceBase::SavePNG_IO(IOStreamRef dst, bool closeio) const
+inline void SurfaceBase::SavePNG_IO(IOStreamParam dst) const
 {
-  SDL::SavePNG_IO(get(), dst, closeio);
+  SDL::SavePNG_IO(get(), dst);
 }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -2606,24 +2473,17 @@ inline void SaveTGA(SurfaceRef surface, StringParam file)
  *
  * If you just want to save to a filename, you can use SaveTGA() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa SaveTGA
  */
-inline void SaveTGA_IO(SurfaceRef surface,
-                       IOStreamRef dst,
-                       bool closeio = false)
+inline void SaveTGA_IO(SurfaceRef surface, IOStreamParam dst)
 {
-  CheckError(IMG_SaveTGA_IO(surface, dst, closeio));
+  CheckError(IMG_SaveTGA_IO(surface, dst.stream, dst.closeio));
 }
 
 /**
@@ -2653,29 +2513,21 @@ inline void SaveWEBP(SurfaceRef surface, StringParam file, float quality)
  *
  * If you just want to save to a filename, you can use SaveWEBP() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
  * @param quality between 0 and 100. For lossy, 0 gives the smallest size and
  *                100 the largest. For lossless, this parameter is the amount of
  *                effort put into the compression: 0 is the fastest but gives
  *                larger files compared to the slowest, but best, 100.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa SaveWEBP
  */
-inline void SaveWEBP_IO(SurfaceRef surface,
-                        IOStreamRef dst,
-                        float quality,
-                        bool closeio = false)
+inline void SaveWEBP_IO(SurfaceRef surface, IOStreamParam dst, float quality)
 {
-  CheckError(IMG_SaveWEBP_IO(surface, dst, closeio, quality));
+  CheckError(IMG_SaveWEBP_IO(surface, dst.stream, dst.closeio, quality));
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -2763,15 +2615,10 @@ struct AnimationBase : ResourceBaseT<AnimationRaw, AnimationRawConst>
    * If you just want to save to a filename, you can use SaveAnimation()
    * instead.
    *
-   * If `closeio` is true, `dst` will be closed before returning, whether this
-   * function succeeds or not.
-   *
    * For formats that accept a quality, a default quality of 90 will be used.
    *
    * @param dst an IOStream that data will be written to.
    * @param type a filename extension that represent this data ("GIF", etc).
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
@@ -2783,17 +2630,12 @@ struct AnimationBase : ResourceBaseT<AnimationRaw, AnimationRawConst>
    * @sa SaveGIFAnimation_IO
    * @sa SaveWEBPAnimation_IO
    */
-  void SaveTyped_IO(IOStreamRef dst, StringParam type, bool closeio = false);
+  void SaveTyped_IO(IOStreamParam dst, StringParam type);
 
   /**
    * Save an animation in ANI format to an IOStream.
    *
-   * If `closeio` is true, `dst` will be closed before returning, whether this
-   * function succeeds or not.
-   *
    * @param dst an IOStream from which data will be written to.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
@@ -2805,17 +2647,12 @@ struct AnimationBase : ResourceBaseT<AnimationRaw, AnimationRawConst>
    * @sa SaveGIFAnimation_IO
    * @sa SaveWEBPAnimation_IO
    */
-  void SaveANI_IO(IOStreamRef dst, bool closeio = false);
+  void SaveANI_IO(IOStreamParam dst);
 
   /**
    * Save an animation in APNG format to an IOStream.
    *
-   * If `closeio` is true, `dst` will be closed before returning, whether this
-   * function succeeds or not.
-   *
    * @param dst an IOStream from which data will be written to.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
@@ -2827,19 +2664,14 @@ struct AnimationBase : ResourceBaseT<AnimationRaw, AnimationRawConst>
    * @sa SaveGIFAnimation_IO
    * @sa SaveWEBPAnimation_IO
    */
-  void SaveAPNG_IO(IOStreamRef dst, bool closeio = false);
+  void SaveAPNG_IO(IOStreamParam dst);
 
   /**
    * Save an animation in AVIF format to an IOStream.
    *
-   * If `closeio` is true, `dst` will be closed before returning, whether this
-   * function succeeds or not.
-   *
    * @param dst an IOStream from which data will be written to.
    * @param quality the desired quality, ranging between 0 (lowest) and 100
    *                (highest).
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
@@ -2851,17 +2683,12 @@ struct AnimationBase : ResourceBaseT<AnimationRaw, AnimationRawConst>
    * @sa SaveGIFAnimation_IO
    * @sa SaveWEBPAnimation_IO
    */
-  void SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio = false);
+  void SaveAVIF_IO(IOStreamParam dst, int quality);
 
   /**
    * Save an animation in GIF format to an IOStream.
    *
-   * If `closeio` is true, `dst` will be closed before returning, whether this
-   * function succeeds or not.
-   *
    * @param dst an IOStream from which data will be written to.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
@@ -2873,21 +2700,16 @@ struct AnimationBase : ResourceBaseT<AnimationRaw, AnimationRawConst>
    * @sa SaveAVIFAnimation_IO
    * @sa SaveWEBPAnimation_IO
    */
-  void SaveGIF_IO(IOStreamRef dst, bool closeio = false);
+  void SaveGIF_IO(IOStreamParam dst);
 
   /**
    * Save an animation in WEBP format to an IOStream.
-   *
-   * If `closeio` is true, `dst` will be closed before returning, whether this
-   * function succeeds or not.
    *
    * @param dst an IOStream from which data will be written to.
    * @param quality between 0 and 100. For lossy, 0 gives the smallest size and
    *                100 the largest. For lossless, this parameter is the amount
    *                of effort put into the compression: 0 is the fastest but
    *                gives larger files compared to the slowest, but best, 100.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
@@ -2899,7 +2721,7 @@ struct AnimationBase : ResourceBaseT<AnimationRaw, AnimationRawConst>
    * @sa SaveAVIFAnimation_IO
    * @sa SaveGIFAnimation_IO
    */
-  void SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio = false);
+  void SaveWEBP_IO(IOStreamParam dst, int quality);
 
   /**
    * Create an animated cursor from an animation.
@@ -2969,13 +2791,7 @@ struct Animation : AnimationBase
   /**
    * Load an animation from an IOStream.
    *
-   * If `closeio` is true, `src` will be closed before returning, whether this
-   * function succeeds or not. SDL_image reads everything it needs from `src`
-   * during this call in any case.
-   *
    * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
    * @post a new Animation, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
@@ -2990,7 +2806,7 @@ struct Animation : AnimationBase
    * @sa LoadWEBPAnimation_IO
    * @sa FreeAnimation
    */
-  Animation(IOStreamRef src, bool closeio = false);
+  Animation(IOStreamParam src);
 
   /// Destructor
   ~Animation() { IMG_FreeAnimation(get()); }
@@ -3095,21 +2911,15 @@ inline Animation::Animation(StringParam file)
 {
 }
 
-inline Animation::Animation(IOStreamRef src, bool closeio)
-  : Animation(IMG_LoadAnimation_IO(src, closeio))
+inline Animation::Animation(IOStreamParam src)
+  : Animation(IMG_LoadAnimation_IO(src.stream, src.closeio))
 {
 }
 
 /**
  * Load an animation from an IOStream.
  *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -3124,10 +2934,7 @@ inline Animation::Animation(IOStreamRef src, bool closeio)
  * @sa LoadWEBPAnimation_IO
  * @sa FreeAnimation
  */
-inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
-{
-  return Animation(src, closeio);
-}
+inline Animation LoadAnimation_IO(IOStreamParam src) { return Animation(src); }
 
 /**
  * Load an animation from an IOStream.
@@ -3138,14 +2945,8 @@ inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
  * it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on its
  * ability to guess the format.
  *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
  * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("GIF", etc).
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -3160,11 +2961,9 @@ inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
  * @sa LoadWEBPAnimation_IO
  * @sa FreeAnimation
  */
-inline Animation LoadAnimationTyped_IO(IOStreamRef src,
-                                       StringParam type,
-                                       bool closeio = false)
+inline Animation LoadAnimationTyped_IO(IOStreamParam src, StringParam type)
 {
-  return Animation(IMG_LoadAnimationTyped_IO(src, closeio, type));
+  return Animation(IMG_LoadAnimationTyped_IO(src.stream, src.closeio, type));
 }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -3346,15 +3145,10 @@ inline void AnimationBase::Save(StringParam file)
  *
  * If you just want to save to a filename, you can use SaveAnimation() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * For formats that accept a quality, a default quality of 90 will be used.
  *
  * @param anim the animation to save.
  * @param dst an IOStream that data will be written to.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @param type a filename extension that represent this data ("GIF", etc).
  * @throws Error on failure.
  *
@@ -3368,30 +3162,22 @@ inline void AnimationBase::Save(StringParam file)
  * @sa SaveWEBPAnimation_IO
  */
 inline void SaveAnimationTyped_IO(AnimationRef anim,
-                                  IOStreamRef dst,
-                                  StringParam type,
-                                  bool closeio = false)
+                                  IOStreamParam dst,
+                                  StringParam type)
 {
-  CheckError(IMG_SaveAnimationTyped_IO(anim, dst, closeio, type));
+  CheckError(IMG_SaveAnimationTyped_IO(anim, dst.stream, dst.closeio, type));
 }
 
-inline void AnimationBase::SaveTyped_IO(IOStreamRef dst,
-                                        StringParam type,
-                                        bool closeio)
+inline void AnimationBase::SaveTyped_IO(IOStreamParam dst, StringParam type)
 {
-  SDL::SaveAnimationTyped_IO(get(), dst, type, closeio);
+  SDL::SaveAnimationTyped_IO(get(), dst, type);
 }
 
 /**
  * Save an animation in ANI format to an IOStream.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param anim the animation to save.
  * @param dst an IOStream from which data will be written to.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
@@ -3403,28 +3189,21 @@ inline void AnimationBase::SaveTyped_IO(IOStreamRef dst,
  * @sa SaveGIFAnimation_IO
  * @sa SaveWEBPAnimation_IO
  */
-inline void SaveANIAnimation_IO(AnimationRef anim,
-                                IOStreamRef dst,
-                                bool closeio = false)
+inline void SaveANIAnimation_IO(AnimationRef anim, IOStreamParam dst)
 {
-  CheckError(IMG_SaveANIAnimation_IO(anim, dst, closeio));
+  CheckError(IMG_SaveANIAnimation_IO(anim, dst.stream, dst.closeio));
 }
 
-inline void AnimationBase::SaveANI_IO(IOStreamRef dst, bool closeio)
+inline void AnimationBase::SaveANI_IO(IOStreamParam dst)
 {
-  SDL::SaveANIAnimation_IO(get(), dst, closeio);
+  SDL::SaveANIAnimation_IO(get(), dst);
 }
 
 /**
  * Save an animation in APNG format to an IOStream.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param anim the animation to save.
  * @param dst an IOStream from which data will be written to.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
@@ -3436,30 +3215,23 @@ inline void AnimationBase::SaveANI_IO(IOStreamRef dst, bool closeio)
  * @sa SaveGIFAnimation_IO
  * @sa SaveWEBPAnimation_IO
  */
-inline void SaveAPNGAnimation_IO(AnimationRef anim,
-                                 IOStreamRef dst,
-                                 bool closeio = false)
+inline void SaveAPNGAnimation_IO(AnimationRef anim, IOStreamParam dst)
 {
-  CheckError(IMG_SaveAPNGAnimation_IO(anim, dst, closeio));
+  CheckError(IMG_SaveAPNGAnimation_IO(anim, dst.stream, dst.closeio));
 }
 
-inline void AnimationBase::SaveAPNG_IO(IOStreamRef dst, bool closeio)
+inline void AnimationBase::SaveAPNG_IO(IOStreamParam dst)
 {
-  SDL::SaveAPNGAnimation_IO(get(), dst, closeio);
+  SDL::SaveAPNGAnimation_IO(get(), dst);
 }
 
 /**
  * Save an animation in AVIF format to an IOStream.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param anim the animation to save.
  * @param dst an IOStream from which data will be written to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
@@ -3472,30 +3244,22 @@ inline void AnimationBase::SaveAPNG_IO(IOStreamRef dst, bool closeio)
  * @sa SaveWEBPAnimation_IO
  */
 inline void SaveAVIFAnimation_IO(AnimationRef anim,
-                                 IOStreamRef dst,
-                                 int quality,
-                                 bool closeio = false)
+                                 IOStreamParam dst,
+                                 int quality)
 {
-  CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, closeio, quality));
+  CheckError(IMG_SaveAVIFAnimation_IO(anim, dst.stream, dst.closeio, quality));
 }
 
-inline void AnimationBase::SaveAVIF_IO(IOStreamRef dst,
-                                       int quality,
-                                       bool closeio)
+inline void AnimationBase::SaveAVIF_IO(IOStreamParam dst, int quality)
 {
-  SDL::SaveAVIFAnimation_IO(get(), dst, quality, closeio);
+  SDL::SaveAVIFAnimation_IO(get(), dst, quality);
 }
 
 /**
  * Save an animation in GIF format to an IOStream.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param anim the animation to save.
  * @param dst an IOStream from which data will be written to.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
@@ -3507,23 +3271,18 @@ inline void AnimationBase::SaveAVIF_IO(IOStreamRef dst,
  * @sa SaveAVIFAnimation_IO
  * @sa SaveWEBPAnimation_IO
  */
-inline void SaveGIFAnimation_IO(AnimationRef anim,
-                                IOStreamRef dst,
-                                bool closeio = false)
+inline void SaveGIFAnimation_IO(AnimationRef anim, IOStreamParam dst)
 {
-  CheckError(IMG_SaveGIFAnimation_IO(anim, dst, closeio));
+  CheckError(IMG_SaveGIFAnimation_IO(anim, dst.stream, dst.closeio));
 }
 
-inline void AnimationBase::SaveGIF_IO(IOStreamRef dst, bool closeio)
+inline void AnimationBase::SaveGIF_IO(IOStreamParam dst)
 {
-  SDL::SaveGIFAnimation_IO(get(), dst, closeio);
+  SDL::SaveGIFAnimation_IO(get(), dst);
 }
 
 /**
  * Save an animation in WEBP format to an IOStream.
- *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
  *
  * @param anim the animation to save.
  * @param dst an IOStream from which data will be written to.
@@ -3531,8 +3290,6 @@ inline void AnimationBase::SaveGIF_IO(IOStreamRef dst, bool closeio)
  *                100 the largest. For lossless, this parameter is the amount of
  *                effort put into the compression: 0 is the fastest but gives
  *                larger files compared to the slowest, but best, 100.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
@@ -3545,18 +3302,15 @@ inline void AnimationBase::SaveGIF_IO(IOStreamRef dst, bool closeio)
  * @sa SaveGIFAnimation_IO
  */
 inline void SaveWEBPAnimation_IO(AnimationRef anim,
-                                 IOStreamRef dst,
-                                 int quality,
-                                 bool closeio = false)
+                                 IOStreamParam dst,
+                                 int quality)
 {
-  CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, closeio, quality));
+  CheckError(IMG_SaveWEBPAnimation_IO(anim, dst.stream, dst.closeio, quality));
 }
 
-inline void AnimationBase::SaveWEBP_IO(IOStreamRef dst,
-                                       int quality,
-                                       bool closeio)
+inline void AnimationBase::SaveWEBP_IO(IOStreamParam dst, int quality)
 {
-  SDL::SaveWEBPAnimation_IO(get(), dst, quality, closeio);
+  SDL::SaveWEBPAnimation_IO(get(), dst, quality);
 }
 
 /**
@@ -3720,14 +3474,8 @@ struct AnimationEncoder : AnimationEncoderBase
    * - GIF
    * - WEBP
    *
-   * If `closeio` is true, `dst` will be closed before returning if this
-   * function fails, or when the animation encoder is closed if this function
-   * succeeds.
-   *
    * @param dst an IOStream that will be used to save the stream.
    * @param type a filename extension that represent this data ("WEBP", etc).
-   * @param closeio true to close the IOStream when done, false to leave it
-   *                open.
    * @post a new AnimationEncoder on success.
    * @throws Error on failure.
    *
@@ -3738,7 +3486,7 @@ struct AnimationEncoder : AnimationEncoderBase
    * @sa AddAnimationEncoderFrame
    * @sa CloseAnimationEncoder
    */
-  AnimationEncoder(IOStreamRef dst, StringParam type, bool closeio = false);
+  AnimationEncoder(IOStreamParam dst, StringParam type);
 
   /**
    * Create an animation encoder with the specified properties.
@@ -3835,11 +3583,9 @@ inline AnimationEncoder::AnimationEncoder(StringParam file)
 {
 }
 
-inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
-                                          StringParam type,
-                                          bool closeio)
+inline AnimationEncoder::AnimationEncoder(IOStreamParam dst, StringParam type)
   : AnimationEncoder(
-      CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
+      CheckError(IMG_CreateAnimationEncoder_IO(dst.stream, dst.closeio, type)))
 {
 }
 
@@ -3860,12 +3606,8 @@ inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
  * - GIF
  * - WEBP
  *
- * If `closeio` is true, `dst` will be closed before returning if this function
- * fails, or when the animation encoder is closed if this function succeeds.
- *
  * @param dst an IOStream that will be used to save the stream.
  * @param type a filename extension that represent this data ("WEBP", etc).
- * @param closeio true to close the IOStream when done, false to leave it open.
  * @returns a new AnimationEncoder on success.
  * @throws Error on failure.
  *
@@ -3876,11 +3618,10 @@ inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
  * @sa AddAnimationEncoderFrame
  * @sa CloseAnimationEncoder
  */
-inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamRef dst,
-                                                  StringParam type,
-                                                  bool closeio = false)
+inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamParam dst,
+                                                  StringParam type)
 {
-  return AnimationEncoder(dst, type, closeio);
+  return AnimationEncoder(dst, type);
 }
 
 /**
@@ -4228,13 +3969,7 @@ struct AnimationDecoder : AnimationDecoderBase
    * - GIF
    * - WEBP
    *
-   * If `closeio` is true, `src` will be closed before returning if this
-   * function fails, or when the animation decoder is closed if this function
-   * succeeds.
-   *
    * @param src an IOStream containing a series of images.
-   * @param closeio true to close the IOStream when done, false to leave it
-   *                open.
    * @param type a filename extension that represent this data ("WEBP", etc).
    * @post a new AnimationDecoder on success.
    * @throws Error on failure.
@@ -4247,7 +3982,7 @@ struct AnimationDecoder : AnimationDecoderBase
    * @sa ResetAnimationDecoder
    * @sa CloseAnimationDecoder
    */
-  AnimationDecoder(IOStreamRef src, StringParam type, bool closeio = false);
+  AnimationDecoder(IOStreamParam src, StringParam type);
 
   /**
    * Create an animation decoder with the specified properties.
@@ -4336,11 +4071,9 @@ inline AnimationDecoder::AnimationDecoder(StringParam file)
 {
 }
 
-inline AnimationDecoder::AnimationDecoder(IOStreamRef src,
-                                          StringParam type,
-                                          bool closeio)
+inline AnimationDecoder::AnimationDecoder(IOStreamParam src, StringParam type)
   : AnimationDecoder(
-      CheckError(IMG_CreateAnimationDecoder_IO(src, closeio, type)))
+      CheckError(IMG_CreateAnimationDecoder_IO(src.stream, src.closeio, type)))
 {
 }
 
@@ -4361,11 +4094,7 @@ inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
  * - GIF
  * - WEBP
  *
- * If `closeio` is true, `src` will be closed before returning if this function
- * fails, or when the animation decoder is closed if this function succeeds.
- *
  * @param src an IOStream containing a series of images.
- * @param closeio true to close the IOStream when done, false to leave it open.
  * @param type a filename extension that represent this data ("WEBP", etc).
  * @returns a new AnimationDecoder on success.
  * @throws Error on failure.
@@ -4378,11 +4107,10 @@ inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
  * @sa ResetAnimationDecoder
  * @sa CloseAnimationDecoder
  */
-inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamRef src,
-                                                  StringParam type,
-                                                  bool closeio = false)
+inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamParam src,
+                                                  StringParam type)
 {
-  return AnimationDecoder(src, type, closeio);
+  return AnimationDecoder(src, type);
 }
 
 /**
@@ -4675,8 +4403,8 @@ inline Surface::Surface(StringParam file)
 {
 }
 
-inline Surface::Surface(IOStreamRef src, bool closeio)
-  : Surface(LoadBMP_IO(src, closeio))
+inline Surface::Surface(IOStreamParam src)
+  : Surface(LoadBMP_IO(src))
 {
 }
 
@@ -4685,8 +4413,8 @@ inline Texture::Texture(RendererRef renderer, StringParam file)
 {
 }
 
-inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
-  : Texture(renderer, Surface(src, closeio))
+inline Texture::Texture(RendererRef renderer, IOStreamParam src)
+  : Texture(renderer, Surface(src))
 {
 }
 

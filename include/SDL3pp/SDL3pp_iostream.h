@@ -2237,6 +2237,36 @@ inline void FlushIO(IOStreamRef context) { CheckError(SDL_FlushIO(context)); }
 
 inline void IOStreamBase::Flush() { SDL::FlushIO(get()); }
 
+/// Wrapper to be used as parameter to LoadFile_IO() and SaveFile_IO() and
+/// similar
+struct IOStreamParam
+{
+  IOStreamRef stream; ///< The IOStream to read from or write to
+  bool closeio;       ///< Whether to close the IOStream after the operation
+
+  /// Constructs from an IOStreamRef, does not take ownership
+  IOStreamParam(IOStreamRef stream)
+    : stream(stream)
+    , closeio(false)
+  {
+  }
+
+  /// Constructs from an IOStream, takes ownership.
+  IOStreamParam(IOStream&& stream)
+    : stream(std::move(stream).release())
+    , closeio(true)
+  {
+  }
+
+  /// Constructs from an IOStreamRaw, does not take ownership by default, but
+  /// can be set to take ownership
+  IOStreamParam(IOStreamRaw stream, bool closeio = false)
+    : stream(stream)
+    , closeio(closeio)
+  {
+  }
+};
+
 /**
  * Load all the data from an SDL data stream.
  *
@@ -2247,8 +2277,6 @@ inline void IOStreamBase::Flush() { SDL::FlushIO(get()); }
  * The data should be freed with free().
  *
  * @param src the IOStream to read all available data from.
- * @param closeio if true, calls CloseIO() on `src` before returning, even in
- *                the case of an error.
  * @returns the data or nullptr on failure; call GetError() for more
  *          information.
  *
@@ -2259,10 +2287,11 @@ inline void IOStreamBase::Flush() { SDL::FlushIO(get()); }
  * @sa LoadFile
  * @sa SaveFile_IO
  */
-inline StringResult LoadFile_IO(IOStreamRef src, bool closeio = true)
+inline StringResult LoadFile_IO(IOStreamParam src)
 {
   size_t datasize = 0;
-  auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, closeio));
+  auto data =
+    static_cast<char*>(SDL_LoadFile_IO(src.stream, &datasize, src.closeio));
   return StringResult{CheckError(data), datasize};
 }
 
@@ -2325,8 +2354,6 @@ inline StringResult LoadFile(StringParam file)
  * @param src the IOStream to write all data to.
  * @param data the data to be written. If datasize is 0, may be nullptr or a
  *             invalid pointer.
- * @param closeio if true, calls CloseIO() on `src` before returning, even in
- *                the case of an error.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -2336,9 +2363,10 @@ inline StringResult LoadFile(StringParam file)
  * @sa SaveFile
  * @sa LoadFile_IO
  */
-inline void SaveFile_IO(IOStreamRef src, SourceBytes data, bool closeio = true)
+inline void SaveFile_IO(IOStreamParam src, SourceBytes data)
 {
-  CheckError(SDL_SaveFile_IO(src, data.data(), data.size_bytes(), closeio));
+  CheckError(
+    SDL_SaveFile_IO(src.stream, data.data(), data.size_bytes(), src.closeio));
 }
 
 inline void IOStreamBase::SaveFile(SourceBytes data)

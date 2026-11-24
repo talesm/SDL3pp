@@ -222,7 +222,7 @@ struct AtomicInt : AtomicIntRaw
    * @param value the value for value.
    */
   constexpr AtomicInt(int value)
-    : AtomicIntRaw(value)
+    : AtomicIntRaw{value}
   {
   }
 
@@ -507,7 +507,7 @@ struct AtomicU32 : AtomicU32Raw
    * @param value the value to be wrapped
    */
   constexpr AtomicU32(Uint32 value)
-    : AtomicU32Raw(value)
+    : AtomicU32Raw{value}
   {
   }
 

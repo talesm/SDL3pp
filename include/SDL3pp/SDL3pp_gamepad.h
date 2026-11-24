@@ -714,7 +714,6 @@ struct GamepadBase : ResourceBaseT<GamepadRaw>
   /**
    * Get the SDL joystick layer bindings for a gamepad.
    *
-   * @param count a pointer filled in with the number of bindings returned.
    * @returns a nullptr terminated array of pointers to bindings or nullptr on
    *          failure; call GetError() for more information.
    *
@@ -1187,8 +1186,6 @@ inline int AddGamepadMapping(StringParam mapping)
  * constrained environment.
  *
  * @param src the data stream for the mappings to be added.
- * @param closeio if true, calls CloseIO() on `src` before returning, even in
- *                the case of an error.
  * @returns the number of mappings added or -1 on failure; call GetError() for
  *          more information.
  *
@@ -1204,9 +1201,9 @@ inline int AddGamepadMapping(StringParam mapping)
  * @sa SDL_HINT_GAMECONTROLLERCONFIG_FILE
  * @sa EVENT_GAMEPAD_ADDED
  */
-inline int AddGamepadMappingsFromIO(IOStreamRef src, bool closeio)
+inline int AddGamepadMappingsFromIO(IOStreamParam src)
 {
-  return SDL_AddGamepadMappingsFromIO(src, closeio);
+  return SDL_AddGamepadMappingsFromIO(src.stream, src.closeio);
 }
 
 /**
