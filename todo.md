@@ -38,12 +38,12 @@ Todo for next version
   - [x] CreateAnimationEncoder_IO;
   - [x] CreateAnimationDecoder_IO;
   - [x] LoadWAV_IO;
-  - [ ] LoadAudio_IO;
-  - [ ] LoadRawAudio_IO;
-  - [ ] LoadRawAudioNoCopy (just remove free_when_done);
-  - [ ] SetTrackIOStream;
-  - [ ] SetTrackRawIOStream;
-  - [ ] CreateAudioDecoder_IO;
+  - [x] LoadAudio_IO;
+  - [x] LoadRawAudio_IO;
+  - [x] LoadRawAudioNoCopy (make remove free_when_done defaults to false);
+  - [x] SetTrackIOStream;
+  - [x] SetTrackRawIOStream;
+  - [x] CreateAudioDecoder_IO;
   - [x] OpenFontIO;
   - [x] AddGamepadMappingsFromIO;
 

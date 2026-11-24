@@ -198856,16 +198856,11 @@
               "parameters": [
                 {
                   "name": "io",
-                  "type": "IOStreamRef"
+                  "type": "IOStreamParam"
                 },
                 {
                   "name": "predecode",
                   "type": "bool"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
                 }
               ],
               "sourceName": "MIX_LoadAudio_IO",
@@ -199093,16 +199088,11 @@
               "parameters": [
                 {
                   "name": "io",
-                  "type": "IOStreamRef"
+                  "type": "IOStreamParam"
                 },
                 {
                   "name": "spec",
                   "type": "const AudioSpec &"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
                 }
               ],
               "sourceName": "MIX_LoadRawAudio_IO",
@@ -199269,7 +199259,8 @@
                 },
                 {
                   "name": "free_when_done",
-                  "type": "bool"
+                  "type": "bool",
+                  "default": "false"
                 }
               ],
               "sourceName": "MIX_LoadRawAudioNoCopy",
@@ -201253,16 +201244,11 @@
                     },
                     {
                       "name": "io",
-                      "type": "IOStreamRef"
+                      "type": "IOStreamParam"
                     },
                     {
                       "name": "predecode",
                       "type": "bool"
-                    },
-                    {
-                      "name": "closeio",
-                      "type": "bool",
-                      "default": "false"
                     }
                   ],
                   "sourceName": "MIX_LoadAudio_IO",
@@ -201510,16 +201496,11 @@
                           },
                           {
                             "name": "io",
-                            "type": "IOStreamRef"
+                            "type": "IOStreamParam"
                           },
                           {
                             "name": "spec",
                             "type": "const AudioSpec &"
-                          },
-                          {
-                            "name": "closeio",
-                            "type": "bool",
-                            "default": "false"
                           }
                         ],
                         "sourceName": "MIX_LoadRawAudio_IO",
@@ -202098,12 +202079,7 @@
               "parameters": [
                 {
                   "name": "io",
-                  "type": "IOStreamRef"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
+                  "type": "IOStreamParam"
                 }
               ],
               "sourceName": "MIX_SetTrackIOStream",
@@ -202167,16 +202143,11 @@
               "parameters": [
                 {
                   "name": "io",
-                  "type": "IOStreamRef"
+                  "type": "IOStreamParam"
                 },
                 {
                   "name": "spec",
                   "type": "const AudioSpec &"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
                 }
               ],
               "sourceName": "MIX_SetTrackRawIOStream",
@@ -205156,16 +205127,11 @@
             },
             {
               "name": "io",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "predecode",
               "type": "bool"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "MIX_LoadAudio_IO",
@@ -205181,14 +205147,10 @@
           "parameters": [
             {
               "name": "io",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "predecode",
-              "type": "bool"
-            },
-            {
-              "name": "closeio",
               "type": "bool"
             }
           ],
@@ -205210,14 +205172,10 @@
             },
             {
               "name": "io",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "predecode",
-              "type": "bool"
-            },
-            {
-              "name": "closeio",
               "type": "bool"
             }
           ],
@@ -205278,15 +205236,11 @@
                   },
                   {
                     "name": "io",
-                    "type": "IOStreamRef"
+                    "type": "IOStreamParam"
                   },
                   {
                     "name": "spec",
                     "type": "const AudioSpec &"
-                  },
-                  {
-                    "name": "closeio",
-                    "type": "bool"
                   }
                 ],
                 "sourceName": "MIX_LoadRawAudio_IO",
@@ -205786,16 +205740,11 @@
             },
             {
               "name": "io",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "spec",
               "type": "const AudioSpec &"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "MIX_LoadRawAudio_IO",
@@ -205811,15 +205760,11 @@
           "parameters": [
             {
               "name": "io",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "spec",
               "type": "const AudioSpec &"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
             }
           ],
           "sourceName": "MIX_LoadRawAudio_IO",
@@ -206022,7 +205967,8 @@
             },
             {
               "name": "free_when_done",
-              "type": "bool"
+              "type": "bool",
+              "default": "false"
             }
           ],
           "sourceName": "MIX_LoadRawAudioNoCopy",
@@ -206944,12 +206890,7 @@
             },
             {
               "name": "io",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "MIX_SetTrackIOStream",
@@ -206964,11 +206905,7 @@
           "parameters": [
             {
               "name": "io",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "MIX_SetTrackIOStream",
@@ -207040,16 +206977,11 @@
             },
             {
               "name": "io",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "spec",
               "type": "const AudioSpec &"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "MIX_SetTrackRawIOStream",
@@ -207064,15 +206996,11 @@
           "parameters": [
             {
               "name": "io",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "spec",
               "type": "const AudioSpec &"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
             }
           ],
           "sourceName": "MIX_SetTrackRawIOStream",
@@ -211681,12 +211609,7 @@
                     "parameters": [
                       {
                         "name": "io",
-                        "type": "IOStreamRef"
-                      },
-                      {
-                        "name": "closeio",
-                        "type": "bool",
-                        "default": "false"
+                        "type": "IOStreamParam"
                       },
                       {
                         "name": "props",
@@ -211825,11 +211748,7 @@
             "parameters": [
               {
                 "name": "io",
-                "type": "IOStreamRef"
-              },
-              {
-                "name": "closeio",
-                "type": "bool"
+                "type": "IOStreamParam"
               },
               {
                 "name": "props",
@@ -211902,12 +211821,7 @@
           "parameters": [
             {
               "name": "io",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             },
             {
               "name": "props",

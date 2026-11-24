@@ -448,8 +448,6 @@ struct MixerBase : ResourceBaseT<MixerRaw>
    *
    * @param io the IOStream to load data from.
    * @param predecode if true, data will be fully uncompressed before returning.
-   * @param closeio true if SDL_mixer should close `io` before returning
-   *                (success or failure).
    * @returns an audio object that can be used to make sound on a mixer, or
    *          nullptr on failure; call GetError() for more information.
    *
@@ -462,7 +460,7 @@ struct MixerBase : ResourceBaseT<MixerRaw>
    * @sa LoadAudio
    * @sa LoadAudioWithProperties
    */
-  Audio LoadAudio_IO(IOStreamRef io, bool predecode, bool closeio = false);
+  Audio LoadAudio_IO(IOStreamParam io, bool predecode);
 
   /**
    * Load audio for playback from a file.
@@ -568,8 +566,6 @@ struct MixerBase : ResourceBaseT<MixerRaw>
    *
    * @param io the IOStream to load data from.
    * @param spec what format the raw data is in.
-   * @param closeio true if SDL_mixer should close `io` before returning
-   *                (success or failure).
    * @returns an audio object that can be used to make sound on a mixer on
    *          success.
    * @throws Error on failure.
@@ -584,9 +580,7 @@ struct MixerBase : ResourceBaseT<MixerRaw>
    * @sa LoadRawAudioNoCopy
    * @sa LoadAudio_IO
    */
-  Audio LoadRawAudio_IO(IOStreamRef io,
-                        const AudioSpec& spec,
-                        bool closeio = false);
+  Audio LoadRawAudio_IO(IOStreamParam io, const AudioSpec& spec);
 
   /**
    * Load raw PCM data from a memory buffer.
@@ -664,7 +658,7 @@ struct MixerBase : ResourceBaseT<MixerRaw>
    */
   Audio LoadRawAudioNoCopy(SourceBytes data,
                            const AudioSpec& spec,
-                           bool free_when_done);
+                           bool free_when_done = false);
 
   /**
    * Create a Audio that generates a sinewave.
@@ -1768,8 +1762,6 @@ struct Audio : AudioBase
    *              nullptr.
    * @param io the IOStream to load data from.
    * @param predecode if true, data will be fully uncompressed before returning.
-   * @param closeio true if SDL_mixer should close `io` before returning
-   *                (success or failure).
    * @post an audio object that can be used to make sound on a mixer, or nullptr
    *       on failure; call GetError() for more information.
    *
@@ -1782,7 +1774,7 @@ struct Audio : AudioBase
    * @sa LoadAudio
    * @sa LoadAudioWithProperties
    */
-  Audio(MixerRef mixer, IOStreamRef io, bool predecode, bool closeio = false);
+  Audio(MixerRef mixer, IOStreamParam io, bool predecode);
 
   /**
    * Load audio for playback from a file.
@@ -1886,8 +1878,6 @@ struct Audio : AudioBase
    *              nullptr.
    * @param io the IOStream to load data from.
    * @param spec what format the raw data is in.
-   * @param closeio true if SDL_mixer should close `io` before returning
-   *                (success or failure).
    * @post an audio object that can be used to make sound on a mixer on success.
    * @throws Error on failure.
    *
@@ -1901,10 +1891,7 @@ struct Audio : AudioBase
    * @sa LoadRawAudioNoCopy
    * @sa LoadAudio_IO
    */
-  Audio(MixerRef mixer,
-        IOStreamRef io,
-        const AudioSpec& spec,
-        bool closeio = false);
+  Audio(MixerRef mixer, IOStreamParam io, const AudioSpec& spec);
 
   /**
    * Load raw PCM data from a memory buffer.
@@ -2284,7 +2271,6 @@ struct TrackBase : ResourceBaseT<TrackRaw>
    * (either by changing the track's input or destroying the track).
    *
    * @param io the new i/o stream to use as the track's input.
-   * @param closeio if true, close the stream when done with it.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -2293,7 +2279,7 @@ struct TrackBase : ResourceBaseT<TrackRaw>
    *
    * @sa SetTrackRawIOStream
    */
-  void SetIOStream(IOStreamRef io, bool closeio = false);
+  void SetIOStream(IOStreamParam io);
 
   /**
    * Set a Track's input to an IOStream providing raw PCM data.
@@ -2332,7 +2318,6 @@ struct TrackBase : ResourceBaseT<TrackRaw>
    *
    * @param io the new i/o stream to use as the track's input.
    * @param spec the format of the PCM data that the IOStream will provide.
-   * @param closeio if true, close the stream when done with it.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -2342,9 +2327,7 @@ struct TrackBase : ResourceBaseT<TrackRaw>
    * @sa SetTrackAudioStream
    * @sa SetTrackIOStream
    */
-  void SetRawIOStream(IOStreamRef io,
-                      const AudioSpec& spec,
-                      bool closeio = false);
+  void SetRawIOStream(IOStreamParam io, const AudioSpec& spec);
 
   /**
    * Assign an arbitrary tag to a track.
@@ -4177,8 +4160,6 @@ inline void MixerLock::reset()
  * @param mixer a mixer this audio is intended to be used with. May be nullptr.
  * @param io the IOStream to load data from.
  * @param predecode if true, data will be fully uncompressed before returning.
- * @param closeio true if SDL_mixer should close `io` before returning (success
- *                or failure).
  * @returns an audio object that can be used to make sound on a mixer, or
  *          nullptr on failure; call GetError() for more information.
  *
@@ -4191,26 +4172,18 @@ inline void MixerLock::reset()
  * @sa LoadAudio
  * @sa LoadAudioWithProperties
  */
-inline Audio LoadAudio_IO(MixerRef mixer,
-                          IOStreamRef io,
-                          bool predecode,
-                          bool closeio = false)
+inline Audio LoadAudio_IO(MixerRef mixer, IOStreamParam io, bool predecode)
 {
-  return Audio(mixer, io, predecode, closeio);
+  return Audio(mixer, io, predecode);
 }
 
-inline Audio MixerBase::LoadAudio_IO(IOStreamRef io,
-                                     bool predecode,
-                                     bool closeio)
+inline Audio MixerBase::LoadAudio_IO(IOStreamParam io, bool predecode)
 {
-  return Audio(get(), io, predecode, closeio);
+  return Audio(get(), io, predecode);
 }
 
-inline Audio::Audio(MixerRef mixer,
-                    IOStreamRef io,
-                    bool predecode,
-                    bool closeio)
-  : Audio(MIX_LoadAudio_IO(mixer, io, predecode, closeio))
+inline Audio::Audio(MixerRef mixer, IOStreamParam io, bool predecode)
+  : Audio(CheckError(MIX_LoadAudio_IO(mixer, io.stream, predecode, io.closeio)))
 {
 }
 
@@ -4224,11 +4197,8 @@ inline Audio::Audio(PropertiesRef props)
 {
 }
 
-inline Audio::Audio(MixerRef mixer,
-                    IOStreamRef io,
-                    const AudioSpec& spec,
-                    bool closeio)
-  : Audio(CheckError(MIX_LoadRawAudio_IO(mixer, io, &spec, closeio)))
+inline Audio::Audio(MixerRef mixer, IOStreamParam io, const AudioSpec& spec)
+  : Audio(CheckError(MIX_LoadRawAudio_IO(mixer, io.stream, &spec, io.closeio)))
 {
 }
 
@@ -4454,8 +4424,6 @@ constexpr auto DECODER_STRING =
  * @param mixer a mixer this audio is intended to be used with. May be nullptr.
  * @param io the IOStream to load data from.
  * @param spec what format the raw data is in.
- * @param closeio true if SDL_mixer should close `io` before returning (success
- *                or failure).
  * @returns an audio object that can be used to make sound on a mixer on
  *          success.
  * @throws Error on failure.
@@ -4471,18 +4439,15 @@ constexpr auto DECODER_STRING =
  * @sa LoadAudio_IO
  */
 inline Audio LoadRawAudio_IO(MixerRef mixer,
-                             IOStreamRef io,
-                             const AudioSpec& spec,
-                             bool closeio = false)
+                             IOStreamParam io,
+                             const AudioSpec& spec)
 {
-  return Audio(mixer, io, spec, closeio);
+  return Audio(mixer, io, spec);
 }
 
-inline Audio MixerBase::LoadRawAudio_IO(IOStreamRef io,
-                                        const AudioSpec& spec,
-                                        bool closeio)
+inline Audio MixerBase::LoadRawAudio_IO(IOStreamParam io, const AudioSpec& spec)
 {
-  return Audio(get(), io, spec, closeio);
+  return Audio(get(), io, spec);
 }
 
 /**
@@ -4574,7 +4539,7 @@ inline Audio MixerBase::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
 inline Audio LoadRawAudioNoCopy(MixerRef mixer,
                                 SourceBytes data,
                                 const AudioSpec& spec,
-                                bool free_when_done)
+                                bool free_when_done = false)
 {
   return Audio(CheckError(MIX_LoadRawAudioNoCopy(
     mixer, data.data(), data.size_bytes(), &spec, free_when_done)));
@@ -5054,7 +5019,6 @@ inline void TrackBase::SetAudioStream(AudioStreamRef stream)
  *
  * @param track the track on which to set a new audio input.
  * @param io the new i/o stream to use as the track's input.
- * @param closeio if true, close the stream when done with it.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -5063,16 +5027,14 @@ inline void TrackBase::SetAudioStream(AudioStreamRef stream)
  *
  * @sa SetTrackRawIOStream
  */
-inline void SetTrackIOStream(TrackRef track,
-                             IOStreamRef io,
-                             bool closeio = false)
+inline void SetTrackIOStream(TrackRef track, IOStreamParam io)
 {
-  CheckError(MIX_SetTrackIOStream(track, io, closeio));
+  CheckError(MIX_SetTrackIOStream(track, io.stream, io.closeio));
 }
 
-inline void TrackBase::SetIOStream(IOStreamRef io, bool closeio)
+inline void TrackBase::SetIOStream(IOStreamParam io)
 {
-  SDL::SetTrackIOStream(get(), io, closeio);
+  SDL::SetTrackIOStream(get(), io);
 }
 
 /**
@@ -5113,7 +5075,6 @@ inline void TrackBase::SetIOStream(IOStreamRef io, bool closeio)
  * @param track the track on which to set a new audio input.
  * @param io the new i/o stream to use as the track's input.
  * @param spec the format of the PCM data that the IOStream will provide.
- * @param closeio if true, close the stream when done with it.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -5124,18 +5085,15 @@ inline void TrackBase::SetIOStream(IOStreamRef io, bool closeio)
  * @sa SetTrackIOStream
  */
 inline void SetTrackRawIOStream(TrackRef track,
-                                IOStreamRef io,
-                                const AudioSpec& spec,
-                                bool closeio = false)
+                                IOStreamParam io,
+                                const AudioSpec& spec)
 {
-  CheckError(MIX_SetTrackRawIOStream(track, io, &spec, closeio));
+  CheckError(MIX_SetTrackRawIOStream(track, io.stream, &spec, io.closeio));
 }
 
-inline void TrackBase::SetRawIOStream(IOStreamRef io,
-                                      const AudioSpec& spec,
-                                      bool closeio)
+inline void TrackBase::SetRawIOStream(IOStreamParam io, const AudioSpec& spec)
 {
-  SDL::SetTrackRawIOStream(get(), io, spec, closeio);
+  SDL::SetTrackRawIOStream(get(), io, spec);
 }
 
 /**
@@ -7501,10 +7459,6 @@ struct AudioDecoder : AudioDecoderBase
    * here, too. In most cases, the caller should pass a nullptr to specify no
    * extra properties.
    *
-   * If `closeio` is true, then `io` will be closed when this decoder is done
-   * with it. If this function fails and `closeio` is true, then `io` will be
-   * closed before this function returns.
-   *
    * When done with the audio decoder, it can be destroyed with
    * DestroyAudioDecoder().
    *
@@ -7512,7 +7466,6 @@ struct AudioDecoder : AudioDecoderBase
    * call to MIX.Init(), but does not need an actual Mixer to have been created.
    *
    * @param io the i/o stream from which to load data.
-   * @param closeio if true, close the i/o stream when done with it.
    * @param props decoder-specific properties. May be nullptr.
    * @post an audio decoder, ready to decode.
    *
@@ -7524,9 +7477,7 @@ struct AudioDecoder : AudioDecoderBase
    * @sa DecodeAudio
    * @sa DestroyAudioDecoder
    */
-  AudioDecoder(IOStreamRef io,
-               bool closeio = false,
-               PropertiesRef props = nullptr);
+  AudioDecoder(IOStreamParam io, PropertiesRef props = nullptr);
 
   /// Destructor
   ~AudioDecoder() { MIX_DestroyAudioDecoder(get()); }
@@ -7583,10 +7534,8 @@ inline AudioDecoder::AudioDecoder(StringParam path, PropertiesRef props)
 {
 }
 
-inline AudioDecoder::AudioDecoder(IOStreamRef io,
-                                  bool closeio,
-                                  PropertiesRef props)
-  : AudioDecoder(MIX_CreateAudioDecoder_IO(io, closeio, props))
+inline AudioDecoder::AudioDecoder(IOStreamParam io, PropertiesRef props)
+  : AudioDecoder(MIX_CreateAudioDecoder_IO(io.stream, io.closeio, props))
 {
 }
 
@@ -7603,10 +7552,6 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  * here, too. In most cases, the caller should pass a nullptr to specify no
  * extra properties.
  *
- * If `closeio` is true, then `io` will be closed when this decoder is done with
- * it. If this function fails and `closeio` is true, then `io` will be closed
- * before this function returns.
- *
  * When done with the audio decoder, it can be destroyed with
  * DestroyAudioDecoder().
  *
@@ -7614,7 +7559,6 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  * call to MIX.Init(), but does not need an actual Mixer to have been created.
  *
  * @param io the i/o stream from which to load data.
- * @param closeio if true, close the i/o stream when done with it.
  * @param props decoder-specific properties. May be nullptr.
  * @returns an audio decoder, ready to decode.
  *
@@ -7626,11 +7570,10 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  * @sa DecodeAudio
  * @sa DestroyAudioDecoder
  */
-inline AudioDecoder CreateAudioDecoder_IO(IOStreamRef io,
-                                          bool closeio = false,
+inline AudioDecoder CreateAudioDecoder_IO(IOStreamParam io,
                                           PropertiesRef props = nullptr)
 {
-  return AudioDecoder(io, closeio, props);
+  return AudioDecoder(io, props);
 }
 
 /**

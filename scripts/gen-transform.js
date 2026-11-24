@@ -8994,7 +8994,7 @@ const transform = {
           },
         },
         "MIX_LoadAudio_IO": {
-          parameters: [{}, {}, {}, { default: "false" }],
+          parameters: [{}, { type: "IOStreamParam" }, {}],
           type: "Audio",
           hints: { mayFail: false },
         },
@@ -9008,7 +9008,7 @@ const transform = {
         },
         "MIX_LoadAudioWithProperties": { type: "Audio" },
         "MIX_LoadRawAudio_IO": {
-          parameters: [{}, {}, {}, { default: "false" }],
+          parameters: [{}, { type: "IOStreamParam" }, {}],
           type: "Audio",
         },
         "MIX_LoadRawAudio": {
@@ -9016,14 +9016,23 @@ const transform = {
           type: "Audio",
         },
         "MIX_LoadRawAudioNoCopy": {
-          parameters: [{}, { type: "SourceBytes" }, { type: "const AudioSpec &", name: "spec" }, { type: "bool", name: "free_when_done" }],
+          parameters: [{}, {
+            type: "SourceBytes"
+          }, {
+            type: "const AudioSpec &",
+            name: "spec"
+          }, {
+            type: "bool",
+            name: "free_when_done",
+            default: "false"
+          }],
           type: "Audio",
         },
         "MIX_CreateSineWaveAudio": { type: "Audio" },
         "MIX_DURATION_UNKNOWN": { kind: "var", type: "Sint64", constexpr: true },
         "MIX_DURATION_INFINITE": { kind: "var", type: "Sint64", constexpr: true },
-        "MIX_SetTrackIOStream": { parameters: [{}, {}, { default: "false" }], },
-        "MIX_SetTrackRawIOStream": { parameters: [{}, {}, {}, { default: "false" }], },
+        "MIX_SetTrackIOStream": { parameters: [{}, { type: "IOStreamParam" }], },
+        "MIX_SetTrackRawIOStream": { parameters: [{}, { type: "IOStreamParam" }, {}], },
         "MIX_GetTrackTags": {
           type: "OwnArray<char*>",
           parameters: [{}],
@@ -9110,7 +9119,15 @@ const transform = {
           ],
         },
         "MIX_CreateAudioDecoder": { parameters: [{}, { default: "nullptr" }] },
-        "MIX_CreateAudioDecoder_IO": { parameters: [{}, { default: "false" }, { default: "nullptr" }] },
+        "MIX_CreateAudioDecoder_IO": {
+          parameters: [{
+            type: "IOStreamParam"
+          }, {
+            name: "props",
+            type: "PropertiesRef",
+            default: "nullptr"
+          }]
+        },
         "SDL_MIXER_MAJOR_VERSION": {
           value: ""
         },
