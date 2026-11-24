@@ -6973,19 +6973,19 @@ const transform = {
           type: "OwnArray<SurfaceRaw>",
           parameters: [{ type: "SurfaceConstRef" }]
         },
-        "SDL_LoadSurface_IO": { parameters: [{}, { default: "false" }] },
-        "SDL_LoadBMP_IO": { parameters: [{}, { default: "false" }] },
-        "SDL_SaveBMP_IO": { parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }] },
+        "SDL_LoadSurface_IO": { parameters: [{ type: "IOStreamParam" }] },
+        "SDL_LoadBMP_IO": { parameters: [{ type: "IOStreamParam" }] },
+        "SDL_SaveBMP_IO": { parameters: [{ type: "SurfaceConstRef" }, { type: "IOStreamParam" }] },
         "SDL_SaveBMP": { parameters: [{ type: "SurfaceConstRef" }, {}] },
         "SDL_LoadPNG_IO": {
           name: "LoadTrustedPNG_IO",
-          parameters: [{}, { default: "false" }]
+          parameters: [{ type: "IOStreamParam" }]
         },
         "SDL_LoadPNG": { name: "LoadTrustedPNG" },
 
         "SDL_SavePNG_IO": {
           name: "SaveTrustedPNG_IO",
-          parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }]
+          parameters: [{ type: "SurfaceConstRef" }, { type: "IOStreamParam" }]
         },
         "SDL_SavePNG": {
           name: "SaveTrustedPNG",

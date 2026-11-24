@@ -441,8 +441,6 @@ struct SurfaceBase : ResourceBaseT<SurfaceRaw, SurfaceRawConst>
    * not supported.
    *
    * @param dst a data stream to save to.
-   * @param closeio if true, calls CloseIO() on `dst` before returning, even in
-   *                the case of an error.
    * @throws Error on failure.
    *
    * @threadsafety This function can be called on different threads with
@@ -453,7 +451,7 @@ struct SurfaceBase : ResourceBaseT<SurfaceRaw, SurfaceRawConst>
    * @sa LoadBMP_IO
    * @sa SaveBMP
    */
-  void SaveBMP_IO(IOStreamRef dst, bool closeio = false) const;
+  void SaveBMP_IO(IOStreamParam dst) const;
 
   /**
    * Save a surface to a file in BMP format.
@@ -483,8 +481,6 @@ struct SurfaceBase : ResourceBaseT<SurfaceRaw, SurfaceRawConst>
    * If the file already exists, it will be overwritten.
    *
    * @param dst a data stream to save to.
-   * @param closeio if true, calls CloseIO() on `dst` before returning, even in
-   *                the case of an error.
    * @throws Error on failure.
    *
    * @threadsafety This function can be called on different threads with
@@ -496,7 +492,7 @@ struct SurfaceBase : ResourceBaseT<SurfaceRaw, SurfaceRawConst>
    * @sa LoadTrustedPNG_IO
    * @sa SaveTrustedPNG
    */
-  void SavePNG_IO(IOStreamRef dst, bool closeio = false) const;
+  void SavePNG_IO(IOStreamParam dst) const;
 
   /**
    * Save a surface to a file in PNG format.
@@ -1622,9 +1618,6 @@ struct SurfaceBase : ResourceBaseT<SurfaceRaw, SurfaceRawConst>
    *
    * If you just want to save to a filename, you can use Save() instead.
    *
-   * If `closeio` is true, `dst` will be closed before returning, whether this
-   * function succeeds or not.
-   *
    * For formats that accept a quality, a default quality of 90 will be used.
    *
    * @param dst the IOStream to save the image data to.
@@ -1800,10 +1793,6 @@ struct Surface : SurfaceBase
    * for the surface. You can enable RLE acceleration on the surface afterwards
    * by calling: SetSurfaceColorKey(image, SDL_RLEACCEL,
    * image->format->colorkey);
-   *
-   * If `closeio` is true, `src` will be closed before returning, whether this
-   * function succeeds or not. SDL_image reads everything it needs from `src`
-   * during this call in any case.
    *
    * There is a separate function to read files from disk without having to deal
    * with IOStream: `LoadSurface("filename.jpg")` will call this function and
@@ -2647,8 +2636,6 @@ inline void SurfaceLock::reset()
  * Load a BMP or PNG image from a seekable SDL data stream.
  *
  * @param src the data stream for the surface.
- * @param closeio if true, calls CloseIO() on `src` before returning, even in
- *                the case of an error.
  * @returns a new Surface on success or nullptr on failure; call
  *          GetError() for more information.
  *
@@ -2659,9 +2646,9 @@ inline void SurfaceLock::reset()
  * @sa DestroySurface
  * @sa LoadSurface
  */
-inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
+inline Surface LoadSurface_IO(IOStreamParam src)
 {
-  return Surface{SDL_LoadSurface_IO(src, closeio)};
+  return Surface{SDL_LoadSurface_IO(src.stream, src.closeio)};
 }
 
 /**
@@ -2692,8 +2679,6 @@ inline Surface LoadSurface(StringParam file)
  * result in a memory leak.
  *
  * @param src the data stream for the surface.
- * @param closeio if true, calls CloseIO() on `src` before returning, even in
- *                the case of an error.
  * @returns a pointer to a new Surface structure or nullptr on failure; call
  *          GetError() for more information.
  *
@@ -2705,9 +2690,9 @@ inline Surface LoadSurface(StringParam file)
  * @sa LoadBMP
  * @sa SaveBMP_IO
  */
-inline Surface LoadBMP_IO(IOStreamRef src, bool closeio = false)
+inline Surface LoadBMP_IO(IOStreamParam src)
 {
-  return Surface(SDL_LoadBMP_IO(src, closeio));
+  return Surface{SDL_LoadBMP_IO(src.stream, src.closeio)};
 }
 
 /**
@@ -2741,8 +2726,6 @@ inline Surface LoadBMP(StringParam file) { return Surface(SDL_LoadBMP(file)); }
  *
  * @param surface the Surface structure containing the image to be saved.
  * @param dst a data stream to save to.
- * @param closeio if true, calls CloseIO() on `dst` before returning, even in
- *                the case of an error.
  * @throws Error on failure.
  *
  * @threadsafety This function can be called on different threads with different
@@ -2753,16 +2736,14 @@ inline Surface LoadBMP(StringParam file) { return Surface(SDL_LoadBMP(file)); }
  * @sa LoadBMP_IO
  * @sa SaveBMP
  */
-inline void SaveBMP_IO(SurfaceConstRef surface,
-                       IOStreamRef dst,
-                       bool closeio = false)
+inline void SaveBMP_IO(SurfaceConstRef surface, IOStreamParam dst)
 {
-  CheckError(SDL_SaveBMP_IO(surface, dst, closeio));
+  CheckError(SDL_SaveBMP_IO(surface, dst.stream, dst.closeio));
 }
 
-inline void SurfaceBase::SaveBMP_IO(IOStreamRef dst, bool closeio) const
+inline void SurfaceBase::SaveBMP_IO(IOStreamParam dst) const
 {
-  SDL::SaveBMP_IO(get(), dst, closeio);
+  SDL::SaveBMP_IO(get(), dst);
 }
 
 /**
@@ -2806,8 +2787,6 @@ inline void SurfaceBase::SaveBMP(StringParam file) const
  * another image loading library designed with security in mind.
  *
  * @param src the data stream for the surface.
- * @param closeio if true, calls CloseIO() on `src` before returning, even in
- *                the case of an error.
  * @returns a new Surface structure on success or nullptr on failure; call
  *          GetError() for more information.
  *
@@ -2819,9 +2798,9 @@ inline void SurfaceBase::SaveBMP(StringParam file) const
  * @sa LoadTrustedPNG
  * @sa SaveTrustedPNG_IO
  */
-inline Surface LoadTrustedPNG_IO(IOStreamRef src, bool closeio = false)
+inline Surface LoadTrustedPNG_IO(IOStreamParam src)
 {
-  return Surface(SDL_LoadPNG_IO(src, closeio));
+  return Surface(SDL_LoadPNG_IO(src.stream, src.closeio));
 }
 
 /**
@@ -2854,10 +2833,7 @@ inline Surface LoadTrustedPNG(StringParam file)
 #if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
 /// @see LoadTrustedPNG_IO
-inline Surface LoadPNG_IO(IOStreamRef src, bool closeio = false)
-{
-  return LoadTrustedPNG_IO(src, closeio);
-}
+inline Surface LoadPNG_IO(IOStreamRef src) { return LoadTrustedPNG_IO(src); }
 
 /// @see LoadTrustedPNG
 inline Surface LoadPNG(StringParam file) { return LoadTrustedPNG(file); }
@@ -2869,8 +2845,6 @@ inline Surface LoadPNG(StringParam file) { return LoadTrustedPNG(file); }
  *
  * @param surface the Surface structure containing the image to be saved.
  * @param dst a data stream to save to.
- * @param closeio if true, calls CloseIO() on `dst` before returning, even in
- *                the case of an error.
  * @throws Error on failure.
  *
  * @threadsafety This function can be called on different threads with different
@@ -2881,17 +2855,15 @@ inline Surface LoadPNG(StringParam file) { return LoadTrustedPNG(file); }
  * @sa LoadTrustedPNG_IO
  * @sa SaveTrustedPNG
  */
-inline void SaveTrustedPNG_IO(SurfaceConstRef surface,
-                              IOStreamRef dst,
-                              bool closeio = false)
+inline void SaveTrustedPNG_IO(SurfaceConstRef surface, IOStreamParam dst)
 {
-  CheckError(SDL_SavePNG_IO(surface, dst, closeio));
+  CheckError(SDL_SavePNG_IO(surface, dst.stream, dst.closeio));
 }
 
 #if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
-inline void SurfaceBase::SavePNG_IO(IOStreamRef dst, bool closeio) const
+inline void SurfaceBase::SavePNG_IO(IOStreamParam dst) const
 {
-  SDL::SaveTrustedPNG_IO(get(), dst, closeio);
+  SDL::SaveTrustedPNG_IO(get(), dst);
 }
 #endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 

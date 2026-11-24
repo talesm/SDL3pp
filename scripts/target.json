@@ -149846,12 +149846,7 @@
               "parameters": [
                 {
                   "name": "dst",
-                  "type": "IOStreamRef"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
+                  "type": "IOStreamParam"
                 }
               ],
               "sourceName": "SDL_SaveBMP_IO",
@@ -149954,12 +149949,7 @@
               "parameters": [
                 {
                   "name": "dst",
-                  "type": "IOStreamRef"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
+                  "type": "IOStreamParam"
                 }
               ],
               "sourceName": "SDL_SavePNG_IO",
@@ -154917,12 +154907,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "SDL_LoadSurface_IO",
@@ -155030,12 +155015,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "SDL_LoadBMP_IO"
@@ -155139,12 +155119,7 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "SDL_SaveBMP_IO",
@@ -155159,11 +155134,7 @@
           "parameters": [
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "SDL_SaveBMP_IO",
@@ -155295,12 +155266,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "SDL_LoadPNG_IO",
@@ -155416,12 +155382,7 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "SDL_SavePNG_IO",
@@ -155442,11 +155403,7 @@
           "parameters": [
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "SDL_SavePNG_IO",

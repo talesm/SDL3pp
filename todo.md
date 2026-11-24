@@ -7,10 +7,10 @@ Todo for next version
 - [ ] Remove misleading autoclose parameters:
   - [x] LoadFile_IO
   - [x] SaveFile_IO
-  - [ ] LoadBMP_IO;
-  - [ ] LoadTrustedPNG_IO;
-  - [ ] SaveBMP_IO;
-  - [ ] SaveTrustedPNG_IO;
+  - [x] LoadBMP_IO;
+  - [x] LoadTrustedPNG_IO;
+  - [x] SaveBMP_IO;
+  - [x] SaveTrustedPNG_IO;
   - [x] LoadSurface_IO;
   - [x] LoadSurfaceTyped_IO;
   - [x] LoadTexture_IO;

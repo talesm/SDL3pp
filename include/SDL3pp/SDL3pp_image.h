@@ -2443,7 +2443,7 @@ inline void SavePNG_IO(SurfaceRef surface, IOStreamParam dst)
   CheckError(IMG_SavePNG_IO(surface, dst.stream, dst.closeio));
 }
 
-inline void SurfaceBase::SavePNG_IO(IOStreamRef dst, bool closeio) const
+inline void SurfaceBase::SavePNG_IO(IOStreamParam dst) const
 {
   SDL::SavePNG_IO(get(), dst);
 }
