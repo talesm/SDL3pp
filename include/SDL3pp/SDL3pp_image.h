@@ -484,8 +484,8 @@ inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
  *
  * There is a separate function to read files from disk without having to deal
  * with IOStream: `LoadGPUTexture(device, copy_pass, "filename.jpg", width,
- * height) will call this function and manage those details for you, determining
- * the file type from the filename's extension.
+ * height)` will call this function and manage those details for you,
+ * determining the file type from the filename's extension.
  *
  * There is also LoadGPUTextureTyped_IO(), which is equivalent to this function
  * except a file extension (like "BMP", "JPG", etc) can be specified, in case
@@ -542,8 +542,8 @@ inline GPUTexture LoadGPUTexture_IO(GPUDeviceRef device,
  *
  * There is a separate function to read files from disk without having to deal
  * with IOStream: `LoadGPUTexture(device, copy_pass, "filename.jpg", width,
- * height) will call this function and manage those details for you, determining
- * the file type from the filename's extension.
+ * height)` will call this function and manage those details for you,
+ * determining the file type from the filename's extension.
  *
  * There is also LoadGPUTexture_IO(), which is equivalent to this function
  * except that it will rely on SDL_image to determine what type of data it is
