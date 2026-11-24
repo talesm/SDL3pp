@@ -1650,6 +1650,9 @@ const transform = {
         "SDL_GamepadAxis": { before: "SDL_Gamepad" },
         "SDL_GamepadBindingType": { before: "SDL_Gamepad" },
         "SDL_GamepadBinding": { before: "SDL_Gamepad" },
+        "SDL_AddGamepadMappingsFromIO": {
+          parameters: [{ type: "IOStreamParam" }],
+        },
         "SDL_GetGamepadMappings": {
           type: "OwnArray<char *>",
           parameters: [],
@@ -9286,9 +9289,8 @@ const transform = {
             "TTF_OpenFontIO": {
               name: "ctor",
               parameters: [
-                {},
+                { type: "IOStreamParam" },
                 { type: "float", name: "ptsize" },
-                { type: "bool", name: "closeio", default: "false" },
               ],
             },
             "TTF_OpenFontWithProperties": "ctor",
@@ -9644,9 +9646,8 @@ const transform = {
         },
         "TTF_OpenFontIO": {
           parameters: [
-            {},
+            { type: "IOStreamParam" },
             { type: "float", name: "ptsize" },
-            { type: "bool", name: "closeio", default: "false" },
           ],
         },
         "TTF_TextEngine": {

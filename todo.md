@@ -44,7 +44,8 @@ Todo for next version
   - [ ] SetTrackIOStream;
   - [ ] SetTrackRawIOStream;
   - [ ] CreateAudioDecoder_IO;
-  - [ ] OpenFontIO;
+  - [x] OpenFontIO;
+  - [x] AddGamepadMappingsFromIO;
 
 Backlog
 -------

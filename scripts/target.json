@@ -26889,11 +26889,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "SDL_AddGamepadMappingsFromIO"
@@ -221427,16 +221423,11 @@
                     "parameters": [
                       {
                         "name": "src",
-                        "type": "IOStreamRef"
+                        "type": "IOStreamParam"
                       },
                       {
                         "name": "ptsize",
                         "type": "float"
-                      },
-                      {
-                        "name": "closeio",
-                        "type": "bool",
-                        "default": "false"
                       }
                     ],
                     "sourceName": "TTF_OpenFontIO",
@@ -221653,15 +221644,11 @@
             "parameters": [
               {
                 "name": "src",
-                "type": "IOStreamRef"
+                "type": "IOStreamParam"
               },
               {
                 "name": "ptsize",
                 "type": "float"
-              },
-              {
-                "name": "closeio",
-                "type": "bool"
               }
             ],
             "sourceName": "TTF_OpenFontIO",
@@ -221736,16 +221723,11 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "ptsize",
               "type": "float"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "TTF_OpenFontIO",
