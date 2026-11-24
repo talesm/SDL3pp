@@ -8654,9 +8654,8 @@ const transform = {
           type: "Surface",
           name: "LoadSurfaceTyped_IO",
           parameters: [
-            { name: "src", type: "IOStreamRef" },
+            { name: "src", type: "IOStreamParam" },
             { name: "type", type: "StringParam" },
-            { name: "closeio", type: "bool", default: "false" },
           ]
         },
         "IMG_Load": {
@@ -8670,11 +8669,11 @@ const transform = {
         "IMG_Load_IO": {
           type: "",
           name: "Surface::Surface",
-          parameters: [{}, { default: "false" }],
+          parameters: [{ type: "IOStreamParam" }],
           link: {
             type: "Surface",
             name: "LoadSurface_IO",
-            parameters: [{}, { default: "false" }],
+            parameters: [{ type: "IOStreamParam" }],
           }
         },
         "IMG_LoadTexture": {
@@ -8688,51 +8687,62 @@ const transform = {
         "IMG_LoadTexture_IO": {
           type: "",
           name: "Texture::Texture",
-          parameters: [{}, {}, { default: "false" }],
+          parameters: [{}, { type: "IOStreamParam" }],
           link: {
             name: "LoadTexture_IO",
             type: "Texture",
-            parameters: [{}, {}, { default: "false" }],
+            parameters: [{}, { type: "IOStreamParam" }],
           }
         },
         "IMG_LoadTextureTyped_IO": {
           type: "Texture",
           parameters: [
             {},
-            {},
+            { type: "IOStreamParam" },
             { name: "type", type: "StringParam" },
-            { name: "closeio", type: "bool", default: "false" },
           ]
         },
         "IMG_LoadGPUTexture": {
           parameters: [{}, {}, {}, { default: "nullptr" }, { default: "nullptr" }],
         },
         "IMG_LoadGPUTexture_IO": {
-          parameters: [{}, {}, {}, { default: "false" }, { default: "nullptr" }, { default: "nullptr" }],
+          parameters: [{}, {}, {
+            type: "IOStreamParam",
+          }, {
+            type: "int *",
+            name: "width",
+            default: "nullptr"
+          }, {
+            type: "int *",
+            name: "height",
+            default: "nullptr"
+          }],
         },
         "IMG_LoadGPUTextureTyped_IO": {
-          parameters: [{}, {}, {}, {
+          parameters: [{}, {}, {
+            type: "IOStreamParam",
+          }, {
             name: "type",
             type: "StringParam",
           }, {
-            name: "closeio",
-            type: "bool",
-            default: "false",
-          }, { default: "nullptr" }, { default: "nullptr" }],
+            type: "int *",
+            name: "width",
+            default: "nullptr"
+          }, {
+            type: "int *",
+            name: "height",
+            default: "nullptr"
+          }],
         },
         "IMG_isANI": {
           since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 },
         },
-        "LoadPNG_IO": {
-          after: "IMG_LoadPNG_IO",
+        "IMG_LoadPNG_IO": {
           kind: "function",
           type: "Surface",
           parameters: [{
             name: "src",
-            type: "IOStreamRef"
-          }, {
-            name: "closeio",
-            type: "bool"
+            type: "IOStreamParam"
           }],
         },
         "LoadPNG": {
@@ -8763,10 +8773,6 @@ const transform = {
           }, {}, {
             name: "type",
             type: "StringParam"
-          }, {
-            name: "closeio",
-            type: "bool",
-            default: "false"
           }],
         },
         "SurfaceBase::SaveTyped_IO": {
@@ -8775,14 +8781,10 @@ const transform = {
           immutable: true,
           parameters: [{
             name: "dst",
-            type: "IOStreamRef"
+            type: "IOStreamParam"
           }, {
             name: "type",
             type: "StringParam"
-          }, {
-            name: "closeio",
-            type: "bool",
-            default: "false"
           }],
           hints: {
             delegate: "SDL::SaveTyped_IO",
@@ -8793,49 +8795,39 @@ const transform = {
         "IMG_SaveAVIF_IO": {
           parameters: [
             {},
-            {},
+            { type: "IOStreamParam" },
             { name: "quality", type: "int" },
-            { name: "closeio", type: "bool", default: "false" },
           ]
         },
         "IMG_SaveBMP_IO": {
-          parameters: [{}, {}, { default: "false" }],
+          parameters: [{}, { type: "IOStreamParam" }],
         },
         "IMG_SaveCUR_IO": {
-          parameters: [{}, {}, { default: "false" }],
+          parameters: [{}, { type: "IOStreamParam" }],
         },
         "IMG_SaveGIF_IO": {
-          parameters: [{}, {}, { default: "false" }],
+          parameters: [{}, { type: "IOStreamParam" }],
         },
         "IMG_SaveICO_IO": {
-          parameters: [{}, {}, { default: "false" }],
+          parameters: [{}, { type: "IOStreamParam" }],
         },
         "IMG_SavePNG_IO": {
-          parameters: [
-            {},
-            {},
-            { name: "closeio", type: "bool", default: "false" },
-          ]
+          parameters: [{}, { type: "IOStreamParam" }],
         },
         "IMG_SaveTGA_IO": {
-          parameters: [{}, {}, { default: "false" }],
+          parameters: [{}, { type: "IOStreamParam" }],
         },
         "IMG_SaveWEBP_IO": {
-          parameters: [{}, {}, {
+          parameters: [{}, { type: "IOStreamParam" }, {
             name: "quality",
             type: "float"
-          }, {
-            name: "closeio",
-            type: "bool",
-            default: "false"
           }],
         },
         "IMG_SaveJPG_IO": {
           parameters: [
             {},
-            {},
+            { type: "IOStreamParam" },
             { name: "quality", type: "int" },
-            { name: "closeio", type: "bool", default: "false" },
           ]
         },
         "IMG_Animation": {
@@ -8890,14 +8882,13 @@ const transform = {
         "IMG_LoadAnimation": { type: "Animation" },
         "IMG_LoadAnimation_IO": {
           type: "Animation",
-          parameters: [{}, { default: "false" }],
+          parameters: [{ type: "IOStreamParam" }],
         },
         "IMG_LoadAnimationTyped_IO": {
           type: "Animation",
           parameters: [
-            { name: "src", type: "IOStreamRef" },
+            { name: "src", type: "IOStreamParam" },
             { name: "type", type: "StringParam" },
-            { name: "closeio", type: "bool", default: "false" },
           ]
         },
         "IMG_LoadANIAnimation_IO": { type: "Animation" },
@@ -8906,36 +8897,30 @@ const transform = {
         "IMG_LoadGIFAnimation_IO": { type: "Animation" },
         "IMG_LoadWEBPAnimation_IO": { type: "Animation" },
         "IMG_SaveAnimationTyped_IO": {
-          parameters: [{}, {}, {
+          parameters: [{}, {
+            type: "IOStreamParam"
+          }, {
             name: "type",
             type: "StringParam"
-          }, {
-            name: "closeio",
-            type: "bool",
-            default: "false"
           }],
         },
-        "IMG_SaveANIAnimation_IO": { parameters: [{}, {}, { default: "false" }] },
-        "IMG_SaveAPNGAnimation_IO": { parameters: [{}, {}, { default: "false" }] },
+        "IMG_SaveANIAnimation_IO": { parameters: [{}, { type: "IOStreamParam" }] },
+        "IMG_SaveAPNGAnimation_IO": { parameters: [{}, { type: "IOStreamParam" }] },
         "IMG_SaveAVIFAnimation_IO": {
-          parameters: [{}, {}, {
+          parameters: [{}, {
+            type: "IOStreamParam"
+          }, {
             name: "quality",
             type: "int"
-          }, {
-            name: "closeio",
-            type: "bool",
-            default: "false"
           }],
         },
-        "IMG_SaveGIFAnimation_IO": { parameters: [{}, {}, { default: "false" }] },
+        "IMG_SaveGIFAnimation_IO": { parameters: [{}, { type: "IOStreamParam" }] },
         "IMG_SaveWEBPAnimation_IO": {
-          parameters: [{}, {}, {
+          parameters: [{}, {
+            type: "IOStreamParam"
+          }, {
             name: "quality",
             type: "int"
-          }, {
-            name: "closeio",
-            type: "bool",
-            default: "false"
           }],
         },
         "IMG_CreateAnimatedCursor": {
@@ -8947,26 +8932,22 @@ const transform = {
           since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 },
         },
         "IMG_CreateAnimationEncoder_IO": {
-          parameters: [{}, {
+          parameters: [{
+            type: "IOStreamParam"
+          }, {
             type: "StringParam",
             name: "type"
-          }, {
-            name: "closeio",
-            type: "bool",
-            default: "false"
           }],
         },
         "IMG_AnimationDecoder": {
           since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 },
         },
         "IMG_CreateAnimationDecoder_IO": {
-          parameters: [{}, {
+          parameters: [{
+            type: "IOStreamParam"
+          }, {
             type: "StringParam",
             name: "type"
-          }, {
-            type: "bool",
-            name: "closeio",
-            default: "false",
           }],
         },
         "IMG_GetAnimationDecoderFrame": {

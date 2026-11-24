@@ -1628,8 +1628,6 @@ struct SurfaceBase : ResourceBaseT<SurfaceRaw, SurfaceRawConst>
    * For formats that accept a quality, a default quality of 90 will be used.
    *
    * @param dst the IOStream to save the image data to.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
    * @param type a filename extension that represent this data ("BMP", "GIF",
    *             "PNG", etc).
    * @throws Error on failure.
@@ -1638,9 +1636,7 @@ struct SurfaceBase : ResourceBaseT<SurfaceRaw, SurfaceRawConst>
    *
    * @sa SDL::Save
    */
-  void SaveTyped_IO(IOStreamRef dst,
-                    StringParam type,
-                    bool closeio = false) const;
+  void SaveTyped_IO(IOStreamParam dst, StringParam type) const;
 };
 
 /**
@@ -1823,8 +1819,6 @@ struct Surface : SurfaceBase
    * software surface: call LoadTexture_IO() instead.
    *
    * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
    * @post a new SDL surface, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
@@ -1832,7 +1826,7 @@ struct Surface : SurfaceBase
    * @sa LoadSurface
    * @sa LoadSurfaceTyped_IO
    */
-  Surface(IOStreamRef src, bool closeio = false);
+  Surface(IOStreamParam src);
 
   /**
    * Safely borrows the from SurfaceRaw.

@@ -117952,12 +117952,7 @@
                               },
                               {
                                 "name": "src",
-                                "type": "IOStreamRef"
-                              },
-                              {
-                                "name": "closeio",
-                                "type": "bool",
-                                "default": "false"
+                                "type": "IOStreamParam"
                               }
                             ],
                             "sourceName": "IMG_LoadTexture_IO",
@@ -152522,16 +152517,11 @@
               "parameters": [
                 {
                   "name": "dst",
-                  "type": "IOStreamRef"
+                  "type": "IOStreamParam"
                 },
                 {
                   "name": "type",
                   "type": "StringParam"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
                 }
               ],
               "hints": {
@@ -152941,12 +152931,7 @@
                           "parameters": [
                             {
                               "name": "src",
-                              "type": "IOStreamRef"
-                            },
-                            {
-                              "name": "closeio",
-                              "type": "bool",
-                              "default": "false"
+                              "type": "IOStreamParam"
                             }
                           ],
                           "sourceName": "IMG_Load_IO",
@@ -186771,11 +186756,7 @@
             "parameters": [
               {
                 "name": "src",
-                "type": "IOStreamRef"
-              },
-              {
-                "name": "closeio",
-                "type": "bool"
+                "type": "IOStreamParam"
               }
             ],
             "sourceName": "IMG_Load_IO",
@@ -186835,12 +186816,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_Load_IO"
@@ -186896,16 +186872,11 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "type",
               "type": "StringParam"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "IMG_LoadTyped_IO"
@@ -186988,11 +186959,7 @@
               },
               {
                 "name": "src",
-                "type": "IOStreamRef"
-              },
-              {
-                "name": "closeio",
-                "type": "bool"
+                "type": "IOStreamParam"
               }
             ],
             "sourceName": "IMG_LoadTexture_IO",
@@ -187059,12 +187026,7 @@
             },
             {
               "name": "src",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_LoadTexture_IO"
@@ -187127,16 +187089,11 @@
             },
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "type",
               "type": "StringParam"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "IMG_LoadTextureTyped_IO"
@@ -187290,12 +187247,7 @@
             },
             {
               "name": "src",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             },
             {
               "name": "width",
@@ -187388,16 +187340,11 @@
             },
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "type",
               "type": "StringParam"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             },
             {
               "name": "width",
@@ -190517,117 +190464,10 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             }
           ],
-          "sourceName": "IMG_LoadPNG_IO",
-          "overload": {
-            "kind": "function",
-            "type": "Surface",
-            "parameters": [
-              {
-                "name": "src",
-                "type": "IOStreamRef"
-              },
-              {
-                "name": "closeio",
-                "type": "bool"
-              }
-            ],
-            "name": "LoadPNG_IO",
-            "doc": [
-              "Load a PNG image directly.",
-              "If you know you definitely have a PNG image, you can call this function, which will skip SDL_image's file format detection routines. Generally it's better to use the abstract interfaces; also, there is only an IOStream interface available here.",
-              [
-                {
-                  "tag": "@param src",
-                  "content": "an IOStream to load image data from."
-                },
-                {
-                  "tag": "@returns",
-                  "content": "SDL surface, or nullptr on error."
-                }
-              ],
-              {
-                "tag": "@since",
-                "content": "This function is available since SDL_image 3.0.0."
-              },
-              [
-                {
-                  "tag": "@sa",
-                  "content": "LoadAVIF_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadBMP_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadCUR_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadGIF_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadICO_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadJPG_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadJXL_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadLBM_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadPCX_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadPNM_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadQOI_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadSVG_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadTGA_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadTIF_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadWEBP_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadXCF_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadXPM_IO"
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LoadXV_IO"
-                }
-              ]
-            ]
-          }
+          "sourceName": "IMG_LoadPNG_IO"
         },
         "LoadPNG": {
           "kind": "function",
@@ -191900,11 +191740,6 @@
             {
               "name": "type",
               "type": "StringParam"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "IMG_SaveTyped_IO",
@@ -191925,15 +191760,11 @@
           "parameters": [
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "type",
               "type": "StringParam"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
             }
           ],
           "hints": {
@@ -192047,16 +191878,11 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "quality",
               "type": "int"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "IMG_SaveAVIF_IO",
@@ -192157,12 +191983,7 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_SaveBMP_IO",
@@ -192269,12 +192090,7 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_SaveCUR_IO",
@@ -192381,12 +192197,7 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_SaveGIF_IO",
@@ -192493,12 +192304,7 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_SaveICO_IO",
@@ -192611,16 +192417,11 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "quality",
               "type": "int"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "IMG_SaveJPG_IO",
@@ -192715,12 +192516,7 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_SavePNG_IO",
@@ -192821,12 +192617,7 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_SaveTGA_IO",
@@ -192945,16 +192736,11 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "quality",
               "type": "float"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "IMG_SaveWEBP_IO",
@@ -193263,16 +193049,11 @@
               "parameters": [
                 {
                   "name": "dst",
-                  "type": "IOStreamRef"
+                  "type": "IOStreamParam"
                 },
                 {
                   "name": "type",
                   "type": "StringParam"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
                 }
               ],
               "sourceName": "IMG_SaveAnimationTyped_IO",
@@ -193343,12 +193124,7 @@
               "parameters": [
                 {
                   "name": "dst",
-                  "type": "IOStreamRef"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
+                  "type": "IOStreamParam"
                 }
               ],
               "sourceName": "IMG_SaveANIAnimation_IO",
@@ -193419,12 +193195,7 @@
               "parameters": [
                 {
                   "name": "dst",
-                  "type": "IOStreamRef"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
+                  "type": "IOStreamParam"
                 }
               ],
               "sourceName": "IMG_SaveAPNGAnimation_IO",
@@ -193499,16 +193270,11 @@
               "parameters": [
                 {
                   "name": "dst",
-                  "type": "IOStreamRef"
+                  "type": "IOStreamParam"
                 },
                 {
                   "name": "quality",
                   "type": "int"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
                 }
               ],
               "sourceName": "IMG_SaveAVIFAnimation_IO",
@@ -193579,12 +193345,7 @@
               "parameters": [
                 {
                   "name": "dst",
-                  "type": "IOStreamRef"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
+                  "type": "IOStreamParam"
                 }
               ],
               "sourceName": "IMG_SaveGIFAnimation_IO",
@@ -193659,16 +193420,11 @@
               "parameters": [
                 {
                   "name": "dst",
-                  "type": "IOStreamRef"
+                  "type": "IOStreamParam"
                 },
                 {
                   "name": "quality",
                   "type": "int"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool",
-                  "default": "false"
                 }
               ],
               "sourceName": "IMG_SaveWEBPAnimation_IO",
@@ -193946,12 +193702,7 @@
                     "parameters": [
                       {
                         "name": "src",
-                        "type": "IOStreamRef"
-                      },
-                      {
-                        "name": "closeio",
-                        "type": "bool",
-                        "default": "false"
+                        "type": "IOStreamParam"
                       }
                     ],
                     "sourceName": "IMG_LoadAnimation_IO",
@@ -194238,11 +193989,7 @@
             "parameters": [
               {
                 "name": "src",
-                "type": "IOStreamRef"
-              },
-              {
-                "name": "closeio",
-                "type": "bool"
+                "type": "IOStreamParam"
               }
             ],
             "sourceName": "IMG_LoadAnimation_IO",
@@ -194324,12 +194071,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_LoadAnimation_IO",
@@ -194410,16 +194152,11 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "type",
               "type": "StringParam"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "IMG_LoadAnimationTyped_IO"
@@ -194950,16 +194687,11 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "type",
               "type": "StringParam"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "IMG_SaveAnimationTyped_IO",
@@ -194980,15 +194712,11 @@
           "parameters": [
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "type",
               "type": "StringParam"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
             }
           ],
           "sourceName": "IMG_SaveAnimationTyped_IO",
@@ -195067,12 +194795,7 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_SaveANIAnimation_IO",
@@ -195093,11 +194816,7 @@
           "parameters": [
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_SaveANIAnimation_IO",
@@ -195176,12 +194895,7 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_SaveAPNGAnimation_IO",
@@ -195202,11 +194916,7 @@
           "parameters": [
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_SaveAPNGAnimation_IO",
@@ -195289,16 +194999,11 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "quality",
               "type": "int"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "IMG_SaveAVIFAnimation_IO",
@@ -195319,15 +195024,11 @@
           "parameters": [
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "quality",
               "type": "int"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
             }
           ],
           "sourceName": "IMG_SaveAVIFAnimation_IO",
@@ -195406,12 +195107,7 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_SaveGIFAnimation_IO",
@@ -195432,11 +195128,7 @@
           "parameters": [
             {
               "name": "dst",
-              "type": "IOStreamRef"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
+              "type": "IOStreamParam"
             }
           ],
           "sourceName": "IMG_SaveGIFAnimation_IO",
@@ -195519,16 +195211,11 @@
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "quality",
               "type": "int"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "IMG_SaveWEBPAnimation_IO",
@@ -195549,15 +195236,11 @@
           "parameters": [
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "quality",
               "type": "int"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
             }
           ],
           "sourceName": "IMG_SaveWEBPAnimation_IO",
@@ -196091,16 +195774,11 @@
                     "parameters": [
                       {
                         "name": "dst",
-                        "type": "IOStreamRef"
+                        "type": "IOStreamParam"
                       },
                       {
                         "name": "type",
                         "type": "StringParam"
-                      },
-                      {
-                        "name": "closeio",
-                        "type": "bool",
-                        "default": "false"
                       }
                     ],
                     "sourceName": "IMG_CreateAnimationEncoder_IO",
@@ -196392,15 +196070,11 @@
             "parameters": [
               {
                 "name": "dst",
-                "type": "IOStreamRef"
+                "type": "IOStreamParam"
               },
               {
                 "name": "type",
                 "type": "StringParam"
-              },
-              {
-                "name": "closeio",
-                "type": "bool"
               }
             ],
             "sourceName": "IMG_CreateAnimationEncoder_IO",
@@ -196524,16 +196198,11 @@
           "parameters": [
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "type",
               "type": "StringParam"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "IMG_CreateAnimationEncoder_IO",
@@ -197544,16 +197213,11 @@
                     "parameters": [
                       {
                         "name": "src",
-                        "type": "IOStreamRef"
+                        "type": "IOStreamParam"
                       },
                       {
                         "name": "type",
                         "type": "StringParam"
-                      },
-                      {
-                        "name": "closeio",
-                        "type": "bool",
-                        "default": "false"
                       }
                     ],
                     "sourceName": "IMG_CreateAnimationDecoder_IO",
@@ -197841,15 +197505,11 @@
             "parameters": [
               {
                 "name": "src",
-                "type": "IOStreamRef"
+                "type": "IOStreamParam"
               },
               {
                 "name": "type",
                 "type": "StringParam"
-              },
-              {
-                "name": "closeio",
-                "type": "bool"
               }
             ],
             "sourceName": "IMG_CreateAnimationDecoder_IO",
@@ -197977,16 +197637,11 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "type",
               "type": "StringParam"
-            },
-            {
-              "name": "closeio",
-              "type": "bool",
-              "default": "false"
             }
           ],
           "sourceName": "IMG_CreateAnimationDecoder_IO",
