@@ -3,6 +3,7 @@
 
 #include <optional>
 #include <variant>
+#include <vector>
 #include <SDL3/SDL_properties.h>
 #include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_error.h"

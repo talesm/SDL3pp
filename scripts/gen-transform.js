@@ -4203,7 +4203,7 @@ const transform = {
     },
     "SDL_properties.h": {
       localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_resource.h", "SDL3pp_strings.h", "SDL3pp_version.h"],
-      includes: ["optional", "variant"],
+      includes: ["optional", "variant", "vector"],
       transform: {
         "SDL_PropertyType": {
           enum: "SDL_PROPERTY_TYPE_",

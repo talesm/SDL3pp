@@ -106773,6 +106773,7 @@
       "includes": [
         "optional",
         "variant",
+        "vector",
         "SDL3/SDL_properties.h"
       ],
       "localIncludes": [
