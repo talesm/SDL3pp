@@ -169799,7 +169799,7 @@
         },
         "SDL3PP_MINOR_VERSION": {
           "kind": "def",
-          "value": "11",
+          "value": "12",
           "doc": [
             "The current minor version of SDL3pp wrapper."
           ],
@@ -169807,7 +169807,7 @@
         },
         "SDL3PP_PATCH_VERSION": {
           "kind": "def",
-          "value": "5",
+          "value": "0",
           "doc": [
             "The current patch version of SDL3pp wrapper."
           ],

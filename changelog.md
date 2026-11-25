@@ -1,5 +1,65 @@
 # Changelog
 
+## Version 0.12.0
+
+This breaks compatibility by removing implicit Scancode and Keycode string
+constructors.
+
+This also removes `closeui` error prone parameter, replaced by a auxiliary
+IOStreamParam, that keeps a `closeui` parameter, but automatically deduces it
+for most cases.
+
+The complete list of changes:
+
+- Upgrade SDL to 3.4.20;
+- Remove amalgamation targets from build and from README;
+- **Breaking change:** Make string based ctors for Scancode && Keycode explicit;
+- Fix dependency include for std::vector  
+  ([Issue](https://github.com/talesm/SDL3pp/issues/81))
+- **Breaking change:** Remove misleading *autoclose* parameters
+  ([Issue](https://github.com/talesm/SDL3pp/issues/79)):
+  - LoadFile_IO
+  - SaveFile_IO
+  - LoadBMP_IO;
+  - LoadTrustedPNG_IO;
+  - SaveBMP_IO;
+  - SaveTrustedPNG_IO;
+  - LoadSurface_IO;
+  - LoadSurfaceTyped_IO;
+  - LoadTexture_IO;
+  - LoadTextureTyped_IO;
+  - LoadGPUTexture_IO;
+  - LoadGPUTextureTyped_IO;
+  - LoadPNG_IO;
+  - SaveTyped_IO;
+  - SaveAVIF_IO;
+  - SaveCUR_IO;
+  - SaveGIF_IO;
+  - SaveICO_IO;
+  - SaveJPG_IO;
+  - SavePNG_IO;
+  - SaveTGA_IO;
+  - SaveWEBP_IO;
+  - LoadAnimation_IO;
+  - LoadAnimationTyped_IO;
+  - SaveAnimationTyped_IO;
+  - SaveANIAnimation_IO;
+  - SaveAPNGAnimation_IO;
+  - SaveAVIFAnimation_IO;
+  - SaveGIFAnimation_IO;
+  - SaveWEBPAnimation_IO;
+  - CreateAnimationEncoder_IO;
+  - CreateAnimationDecoder_IO;
+  - LoadWAV_IO;
+  - LoadAudio_IO;
+  - LoadRawAudio_IO;
+  - SetTrackIOStream;
+  - SetTrackRawIOStream;
+  - CreateAudioDecoder_IO;
+  - OpenFontIO;
+  - AddGamepadMappingsFromIO;
+- `LoadRawAudioNoCopy()` remove free_when_done defaults to false;
+
 ## Version 0.11.5
 
 Upgrade base libraries and include new headers only distribution.

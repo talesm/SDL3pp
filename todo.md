@@ -99,7 +99,7 @@ Version release checklist
 - [ ] build SDL3pp_zip_amalgamation and SDL3pp_zip_headers;
 - [ ] Commit & Push changes;
 - [ ] Create new Release on <https://github.com/talesm/SDL3pp>
-  - [ ] Don't forget go add SDL3pp_zip_amalgamation and SDL3pp_zip_full to the
+  - [ ] Don't forget go add SDL3pp_zip_headers and SDL3pp_zip_dist to the
     downloads!
 - [ ] Create new Release in the UI, using the changelog text;
 - [ ] Merge `releases` into `main`.
