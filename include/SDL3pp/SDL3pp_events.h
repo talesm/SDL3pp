@@ -1282,7 +1282,7 @@ inline std::optional<Event> WaitEventTimeout(Sint32 timeoutMS)
 inline bool WaitEventTimeout(Event* event, Milliseconds timeoutDuration)
 {
   return WaitEventTimeout(event,
-                          Sint32(std::max(timeoutDuration.count(), Sint64(1))));
+                          Sint32(std::max(timeoutDuration.count(), Milliseconds::rep(1))));
 }
 
 /**
