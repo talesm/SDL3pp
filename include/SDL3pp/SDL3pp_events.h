@@ -1282,7 +1282,7 @@ inline std::optional<Event> WaitEventTimeout(Sint32 timeoutMS)
 inline bool WaitEventTimeout(Event* event, Milliseconds timeoutDuration)
 {
   return WaitEventTimeout(event,
-                          Sint32(std::max(timeoutDuration.count(), Sint64(1))));
+                          Sint32(std::max(timeoutDuration.count(), Milliseconds::rep(1))));
 }
 
 /**
@@ -1842,7 +1842,7 @@ inline std::string GetEventDescription(const Event& event)
 {
   int sz = SDL_GetEventDescription(&event, nullptr, 0);
   std::string r;
-  r.reserve(sz);
+  r.resize(sz);
   GetEventDescription(event, r);
   return r;
 }
