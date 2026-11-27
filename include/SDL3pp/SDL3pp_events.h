@@ -1842,7 +1842,7 @@ inline std::string GetEventDescription(const Event& event)
 {
   int sz = SDL_GetEventDescription(&event, nullptr, 0);
   std::string r;
-  r.reserve(sz);
+  r.resize(sz);
   GetEventDescription(event, r);
   return r;
 }
